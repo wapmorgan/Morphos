@@ -1,0 +1,13 @@
+{
+	"name": "wapmorgan/morphos",
+	"description": "a morphological decision",
+	"suggest": {
+		"ext-mbstring": "For proper transformations."
+	},
+	"autoload": {
+		"files": ["functions.php"],
+		"psr-4": {
+			"morphos\\": ""
+		}
+	}
+}
