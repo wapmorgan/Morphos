@@ -46,8 +46,8 @@ To add a new language quite simply: create the class inheriting BasicDeclension 
   public function getForm($name, $form, $gender);
   ```
 
-
 For simplification of access to functions of processing of lines there are some functions in morphos namespace:
+
 1. set_encoding() - Sets encoding for using in morphos / * functions.
 2. length() - Calcules count of characters in string.
 3. slice() - Slices string like python.
