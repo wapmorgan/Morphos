@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/wapmorgan/Morphos.svg)](https://travis-ci.org/wapmorgan/Morphos)
+
 Morphos - a morphological decision written completely in PHP.
 
 At the moment the main functionality is declension of personal names.
@@ -46,10 +48,10 @@ To add a new language quite simply: create the class inheriting BasicDeclension 
   public function getForm($name, $form, $gender);
   ```
 
-For simplification of access to functions of processing of lines there are some functions in morphos namespace:
+For simplification access to functions of processing of strings there are some functions in `morphos` namespace:
 
-1. set_encoding() - Sets encoding for using in morphos / * functions.
-2. length() - Calcules count of characters in string.
+1. set_encoding() - Sets encoding for using in morphos/* functions.
+2. length() - Calculates count of characters in string.
 3. slice() - Slices string like python.
 4. lower() - Lower case.
 5. upper() - Upper case.
