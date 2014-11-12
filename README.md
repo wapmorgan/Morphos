@@ -13,7 +13,7 @@ Total supported languages: 1 (Russian).
     $dec = new morphos\RussianDeclension();
     ```
 
-* To learn, whether there is a form for this name (important to know a name carrier gender)
+* To learn, whether there are forms for this name (important to know a name carrier gender)
     ```php
     var_dump($dec->hasForms('Иоанн', morphos\RussianDeclension::MAN))); //true
     ```
@@ -29,7 +29,7 @@ Total supported languages: 1 (Russian).
     ```
 
 ## Addition of new languages.
-To add a new language quite simply: create the class inheriting BasicDeclension and realize three necessary methods:
+To add a new language simply: create the class inheriting BasicDeclension and realize three abstract methods from BasicDeclension:
 
 * Checks, whether if rules of formation of forms for this name.
   ```php
