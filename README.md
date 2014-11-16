@@ -50,7 +50,7 @@ Total supported languages: 1 (Russian).
 ### Addition of new languages.
 To add a new language simply: create the class inheriting BasicDeclension and realize three abstract methods from BasicDeclension:
 
-* Checks, whether if rules of formation of forms for this name.
+* Checks, whether there are rules for this name.
   ```php
   public function hasForms($name, $gender);
   ```
@@ -65,7 +65,7 @@ To add a new language simply: create the class inheriting BasicDeclension and re
   public function getForm($name, $form, $gender);
   ```
 
-For simple access to functions of strings processing there are some functions in `morphos` namespace:
+For simple access to functions of string processing there are some functions in `morphos` namespace:
 
 1. `set_encoding()` - Sets encoding for using in morphos/* functions.
 2. `length()` - Calculates count of characters in string.
