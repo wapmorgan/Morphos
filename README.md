@@ -6,29 +6,48 @@ At the moment the main functionality is declension of personal names.
 Total supported languages: 1 (Russian).
 
 ## Tutorial.
-* For declension of names you need download library through composer:
+
+* Download library through composer:
     `composer require "wapmorgan/morphos"`
-* To create an instance of class for declension:
+
+* Create an instance of declension class:
     ```php
     $dec = new morphos\RussianDeclension();
     ```
 
-* To learn, whether there are forms for this name (important to know a name carrier gender)
+* Check whether there are forms for this name (need to know a gender)
     ```php
     var_dump($dec->hasForms('Иоанн', morphos\RussianDeclension::MAN))); //true
     ```
 
-* To receive one concrete form:
+* Get one of forms:
     ```php
     var_dump($dec->getForm('Иоанн', morphos\RussianDeclension::DAT_3, morphos\RussianDeclension::MAN)); // Иоанна
     ```
 
-* To receive at once all forms
+* Get all forms:
     ```php
     var_dump($dec->getForms('Иоанн', morphos\RussianDeclension::MAN));
     ```
+    
+    ```
+    array(6) {
+      ["nominativus"]=>
+      string(10) "Иоанн"
+      ["genetivus"]=>
+      string(12) "Иоанна"
+      ["dativus"]=>
+      string(12) "Иоанну"
+      ["accusative"]=>
+      string(12) "Иоанна"
+      ["ablativus"]=>
+      string(14) "Иоанном"
+      ["praepositionalis"]=>
+      string(17) "об Иоанне"
+    }
+    ```
 
-## Addition of new languages.
+### Addition of new languages.
 To add a new language simply: create the class inheriting BasicDeclension and realize three abstract methods from BasicDeclension:
 
 * Checks, whether if rules of formation of forms for this name.
@@ -36,31 +55,36 @@ To add a new language simply: create the class inheriting BasicDeclension and re
   public function hasForms($name, $gender);
   ```
 
-
 * Generates all forms of a name.
   ```php
   public function getForms($name, $gender);
   ```
-
 
 * Generates one form of a name.
   ```php
   public function getForm($name, $form, $gender);
   ```
 
-For simplification access to functions of processing of strings there are some functions in `morphos` namespace:
+For simple access to functions of strings processing there are some functions in `morphos` namespace:
 
-1. set_encoding() - Sets encoding for using in morphos/* functions.
-2. length() - Calculates count of characters in string.
-3. slice() - Slices string like python.
-4. lower() - Lower case.
-5. upper() - Upper case.
-6. name() - Name case. (ex: Thomas Lewis)
+1. `set_encoding()` - Sets encoding for using in morphos/* functions.
+2. `length()` - Calculates count of characters in string.
+3. `slice()` - Slices string like python.
+4. `lower()` - Lower case.
+5. `upper()` - Upper case.
+6. `name()` - Name case. (ex: Thomas Lewis)
 
-## Languages
-### Russian
-#### RussianDeclension
-Forms:
+## Forms
+#### Class: BasicDeclension
+
+1. NOMINATIVE
+2. GENETIVE
+3. DATIVE
+4. ACCUSATIVE
+5. ABLATIVE
+6. PREPOSITIONAL
+
+#### Language: Russian, Class: RussianDeclension
 
 1. IMENIT_1
 2. RODIT_2
