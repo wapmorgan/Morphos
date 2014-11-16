@@ -2,8 +2,7 @@
 
 Morphos - a morphological decision written completely in PHP.
 
-At the moment the main functionality is declension of personal names.
-Total supported languages: 1 (Russian).
+At the moment the main functionality is declension of personal names in Russian language.
 
 ## Tutorial.
 
