@@ -3,7 +3,7 @@ test for russian pluralization.
 --FILE--
 <?php
 require dirname(__FILE__).'/../vendor/autoload.php';
-$plu = new morphos\RussianPLurality();
+$plu = new morphos\RussianPlurality();
 for ($i = 1; $i <= 20; $i++)
 	echo $plu->pluralize('дом', $i)."\n";
 ?>
