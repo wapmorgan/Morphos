@@ -13,9 +13,10 @@ Supported languages:
     `composer require "wapmorgan/morphos"`
 
 # Declension
-## Personal names
+### Personal names
 
 1. Declension of personal names in russian language:
+
     ```php
     $array = array('Иван', 'Игорь', 'Андрей', 'Фома', 'Никита', 'Илья'');
     $dec = new morphos\RussianNamesDeclension();
@@ -29,7 +30,7 @@ Supported languages:
     }
     ```
 
-## Other words
+### Other words
 
 1. Declension of general words in russian language:
 
@@ -52,7 +53,7 @@ Supported languages:
 
     **Declension of general words can not work properly.**
 
-## Cases
+### Cases
 
 1. Cases in russian language:
 
