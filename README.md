@@ -51,7 +51,7 @@ Supported languages:
     }
     ```
 
-    **Declension of general words can not work properly.**
+    **Declension of general words is very complicated.**
 
 ### Cases
 
