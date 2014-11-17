@@ -88,3 +88,18 @@ function count_chars($string, array $chars) {
 		return false;
 	}
 }
+
+function pluralize($word, $animate = false, $count) {
+	static $plu;
+	if ($plu === null)
+		$plu = new RussianGeneralDeclension();
+	//$count = $count % 10;
+	if (in_array($count, range(2, 4))) {
+		return $plu->getForm($word, $animate, RussianGeneralDeclension::RODIT_2);
+	} else if ($count == 1) {
+		return $word;
+	} else/* if (in_array($count, range(5, 9)) || $count == 0) */{
+		$forms = $plu->pluralizeAllDeclensions($word);
+		return $forms[RussianGeneralDeclension::RODIT_2];
+	}
+}

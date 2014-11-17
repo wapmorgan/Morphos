@@ -1,50 +1,8 @@
 <?php
 namespace morphos;
 
-class RussianDeclension extends BasicDeclension {
-	const IMENIT_1 = self::NOMINATIVE;
-	const RODIT_2 = self::GENETIVE;
-	const DAT_3 = self::DATIVE;
-	const VINIT_4 = self::ACCUSATIVE;
-	const TVORIT_5 = self::ABLATIVE;
-	const PREDLOJ_6 = self::PREPOSITIONAL;
-
-	static public $vowels = array(
-		'А',
-		'Е',
-		'Ё',
-		'И',
-		'О',
-		'У',
-		'Ы',
-		'Э',
-		'Ю',
-		'Я',
-	);
-
-	static public $consonants = array(
-		'Б',
-		'В',
-		'Г',
-		'Д',
-		'Ж',
-		'З',
-		'Й',
-		'К',
-		'Л',
-		'М',
-		'Н',
-		'П',
-		'Р',
-		'С',
-		'Т',
-		'Ф',
-		'Х',
-		'Ц',
-		'Ч',
-		'Ш',
-		'Щ',
-	);
+class RussianNamesDeclension extends BasicNamesDeclension implements RussianDeclensions {
+	use Russian;
 
 	public function hasForms($name, $gender) {
 		//var_dump(upper(slice($name, -1)));
@@ -212,18 +170,6 @@ class RussianDeclension extends BasicDeclension {
 				return false;
 			}
 		}
-	}
-
-	private function isHissingConsonant($consonant) {
-		return in_array(lower($consonant), array('ж', 'ш', 'ч', 'щ'));
-	}
-
-	private function isConsonant($consonant) {
-		return in_array(upper($consonant), self::$consonants);
-	}
-
-	private function countSyllables($string) {
-		return count_chars($string, array_map('lower', self::$vowels));
 	}
 
 	private function getFormsForLev() {

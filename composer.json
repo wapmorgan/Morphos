@@ -9,5 +9,8 @@
 		"psr-4": {
 			"morphos\\": ""
 		}
+	},
+	"require-dev": {
+		"phpunit/phpunit": "*"
 	}
 }
