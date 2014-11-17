@@ -114,7 +114,7 @@ For simple access to functions of string processing there are some functions in 
 
   * How to get one form:
     ```php
-    $form = $dec->getForm('поле', false, morphos\\RussianDeclensions::PREDLOJ_6);
+    $form = $dec->getForm('поле', false, morphos\RussianDeclensions::PREDLOJ_6);
     ```
 
 #### Plural
@@ -200,19 +200,19 @@ For simple access to functions of string processing there are some functions in 
 ### Addition of new languages.
 To add a new language simply: create the class inheriting BasicDeclension and realize three abstract methods from BasicDeclension:
 
-* Checks, whether there are rules for this name.
+* Checks, whether there are rules for this noun.
   ```php
-  public function hasForms($name, $animate = false);
+  public function hasForms($word, $animate = false);
   ```
 
-* Generates all forms of a name.
+* Generates all forms of a noun.
   ```php
-  public function getForms($name, $animate = false);
+  public function getForms($word, $animate = false);
   ```
 
-* Generates one form of a name.
+* Generates one form of a noun.
   ```php
-  public function getForm($name, $form, $animate = false);
+  public function getForm($word, $form, $animate = false);
   ```
 
 **This part (general declension) is a proof of concept "a morphological decision without a dictionary" and is not proposed to be used in production.**
