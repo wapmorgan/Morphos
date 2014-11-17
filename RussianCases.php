@@ -1,7 +1,7 @@
 <?php
 namespace morphos;
 
-interface RussianDeclensions extends BasicDeclensions {
+interface RussianCases extends Cases {
 	const IMENIT_1 = self::NOMINATIVE;
 	const RODIT_2 = self::GENETIVE;
 	const DAT_3 = self::DATIVE;

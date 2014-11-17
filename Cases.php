@@ -1,7 +1,7 @@
 <?php
 namespace morphos;
 
-interface BasicDeclensions {
+interface Cases {
 	const NOMINATIVE = 'nominativus';
 	const GENETIVE = 'genetivus';
 	const DATIVE = 'dativus';

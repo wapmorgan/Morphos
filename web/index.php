@@ -5,6 +5,7 @@
 <?php
 require dirname(dirname(__FILE__)).'/vendor/autoload.php';
 $dec = new morphos\RussianGeneralDeclension();
+$plu = new morphos\RussianPlurality();
 if (isset($_POST['word'])) {
 	if (!isset($_POST['animate'])) $_POST['animate'] = false;
 	else $_POST['animate'] = true;
@@ -21,7 +22,7 @@ if (isset($_POST['word'])) {
 
 	echo "<blockquote>";
 	for ($i = 0; $i <= 20; $i++) {
-		echo $i.' '.morphos\pluralize($_POST['word'], $_POST['animate'], $i)."<br/>";
+		echo $i.' '.$plu->pluralize($_POST['word'], $_POST['animate'], $i)."<br/>";
 	}
 	echo "</blockquote>";
 }

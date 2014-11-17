@@ -1,7 +1,7 @@
 <?php
 namespace morphos;
 
-class BasicNamesDeclension implements BasicDeclensions {
+class BasicNamesDeclension implements Cases {
 	const MAN = 'm';
 	const WOMAN = 'w';
 
