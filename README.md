@@ -18,7 +18,7 @@ Supported languages:
 1. Declension of personal names in russian language:
 
     ```php
-    $array = array('Иван', 'Игорь', 'Андрей', 'Фома', 'Никита', 'Илья'');
+    $array = array('Иван', 'Игорь', 'Андрей', 'Фома', 'Никита', 'Илья');
     $dec = new morphos\RussianNamesDeclension();
     foreach ($array as $name) {
         if ($dec->hasForms($name)) {
