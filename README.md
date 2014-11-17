@@ -104,11 +104,28 @@ For simple access to functions of string processing there are some functions in 
     $dec = new morphos\RussianGeneralDeclension();
     ```
 
-* In Russian language, there are 3 forms for declension (I, II and III).
+#### Singular
 
-  Some result:
+  * How to get all forms:
+    ```php
+    $forms = $dec->getForms('поле', false);
+    ```
+    If word is animate, set true instead of false.
 
-  Singular
+  * How to get one form:
+    ```php
+    $form = $dec->getForm('поле', false, morphos\\RussianDeclensions::PREDLOJ_6);
+    ```
+
+#### Plural
+
+  * How to get all plural forms:
+    ```php
+    $forms = $dec->pluralizeAllDeclensions('поле', false);
+    ```
+
+#### Examples
+  *Singular*
   ```
   array(6) {
     ["nominativus"]=>
@@ -126,7 +143,7 @@ For simple access to functions of string processing there are some functions in 
   }
   ```
 
-  Plular
+  *Plural*
   ```
   array(6) {
     ["nominativus"]=>
@@ -144,7 +161,7 @@ For simple access to functions of string processing there are some functions in 
   }
   ```
 
-  Singular
+  *Singular*
   ```
   array(6) {
     ["nominativus"]=>
@@ -162,7 +179,7 @@ For simple access to functions of string processing there are some functions in 
   }
   ```
 
-  Plural
+  *Plural*
   ```
     array(6) {
     ["nominativus"]=>
@@ -179,26 +196,6 @@ For simple access to functions of string processing there are some functions in 
     string(10) "полях"
   }
   ```
-
-
-#### Singular
-
-  * How to get all forms:
-    ```php
-    $forms = $dec->getForms('поле', false);
-    ```
-    If word is animate, set true instead of false.
-
-  * How to get one form:
-    ```php
-    $form = $dec->getForm('поле', false, morphos\\RussianDeclensions::PREDLOJ_6);
-    ```
-
-#### Plural
-  * How to get all plural forms:
-    ```php
-    $forms = $dec->pluralizeAllDeclensions('поле', false);
-    ```
 
 ### Addition of new languages.
 To add a new language simply: create the class inheriting BasicDeclension and realize three abstract methods from BasicDeclension:
