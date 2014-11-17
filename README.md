@@ -31,7 +31,8 @@ Supported languages:
 
 ## Other words
 
-1. Declension of general words in russian language / Склонение произвольных существительных в русском языке:
+1. Declension of general words in russian language / *Склонение произвольных существительных в русском языке*:
+
     ```php
     $word = 'поле';
     $dec = new morphos\RussianGeneralDeclension();
@@ -52,11 +53,11 @@ Supported languages:
     }
     ```
 
-    **Declension of general words can not work properly. / Склонение произвольных существительных может работать некорректно.**
+    **Declension of general words can not work properly. / *Склонение произвольных существительных может работать некорректно*.**
 
 ## Cases
 
-1. Cases in russian language / Падежи в русском языке:
+1. Cases in russian language / *Падежи в русском языке*:
 
     * morphos\RussianCases::IMENIT_1
     * morphos\RussianCases::RODIT_2
