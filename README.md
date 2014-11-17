@@ -85,18 +85,7 @@ Supported languages:
     ```
     prints `10 feet`
 
-
-For simple access to functions of string processing there are some functions in `morphos` namespace:
-
-1. `set_encoding()` - Sets encoding for using in morphos/* functions.
-2. `length()` - Calculates count of characters in string.
-3. `slice()` - Slices string like python.
-4. `lower()` - Lower case.
-5. `upper()` - Upper case.
-6. `name()` - Name case. (ex: Thomas Lewis)
-
-
-# Addition of new languages.
+# Contributing / Addition of new languages.
 
 Morphos are open for additions and improvements.
 
@@ -138,3 +127,14 @@ Class for names declension.
   ```php
   public function getForm($word, $form, $animate = false);
   ```
+
+### Useful functions in morphos namespace
+
+For simple access to functions of string processing there are some functions in `morphos` namespace:
+
+1. `set_encoding()` - Sets encoding for using in morphos/* functions.
+2. `length()` - Calculates count of characters in string.
+3. `slice()` - Slices string like python.
+4. `lower()` - Lower case.
+5. `upper()` - Upper case.
+6. `name()` - Name case. (ex: Thomas Lewis)
