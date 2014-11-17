@@ -120,6 +120,7 @@ For simple access to functions of string processing there are some functions in 
 #### Plural
 
   * How to get all plural forms:
+
     ```php
     $forms = $dec->pluralizeAllDeclensions('поле', false);
     ```
