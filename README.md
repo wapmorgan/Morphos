@@ -15,15 +15,15 @@ Supported languages:
 # Declension
 ## Personal names
 
-1. Declension of personal names in russian language / *Склонение имен собственных в русском языке*:
+1. Declension of personal names in russian language:
     ```php
     $array = array('Иван', 'Игорь', 'Андрей', 'Фома', 'Никита', 'Илья'');
     $dec = new morphos\RussianNamesDeclension();
     foreach ($array as $name) {
         if ($dec->hasForms($name)) {
-            // Получить имя во всех падежах
-            $forms = $dec->getForms($name, morphos\RussianNamesDeclension::MAN); // вместо длинной константы можно использовать 'm' или 'w'
-            // Получить имя в родительном падеже
+            // Get all forms of a name
+            $forms = $dec->getForms($name, morphos\RussianNamesDeclension::MAN); // you can use 'm' или 'w' instead of class constant
+            // Get genetive form of a name
             $form = $dec->getForms($name, morphos\RussianCases::RODIT_3, 'm');
         }
     }
@@ -31,33 +31,30 @@ Supported languages:
 
 ## Other words
 
-1. Declension of general words in russian language / *Склонение произвольных существительных в русском языке*:
+1. Declension of general words in russian language:
 
     ```php
     $word = 'поле';
     $dec = new morphos\RussianGeneralDeclension();
-    if ($dec->hasForms($word)) {// this methods always returns true at this moment / на данный момент эта функция всегда возвращает true
-        # Singular declension / Склонение в единственном числе
-        {
-            // Get all forms of a word / Получить слово во всех падежах
-            $forms = $dec->getForms($word, false); // second argument is an animateness / второй аргумент в этих функиях - это одушевленность предмета
-            // Get genetive form of a word / Получить слово в родительном падеже
-            $form = $dec->getForm($word, false, morphos\RussianCases::RODIT_3);
-        }
-        # Plural declension / Склонение во множественном числе
-        {
-            // Get all forms of a word / Получить слово во всех падежах
-            $forms = $dec->pluralizeAllDeclensions($word, false);
-            // There's no method for getting one form / Метода для получения одной формы пока не реализовано
-        }
+    if ($dec->hasForms($word)) {// this methods always returns true at this moment
+        # Singular declension
+        // Get all forms of a word
+        $forms = $dec->getForms($word, false); // second argument is an animateness
+        // Get genetive form of a word
+        $form = $dec->getForm($word, false, morphos\RussianCases::RODIT_3);
+
+        # Plural declension
+        // Get all forms of a word
+        $forms = $dec->pluralizeAllDeclensions($word, false);
+        // There's no method for getting one form
     }
     ```
 
-    **Declension of general words can not work properly. / *Склонение произвольных существительных может работать некорректно*.**
+    **Declension of general words can not work properly.**
 
 ## Cases
 
-1. Cases in russian language / *Падежи в русском языке*:
+1. Cases in russian language:
 
     * morphos\RussianCases::IMENIT_1
     * morphos\RussianCases::RODIT_2
@@ -69,14 +66,14 @@ Supported languages:
 
 # Pluralization
 
-1. Pluralization a word in Russian / *Получение существительного в правильном падеже и числе для согласования с числительным в русском языке*:
+1. Pluralization a word in Russian:
     ```php
     $plu = new morphos\RussianPlurality();
     $word = 'дом';
     $count = 10;
-    echo sprintf("%d %s", $count, $plu->pluralize($word, $count, false)); // последний аргумент - также одушевленность
-    // Выведет: 10 домов
+    echo sprintf("%d %s", $count, $plu->pluralize($word, $count, false)); // last argument - animateness
     ```
+    prints `10 домов`
 
 2. Pluralization a word in English:
     ```php
@@ -84,8 +81,8 @@ Supported languages:
     $word = 'foot';
     $count = 10;
     echo sprintf("%d %s", $count, $plu->pluralize($word));
-    // output: 10 feet
     ```
+    prints `10 feet`
 
 
 For simple access to functions of string processing there are some functions in `morphos` namespace:
@@ -124,7 +121,7 @@ Class for names declension.
   abstract public function getForm($name, $form, $gender);
   ```
 
-  ### BasicDeclension
+### BasicDeclension
 
 * Checks, whether there are rules for this word.
   ```php
