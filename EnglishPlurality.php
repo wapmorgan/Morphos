@@ -20,16 +20,22 @@ class EnglishPlurality extends BasicPlurality {
 		'mouse' => 'mice'
 	);
 
-	static private $without_plural_form = array(
+	static private $without_paired_form = array(
+		'knowledge',
+		'progress',
+		'advise',
 		'ink',
 		'money',
+		'scissors',
+		'spectacles',
+		'trousers',
 	);
 
 	static public $consonants = array('b', 'c', 'd', 'f', 'g', 'h', 'j', 'k', 'l', 'm', 'n', 'p', 'q', 'r', 's', 't', 'v', 'x', 'z', 'w');
 
 	public function pluralize($word) {
 		$word = lower($word);
-		if (in_array(self::$without_plural_form))
+		if (in_array($word, self::$without_paired_form))
 			return $word;
 		else if (isset(self::$exceptions[$word]))
 			return self::$exceptions[$word];
@@ -38,7 +44,7 @@ class EnglishPlurality extends BasicPlurality {
 			return $word.'es';
 		} else if (slice($word, -1) == 'o') {
 			return $word.'es';
-		} else if ($slice($word, -1) == 'y' && in_array(slice($word, -2, -1), self::$consonants)) {
+		} else if (slice($word, -1) == 'y' && in_array(slice($word, -2, -1), self::$consonants)) {
 			return slice($word, 0, -1).'ies';
 		} else if (slice($word, -2) == 'fe' || slice($word, -1) == 'f') {
 			if (slice($word, -1) == 'f') {

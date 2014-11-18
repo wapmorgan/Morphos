@@ -1,4 +1,4 @@
 <?php
 include 'vendor/autoload.php';
-$dec = new morphos\RussianDeclension();
-var_dump($dec->getForms('макасины', morphos\RussianDeclension::MAN));
+$dec = new morphos\RussianNamesDeclension();
+var_dump($dec->getForms('Иван', morphos\RussianNamesDeclension::MAN));
