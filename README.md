@@ -15,107 +15,107 @@ Supported languages:
 # Declension
 ### Personal names
 
-1. Declension of personal names in russian language:
+##### Declension of personal names in russian language:
 
-    ```php
-    $array = array('Иван', 'Игорь', 'Андрей', 'Фома', 'Никита', 'Илья');
-    $dec = new morphos\RussianNamesDeclension();
-    foreach ($array as $name) {
-        if ($dec->hasForms($name)) {
-            // Get all forms of a name
-            $forms = $dec->getForms($name, morphos\RussianNamesDeclension::MAN); // you can use 'm' или 'w' instead of class constant
-            // Get genetive form of a name
-            $form = $dec->getForms($name, morphos\RussianCases::RODIT_2, 'm');
-        }
+```php
+$array = array('Иван', 'Игорь', 'Андрей', 'Фома', 'Никита', 'Илья');
+$dec = new morphos\RussianNamesDeclension();
+foreach ($array as $name) {
+    if ($dec->hasForms($name)) {
+        // Get all forms of a name
+        $forms = $dec->getForms($name, morphos\RussianNamesDeclension::MAN); // you can use 'm' или 'w' instead of class constant
+        // Get genetive form of a name
+        $form = $dec->getForms($name, morphos\RussianCases::RODIT_2, 'm');
+    }
+}
+```
+
+* $forms contains
+    ```
+    array(6) {
+      ["nominativus"]=>
+      string(8) "Иван"
+      ["genetivus"]=>
+      string(10) "Ивана"
+      ["dativus"]=>
+      string(10) "Ивану"
+      ["accusative"]=>
+      string(10) "Ивана"
+      ["ablativus"]=>
+      string(12) "Иваном"
+      ["praepositionalis"]=>
+      string(15) "об Иване"
     }
     ```
 
-    * $forms contains
-        ```
-        array(6) {
-          ["nominativus"]=>
-          string(8) "Иван"
-          ["genetivus"]=>
-          string(10) "Ивана"
-          ["dativus"]=>
-          string(10) "Ивану"
-          ["accusative"]=>
-          string(10) "Ивана"
-          ["ablativus"]=>
-          string(12) "Иваном"
-          ["praepositionalis"]=>
-          string(15) "об Иване"
-        }
-        ```
-
-    * $form contains `Ивана`
+* $form contains `Ивана`
 
 ### General words
 
-1. Declension of general words in russian language:
+##### Declension of general words in russian language:
 
-    ```php
-    $word = 'поле';
-    $dec = new morphos\RussianGeneralDeclension();
-    if ($dec->hasForms($word)) {
-        # Singular form
-        // Get all forms of a word
-        $forms = $dec->getForms($word, false); // second argument is an animateness
-        // Get genetive form of a word
-        $form = $dec->getForm($word, false, morphos\RussianCases::RODIT_2);
+```php
+$word = 'поле';
+$dec = new morphos\RussianGeneralDeclension();
+if ($dec->hasForms($word)) {
+    # Singular form
+    // Get all forms of a word
+    $forms = $dec->getForms($word, false); // second argument is an animateness
+    // Get genetive form of a word
+    $form = $dec->getForm($word, false, morphos\RussianCases::RODIT_2);
+}
+```
+* $forms contains
+
+    ```
+    array(6) {
+      ["nominativus"]=>
+      string(8) "поле"
+      ["genetivus"]=>
+      string(8) "поля"
+      ["dativus"]=>
+      string(8) "полю"
+      ["accusative"]=>
+      string(8) "поле"
+      ["ablativus"]=>
+      string(10) "полем"
+      ["praepositionalis"]=>
+      string(8) "поле"
     }
     ```
-    * $forms contains
 
-        ```
-        array(6) {
-          ["nominativus"]=>
-          string(8) "поле"
-          ["genetivus"]=>
-          string(8) "поля"
-          ["dativus"]=>
-          string(8) "полю"
-          ["accusative"]=>
-          string(8) "поле"
-          ["ablativus"]=>
-          string(10) "полем"
-          ["praepositionalis"]=>
-          string(8) "поле"
-        }
-        ```
+* $form contains `поля`
 
-    * $form contains `поля`
+```php
+$word = 'поле';
+$dec = new morphos\RussianGeneralDeclension();
+if ($dec->hasForms($word)) {
+    # Plural form
+    // Get all forms of a word
+    $forms = $dec->pluralizeAllDeclensions($word, false);
+    // There's no method for getting one form
+}
+```
+* $forms contains
 
-    ```php
-    $word = 'поле';
-    $dec = new morphos\RussianGeneralDeclension();
-    if ($dec->hasForms($word)) {
-        # Plural form
-        // Get all forms of a word
-        $forms = $dec->pluralizeAllDeclensions($word, false);
-        // There's no method for getting one form
+    ```
+    array(6) {
+      ["nominativus"]=>
+      string(8) "поля"
+      ["genetivus"]=>
+      string(10) "полей"
+      ["dativus"]=>
+      string(10) "полям"
+      ["accusative"]=>
+      string(8) "поля"
+      ["ablativus"]=>
+      string(12) "полями"
+      ["praepositionalis"]=>
+      string(10) "полях"
     }
     ```
-    * $forms contains
 
-        ```
-        array(6) {
-          ["nominativus"]=>
-          string(8) "поля"
-          ["genetivus"]=>
-          string(10) "полей"
-          ["dativus"]=>
-          string(10) "полям"
-          ["accusative"]=>
-          string(8) "поля"
-          ["ablativus"]=>
-          string(12) "полями"
-          ["praepositionalis"]=>
-          string(10) "полях"
-        }
-        ```
-
-    **Declension of general words is very complicated and may fail.**
+**Declension of general words is very complicated and may fail.**
 
 ### Cases
 
