@@ -104,16 +104,16 @@ function pluralize($word, $animate = false, $count) {
 	}
 }
 
-function chars_after($string, array $chars) {
+function last_position_for_one_of_chars($string, array $chars) {
 	if (function_exists('mb_strrpos')) {
-		$max_post = false;
+		$last_position = false;
 		foreach ($chars as $char) {
 			if (($pos = mb_strrpos($string, $char)) !== false) {
-				$max_pos = $pos;
+				$last_position = $pos;
 			}
 		}
-		if ($max_pos !== false) {
-			return mb_substr($string, $max_pos);
+		if ($last_position !== false) {
+			return mb_substr($string, $last_position);
 		}
 		return false;
 	} else {
