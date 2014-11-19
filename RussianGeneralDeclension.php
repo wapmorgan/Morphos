@@ -37,13 +37,12 @@ class RussianGeneralDeclension extends BasicDeclension implements RussianCases {
 		$word = lower($word);
 		$last = slice($word, -1);
 		if ($this->isConsonant($last) || in_array($last, ['о', 'е', 'ё']) || ($last == 'ь' && $this->isConsonant(slice($word, -2, -1)) && !$this->isHissingConsonant(slice($word, -2, -1)))) {
-			$declension = 1;
+			return  1;
 		} else if (in_array($last, ['а', 'я']) && slice($word, -2) != 'мя') {
-			$declension = 2;
+			return 2;
 		} else {
-			$declension = 3;
+			return 3;
 		}
-		return $declension;
 	}
 
 	public function getForms($word, $animate = false) {
@@ -68,18 +67,10 @@ class RussianGeneralDeclension extends BasicDeclension implements RussianCases {
 		);
 
 		// RODIT_2
-		if ($this->isHissingConsonant($last) || $this->isVelarConsonant($last) || $soft_last) {
-			$forms[RussianCases::RODIT_2] = $prefix.'я';
-		} else {
-			$forms[RussianCases::RODIT_2] = $prefix.'а';
-		}
+		$forms[RussianCases::RODIT_2] = $this->chooseVowelAfterConsonant($last, $soft_last, $prefix.'я', $prefix.'а');
 
-		//  DAT_3
-		if ($this->isHissingConsonant($last) || $this->isVelarConsonant($last) || $soft_last) {
-			$forms[RussianCases::DAT_3] = $prefix.'ю';
-		} else {
-			$forms[RussianCases::DAT_3] = $prefix.'у';
-		}
+		// DAT_3
+		$forms[RussianCases::DAT_3] = $this->chooseVowelAfterConsonant($last, $soft_last, $prefix.'ю', $prefix.'у');
 
 		// VINIT_4
 		if (in_array($last, ['о', 'е', 'ё']))
@@ -113,34 +104,31 @@ class RussianGeneralDeclension extends BasicDeclension implements RussianCases {
 		$word = lower($word);
 		$prefix = slice($word, 0, -1);
 		$last = slice($word, -1);
+		$soft_last = $this->checkLastConsonantSoftness($word);
 		$forms =  array(
 			RussianCases::IMENIT_1 => $word,
 		);
 
 		// RODIT_2
-		if ($this->isHissingConsonant($last) || $this->isVelarConsonant($last) || $this->checkLastConsonantSoftness($word)) {
-			$forms[RussianCases::RODIT_2] = $prefix.'и';
-		} else {
-			$forms[RussianCases::RODIT_2] = $prefix.'ы';
-		}
+		$forms[RussianCases::RODIT_2] = $this->chooseVowelAfterConsonant($last, $soft_last, $prefix.'и', $prefix.'ы');
 
 		// DAT_3
 		$forms[RussianCases::DAT_3] = $this->getPredCaseOf12Declensions($word, $last, $prefix);
 
 		// VINIT_4
-		if ($this->isHissingConsonant($last) || $this->isVelarConsonant($last) || $this->checkLastConsonantSoftness($word)) {
-			$forms[RussianCases::VINIT_4] = $prefix.'ю';
-		} else {
-			$forms[RussianCases::VINIT_4] = $prefix.'у';
-		}
+		$forms[RussianCases::VINIT_4] = $this->chooseVowelAfterConsonant($last, $soft_last, $prefix.'ю', $prefix.'у');
 
 		// TVORIT_5
 		if ($last == 'ь')
 			$forms[RussianCases::TVORIT_5] = $prefix.'ой';
-		else if ($last == 'й' || ($this->isConsonant($last) && !$this->isHissingConsonant($last)) || $this->checkLastConsonantSoftness($word))
-			$forms[RussianCases::TVORIT_5] = $prefix.'ей';
-		else
-			$forms[RussianCases::TVORIT_5] = $prefix.'ой'; # http://morpher.ru/Russian/Spelling.aspx#sibilant
+		else {
+			$forms[RussianCases::TVORIT_5] = $this->chooseVowelAfterConsonant($last, $soft_last, $prefix.'ей', $prefix.'ой');
+		}
+
+		// 	if ($last == 'й' || ($this->isConsonant($last) && !$this->isHissingConsonant($last)) || $this->checkLastConsonantSoftness($word))
+		// 	$forms[RussianCases::TVORIT_5] = $prefix.'ей';
+		// else
+		// 	$forms[RussianCases::TVORIT_5] = $prefix.'ой'; # http://morpher.ru/Russian/Spelling.aspx#sibilant
 
 		// PREDLOJ_6 the same as DAT_3
 		$forms[RussianCases::PREDLOJ_6] = $forms[RussianCases::DAT_3];
@@ -175,9 +163,8 @@ class RussianGeneralDeclension extends BasicDeclension implements RussianCases {
 		}
 
 		$forms =  array(
-			RussianCases::IMENIT_1 => ($this->isHissingConsonant($last) || $this->isVelarConsonant($last) || $soft_last) ? $prefix.'я' : $prefix.'а',
+			RussianCases::IMENIT_1 => $this->chooseVowelAfterConsonant($last, $soft_last, $prefix.'я', $prefix.'а'),
 		);
-
 
 		// RODIT_2
 		if ($this->isHissingConsonant($last) || ($soft_last && $last != 'й'))
@@ -188,11 +175,7 @@ class RussianGeneralDeclension extends BasicDeclension implements RussianCases {
 			$forms[RussianCases::RODIT_2] = $prefix.'ов';
 
 		// DAT_3
-		if ($this->isHissingConsonant($last) || $this->isVelarConsonant($last) || $soft_last) {
-			$forms[RussianCases::DAT_3] = $prefix.'ям';
-		} else {
-			$forms[RussianCases::DAT_3] = $prefix.'ам';
-		}
+		$forms[RussianCases::DAT_3] = $this->chooseVowelAfterConsonant($last, $soft_last, $prefix.'ям', $prefix.'ам');
 
 		// VINIT_4
 		$forms[RussianCases::VINIT_4] = $this->getVinitCaseByAnimateness($forms, $animate);
@@ -201,18 +184,12 @@ class RussianGeneralDeclension extends BasicDeclension implements RussianCases {
 		// my personal rule
 		if ($last == 'ь' && $declension == self::THIRD_DECLENSION) {
 			$forms[RussianCases::TVORIT_5] = $prefix.'ми';
-		} else if ($this->isHissingConsonant($last) || $this->isVelarConsonant($last) || $soft_last) {
-			$forms[RussianCases::TVORIT_5] = $prefix.'ями';
 		} else {
-			$forms[RussianCases::TVORIT_5] = $prefix.'ами';
+			$forms[RussianCases::TVORIT_5] = $this->chooseVowelAfterConsonant($last, $soft_last, $prefix.'ями', $prefix.'ами');
 		}
 
 		// PREDLOJ_6
-		if ($this->isHissingConsonant($last) || $this->isVelarConsonant($last) || $soft_last) {
-			$forms[RussianCases::PREDLOJ_6] = $prefix.'ях';
-		} else {
-			$forms[RussianCases::PREDLOJ_6] = $prefix.'ах';
-		}
+		$forms[RussianCases::PREDLOJ_6] = $this->chooseVowelAfterConsonant($last, $soft_last, $prefix.'ях', $prefix.'ах');
 		return $forms;
 	}
 
@@ -244,6 +221,14 @@ class RussianGeneralDeclension extends BasicDeclension implements RussianCases {
 				return $prefix.'и';
 		} else {
 			return $prefix.'е';
+		}
+	}
+
+	protected function chooseVowelAfterConsonant($last, $soft_last, $after_soft, $after_hard) {
+		if ($this->isHissingConsonant($last) || $this->isVelarConsonant($last) || $soft_last) {
+			return $after_soft;
+		} else {
+			return $after_hard;
 		}
 	}
 }
