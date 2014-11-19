@@ -16,6 +16,10 @@ echo "\n";
 var_dump($dec->getDeclension('гвоздь'));
 var_dump(implode(', ', $dec->getForms('гвоздь')));
 var_dump(implode(', ', $dec->pluralizeAllDeclensions('гвоздь')));
+echo "\n";
+var_dump($dec->getDeclension('гений'));
+var_dump(implode(', ', $dec->getForms('гений', true)));
+var_dump(implode(', ', $dec->pluralizeAllDeclensions('гений', true)));
 ?>
 --EXPECT--
 int(1)
@@ -29,3 +33,7 @@ string(68) "поля, полей, полям, поля, полями, полях
 int(1)
 string(84) "гвоздь, гвоздя, гвоздю, гвоздь, гвоздем, гвозде"
 string(92) "гвоздя, гвоздей, гвоздям, гвоздя, гвоздями, гвоздях"
+
+int(1)
+string(72) "гений, гения, гению, гения, гением, гении"
+string(82) "гения, гениев, гениям, гениев, гениями, гениях"

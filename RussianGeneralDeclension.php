@@ -50,7 +50,7 @@ class RussianGeneralDeclension extends BasicDeclension implements RussianCases {
 		$word = lower($word);
 		switch ($this->getDeclension($word)) {
 			case self::FIRST_DECLENSION:
-				return $this->declinateFirstDeclension($word);
+				return $this->declinateFirstDeclension($word, $animate);
 			case self::SECOND_DECLENSION:
 				return $this->declinateSecondDeclension($word);
 			case self::THIRD_DECLENSION:
@@ -61,7 +61,7 @@ class RussianGeneralDeclension extends BasicDeclension implements RussianCases {
 	public function declinateFirstDeclension($word, $animate = false) {
 		$word = lower($word);
 		$last = slice($word, -1);
-		$soft_last = in_array($last, ['ь', 'е', 'ё', 'ю', 'я']) && $this->isConsonant(slice($word, -2, -1));
+		$soft_last = $last == 'й' || (in_array($last, ['ь', 'е', 'ё', 'ю', 'я']) && $this->isConsonant(slice($word, -2, -1)));
 		$prefix = $this->getPrefixOfFirstDeclension($word, $last);
 		$forms =  array(
 			RussianCases::IMENIT_1 => $word,
@@ -187,7 +187,7 @@ class RussianGeneralDeclension extends BasicDeclension implements RussianCases {
 		$last = slice($word, -1);
 
 		if (($declension = $this->getDeclension($word)) == self::FIRST_DECLENSION) {
-			$soft_last = in_array($last, ['ь', 'е', 'ё', 'ю', 'я']) && $this->isConsonant(slice($word, -2, -1));
+			$soft_last = $last == 'й' || (in_array($last, ['ь', 'е', 'ё', 'ю', 'я']) && $this->isConsonant(slice($word, -2, -1)));
 			$prefix = $this->getPrefixOfFirstDeclension($word, $last);
 		} else {
 			$soft_last = false;
@@ -199,7 +199,7 @@ class RussianGeneralDeclension extends BasicDeclension implements RussianCases {
 
 
 		// RODIT_2
-		if ($this->isHissingConsonant($last) || $soft_last)
+		if ($this->isHissingConsonant($last) || ($soft_last && $last != 'й'))
 			$forms[RussianCases::RODIT_2] = $prefix.'ей';
 		else if ($last == 'й')
 			$forms[RussianCases::RODIT_2] = $prefix.'ев';
@@ -241,7 +241,7 @@ class RussianGeneralDeclension extends BasicDeclension implements RussianCases {
 	}
 
 	protected function getPrefixOfFirstDeclension($word, $last) {
-		if (in_array($last, ['о', 'е', 'ё', 'ь']))
+		if (in_array($last, ['о', 'е', 'ё', 'ь', 'й']))
 			$prefix = slice($word, 0, -1);
 		else
 			$prefix = $word;
