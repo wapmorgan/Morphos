@@ -51,13 +51,10 @@ class RussianGeneralDeclension extends BasicDeclension implements RussianCases {
 		switch ($this->getDeclension($word)) {
 			case self::FIRST_DECLENSION:
 				return $this->declinateFirstDeclension($word);
-				break;
 			case self::SECOND_DECLENSION:
 				return $this->declinateSecondDeclension($word);
-				break;
 			case self::THIRD_DECLENSION:
 				return $this->declinateThirdDeclension($word);
-				break;
 		}
 	}
 
@@ -125,7 +122,7 @@ class RussianGeneralDeclension extends BasicDeclension implements RussianCases {
 		return $forms;
 	}
 
-	public function declinateSecondDeclension($word, $animate = false) {
+	public function declinateSecondDeclension($word) {
 		$word = lower($word);
 		$prefix = slice($word, 0, -1);
 		$last = slice($word, -1);
@@ -191,10 +188,9 @@ class RussianGeneralDeclension extends BasicDeclension implements RussianCases {
 		return $forms;
 	}
 
-	public function declinateThirdDeclension($word, $animate = false) {
+	public function declinateThirdDeclension($word) {
 		$word = lower($word);
 		$prefix = slice($word, 0, -1);
-		$last = slice($word, -1);
 		return array(
 			RussianCases::IMENIT_1 => $word,
 			RussianCases::RODIT_2 => $prefix.'и',
@@ -210,7 +206,7 @@ class RussianGeneralDeclension extends BasicDeclension implements RussianCases {
 		$prefix = slice($word, 0, -1);
 		$last = slice($word, -1);
 
-		if (($declension = $this->getDeclension($word, $animate)) == self::FIRST_DECLENSION) {
+		if (($declension = $this->getDeclension($word)) == self::FIRST_DECLENSION) {
 			$soft_last = in_array($last, ['ь', 'е', 'ё', 'ю', 'я']) && $this->isConsonant(slice($word, -2, -1));
 			if (in_array($last, ['о', 'е', 'ё', 'ь']))
 				$prefix = slice($word, 0, -1);
