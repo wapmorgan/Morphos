@@ -62,11 +62,7 @@ class RussianGeneralDeclension extends BasicDeclension implements RussianCases {
 		$word = lower($word);
 		$last = slice($word, -1);
 		$soft_last = in_array($last, ['ь', 'е', 'ё', 'ю', 'я']) && $this->isConsonant(slice($word, -2, -1));
-		if (in_array($last, ['о', 'е', 'ё', 'ь']))
-			$prefix = slice($word, 0, -1);
-		else
-			$prefix = $word;
-
+		$prefix = $this->getPrefixOfFirstDeclension($word, $last);
 		$forms =  array(
 			RussianCases::IMENIT_1 => $word,
 		);
@@ -89,10 +85,7 @@ class RussianGeneralDeclension extends BasicDeclension implements RussianCases {
 		if (in_array($last, ['о', 'е', 'ё']))
 			$forms[RussianCases::VINIT_4] = $word;
 		else {
-			if ($animate)
-				$forms[RussianCases::VINIT_4] = $forms[RussianCases::RODIT_2];
-			else
-				$forms[RussianCases::VINIT_4] = $forms[RussianCases::IMENIT_1];
+			$forms[RussianCases::VINIT_4] = $this->getVinitCaseByAnimateness($forms, $animate);
 		}
 
 		// TVORIT_5
@@ -111,14 +104,8 @@ class RussianGeneralDeclension extends BasicDeclension implements RussianCases {
 		}
 
 		// PREDLOJ_6
-		if (slice($word, -2) == 'ий') {
-			if ($last == 'ё')
-				$forms[RussianCases::PREDLOJ_6] = $prefix.'е';
-			else
-				$forms[RussianCases::PREDLOJ_6] = $prefix.'и';
-		} else {
-			$forms[RussianCases::PREDLOJ_6] = $prefix.'е';
-		}
+		$forms[RussianCases::PREDLOJ_6] = $this->getPredCaseOf12Declensions($word, $last, $prefix);
+
 		return $forms;
 	}
 
@@ -138,14 +125,7 @@ class RussianGeneralDeclension extends BasicDeclension implements RussianCases {
 		}
 
 		// DAT_3
-		if (slice($word, -2) == 'ий') {
-			if ($last == 'ё')
-				$forms[RussianCases::DAT_3] = $prefix.'е';
-			else
-				$forms[RussianCases::DAT_3] = $prefix.'и';
-		} else {
-			$forms[RussianCases::DAT_3] = $prefix.'е';
-		}
+		$forms[RussianCases::DAT_3] = $this->getPredCaseOf12Declensions($word, $last, $prefix);
 
 		// VINIT_4
 		if ($this->isHissingConsonant($last) || $this->isVelarConsonant($last)) {
@@ -183,7 +163,7 @@ class RussianGeneralDeclension extends BasicDeclension implements RussianCases {
 				$forms[RussianCases::TVORIT_5] = $prefix.'ой'; # http://morpher.ru/Russian/Spelling.aspx#sibilant
 		}
 
-		// PREDLOJ_6 same DAT_3
+		// PREDLOJ_6 the same as DAT_3
 		$forms[RussianCases::PREDLOJ_6] = $forms[RussianCases::DAT_3];
 		return $forms;
 	}
@@ -208,11 +188,7 @@ class RussianGeneralDeclension extends BasicDeclension implements RussianCases {
 
 		if (($declension = $this->getDeclension($word)) == self::FIRST_DECLENSION) {
 			$soft_last = in_array($last, ['ь', 'е', 'ё', 'ю', 'я']) && $this->isConsonant(slice($word, -2, -1));
-			if (in_array($last, ['о', 'е', 'ё', 'ь']))
-				$prefix = slice($word, 0, -1);
-			else
-				$prefix = $word;
-
+			$prefix = $this->getPrefixOfFirstDeclension($word, $last);
 		} else {
 			$soft_last = false;
 		}
@@ -238,10 +214,7 @@ class RussianGeneralDeclension extends BasicDeclension implements RussianCases {
 		}
 
 		// VINIT_4
-		if ($animate)
-			$forms[RussianCases::VINIT_4] = $forms[RussianCases::RODIT_2];
-		else
-			$forms[RussianCases::VINIT_4] = $forms[RussianCases::IMENIT_1];
+		$forms[RussianCases::VINIT_4] = $this->getVinitCaseByAnimateness($forms, $animate);
 
 		// TVORIT_5
 		// my personal rule
@@ -265,5 +238,31 @@ class RussianGeneralDeclension extends BasicDeclension implements RussianCases {
 	public function getForm($word, $animate = false, $form) {
 		$forms = $this->getForms($word, $animate);
 		return $forms[$form];
+	}
+
+	protected function getPrefixOfFirstDeclension($word, $last) {
+		if (in_array($last, ['о', 'е', 'ё', 'ь']))
+			$prefix = slice($word, 0, -1);
+		else
+			$prefix = $word;
+		return $prefix;
+	}
+
+	protected function getVinitCaseByAnimateness(array $forms, $animate) {
+		if ($animate)
+			return $forms[RussianCases::RODIT_2];
+		else
+			return $forms[RussianCases::IMENIT_1];
+	}
+
+	protected function getPredCaseOf12Declensions($word, $last, $prefix) {
+		if (slice($word, -2) == 'ий') {
+			if ($last == 'ё')
+				return $prefix.'е';
+			else
+				return $prefix.'и';
+		} else {
+			return $prefix.'е';
+		}
 	}
 }
