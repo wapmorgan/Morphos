@@ -61,11 +61,21 @@ trait Russian {
 	}
 
 	public function countSyllables($string) {
-		return chars_count($string, array_map('lower', self::$vowels));
+		return chars_count($string, array_map(__NAMESPACE__.'\\lower', self::$vowels));
 	}
 
 	public function isPaired($consonant) {
 		$consonant = lower($consonant);
 		return array_key_exists($consonant, self::$pairs) || (array_search($consonant, self::$pairs) !== false);
+	}
+
+	public function checkLastConsonantSoftness($word) {
+		if (($substring = chars_after(lower($word), array_map(__NAMESPACE__.'\\lower', self::$consonants))) !== false) {
+			if (in_array(slice($substring, 0, 1), ['й', 'ч', 'щ'])) // always soft consonants
+				return true;
+			else if (length($substring) > 1 && in_array(slice($substring, 1, 2), ['е', 'ё', 'и', 'ю', 'я', 'ь'])) // consonants are soft if they are trailed with these vowels
+				return true;
+		}
+		return false;
 	}
 }

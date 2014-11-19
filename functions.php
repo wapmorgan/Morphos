@@ -103,3 +103,20 @@ function pluralize($word, $animate = false, $count) {
 		return $forms[RussianGeneralDeclension::RODIT_2];
 	}
 }
+
+function chars_after($string, array $chars) {
+	if (function_exists('mb_strrpos')) {
+		$max_post = false;
+		foreach ($chars as $char) {
+			if (($pos = mb_strrpos($string, $char)) !== false) {
+				$max_pos = $pos;
+			}
+		}
+		if ($max_pos !== false) {
+			return mb_substr($string, $max_pos);
+		}
+		return false;
+	} else {
+		return false;
+	}
+}
