@@ -81,7 +81,7 @@ function name($string) {
 /**
  * multiple substr_count().
  */
-function count_chars($string, array $chars) {
+function chars_count($string, array $chars) {
 	if (function_exists('mb_split')) {
 		return count(mb_split('('.implode('|', $chars).')', $string)) - 1;
 	} else {

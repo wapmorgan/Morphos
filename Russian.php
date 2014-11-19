@@ -60,8 +60,8 @@ trait Russian {
 		return in_array(upper($consonant), self::$consonants);
 	}
 
-	private function countSyllables($string) {
-		return count_chars($string, array_map('lower', self::$vowels));
+	public function countSyllables($string) {
+		return chars_count($string, array_map('lower', self::$vowels));
 	}
 
 	public function isPaired($consonant) {
