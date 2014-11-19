@@ -11,7 +11,7 @@ if (isset($_POST['word'])) {
 	else $_POST['animate'] = true;
 
 	echo '<pre>';
-		var_dump($dec->getDeclension($_POST['word'], $_POST['animate']));
+		var_dump($dec->getDeclension($_POST['word']));
 	echo '</pre>';
 	echo '<pre>';
 		var_dump($dec->getForms($_POST['word'], $_POST['animate']));
@@ -22,7 +22,7 @@ if (isset($_POST['word'])) {
 
 	echo "<blockquote>";
 	for ($i = 0; $i <= 20; $i++) {
-		echo $i.' '.$plu->pluralize($_POST['word'], $_POST['animate'], $i)."<br/>";
+		echo $i.' '.$plu->pluralize($_POST['word'], $i, $_POST['animate'])."<br/>";
 	}
 	echo "</blockquote>";
 }
