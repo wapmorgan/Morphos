@@ -63,12 +63,12 @@ Supported languages:
     ```php
     $dec = new morphos\RussianGeneralDeclension();
     ```
-    
+
 2. Check whether there are forms for this word (second arg is an animateness):
     ```php
     var_dump($dec->hasForms('поле', false));
     ```
-    
+
 3. Get all forms of a word:
     ```php
     var_dump($dec->getForms('поле', false)); // array[] {...}
@@ -78,7 +78,7 @@ Supported languages:
     ```php
     var_dump($dec->getForm('поле', false, morphos\RussianCases::RODIT_2)); // поля
     ```
-    
+
 5. All forms for this word:
     ```
     array(6) {
@@ -96,12 +96,12 @@ Supported languages:
       string(8) "поле"
     }
     ```
-    
+
 6. Get all forms of a plural word:
     ```php
     var_dump($dec->pluralizeAllDeclensions('поле', false)); // array[] {...}
     ```
-    
+
 7. All forms for this plural word:
     ```
     array(6) {
@@ -150,7 +150,7 @@ Supported languages:
     $plu = new morphos\EnglishPlurality();
     $word = 'foot';
     $count = 10;
-    echo sprintf("%d %s", $count, $plu->pluralize($word));
+    echo sprintf("%d %s", $count, $plu->pluralize($word, $count));
     ```
     prints `10 feet`
 

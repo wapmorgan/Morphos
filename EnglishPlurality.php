@@ -33,7 +33,10 @@ class EnglishPlurality extends BasicPlurality {
 
 	static public $consonants = array('b', 'c', 'd', 'f', 'g', 'h', 'j', 'k', 'l', 'm', 'n', 'p', 'q', 'r', 's', 't', 'v', 'x', 'z', 'w');
 
-	public function pluralize($word) {
+	public function pluralize($word, $count) {
+		if ($count == 1)
+			return $word;
+
 		$word = lower($word);
 		if (in_array($word, self::$without_paired_form))
 			return $word;
