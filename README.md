@@ -2,7 +2,7 @@
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/wapmorgan/Morphos/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/wapmorgan/Morphos/?branch=master)
 [![Code Coverage](https://scrutinizer-ci.com/g/wapmorgan/Morphos/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/wapmorgan/Morphos/?branch=master)
 
-Morphos - a morphological decision written completely in PHP.
+Morphos - a morphological solution written completely in PHP.
 
 Supported languages:
 
@@ -16,7 +16,6 @@ Supported languages:
 
 # Declension
 ### Personal names
-
 ##### Declension of personal names in russian language:
 
 1. Create declension class object:
@@ -58,7 +57,6 @@ Supported languages:
     ```
 
 ### General words
-
 ##### Declension of general words in russian language:
 
 1. Create declension class object:
