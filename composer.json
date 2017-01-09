@@ -1,8 +1,10 @@
 {
 	"name": "wapmorgan/morphos",
-	"description": "a morphological solution",
+	"description": "Morphological solution",
+	"license": "MIT",
+	"keywords": ["language", "morphology", "russian"],
 	"suggest": {
-		"ext-mbstring": "For proper transformations."
+		"ext-mbstring": "Support cyrillic transformations."
 	},
 	"autoload": {
 		"files": ["functions.php"],
