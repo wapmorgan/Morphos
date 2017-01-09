@@ -14,5 +14,5 @@ script:
 - phpunit --coverage-clover coverage.clover ./tests/
 
 after_script:
-- if [ "$TRAVIS_PHP_VERSION" == "5.5" ] || [ "$TRAVIS_PHP_VERSION" != "5.4" ]; then wget https://scrutinizer-ci.com/ocular.phar; fi
-- if [ "$TRAVIS_PHP_VERSION" == "5.5" ] || [ "$TRAVIS_PHP_VERSION" != "5.4" ]; then php ocular.phar code-coverage:upload --format=php-clover coverage.clover; fi
+- if [[ "$TRAVIS_PHP_VERSION" == "5.5"* ]] || [[ "$TRAVIS_PHP_VERSION" == "5.4"* ]]; then wget https://scrutinizer-ci.com/ocular.phar; fi
+- if [[ "$TRAVIS_PHP_VERSION" == "5.5"* ]] || [[ "$TRAVIS_PHP_VERSION" == "5.4"* ]]; then php ocular.phar code-coverage:upload --format=php-clover coverage.clover; fi
