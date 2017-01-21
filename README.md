@@ -9,8 +9,6 @@ A morphological solution written completely in PHP.
 
 Tests & Quality: [![Build Status](https://travis-ci.org/wapmorgan/Morphos.svg)](https://travis-ci.org/wapmorgan/Morphos)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/wapmorgan/Morphos/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/wapmorgan/Morphos/?branch=master)
-[![Code Coverage](https://scrutinizer-ci.com/g/wapmorgan/Morphos/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/wapmorgan/Morphos/?branch=master)
-
 
 Supported languages:
 
