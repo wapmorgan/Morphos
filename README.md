@@ -21,7 +21,9 @@ Supported languages:
     `composer require "wapmorgan/morphos"`
 
 # Declension
+
 ### Personal names
+
 ##### Declension of personal names in russian language:
 
 1. Create declension class object:
@@ -63,6 +65,7 @@ Supported languages:
     ```
 
 ### General words
+
 ##### Declension of general words in russian language:
 
 1. Create declension class object:
@@ -152,12 +155,14 @@ Supported languages:
     prints `10 домов`
 
 2. Pluralization a word in English:
+
     ```php
     $plu = new morphos\EnglishPlurality();
     $word = 'foot';
     $count = 10;
     echo sprintf("%d %s", $count, $plu->pluralize($word, $count));
     ```
+    
     prints `10 feet`
 
 # Contributing / Addition of new languages.
