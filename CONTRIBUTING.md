@@ -9,36 +9,45 @@ Here is a list of basic abstract classes:
 #### `morphos\NamesDeclensions`
 Class for names declension.
 
-* ```php
-  abstract public function hasForms($name, $gender);
+* 
+  ```php
+  abstract public function hasForms($name, $gender)
   ```
   Checks, whether there are rules for this name.
 
-* ```php
-  abstract public function getForms($name, $gender);
+* 
+  ```php
+  abstract public function getForms($name, $gender)
   ```
   Generates all forms of a name.
 
-* ```php
-  abstract public function getForm($name, $form, $gender);
+* 
+  ```php
+  abstract public function getForm($name, $form, $gender)
   ```
   Generates one form of a name.
 
 #### `morphos\GeneralDeclension`
 
-* ```php
+* 
+  ```php
   public function hasForms($word, $animate = false);
   ```
+  
   Checks, whether there are rules for this word.
 
-* ```php
+* 
+  ```php
   public function getForms($word, $animate = false);
   ```
+  
   Generates all forms of a word.
 
-* ```php
+* 
+  ```php
   public function getForm($word, $form, $animate = false);
   ```
+  
   Generates one form of a word.
 
 ### Useful functions
