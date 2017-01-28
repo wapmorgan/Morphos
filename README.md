@@ -184,7 +184,6 @@ Declension of general words in russian language:
     ```
 
 ### Cases (`Cases`)
-
 Cases in russian language:
 
     * morphos\Russian\Cases::IMENIT
@@ -194,7 +193,7 @@ Cases in russian language:
     * morphos\Russian\Cases::TVORIT
     * morphos\Russian\Cases::PRODLOJ
 
-### Pluralization (`Plurality`)
+## Pluralization (`Plurality`)
 Pluralization a word in Russian:
 
 ```php
@@ -217,7 +216,7 @@ morphos\
                 Plurality
 ```
 
-## Pluralization
+## Pluralization (`Plurality`)
 Pluralization a word in English:
 
 ```php
