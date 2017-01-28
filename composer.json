@@ -2,14 +2,14 @@
 	"name": "wapmorgan/morphos",
 	"description": "Morphological solution",
 	"license": "MIT",
-	"keywords": ["language", "morphology", "russian"],
-	"suggest": {
-		"ext-mbstring": "Support cyrillic transformations."
+	"keywords": ["language", "morphology", "russian", "english", "pluralization", "declension"],
+	"require": {
+		"ext-mbstring": "*"
 	},
 	"autoload": {
-		"files": ["functions.php"],
+		"files": ["src/functions.php"],
 		"psr-4": {
-			"morphos\\": ""
+			"morphos\\": "src/"
 		}
 	},
 	"require-dev": {

@@ -10,39 +10,51 @@ A morphological solution written completely in PHP.
 Tests & Quality: [![Build Status](https://travis-ci.org/wapmorgan/Morphos.svg)](https://travis-ci.org/wapmorgan/Morphos)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/wapmorgan/Morphos/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/wapmorgan/Morphos/?branch=master)
 
-Supported languages:
-
-* English - pluralization.
-* Russian - pluralization and declension.
+1. Installation
+2. Russian
+3. English
+4. Contributing / Addition of new languages
 
 # Installation
 
 * Download library through composer:
     `composer require "wapmorgan/morphos"`
 
-# Declension
+# Russian
 
-## Russian
+Russian morphology:
 
-### First names
+```php
+morphos\
+        Russian\
+                Cases
+                FirstNamesDeclension
+                LastNamesDeclension
+                GeneralDeclension
+                Plurality
+```
+
+## Declension
+
+### First names (`FirstNamesDeclension`)
 Declension of first names in russian language:
 
 1. Create declension class object:
     ```php
-    use morphos\RussianCases;
-    use morphos\RussianNamesDeclension;
+    use morphos\Russian\Cases;
+    use morphos\Russian\FirstNamesDeclension;
 
-    $dec = new RussianNamesDeclension();
+    $dec = new FirstNamesDeclension();
     ```
 
 2. Check whether there are forms for this name:
     ```php
-    var_dump($dec->hasForms('Иван', RussianNamesDeclension::MAN)); // true
+    var_dump($dec->hasForms('Иван', FirstNamesDeclension::MAN)); // true
     ```
 
 3. Get all forms of a name:
     ```php
-    var_dump($dec->getForms('Иван', RussianNamesDeclension::MAN));
+    var_dump($dec->getForms('Иван', FirstNamesDeclension::MAN));
     /* Will produce something like
       array(6) {
         ["nominativus"]=>
@@ -63,28 +75,28 @@ Declension of first names in russian language:
 
 4. Get one form of a name:
     ```php
-    var_dump($dec->getForm('Иван', RussianCases::RODIT, RussianNamesDeclension::MAN)); // Ивана
+    var_dump($dec->getForm('Иван', Cases::RODIT, FirstNamesDeclension::MAN)); // Ивана
     ```
 
-### Last names
+### Last names (`LastNamesDeclension`)
 Declension of last names in russian language:
 
 1. Create declension class object:
     ```php
-    use morphos\RussianCases;
-    use morphos\RussianLastNamesDeclension;
+    use morphos\Russian\Cases;
+    use morphos\Russian\LastNamesDeclension;
 
-    $dec = new RussianLastNamesDeclension();
+    $dec = new LastNamesDeclension();
     ```
 
 2. Check whether there are forms for this name:
     ```php
-    var_dump($dec->hasForms('Иванов', RussianNamesDeclension::MAN)); // true
+    var_dump($dec->hasForms('Иванов', LastNamesDeclension::MAN)); // true
     ```
 
 3. Get all forms of a name:
     ```php
-    var_dump($dec->getForms('Иван', RussianNamesDeclension::MAN));
+    var_dump($dec->getForms('Иванов', LastNamesDeclension::MAN));
     /* Will produce something like
       array(6) {
       ["nominativus"]=>
@@ -105,18 +117,18 @@ Declension of last names in russian language:
 
 4. Get one form of a name:
     ```php
-    var_dump($dec->getForm('Иванов', RussianCases::RODIT, RussianNamesDeclension::MAN)); // Иванова
+    var_dump($dec->getForm('Иванов', Cases::RODIT, LastNamesDeclension::MAN)); // Иванова
     ```
 
-### General words
+### General words (`GeneralDeclension`)
 Declension of general words in russian language:
 
 1. Create declension class object:
     ```php
-    use morphos\RussianCases;
-    use morphos\RussianGeneralDeclension;
+    use morphos\Russian\Cases;
+    use morphos\Russian\GeneralDeclension;
 
-    $dec = new RussianGeneralDeclension();
+    $dec = new GeneralDeclension();
     ```
 
 2. Check whether there are forms for this word (second arg is an animateness):
@@ -147,7 +159,7 @@ Declension of general words in russian language:
 
 4. Get one form of a word:
     ```php
-    var_dump($dec->getForm('поле', false, RussianCases::RODIT)); // поля
+    var_dump($dec->getForm('поле', false, Cases::RODIT)); // поля
     ```
 
 5. Get all forms of a plural word:
@@ -171,97 +183,53 @@ Declension of general words in russian language:
     */
     ```
 
-**Declension of general words is very complicated and may fail.**
+### Cases (`Cases`)
 
-### Cases
+Cases in russian language:
 
-1. Cases in russian language:
+    * morphos\Russian\Cases::IMENIT
+    * morphos\Russian\Cases::RODIT
+    * morphos\Russian\Cases::DAT
+    * morphos\Russian\Cases::VINIT
+    * morphos\Russian\Cases::TVORIT
+    * morphos\Russian\Cases::PRODLOJ
 
-    * morphos\RussianCases::IMENIT
-    * morphos\RussianCases::RODIT
-    * morphos\RussianCases::DAT
-    * morphos\RussianCases::VINIT
-    * morphos\RussianCases::TVORIT
-    * morphos\RussianCases::PRODLOJ
+### Pluralization (`Plurality`)
+Pluralization a word in Russian:
 
+```php
+use morphos\Russian\Plurality;
 
-# Pluralization
+$plu = new Plurality();
+$word = 'дом';
+$count = 10;
 
-1. Pluralization a word in Russian:
-    ```php
-    use morphos\RussianPlurality;
+echo $count.' '.$plu->pluralize($word, $count, false));
+// result: 10 домов
+```
 
-    $plu = new RussianPlurality();
-    $word = 'дом';
-    $count = 10;
+# English
 
-    echo $count.' '.$plu->pluralize($word, $count, false));
-    // result: 10 домов
-    ```
+English morphology:
+```php
+morphos\
+        English\
+                Plurality
+```
 
-2. Pluralization a word in English:
+## Pluralization
+Pluralization a word in English:
 
-    ```php
-    use morphos\EnglishPlurality;
+```php
+use morphos\English\Plurality;
 
-    $plu = new EnglishPlurality();
-    $word = 'foot';
-    $count = 10;
-    echo $count.' '.$plu->pluralize($word, $count));
-    // result: 10 feet
-    ```
+$plu = new Plurality();
+$word = 'foot';
+$count = 10;
+echo $count.' '.$plu->pluralize($word, $count));
+// result: 10 feet
+```
 
-## Contributing / Addition of new languages.
+## Contributing / Addition of new languages
 
-`Morphos` are open for additions and improvements.
-
-Addition a new language is simple: create the class inheriting one of basic classes and realize abstract methods from it.
-
-Here is a list of basic classes:
-
-#### BasicNamesDeclension
-
-Class for names declension.
-
-* Checks, whether there are rules for this name.
-  ```php
-  abstract public function hasForms($name, $gender);
-  ```
-
-* Generates all forms of a name.
-  ```php
-  abstract public function getForms($name, $gender);
-  ```
-
-* Generates one form of a name.
-  ```php
-  abstract public function getForm($name, $form, $gender);
-  ```
-
-#### BasicDeclension
-
-* Checks, whether there are rules for this word.
-  ```php
-  public function hasForms($word, $animate = false);
-  ```
-
-* Generates all forms of a word.
-  ```php
-  public function getForms($word, $animate = false);
-  ```
-
-* Generates one form of a word.
-  ```php
-  public function getForm($word, $form, $animate = false);
-  ```
-
-### Useful functions in morphos namespace
-
-For simple access to functions of string processing there are some functions in `morphos` namespace:
-
-1. `set_encoding()` - Sets encoding for using in morphos/* functions.
-2. `length()` - Calculates count of characters in string.
-3. `slice()` - Slices string like python.
-4. `lower()` - Lower case.
-5. `upper()` - Upper case.
-6. `name()` - Name case. (ex: Thomas Lewis)
+See [CONTRIBUTING.md](CONTRIBUTING.md) for this.

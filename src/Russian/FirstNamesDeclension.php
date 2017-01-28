@@ -1,8 +1,8 @@
 <?php
-namespace morphos;
+namespace morphos\Russian;
 
-class RussianNamesDeclension extends BasicNamesDeclension implements RussianCases {
-	use Russian;
+class FirstNamesDeclension extends \morphos\NamesDeclension implements Cases {
+	use RussianLanguage;
 
 	public function hasForms($name, $gender) {
 		//var_dump(upper(slice($name, -1)));

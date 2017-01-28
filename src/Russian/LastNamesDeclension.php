@@ -1,18 +1,18 @@
 <?php
-namespace morphos;
+namespace morphos\Russian;
 
 /**
  * Rules are from http://gramma.ru/SPR/?id=2.8
  */
-class RussianLastNamesDeclension extends BasicNamesDeclension implements RussianCases {
-    use Russian;
+class LastNamesDeclension extends \morphos\NamesDeclension implements Cases {
+    use RussianLanguage;
 
     public function hasForms($name, $gender) {
         $name = lower($name);
         if ($gender == self::MAN) {
             if (in_array(slice($name, -2), array('ов', 'ев', 'ин', 'ын')) || in_array(slice($name, -4), array('ский', 'ской', 'цкий', 'цкой')))
                 return true;
-            if (in_array(upper(slice($name, -1)), Russian::$consonants))
+            if (in_array(upper(slice($name, -1)), RussianLanguage::$consonants))
                 return true;
 
             if (slice($name, -1) == 'ь')
@@ -100,7 +100,7 @@ class RussianLastNamesDeclension extends BasicNamesDeclension implements Russian
                 self::TVORIT_5 => $prefix.'ой',
                 self::PREDLOJ_6 => $this->choosePrepositionByFirstLetter($prefix, 'об', 'о').' '.$prefix.'е'
             );
-        } else if (in_array(upper(slice($name, -1)), Russian::$consonants)) {
+        } else if (in_array(upper(slice($name, -1)), RussianLanguage::$consonants)) {
             $prefix = name($name);
             return array(
                 self::IMENIT_1 => name($name),
