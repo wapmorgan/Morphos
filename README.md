@@ -22,9 +22,10 @@ Supported languages:
 
 # Declension
 
-### Personal names
+## Russian
 
-##### Declension of first names in russian language:
+### First names
+Declension of first names in russian language:
 
 1. Create declension class object:
     ```php
@@ -65,7 +66,8 @@ Supported languages:
     var_dump($dec->getForm('Иван', RussianCases::RODIT, RussianNamesDeclension::MAN)); // Ивана
     ```
 
-##### Declension of last names in russian language:
+### Last names
+Declension of last names in russian language:
 
 1. Create declension class object:
     ```php
@@ -107,8 +109,7 @@ Supported languages:
     ```
 
 ### General words
-
-##### Declension of general words in russian language:
+Declension of general words in russian language:
 
 1. Create declension class object:
     ```php
@@ -212,13 +213,13 @@ Supported languages:
 
 ## Contributing / Addition of new languages.
 
-Morphos are open for additions and improvements.
+`Morphos` are open for additions and improvements.
 
 Addition a new language is simple: create the class inheriting one of basic classes and realize abstract methods from it.
 
 Here is a list of basic classes:
 
-- `BasicNamesDeclension`
+#### BasicNamesDeclension
 
 Class for names declension.
 
@@ -237,7 +238,7 @@ Class for names declension.
   abstract public function getForm($name, $form, $gender);
   ```
 
-- `BasicDeclension`
+#### BasicDeclension
 
 * Checks, whether there are rules for this word.
   ```php
@@ -254,7 +255,7 @@ Class for names declension.
   public function getForm($word, $form, $animate = false);
   ```
 
-#### Useful functions in morphos namespace
+### Useful functions in morphos namespace
 
 For simple access to functions of string processing there are some functions in `morphos` namespace:
 
