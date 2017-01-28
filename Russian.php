@@ -78,4 +78,11 @@ trait Russian {
 		}
 		return false;
 	}
+
+	public function choosePrepositionByFirstLetter($word, $prepositionWithVowel, $preposition) {
+		if (in_array(upper(slice($word, 0, 1)), self::$vowels))
+			return $prepositionWithVowel;
+		else
+			return $preposition;
+	}
 }
