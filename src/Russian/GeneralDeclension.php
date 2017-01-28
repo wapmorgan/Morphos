@@ -1,6 +1,9 @@
 <?php
 namespace morphos\Russian;
 
+/**
+ * Rules are from http://morpher.ru/Russian/Noun.aspx
+ */
 class GeneralDeclension extends \morphos\GeneralDeclension implements Cases {
 	use RussianLanguage;
 
@@ -12,7 +15,24 @@ class GeneralDeclension extends \morphos\GeneralDeclension implements Cases {
 	const SECOND_SCHOOL_DECLENSION = 1;
 	const THIRD_SCHOOL_DECLENSION = 3;
 
+	protected $exceptions = array(
+		'бремя',
+		'вымя',
+		'темя',
+		'пламя',
+		'стремя',
+		'пламя',
+		'время',
+		'знамя',
+		'имя',
+		'племя',
+		'семя',
+	);
+
 	public function hasForms($word, $animate = false) {
+		$word = lower($word);
+		if (in_array(slice($word, -1), array('у', 'и', 'е', 'о', 'ю')))
+			return false;
 		return true;
 	}
 
@@ -30,6 +50,19 @@ class GeneralDeclension extends \morphos\GeneralDeclension implements Cases {
 
 	public function getForms($word, $animate = false) {
 		$word = lower($word);
+
+		if (isset($this->exceptions[$word])) {
+			$prefix = slice($word, -1);
+			return array(
+				self::IMENIT => $word,
+				self::RODIT => $prefix.'и',
+				self::DAT => $prefix.'и',
+				self::VINIT => $word,
+				self::TVORIT => $prefix,
+				self::PREDLOJ => $this->choosePrepositionByFirstLetter($prefix, 'об', 'о').' '.$prefix.'и',
+			);
+		}
+
 		switch ($this->getDeclension($word)) {
 			case self::FIRST_DECLENSION:
 				return $this->declinateFirstDeclension($word, $animate);
