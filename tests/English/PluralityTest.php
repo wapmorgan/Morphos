@@ -3,9 +3,8 @@ namespace morhos\test\English;
 require_once __DIR__.'/../../vendor/autoload.php';
 
 use morphos\English\Plurality;
-use PHPUnit\Framework\TestCase;
 
-class PluralityTest extends TestCase {
+class PluralityTest extends \PHPUnit_Framework_TestCase {
     protected $plu;
 
     public function setUp() {

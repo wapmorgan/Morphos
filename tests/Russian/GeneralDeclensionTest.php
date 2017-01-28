@@ -3,9 +3,8 @@ namespace morhos\test\Russian;
 require_once __DIR__.'/../../vendor/autoload.php';
 
 use morphos\Russian\GeneralDeclension;
-use PHPUnit\Framework\TestCase;
 
-class GeneralDeclensionTest extends TestCase {
+class GeneralDeclensionTest extends \PHPUnit_Framework_TestCase {
     protected $dec;
 
     public function setUp() {

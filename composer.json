@@ -4,6 +4,7 @@
 	"license": "MIT",
 	"keywords": ["language", "morphology", "russian", "english", "pluralization", "declension"],
 	"require": {
+		"php": ">=5.4.0",
 		"ext-mbstring": "*"
 	},
 	"autoload": {
@@ -13,6 +14,6 @@
 		}
 	},
 	"require-dev": {
-		"phpunit/phpunit": "*"
+		"phpunit/phpunit": "~4.8"
 	}
 }

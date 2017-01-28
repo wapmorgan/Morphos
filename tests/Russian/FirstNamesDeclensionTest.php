@@ -3,9 +3,8 @@ require __DIR__.'/../../vendor/autoload.php';
 
 use morphos\Russian\Cases;
 use morphos\Russian\FirstNamesDeclension;
-use PHPUnit\Framework\TestCase;
 
-class FirstNamesDeclensionTest extends TestCase {
+class FirstNamesDeclensionTest extends \PHPUnit_Framework_TestCase {
     protected $declension;
 
     public function setUp() {

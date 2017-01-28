@@ -1,12 +1,11 @@
 <?php
 require __DIR__.'/../../vendor/autoload.php';
 
-use PHPUnit\Framework\TestCase;
 use morphos\Russian\Cases;
 use morphos\Russian\LastNamesDeclension;
 use morphos\NamesDeclension;
 
-class LastNamesDeclensionTest extends TestCase {
+class LastNamesDeclensionTest extends \PHPUnit_Framework_TestCase {
     protected $declension;
 
     public function setUp() {
