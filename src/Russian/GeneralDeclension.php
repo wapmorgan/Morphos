@@ -12,23 +12,6 @@ class GeneralDeclension extends \morphos\GeneralDeclension implements Cases {
 	const SECOND_SCHOOL_DECLENSION = 1;
 	const THIRD_SCHOOL_DECLENSION = 3;
 
-	// public function getForms($word) {
-	// 	$word = lower($word);
-	// 	$prefix = slice($word, 0, -1);
-	// 	$last = slice($word, -1);
-	// 	if (in_array($last, array('а', 'я'))) {
-	// 		return array($word, ($last == 'а') ? $prefix.'ы' : $prefix.'и', ($last == 'а') ? $prefix : $prefix.'й');
-	// 	} else if (($last == 'ь' && $this->isConsonant(slice($word, -2, -2))) || $this->isConsonant($last) || in_array($last, array('о', 'е'))) {
-	// 		if ($last == 'ь')
-	// 			$prefix = slice($word, -2, -1);
-	// 		else if (in_array(slice($word, -2), array('ец', 'йк', 'йн')))
-	// 		var_dump($prefix);
-	// 		return array($word, $this->isConsonant($last) ? $prefix.'а' : $prefix.'я', $this->isConsonant($last) ? $prefix.'ов' : $prefix.'ей');
-	// 	} else {
-	// 		return array($word, $prefix.'и', $prefix.'ей');
-	// 	}
-	// }
-
 	public function hasForms($word, $animate = false) {
 		return true;
 	}
@@ -96,6 +79,7 @@ class GeneralDeclension extends \morphos\GeneralDeclension implements Cases {
 
 		// PREDLOJ_6
 		$forms[Cases::PREDLOJ_6] = $this->getPredCaseOf12Declensions($word, $last, $prefix);
+		$forms[Cases::PREDLOJ_6] = $this->choosePrepositionByFirstLetter($forms[Cases::PREDLOJ_6], 'об', 'о').' '.$forms[Cases::PREDLOJ_6];
 
 		return $forms;
 	}
@@ -131,7 +115,7 @@ class GeneralDeclension extends \morphos\GeneralDeclension implements Cases {
 		// 	$forms[Cases::TVORIT_5] = $prefix.'ой'; # http://morpher.ru/Russian/Spelling.aspx#sibilant
 
 		// PREDLOJ_6 the same as DAT_3
-		$forms[Cases::PREDLOJ_6] = $forms[Cases::DAT_3];
+		$forms[Cases::PREDLOJ_6] = $this->choosePrepositionByFirstLetter($forms[Cases::DAT_3], 'об', 'о').' '.$forms[Cases::DAT_3];
 		return $forms;
 	}
 
@@ -144,7 +128,7 @@ class GeneralDeclension extends \morphos\GeneralDeclension implements Cases {
 			Cases::DAT_3 => $prefix.'и',
 			Cases::VINIT_4 => $word,
 			Cases::TVORIT_5 => $prefix.'ью',
-			Cases::PREDLOJ_6 => $prefix.'и',
+			Cases::PREDLOJ_6 => $this->choosePrepositionByFirstLetter($prefix, 'об', 'о').' '.$prefix.'и',
 		);
 	}
 
@@ -190,6 +174,7 @@ class GeneralDeclension extends \morphos\GeneralDeclension implements Cases {
 
 		// PREDLOJ_6
 		$forms[Cases::PREDLOJ_6] = $this->chooseVowelAfterConsonant($last, $soft_last, $prefix.'ях', $prefix.'ах');
+		$forms[Cases::PREDLOJ_6] = $this->choosePrepositionByFirstLetter($forms[Cases::PREDLOJ_6], 'об', 'о').' '.$forms[Cases::PREDLOJ_6];
 		return $forms;
 	}
 

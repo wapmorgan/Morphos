@@ -44,7 +44,7 @@ class FirstNamesDeclension extends \morphos\NamesDeclension implements Cases {
 						self::DAT_3 => $prefix.'у',
 						self::VINIT_4 => $prefix.'а',
 						self::TVORIT_5 => $this->isHissingConsonant(slice($name, -1)) || slice($name, -1) == 'ц' ? $prefix.'ем' : $prefix.'ом',
-						self::PREDLOJ_6 => in_array(upper(slice($name, 0, 1)), self::$vowels) ? 'об '.$prefix.'е' : 'о '.$prefix.'е',
+						self::PREDLOJ_6 => $this->choosePrepositionByFirstLetter($prefix, 'об', 'о').' '.$prefix.'е',
 					);
 				}
 			} else if (slice($name, -1) == 'ь' && in_array(upper(slice($name, -2, -1)), self::$consonants)) { // soft consonant
@@ -55,7 +55,7 @@ class FirstNamesDeclension extends \morphos\NamesDeclension implements Cases {
 					self::DAT_3 => $prefix.'ю',
 					self::VINIT_4 => $prefix.'я',
 					self::TVORIT_5 => $prefix.'ем',
-					self::PREDLOJ_6 => in_array(upper(slice($name, 0, 1)), self::$vowels) ? 'об '.$prefix.'е' : 'о '.$prefix.'е',
+					self::PREDLOJ_6 => $this->choosePrepositionByFirstLetter($prefix, 'об', 'о').' '.$prefix.'е',
 				);
 			} else if (in_array(slice($name, -2), array('ай', 'ей', 'ой', 'уй', 'яй', 'юй', 'ий'))) {
 				$prefix = name(slice($name, 0, -1));
@@ -66,7 +66,7 @@ class FirstNamesDeclension extends \morphos\NamesDeclension implements Cases {
 					self::DAT_3 => $prefix.'ю',
 					self::VINIT_4 => $prefix.'я',
 					self::TVORIT_5 => $prefix.'ем',
-					self::PREDLOJ_6 => in_array(upper(slice($name, 0, 1)), self::$vowels) ? 'об '.$prefix.$postfix : 'о '.$prefix.$postfix,
+					self::PREDLOJ_6 => $this->choosePrepositionByFirstLetter($prefix, 'об', 'о').' '.$prefix.$postfix,
 				);
 			} else if (slice($name, -1) == 'а' && ($before = slice($name, -2, -1)) && $this->isConsonant($before) && !in_array($before, array(/*'г', 'к', 'х', */'ц'))) {
 				$prefix = name(slice($name, 0, -1));
@@ -77,7 +77,7 @@ class FirstNamesDeclension extends \morphos\NamesDeclension implements Cases {
 					self::DAT_3 => $prefix.'е',
 					self::VINIT_4 => $prefix.'у',
 					self::TVORIT_5 => $prefix.'ой',
-					self::PREDLOJ_6 => in_array(upper(slice($name, 0, 1)), self::$vowels) ? 'об '.$prefix.'е' : 'о '.$prefix.'е',
+					self::PREDLOJ_6 => $this->choosePrepositionByFirstLetter($prefix, 'об', 'о').' '.$prefix.'е',
 				);
 			} else if (slice($name, -2) == 'ия') {
 				$prefix = name(slice($name, 0, -1));
@@ -87,7 +87,7 @@ class FirstNamesDeclension extends \morphos\NamesDeclension implements Cases {
 					self::DAT_3 => $prefix.'и',
 					self::VINIT_4 => $prefix.'ю',
 					self::TVORIT_5 => $prefix.'ей',
-					self::PREDLOJ_6 => in_array(upper(slice($name, 0, 1)), self::$vowels) ? 'об '.$prefix.'и' : 'о '.$prefix.'и',
+					self::PREDLOJ_6 => $this->choosePrepositionByFirstLetter($prefix, 'об', 'о').' '.$prefix.'и',
 				);
 			} else if (slice($name, -2) == 'ло' || slice($name, -2) == 'ко') {
 				$prefix = name(slice($name, 0, -1));
@@ -98,7 +98,7 @@ class FirstNamesDeclension extends \morphos\NamesDeclension implements Cases {
 					self::DAT_3 => $prefix.'е',
 					self::VINIT_4 => $prefix.'у',
 					self::TVORIT_5 => $prefix.'ой',
-					self::PREDLOJ_6 => in_array(upper(slice($name, 0, 1)), self::$vowels) ? 'об '.$prefix.'е' : 'о '.$prefix.'е',
+					self::PREDLOJ_6 => $this->choosePrepositionByFirstLetter($prefix, 'об', 'о').' '.$prefix.'е',
 				);
 			} else {
 				return false;
@@ -114,7 +114,7 @@ class FirstNamesDeclension extends \morphos\NamesDeclension implements Cases {
 						self::DAT_3 => $prefix.'е',
 						self::VINIT_4 => $prefix.'у',
 						self::TVORIT_5 => $prefix.'ой',
-						self::PREDLOJ_6 => in_array(upper(slice($name, 0, 1)), self::$vowels) ? 'об '.$prefix.'е' : 'о '.$prefix.'е',
+						self::PREDLOJ_6 => $this->choosePrepositionByFirstLetter($prefix, 'об', 'о').' '.$prefix.'е',
 					);
 				} else {
 					return array(
@@ -123,7 +123,7 @@ class FirstNamesDeclension extends \morphos\NamesDeclension implements Cases {
 						self::DAT_3 => $prefix.'е',
 						self::VINIT_4 => $prefix.'у',
 						self::TVORIT_5 => $prefix.'ей',
-						self::PREDLOJ_6 => in_array(upper(slice($name, 0, 1)), self::$vowels) ? 'об '.$prefix.'е' : 'о '.$prefix.'е',
+						self::PREDLOJ_6 => $this->choosePrepositionByFirstLetter($prefix, 'об', 'о').' '.$prefix.'е',
 					);
 				}
 			} else if (slice($name, -1) == 'я' and slice($name, -2, -1) != 'и') {
@@ -134,7 +134,7 @@ class FirstNamesDeclension extends \morphos\NamesDeclension implements Cases {
 					self::DAT_3 => $prefix.'е',
 					self::VINIT_4 => $prefix.'ю',
 					self::TVORIT_5 => $prefix.'ей',
-					self::PREDLOJ_6 => in_array(upper(slice($name, 0, 1)), self::$vowels) ? 'об '.$prefix.'е' : 'о '.$prefix.'е',
+					self::PREDLOJ_6 => $this->choosePrepositionByFirstLetter($prefix, 'об', 'о').' '.$prefix.'е',
 				);
 			} else if (slice($name, -2) == 'ия') {
 				$prefix = name(slice($name, 0, -1));
@@ -144,7 +144,7 @@ class FirstNamesDeclension extends \morphos\NamesDeclension implements Cases {
 					self::DAT_3 => $prefix.'и',
 					self::VINIT_4 => $prefix.'ю',
 					self::TVORIT_5 => $prefix.'ей',
-					self::PREDLOJ_6 => in_array(upper(slice($name, 0, 1)), self::$vowels) ? 'об '.$prefix.'и' : 'о '.$prefix.'и',
+					self::PREDLOJ_6 => $this->choosePrepositionByFirstLetter($prefix, 'об', 'о').' '.$prefix.'и',
 				);
 			} else if (slice($name, -1) == 'ь' && $this->isConsonant(slice($name, -2, -1))) {
 				$prefix = name(slice($name, 0, -1));
@@ -154,7 +154,7 @@ class FirstNamesDeclension extends \morphos\NamesDeclension implements Cases {
 					self::DAT_3 => $prefix.'и',
 					self::VINIT_4 => $prefix.'ь',
 					self::TVORIT_5 => $prefix.'ью',
-					self::PREDLOJ_6 => in_array(upper(slice($name, 0, 1)), self::$vowels) ? 'об '.$prefix.'и' : 'о '.$prefix.'и',
+					self::PREDLOJ_6 => $this->choosePrepositionByFirstLetter($prefix, 'об', 'о').' '.$prefix.'и',
 				);
 			} else if ($this->isHissingConsonant(slice($name, -1))) {
 				$prefix = name($name);
@@ -164,7 +164,7 @@ class FirstNamesDeclension extends \morphos\NamesDeclension implements Cases {
 					self::DAT_3 => $prefix.'и',
 					self::VINIT_4 => $prefix,
 					self::TVORIT_5 => $prefix.'ью',
-					self::PREDLOJ_6 => in_array(upper(slice($name, 0, 1)), self::$vowels) ? 'об '.$prefix.'и' : 'о '.$prefix.'и',
+					self::PREDLOJ_6 => $this->choosePrepositionByFirstLetter($prefix, 'об', 'о').' '.$prefix.'и',
 				);
 			} else {
 				return false;
