@@ -5,17 +5,11 @@ require_once __DIR__.'/../../vendor/autoload.php';
 use morphos\English\Plurality;
 
 class PluralityTest extends \PHPUnit_Framework_TestCase {
-    protected $plu;
-
-    public function setUp() {
-        $this->plu = new Plurality();
-    }
-
     /**
      * @dataProvider wordsProvider
      */
     public function testPluralization($word, $pluralized) {
-        $this->assertEquals($pluralized, $this->plu->pluralize($word, 2));
+        $this->assertEquals($pluralized, Plurality::pluralize($word, 2));
     }
 
     public function wordsProvider() {
