@@ -87,7 +87,7 @@ trait RussianLanguage {
 	}
 
 	public function chooseVowelAfterConsonant($last, $soft_last, $after_soft, $after_hard) {
-		if (RussianLanguage::isHissingConsonant($last) || $this->isVelarConsonant($last) || $soft_last) {
+		if ((RussianLanguage::isHissingConsonant($last) && $last != 'ж') || $this->isVelarConsonant($last) || $soft_last) {
 			return $after_soft;
 		} else {
 			return $after_hard;

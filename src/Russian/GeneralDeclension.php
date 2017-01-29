@@ -15,7 +15,7 @@ class GeneralDeclension extends \morphos\GeneralDeclension implements Cases {
 	const SECOND_SCHOOL_DECLENSION = 1;
 	const THIRD_SCHOOL_DECLENSION = 3;
 
-	protected $exceptions = array(
+	protected $abnormalExceptions = array(
 		'бремя',
 		'вымя',
 		'темя',
@@ -51,7 +51,7 @@ class GeneralDeclension extends \morphos\GeneralDeclension implements Cases {
 	public function getForms($word, $animateness = false) {
 		$word = lower($word);
 
-		if (isset($this->exceptions[$word])) {
+		if (isset($this->abnormalExceptions[$word])) {
 			$prefix = slice($word, -1);
 			return array(
 				self::IMENIT => $word,

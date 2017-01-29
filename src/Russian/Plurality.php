@@ -7,6 +7,11 @@ namespace morphos\Russian;
 class Plurality extends \morphos\Plurality implements Cases {
 	use RussianLanguage;
 
+	protected $neuterExceptions = array(
+		'поле',
+		'море',
+	);
+
 	static public function pluralize($word, $count, $animateness = false) {
 		static $dec, $plu;
 		if ($dec === null) $dec = new GeneralDeclension();
@@ -47,7 +52,16 @@ class Plurality extends \morphos\Plurality implements Cases {
 		);
 
 		// RODIT_2
-		if (RussianLanguage::isHissingConsonant($last) || ($soft_last && $last != 'й'))
+		if (in_array($last, array('о', 'е'))) {
+			// exceptions
+			if (in_array($word, $this->neuterExceptions))
+				$forms[Cases::RODIT_2] = $prefix.'ей';
+			else
+				$forms[Cases::RODIT_2] = $prefix;
+		}
+		else if (in_array($last, array('а')))
+			$forms[Cases::RODIT_2] = $prefix;
+		else if (RussianLanguage::isHissingConsonant($last) || ($soft_last && $last != 'й'))
 			$forms[Cases::RODIT_2] = $prefix.'ей';
 		else if ($last == 'й')
 			$forms[Cases::RODIT_2] = $prefix.'ев';
