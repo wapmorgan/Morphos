@@ -157,7 +157,7 @@ var_dump($dec->getForms($user_last_name, NamesDeclension::MAN));
 ### General words (`GeneralDeclension`)
 _Declension of nouns in russian language._
 
-General declension class also have three method but arguments are different:
+General declension class also have few similar methods but arguments are different:
 
 - `boolean hasForms($word, bool $animateness = false)` - Check if noun is mutable.
 - `string getForm($word, $case, $animateness = false)` - Declines noun.
