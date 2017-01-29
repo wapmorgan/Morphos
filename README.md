@@ -12,7 +12,14 @@ Tests & Quality: [![Build Status](https://travis-ci.org/wapmorgan/Morphos.svg)](
 
 1. Installation
 2. Russian
+    1. Declension
+        a. First names
+        b. Last names
+        c. Nouns
+    2. Pluralization
+    3. Cases
 3. English
+    1. Pluralization
 4. Addition of new languages
 
 ## Installation
@@ -69,7 +76,7 @@ Check whether there are forms for this name and if they exist get it:
 $user_name = 'Иван';
 
 // we want to get it's genetivus form
-if ($dec->hasForms($user_name, NamesDeclension::MAN))) {
+if ($dec->hasForms($user_name, NamesDeclension::MAN)) {
     $name = $dec->getForm($user_name, Cases::RODIT, NamesDeclension::MAN);
 } else { // immutable name
     $name = $user_name;
@@ -116,7 +123,7 @@ Check whether there are forms for this name and if they exist get it:
 ```php
 $user_last_name = 'Иванов';
 
-if ($dec->hasForms($user_last_name, NamesDeclension::MAN))) {
+if ($dec->hasForms($user_last_name, NamesDeclension::MAN)) {
     $dativus_last_name = $dec->getForm($user_last_name, Cases::RODIT, NamesDeclension::MAN);
 } else { // immutable last name
     $dativus_last_name = $user_last_name;
@@ -145,16 +152,17 @@ var_dump($dec->getForms($user_last_name, NamesDeclension::MAN));
   string(19) "об Иванове"
 }
 */
-    ```
+```
 
 ### General words (`GeneralDeclension`)
-_Declension of general nouns in russian language._
+_Declension of nouns in russian language._
 
 General declension class also have three method but arguments are different:
 
 - `boolean hasForms($word, bool $animateness = false)` - Check if noun is mutable.
 - `string getForm($word, $case, $animateness = false)` - Declines noun.
 - `array getForms($word, $animateness = false)` - Declines noun to all cases.
+- `array pluralizeAllDeclensions($word, $animateness = false)` - Pluralizes noun and declines to all cases.
 
 Create declension class object:
 
@@ -168,7 +176,7 @@ $dec = new GeneralDeclension();
 Check whether there are forms for this word (second arg is an animateness) and get them:
 
 ```php
-if ($dec->hasForms('поле', false))) {
+if ($dec->hasForms('поле', false)) {
     $form = $dec->getForm('поле', false);
 }
 ```
