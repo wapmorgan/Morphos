@@ -204,17 +204,29 @@ var_dump($dec->getForms('поле', false));
 
 
 ## Pluralization (`Plurality`)
-_Pluralization a word in Russian._
+_Pluralization nouns in Russian._
 
 This class have similar methods but not only:
 - `string getForm($word, $case, $animateness = false)` - Pluralizes noun and declines.
 - `array getForms($word, $animateness = false)` - Pluralizes noun and declines to all cases.
-- `string @pluralize($word, $count, $animateness = false)` - Pluralizes noun to coincide with numeral.
+- `string #pluralize($word, $count, $animateness = false)` - Pluralizes noun to coincide with numeral.
+
+Get plural form of a noun:
+
+```php
+use morphos\Russian\Cases;
+use morphos\Russian\Plurality;
+$plu = new Plurality();
+
+$word = 'дом';
+$plural = $plu->getForm($word, Cases::IMENIT);
+echo 'Множественное число для '.$word.' - '.$plural;
+```
 
 Pluralize word and get all forms:
 
 ```php
-var_dump($dec->getForms('поле', false));
+var_dump($plu->getForms('поле', false));
 /* Result will be like
   array(6) {
     ["nominativus"]=>
