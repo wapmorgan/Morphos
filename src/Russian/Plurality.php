@@ -47,9 +47,13 @@ class Plurality extends \morphos\Plurality implements Cases {
 			$soft_last = false;
 		}
 
-		$forms =  array(
-			Cases::IMENIT_1 => $this->chooseVowelAfterConsonant($last, $soft_last, $prefix.'я', $prefix.'а'),
-		);
+		$forms = array();
+
+		if ($last == 'ч' || slice($word, -2) == 'чь')
+			$forms[Cases::IMENIT_1] = $prefix.'и';
+		else
+			$forms[Cases::IMENIT_1] = $this->chooseVowelAfterConsonant($last, $soft_last, $prefix.'я', $prefix.'а');
+
 
 		// RODIT_2
 		if (in_array($last, array('о', 'е'))) {
@@ -59,9 +63,11 @@ class Plurality extends \morphos\Plurality implements Cases {
 			else
 				$forms[Cases::RODIT_2] = $prefix;
 		}
-		else if (in_array($last, array('а')))
+		else if (in_array($last, array('а'))) // обида, ябеда
 			$forms[Cases::RODIT_2] = $prefix;
-		else if (RussianLanguage::isHissingConsonant($last) || ($soft_last && $last != 'й'))
+		else if (in_array($last, array('я'))) // молния
+			$forms[Cases::RODIT_2] = $prefix.'й';
+		else if (RussianLanguage::isHissingConsonant($last) || ($soft_last && $last != 'й') || slice($word, -2) == 'чь')
 			$forms[Cases::RODIT_2] = $prefix.'ей';
 		else if ($last == 'й')
 			$forms[Cases::RODIT_2] = $prefix.'ев';
@@ -76,7 +82,7 @@ class Plurality extends \morphos\Plurality implements Cases {
 
 		// TVORIT_5
 		// my personal rule
-		if ($last == 'ь' && $declension == GeneralDeclension::THIRD_DECLENSION) {
+		if ($last == 'ь' && $declension == GeneralDeclension::THIRD_DECLENSION && slice($word, -2) != 'чь') {
 			$forms[Cases::TVORIT_5] = $prefix.'ми';
 		} else {
 			$forms[Cases::TVORIT_5] = $this->chooseVowelAfterConsonant($last, $soft_last, $prefix.'ями', $prefix.'ами');
