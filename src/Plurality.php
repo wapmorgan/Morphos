@@ -2,5 +2,5 @@
 namespace morphos;
 
 abstract class Plurality {
-    abstract public function pluralize($word, $count);
+    static public function pluralize($word, $count) {}
 }
