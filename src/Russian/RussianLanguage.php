@@ -80,7 +80,7 @@ trait RussianLanguage {
 	}
 
 	public function choosePrepositionByFirstLetter($word, $prepositionWithVowel, $preposition) {
-		if (in_array(upper(slice($word, 0, 1)), self::$vowels))
+		if (in_array(upper(slice($word, 0, 1)), array('А', 'О', 'И', 'У', 'Э')))
 			return $prepositionWithVowel;
 		else
 			return $preposition;
