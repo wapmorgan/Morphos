@@ -177,7 +177,7 @@ Check whether there are forms for this word (second arg is an animateness) and g
 
 ```php
 if ($dec->hasForms('поле', false)) {
-    $form = $dec->getForm('поле', false);
+    $form = $dec->getForm('поле', Cases::RODIT, false);
 }
 ```
 
