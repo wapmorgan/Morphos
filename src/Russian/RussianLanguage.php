@@ -48,7 +48,7 @@ trait RussianLanguage {
 		'З' => 'С',
 	);
 
-	private function isHissingConsonant($consonant) {
+	static public function isHissingConsonant($consonant) {
 		return in_array(lower($consonant), array('ж', 'ш', 'ч', 'щ'));
 	}
 
@@ -56,7 +56,7 @@ trait RussianLanguage {
 		return in_array(lower($consonant), array('г', 'к', 'х'));
 	}
 
-	private function isConsonant($consonant) {
+	static private function isConsonant($consonant) {
 		return in_array(upper($consonant), self::$consonants);
 	}
 
@@ -84,5 +84,13 @@ trait RussianLanguage {
 			return $prepositionWithVowel;
 		else
 			return $preposition;
+	}
+
+	public function chooseVowelAfterConsonant($last, $soft_last, $after_soft, $after_hard) {
+		if (RussianLanguage::isHissingConsonant($last) || $this->isVelarConsonant($last) || $soft_last) {
+			return $after_soft;
+		} else {
+			return $after_hard;
+		}
 	}
 }

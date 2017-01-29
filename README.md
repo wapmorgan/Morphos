@@ -162,7 +162,6 @@ General declension class also have few similar methods but arguments are differe
 - `boolean hasForms($word, bool $animateness = false)` - Check if noun is mutable.
 - `string getForm($word, $case, $animateness = false)` - Declines noun.
 - `array getForms($word, $animateness = false)` - Declines noun to all cases.
-- `array pluralizeAllDeclensions($word, $animateness = false)` - Pluralizes noun and declines to all cases.
 
 Create declension class object:
 
@@ -203,10 +202,19 @@ var_dump($dec->getForms('поле', false));
 */
 ```
 
+
+## Pluralization (`Plurality`)
+_Pluralization a word in Russian._
+
+This class have similar methods but not only:
+- `string getForm($word, $case, $animateness = false)` - Pluralizes noun and declines.
+- `array getForms($word, $animateness = false)` - Pluralizes noun and declines to all cases.
+- `string @pluralize($word, $count, $animateness = false)` - Pluralizes noun to coincide with numeral.
+
 Pluralize word and get all forms:
 
 ```php
-var_dump($dec->pluralizeAllDeclensions('поле', false));
+var_dump($dec->getForms('поле', false));
 /* Result will be like
   array(6) {
     ["nominativus"]=>
@@ -225,17 +233,15 @@ var_dump($dec->pluralizeAllDeclensions('поле', false));
 */
 ```
 
-## Pluralization (`Plurality`)
-_Pluralization a word in Russian._
+Pluralize noun to use it with numeral:
 
 ```php
 use morphos\Russian\Plurality;
 
-$plu = new Plurality();
 $word = 'дом';
 $count = 10;
 
-echo $count.' '.$plu->pluralize($word, $count, false);
+echo $count.' '.Plurality::pluralize($word, $count, false);
 // result: 10 домов
 ```
 

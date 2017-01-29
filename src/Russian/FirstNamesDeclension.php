@@ -43,7 +43,7 @@ class FirstNamesDeclension extends \morphos\NamesDeclension implements Cases {
 						self::RODIT_2 => $prefix.'а',
 						self::DAT_3 => $prefix.'у',
 						self::VINIT_4 => $prefix.'а',
-						self::TVORIT_5 => $this->isHissingConsonant(slice($name, -1)) || slice($name, -1) == 'ц' ? $prefix.'ем' : $prefix.'ом',
+						self::TVORIT_5 => RussianLanguage::isHissingConsonant(slice($name, -1)) || slice($name, -1) == 'ц' ? $prefix.'ем' : $prefix.'ом',
 						self::PREDLOJ_6 => $this->choosePrepositionByFirstLetter($prefix, 'об', 'о').' '.$prefix.'е',
 					);
 				}
@@ -68,9 +68,9 @@ class FirstNamesDeclension extends \morphos\NamesDeclension implements Cases {
 					self::TVORIT_5 => $prefix.'ем',
 					self::PREDLOJ_6 => $this->choosePrepositionByFirstLetter($prefix, 'об', 'о').' '.$prefix.$postfix,
 				);
-			} else if (slice($name, -1) == 'а' && ($before = slice($name, -2, -1)) && $this->isConsonant($before) && !in_array($before, array(/*'г', 'к', 'х', */'ц'))) {
+			} else if (slice($name, -1) == 'а' && ($before = slice($name, -2, -1)) && self::isConsonant($before) && !in_array($before, array(/*'г', 'к', 'х', */'ц'))) {
 				$prefix = name(slice($name, 0, -1));
-				$postfix = ($this->isHissingConsonant($before) || in_array($before, array('г', 'к', 'х'))) ? 'и' : 'ы';
+				$postfix = (RussianLanguage::isHissingConsonant($before) || in_array($before, array('г', 'к', 'х'))) ? 'и' : 'ы';
 				return array(
 					self::IMENIT_1 => $prefix.'а',
 					self::RODIT_2 => $prefix.$postfix,
@@ -107,7 +107,7 @@ class FirstNamesDeclension extends \morphos\NamesDeclension implements Cases {
 			if (slice($name, -1) == 'а' && ($before = (slice($name, -2, -1)))) {
 				$prefix = name(slice($name, 0, -1));
 				if ($before != 'ц') {
-					$postfix = ($this->isHissingConsonant($before) || in_array($before, array('г', 'к', 'х'))) ? 'и' : 'ы';
+					$postfix = (RussianLanguage::isHissingConsonant($before) || in_array($before, array('г', 'к', 'х'))) ? 'и' : 'ы';
 					return array(
 						self::IMENIT_1 => $prefix.'а',
 						self::RODIT_2 => $prefix.$postfix,
@@ -146,7 +146,7 @@ class FirstNamesDeclension extends \morphos\NamesDeclension implements Cases {
 					self::TVORIT_5 => $prefix.'ей',
 					self::PREDLOJ_6 => $this->choosePrepositionByFirstLetter($prefix, 'об', 'о').' '.$prefix.'и',
 				);
-			} else if (slice($name, -1) == 'ь' && $this->isConsonant(slice($name, -2, -1))) {
+			} else if (slice($name, -1) == 'ь' && self::isConsonant(slice($name, -2, -1))) {
 				$prefix = name(slice($name, 0, -1));
 				return array(
 					self::IMENIT_1 => $prefix.'ь',
@@ -156,7 +156,7 @@ class FirstNamesDeclension extends \morphos\NamesDeclension implements Cases {
 					self::TVORIT_5 => $prefix.'ью',
 					self::PREDLOJ_6 => $this->choosePrepositionByFirstLetter($prefix, 'об', 'о').' '.$prefix.'и',
 				);
-			} else if ($this->isHissingConsonant(slice($name, -1))) {
+			} else if (RussianLanguage::isHissingConsonant(slice($name, -1))) {
 				$prefix = name($name);
 				return array(
 					self::IMENIT_1 => $prefix,
