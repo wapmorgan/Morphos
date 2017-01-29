@@ -13,7 +13,7 @@ Tests & Quality: [![Build Status](https://travis-ci.org/wapmorgan/Morphos.svg)](
 1. Installation
 2. Russian
 3. English
-4. Contributing / Addition of new languages
+4. Addition of new languages
 
 ## Installation
 
@@ -39,48 +39,50 @@ morphos\
 ### First names (`FirstNamesDeclension`)
 Declension of first names in russian language:
 
-1. Create declension class object:
+Create declension class object:
 
-    ```php
-    use morphos\Russian\Cases;
-    use morphos\Russian\FirstNamesDeclension;
+```php
+use morphos\Russian\Cases;
+use morphos\Russian\FirstNamesDeclension;
 
-    $dec = new FirstNamesDeclension();
-    ```
+$dec = new FirstNamesDeclension();
+```
 
-2. Check whether there are forms for this name:
+Check whether there are forms for this name and if they exist get it:
 
-    ```php
-    var_dump($dec->hasForms('Иван', FirstNamesDeclension::MAN)); // true
-    ```
+```php
+// for example, let it be Иван
+$user_name = 'Иван';
 
-3. Get all forms of a name:
+// we want to get it's genetivus form
+if ($dec->hasForms($user_name, FirstNamesDeclension::MAN))) {
+    $name = $dec->getForm($user_name, Cases::RODIT, FirstNamesDeclension::MAN);
+} else { // immutable name
+    $name = $user_name;
+}
+```
 
-    ```php
-    var_dump($dec->getForms('Иван', FirstNamesDeclension::MAN));
-    /* Will produce something like
-      array(6) {
-        ["nominativus"]=>
-        string(8) "Иван"
-        ["genetivus"]=>
-        string(10) "Ивана"
-        ["dativus"]=>
-        string(10) "Ивану"
-        ["accusative"]=>
-        string(10) "Ивана"
-        ["ablativus"]=>
-        string(12) "Иваном"
-        ["praepositionalis"]=>
-        string(15) "об Иване"
-      }
-    */
-    ```
+If you need all forms, you can get all forms of a name:
 
-4. Get one form of a name:
-
-    ```php
-    var_dump($dec->getForm('Иван', Cases::RODIT, FirstNamesDeclension::MAN)); // Ивана
-    ```
+```php
+var_dump($dec->getForms($user_name, FirstNamesDeclension::MAN));
+/* Will produce something like
+  array(6) {
+    ["nominativus"]=>
+    string(8) "Иван"
+    ["genetivus"]=>
+    string(10) "Ивана"
+    ["dativus"]=>
+    string(10) "Ивану"
+    ["accusative"]=>
+    string(10) "Ивана"
+    ["ablativus"]=>
+    string(12) "Иваном"
+    ["praepositionalis"]=>
+    string(15) "об Иване"
+  }
+*/
+```
 
 ### Last names (`LastNamesDeclension`)
 Declension of last names in russian language:
@@ -242,6 +244,6 @@ echo $count.' '.$plu->pluralize($word, $count));
 // result: 10 feet
 ```
 
-## Contributing / Addition of new languages
+# Addition of new languages
 
 See [CONTRIBUTING.md](CONTRIBUTING.md) for this.
