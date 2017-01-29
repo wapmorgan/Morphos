@@ -207,6 +207,7 @@ var_dump($dec->getForms('поле', false));
 _Pluralization nouns in Russian._
 
 This class have similar methods but not only:
+
 - `string getForm($word, $case, $animateness = false)` - Pluralizes noun and declines.
 - `array getForms($word, $animateness = false)` - Pluralizes noun and declines to all cases.
 - `string #pluralize($word, $count, $animateness = false)` - Pluralizes noun to coincide with numeral.
