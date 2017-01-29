@@ -36,12 +36,26 @@ morphos\
 
 ## Declension
 
-### First names (`FirstNamesDeclension`)
-Declension of first names in russian language:
+### Names declension
+All declension classes are similar and have three common methods:
+
+- `boolean hasForms($word, $gender)` - Check if name is mutable.
+- `string getForm($word, $case, $gender)` - Declines name.
+- `array getForms($word, $gender)` - Declines name to all cases.
+
+`Gender` is one value of:
+- `NamesDeclension::MAN` or `m`
+- `NamesDeclension::WOMAN` or `w`
+
+`Case` is one constant of `Cases` class constants (described below).
+
+#### First names (`FirstNamesDeclension`)
+_Declension of first names in russian language._
 
 Create declension class object:
 
 ```php
+use morphos\NamesDeclension;
 use morphos\Russian\Cases;
 use morphos\Russian\FirstNamesDeclension;
 
@@ -55,8 +69,8 @@ Check whether there are forms for this name and if they exist get it:
 $user_name = 'Иван';
 
 // we want to get it's genetivus form
-if ($dec->hasForms($user_name, FirstNamesDeclension::MAN))) {
-    $name = $dec->getForm($user_name, Cases::RODIT, FirstNamesDeclension::MAN);
+if ($dec->hasForms($user_name, NamesDeclension::MAN))) {
+    $name = $dec->getForm($user_name, Cases::RODIT, NamesDeclension::MAN);
 } else { // immutable name
     $name = $user_name;
 }
@@ -65,7 +79,7 @@ if ($dec->hasForms($user_name, FirstNamesDeclension::MAN))) {
 If you need all forms, you can get all forms of a name:
 
 ```php
-var_dump($dec->getForms($user_name, FirstNamesDeclension::MAN));
+var_dump($dec->getForms($user_name, NamesDeclension::MAN));
 /* Will produce something like
   array(6) {
     ["nominativus"]=>
@@ -84,119 +98,124 @@ var_dump($dec->getForms($user_name, FirstNamesDeclension::MAN));
 */
 ```
 
-### Last names (`LastNamesDeclension`)
-Declension of last names in russian language:
+#### Last names (`LastNamesDeclension`)
+_Declension of last names in russian language._
 
-1. Create declension class object:
+Create declension class object:
 
-    ```php
-    use morphos\Russian\Cases;
-    use morphos\Russian\LastNamesDeclension;
+```php
+use morphos\NamesDeclension;
+use morphos\Russian\Cases;
+use morphos\Russian\LastNamesDeclension;
 
-    $dec = new LastNamesDeclension();
-    ```
+$dec = new LastNamesDeclension();
+```
 
-2. Check whether there are forms for this name:
+Check whether there are forms for this name and if they exist get it:
 
-    ```php
-    var_dump($dec->hasForms('Иванов', LastNamesDeclension::MAN)); // true
-    ```
+```php
+$user_last_name = 'Иванов';
 
-3. Get all forms of a name:
+if ($dec->hasForms($user_last_name, NamesDeclension::MAN))) {
+    $dativus_last_name = $dec->getForm($user_last_name, Cases::RODIT, NamesDeclension::MAN);
+} else { // immutable last name
+    $dativus_last_name = $user_last_name;
+}
 
-    ```php
-    var_dump($dec->getForms('Иванов', LastNamesDeclension::MAN));
-    /* Will produce something like
-      array(6) {
-      ["nominativus"]=>
-      string(12) "Иванов"
-      ["genetivus"]=>
-      string(14) "Иванова"
-      ["dativus"]=>
-      string(14) "Иванову"
-      ["accusative"]=>
-      string(14) "Иванова"
-      ["ablativus"]=>
-      string(16) "Ивановым"
-      ["praepositionalis"]=>
-      string(19) "об Иванове"
-    }
-    */
-    ```
+echo 'Мы хотим подарить товарищу '.$dativus_last_name.' небольшой презент.';
+```
 
-4. Get one form of a name:
+If you need all forms, you can get all forms of a name:
 
-    ```php
-    var_dump($dec->getForm('Иванов', Cases::RODIT, LastNamesDeclension::MAN)); // Иванова
+```php
+var_dump($dec->getForms($user_last_name, NamesDeclension::MAN));
+/* Will produce something like
+  array(6) {
+  ["nominativus"]=>
+  string(12) "Иванов"
+  ["genetivus"]=>
+  string(14) "Иванова"
+  ["dativus"]=>
+  string(14) "Иванову"
+  ["accusative"]=>
+  string(14) "Иванова"
+  ["ablativus"]=>
+  string(16) "Ивановым"
+  ["praepositionalis"]=>
+  string(19) "об Иванове"
+}
+*/
     ```
 
 ### General words (`GeneralDeclension`)
-Declension of general words in russian language:
+_Declension of general nouns in russian language._
 
-1. Create declension class object:
+General declension class also have three method but arguments are different:
 
-    ```php
-    use morphos\Russian\Cases;
-    use morphos\Russian\GeneralDeclension;
+- `boolean hasForms($word, bool $animateness = false)` - Check if noun is mutable.
+- `string getForm($word, $case, $animateness = false)` - Declines noun.
+- `array getForms($word, $animateness = false)` - Declines noun to all cases.
 
-    $dec = new GeneralDeclension();
-    ```
+Create declension class object:
 
-2. Check whether there are forms for this word (second arg is an animateness):
+```php
+use morphos\Russian\Cases;
+use morphos\Russian\GeneralDeclension;
 
-    ```php
-    var_dump($dec->hasForms('поле', false));
-    ```
+$dec = new GeneralDeclension();
+```
 
-3. Get all forms of a word:
+Check whether there are forms for this word (second arg is an animateness) and get them:
 
-    ```php
-    var_dump($dec->getForms('поле', false));
-    /* Will produce something like
-      array(6) {
-        ["nominativus"]=>
-        string(8) "поле"
-        ["genetivus"]=>
-        string(8) "поля"
-        ["dativus"]=>
-        string(8) "полю"
-        ["accusative"]=>
-        string(8) "поле"
-        ["ablativus"]=>
-        string(10) "полем"
-        ["praepositionalis"]=>
-        string(8) "поле"
-      }
-    */
-    ```
+```php
+if ($dec->hasForms('поле', false))) {
+    $form = $dec->getForm('поле', false);
+}
+```
 
-4. Get one form of a word:
+Get all forms of a word at once:
 
-    ```php
-    var_dump($dec->getForm('поле', false, Cases::RODIT)); // поля
-    ```
+```php
+var_dump($dec->getForms('поле', false));
+/* Will produce something like
+  array(6) {
+    ["nominativus"]=>
+    string(8) "поле"
+    ["genetivus"]=>
+    string(8) "поля"
+    ["dativus"]=>
+    string(8) "полю"
+    ["accusative"]=>
+    string(8) "поле"
+    ["ablativus"]=>
+    string(10) "полем"
+    ["praepositionalis"]=>
+    string(8) "поле"
+  }
+*/
+```
 
-5. Get all forms of a plural word:
+Pluralize word and get all forms:
 
-    ```php
-    var_dump($dec->pluralizeAllDeclensions('поле', false));
-    /* Result will be like
-      array(6) {
-        ["nominativus"]=>
-        string(8) "поля"
-        ["genetivus"]=>
-        string(10) "полей"
-        ["dativus"]=>
-        string(10) "полям"
-        ["accusative"]=>
-        string(8) "поля"
-        ["ablativus"]=>
-        string(12) "полями"
-        ["praepositionalis"]=>
-        string(10) "полях"
-      }
-    */
-    ```
+```php
+var_dump($dec->pluralizeAllDeclensions('поле', false));
+/* Result will be like
+  array(6) {
+    ["nominativus"]=>
+    string(8) "поля"
+    ["genetivus"]=>
+    string(10) "полей"
+    ["dativus"]=>
+    string(10) "полям"
+    ["accusative"]=>
+    string(8) "поля"
+    ["ablativus"]=>
+    string(12) "полями"
+    ["praepositionalis"]=>
+    string(10) "полях"
+  }
+*/
+```
 
 ### Cases (`Cases`)
 Cases in russian language:
@@ -209,7 +228,7 @@ Cases in russian language:
 * morphos\Russian\Cases::PRODLOJ
 
 ## Pluralization (`Plurality`)
-Pluralization a word in Russian:
+_Pluralization a word in Russian._
 
 ```php
 use morphos\Russian\Plurality;
@@ -218,7 +237,7 @@ $plu = new Plurality();
 $word = 'дом';
 $count = 10;
 
-echo $count.' '.$plu->pluralize($word, $count, false));
+echo $count.' '.$plu->pluralize($word, $count, false);
 // result: 10 домов
 ```
 
@@ -240,7 +259,7 @@ use morphos\English\Plurality;
 $plu = new Plurality();
 $word = 'foot';
 $count = 10;
-echo $count.' '.$plu->pluralize($word, $count));
+echo $count.' '.$plu->pluralize($word, $count);
 // result: 10 feet
 ```
 
