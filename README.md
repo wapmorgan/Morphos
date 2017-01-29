@@ -13,9 +13,9 @@ Tests & Quality: [![Build Status](https://travis-ci.org/wapmorgan/Morphos.svg)](
 1. Installation
 2. Russian
     1. Declension
-        a. First names
-        b. Last names
-        c. Nouns
+        1. First names
+        2. Last names
+        3. Nouns
     2. Pluralization
     3. Cases
 3. English
