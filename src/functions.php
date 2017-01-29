@@ -107,7 +107,8 @@ function last_position_for_one_of_chars($string, array $chars) {
 		$last_position = false;
 		foreach ($chars as $char) {
 			if (($pos = mb_strrpos($string, $char)) !== false) {
-				$last_position = $pos;
+				if ($pos > $last_position)
+					$last_position = $pos;
 			}
 		}
 		if ($last_position !== false) {
