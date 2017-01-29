@@ -15,7 +15,7 @@ Tests & Quality: [![Build Status](https://travis-ci.org/wapmorgan/Morphos.svg)](
 3. English
 4. Contributing / Addition of new languages
 
-# Installation
+## Installation
 
 * Download library through composer:
     `composer require "wapmorgan/morphos"`
@@ -40,6 +40,7 @@ morphos\
 Declension of first names in russian language:
 
 1. Create declension class object:
+
     ```php
     use morphos\Russian\Cases;
     use morphos\Russian\FirstNamesDeclension;
@@ -48,11 +49,13 @@ Declension of first names in russian language:
     ```
 
 2. Check whether there are forms for this name:
+
     ```php
     var_dump($dec->hasForms('Иван', FirstNamesDeclension::MAN)); // true
     ```
 
 3. Get all forms of a name:
+
     ```php
     var_dump($dec->getForms('Иван', FirstNamesDeclension::MAN));
     /* Will produce something like
@@ -74,6 +77,7 @@ Declension of first names in russian language:
     ```
 
 4. Get one form of a name:
+
     ```php
     var_dump($dec->getForm('Иван', Cases::RODIT, FirstNamesDeclension::MAN)); // Ивана
     ```
@@ -82,6 +86,7 @@ Declension of first names in russian language:
 Declension of last names in russian language:
 
 1. Create declension class object:
+
     ```php
     use morphos\Russian\Cases;
     use morphos\Russian\LastNamesDeclension;
@@ -90,11 +95,13 @@ Declension of last names in russian language:
     ```
 
 2. Check whether there are forms for this name:
+
     ```php
     var_dump($dec->hasForms('Иванов', LastNamesDeclension::MAN)); // true
     ```
 
 3. Get all forms of a name:
+
     ```php
     var_dump($dec->getForms('Иванов', LastNamesDeclension::MAN));
     /* Will produce something like
@@ -116,6 +123,7 @@ Declension of last names in russian language:
     ```
 
 4. Get one form of a name:
+
     ```php
     var_dump($dec->getForm('Иванов', Cases::RODIT, LastNamesDeclension::MAN)); // Иванова
     ```
@@ -124,6 +132,7 @@ Declension of last names in russian language:
 Declension of general words in russian language:
 
 1. Create declension class object:
+
     ```php
     use morphos\Russian\Cases;
     use morphos\Russian\GeneralDeclension;
@@ -132,11 +141,13 @@ Declension of general words in russian language:
     ```
 
 2. Check whether there are forms for this word (second arg is an animateness):
+
     ```php
     var_dump($dec->hasForms('поле', false));
     ```
 
 3. Get all forms of a word:
+
     ```php
     var_dump($dec->getForms('поле', false));
     /* Will produce something like
@@ -158,11 +169,13 @@ Declension of general words in russian language:
     ```
 
 4. Get one form of a word:
+
     ```php
     var_dump($dec->getForm('поле', false, Cases::RODIT)); // поля
     ```
 
 5. Get all forms of a plural word:
+
     ```php
     var_dump($dec->pluralizeAllDeclensions('поле', false));
     /* Result will be like
@@ -186,12 +199,12 @@ Declension of general words in russian language:
 ### Cases (`Cases`)
 Cases in russian language:
 
-    * morphos\Russian\Cases::IMENIT
-    * morphos\Russian\Cases::RODIT
-    * morphos\Russian\Cases::DAT
-    * morphos\Russian\Cases::VINIT
-    * morphos\Russian\Cases::TVORIT
-    * morphos\Russian\Cases::PRODLOJ
+* morphos\Russian\Cases::IMENIT
+* morphos\Russian\Cases::RODIT
+* morphos\Russian\Cases::DAT
+* morphos\Russian\Cases::VINIT
+* morphos\Russian\Cases::TVORIT
+* morphos\Russian\Cases::PRODLOJ
 
 ## Pluralization (`Plurality`)
 Pluralization a word in Russian:
