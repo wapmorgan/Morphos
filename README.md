@@ -225,16 +225,6 @@ var_dump($dec->pluralizeAllDeclensions('поле', false));
 */
 ```
 
-### Cases (`Cases`)
-Cases in russian language:
-
-* morphos\Russian\Cases::IMENIT
-* morphos\Russian\Cases::RODIT
-* morphos\Russian\Cases::DAT
-* morphos\Russian\Cases::VINIT
-* morphos\Russian\Cases::TVORIT
-* morphos\Russian\Cases::PRODLOJ
-
 ## Pluralization (`Plurality`)
 _Pluralization a word in Russian._
 
@@ -248,6 +238,16 @@ $count = 10;
 echo $count.' '.$plu->pluralize($word, $count, false);
 // result: 10 домов
 ```
+
+## Cases (`Cases`)
+Cases in russian language:
+
+* `morphos\Russian\Cases::IMENIT` - nominative case
+* `morphos\Russian\Cases::RODIT` - genetive case
+* `morphos\Russian\Cases::DAT` - dative case
+* `morphos\Russian\Cases::VINIT` - accusative case
+* `morphos\Russian\Cases::TVORIT` - ablative case
+* `morphos\Russian\Cases::PREDLOJ` - prepositional case
 
 # English
 
