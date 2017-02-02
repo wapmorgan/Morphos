@@ -17,7 +17,7 @@ if (isset($_POST['word'])) {
 		var_dump($dec->getForms($_POST['word'], $_POST['animate']));
 	echo '</pre>';
 	echo '<pre>';
-		var_dump($dec->pluralizeAllDeclensions($_POST['word'], $_POST['animate']));
+		var_dump($plu->getForms($_POST['word'], $_POST['animate']));
 	echo '</pre>';
 
 	echo "<blockquote>";
