@@ -121,6 +121,9 @@ class LastNamesDeclension extends \morphos\NamesDeclension implements Cases {
                 self::PREDLOJ_6 => $this->choosePrepositionByFirstLetter($prefix, 'об', 'о').' '.$prefix.'е'
             );
         }
+
+        $name = name($name);
+        return array_fill_keys(array(self::IMENIT_1, self::RODIT_2, self::DAT_3, self::VINIT_4, self::TVORIT_5), $name) + array(self::PREDLOJ_6 => $this->choosePrepositionByFirstLetter($name, 'об', 'о').' '.$name);
     }
 
     public function getForm($name, $form, $gender) {
@@ -129,8 +132,8 @@ class LastNamesDeclension extends \morphos\NamesDeclension implements Cases {
             if (isset($forms[$form]))
                 return $forms[$form];
             else
-                return false;
+                return $name;
         else
-            return false;
+            return $name;
     }
 }
