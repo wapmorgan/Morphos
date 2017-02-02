@@ -29,6 +29,28 @@ class GeneralDeclension extends \morphos\GeneralDeclension implements Cases {
 		'семя',
 	);
 
+	static protected $masculineWithSoft = array(
+		'камень',
+		'олень',
+		'конь',
+		'ячмень',
+		'путь',
+		'парень',
+		'зверь',
+		'шкворень',
+		'пень',
+		'пельмень',
+		'тюлень',
+		'выхухоль',
+		'табель',
+		'рояль',
+		'шампунь',
+		'конь',
+		'лось',
+		'гвоздь',
+		'медведь',
+	);
+
 	public function hasForms($word, $animateness = false) {
 		$word = lower($word);
 		if (in_array(slice($word, -1), array('у', 'и', 'е', 'о', 'ю')))
@@ -39,7 +61,7 @@ class GeneralDeclension extends \morphos\GeneralDeclension implements Cases {
 	static public function getDeclension($word) {
 		$word = lower($word);
 		$last = slice($word, -1);
-		if (self::isConsonant($last) || in_array($last, ['о', 'е', 'ё']) || ($last == 'ь' && self::isConsonant(slice($word, -2, -1)) && !RussianLanguage::isHissingConsonant(slice($word, -2, -1)))) {
+		if (self::isConsonant($last) || in_array($last, ['о', 'е', 'ё']) || ($last == 'ь' && self::isConsonant(slice($word, -2, -1)) && !RussianLanguage::isHissingConsonant(slice($word, -2, -1)) && in_array($word, self::$masculineWithSoft))) {
 			return  1;
 		} else if (in_array($last, ['а', 'я']) && slice($word, -2) != 'мя') {
 			return 2;
