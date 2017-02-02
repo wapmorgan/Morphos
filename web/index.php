@@ -34,7 +34,7 @@ if (isset($_POST['word'])) {
 if (isset($_POST['name'])) {
 	$gender = isset($_POST['gender']) && $_POST['gender'] == 'w' ? morphos\NamesDeclension::WOMAN : morphos\NamesDeclension::MAN;
 	echo '<pre>';
-		var_dump(morphos\Russian\nameCase($_POST['name'], $gender));
+		var_dump(morphos\Russian\nameCase($_POST['name'], null, $gender));
 	echo '</pre>';
 }
 ?>
