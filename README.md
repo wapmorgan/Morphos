@@ -58,6 +58,7 @@ Russian morphology:
 ```php
 morphos\
         Russian\
+                nameCase()
                 Cases
                 FirstNamesDeclension
                 LastNamesDeclension
@@ -67,16 +68,24 @@ morphos\
 
 ## Declension
 
-### Names declension
+To compound all declension functionality in one call there is `nameCase` function:
+
+```php
+string|array nameCase($name, $case = null, $gender = null)
+```
+
+Arguments:
+- `$name` - full name as `Фамилия Имя` or `Фамилия Имя Отчество`.
+- `$case` - can be `null` or one of `Cases` constants. If constant, a string will be returned. If null, an array will be returned.
+- `$gender` - `NamesDeclension::MAN` or `NamesDeclension::WOMAN` or `null`.
+
+### Declensions classes
+
 All declension classes are similar and have three common methods:
 
 - `boolean hasForms($word, $gender)` - Check if name is mutable.
 - `string getForm($word, $case, $gender)` - Declines name.
 - `array getForms($word, $gender)` - Declines name to all cases.
-
-`Gender` is one value of:
-- `NamesDeclension::MAN` or `m`
-- `NamesDeclension::WOMAN` or `w`
 
 `Case` is one constant of `Cases` class constants (described below).
 
