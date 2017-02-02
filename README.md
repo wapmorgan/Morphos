@@ -11,21 +11,45 @@ Tests & Quality: [![Build Status](https://travis-ci.org/wapmorgan/Morphos.svg)](
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/wapmorgan/Morphos/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/wapmorgan/Morphos/?branch=master)
 
 1. Installation
-2. Russian
+2. Quick start
+3. Russian
     1. Declension
         1. First names
         2. Last names
         3. Nouns
     2. Pluralization
     3. Cases
-3. English
+4. English
     1. Pluralization
-4. Addition of new languages
+5. Addition of new languages
 
 ## Installation
 
 * Download library through composer:
-    `composer require "wapmorgan/morphos"`
+```
+composer require wapmorgan/morphos
+```
+
+## Quick Start
+Decline russian names:
+
+```php
+var_dump(morphos\Russian\nameCase('Иванов Петр', morphos\Cases::GENETIVE, morphos\NamesDeclension::MAN)); // Иванова Петра
+var_dump(morphos\Russian\nameCase('Кулаков Святослав Матвеевич', morphos\Cases::GENETIVE, morphos\NamesDeclension::MAN)); // Кулакова Святослава Матвеевича
+```
+
+Pluralize russian nouns:
+
+```php
+var_dump(morphos\Russian\Plurality::pluralize('дом', 10)); // домов
+var_dump(morphos\Russian\Plurality::pluralize('гидродендрариум', 2)); // гидродендрариума
+```
+
+Pluralize english nouns:
+
+```php
+var_dump(morphos\English\Plurality::pluralize('house', 10)); // houses
+```
 
 # Russian
 
