@@ -100,10 +100,8 @@ class FirstNamesDeclension extends \morphos\NamesDeclension implements Cases {
 					self::TVORIT_5 => $prefix.'ой',
 					self::PREDLOJ_6 => $this->choosePrepositionByFirstLetter($prefix, 'об', 'о').' '.$prefix.'е',
 				);
-			} else {
-				return false;
 			}
-		} else {
+		} else if ($gender == self::WOMAN) {
 			if (slice($name, -1) == 'а' && ($before = (slice($name, -2, -1)))) {
 				$prefix = name(slice($name, 0, -1));
 				if ($before != 'ц') {
@@ -126,26 +124,6 @@ class FirstNamesDeclension extends \morphos\NamesDeclension implements Cases {
 						self::PREDLOJ_6 => $this->choosePrepositionByFirstLetter($prefix, 'об', 'о').' '.$prefix.'е',
 					);
 				}
-			} else if (slice($name, -1) == 'я' and slice($name, -2, -1) != 'и') {
-				$prefix = name(slice($name, 0, -1));
-				return array(
-					self::IMENIT_1 => $prefix.'я',
-					self::RODIT_2 => $prefix.'и',
-					self::DAT_3 => $prefix.'е',
-					self::VINIT_4 => $prefix.'ю',
-					self::TVORIT_5 => $prefix.'ей',
-					self::PREDLOJ_6 => $this->choosePrepositionByFirstLetter($prefix, 'об', 'о').' '.$prefix.'е',
-				);
-			} else if (slice($name, -2) == 'ия') {
-				$prefix = name(slice($name, 0, -1));
-				return array(
-					self::IMENIT_1 => $prefix.'я',
-					self::RODIT_2 => $prefix.'и',
-					self::DAT_3 => $prefix.'и',
-					self::VINIT_4 => $prefix.'ю',
-					self::TVORIT_5 => $prefix.'ей',
-					self::PREDLOJ_6 => $this->choosePrepositionByFirstLetter($prefix, 'об', 'о').' '.$prefix.'и',
-				);
 			} else if (slice($name, -1) == 'ь' && self::isConsonant(slice($name, -2, -1))) {
 				$prefix = name(slice($name, 0, -1));
 				return array(
@@ -166,10 +144,32 @@ class FirstNamesDeclension extends \morphos\NamesDeclension implements Cases {
 					self::TVORIT_5 => $prefix.'ью',
 					self::PREDLOJ_6 => $this->choosePrepositionByFirstLetter($prefix, 'об', 'о').' '.$prefix.'и',
 				);
-			} else {
-				return false;
 			}
 		}
+
+		// common rules for ия and я
+		if (slice($name, -1) == 'я' and slice($name, -2, -1) != 'и') {
+			$prefix = name(slice($name, 0, -1));
+			return array(
+				self::IMENIT_1 => $prefix.'я',
+				self::RODIT_2 => $prefix.'и',
+				self::DAT_3 => $prefix.'е',
+				self::VINIT_4 => $prefix.'ю',
+				self::TVORIT_5 => $prefix.'ей',
+				self::PREDLOJ_6 => $this->choosePrepositionByFirstLetter($prefix, 'об', 'о').' '.$prefix.'е',
+			);
+		} else if (slice($name, -2) == 'ия') {
+			$prefix = name(slice($name, 0, -1));
+			return array(
+				self::IMENIT_1 => $prefix.'я',
+				self::RODIT_2 => $prefix.'и',
+				self::DAT_3 => $prefix.'и',
+				self::VINIT_4 => $prefix.'ю',
+				self::TVORIT_5 => $prefix.'ей',
+				self::PREDLOJ_6 => $this->choosePrepositionByFirstLetter($prefix, 'об', 'о').' '.$prefix.'и',
+			);
+		}
+
 	}
 
 	private function getFormsForLev() {
