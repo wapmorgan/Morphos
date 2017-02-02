@@ -1,6 +1,10 @@
 <?php
 namespace morphos\Russian;
 
+/**
+ * Rules are from: http://www.imena.org/decl_mn.html
+ * and http://www.imena.org/decl_fn.html
+ */
 class FirstNamesDeclension extends \morphos\NamesDeclension implements Cases {
 	use RussianLanguage;
 
