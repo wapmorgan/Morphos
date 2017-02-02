@@ -119,7 +119,7 @@ class FirstNamesDeclension extends \morphos\NamesDeclension implements Cases {
 				);
 			}
 		} else if ($gender == self::WOMAN) {
-			if (slice($name, -1) == 'а' && ($before = (slice($name, -2, -1)))) {
+			if (slice($name, -1) == 'а' && !in_array(upper($before = (slice($name, -2, -1))), self::$vowels)) {
 				$prefix = name(slice($name, 0, -1));
 				if ($before != 'ц') {
 					$postfix = (RussianLanguage::isHissingConsonant($before) || in_array($before, array('г', 'к', 'х'))) ? 'и' : 'ы';
