@@ -15,8 +15,9 @@ Tests & Quality: [![Build Status](https://travis-ci.org/wapmorgan/Morphos.svg)](
 3. Russian
     1. Declension
         1. First names
-        2. Last names
-        3. Nouns
+        2. Middle names
+        3. Last names
+        4. Nouns
     2. Pluralization
     3. Cases
 4. English
@@ -79,7 +80,7 @@ Arguments:
 - `$case` - can be `null` or one of `Cases` constants. If constant, a string will be returned. If null, an array will be returned.
 - `$gender` - `NamesDeclension::MAN` or `NamesDeclension::WOMAN` or `null`.
 
-### Declensions classes
+### Declension classes
 
 All declension classes are similar and have three common methods:
 
@@ -134,6 +135,50 @@ var_dump($dec->getForms($user_name, NamesDeclension::MAN));
     string(12) "Иваном"
     ["praepositionalis"]=>
     string(15) "об Иване"
+  }
+*/
+```
+
+#### Middle names (`MiddleNamesDeclension`)
+_Declension of middle names in russian language._
+
+Create declension class object:
+
+```php
+use morphos\NamesDeclension;
+use morphos\Russian\Cases;
+use morphos\Russian\MiddleNamesDeclension;
+
+$dec = new MiddleNamesDeclension();
+```
+
+Check whether there are forms for this name and if they exist get it:
+
+```php
+// for example, let it be Иван
+$user_name = 'Сергеевич';
+
+$name = $dec->getForm($user_name, Cases::RODIT, NamesDeclension::MAN);
+```
+
+If you need all forms, you can get all forms of a name:
+
+```php
+var_dump($dec->getForms($user_name, NamesDeclension::MAN));
+/* Will produce something like
+  array(6) {
+    ["nominativus"]=>
+    string(18) "Сергеевич"
+    ["genetivus"]=>
+    string(20) "Сергеевича"
+    ["dativus"]=>
+    string(20) "Сергеевичу"
+    ["accusative"]=>
+    string(20) "Сергеевича"
+    ["ablativus"]=>
+    string(22) "Сергеевичем"
+    ["praepositionalis"]=>
+    string(23) "о Сергеевиче"
   }
 */
 ```
@@ -216,21 +261,21 @@ if ($dec->hasForms('поле', false)) {
 Get all forms of a word at once:
 
 ```php
-var_dump($dec->getForms('поле', false));
+var_dump($dec->getForms('линейка', false));
 /* Will produce something like
   array(6) {
     ["nominativus"]=>
-    string(8) "поле"
+    string(14) "линейка"
     ["genetivus"]=>
-    string(8) "поля"
+    string(14) "линейкы"
     ["dativus"]=>
-    string(8) "полю"
+    string(14) "линейке"
     ["accusative"]=>
-    string(8) "поле"
+    string(14) "линейку"
     ["ablativus"]=>
-    string(10) "полем"
+    string(16) "линейкой"
     ["praepositionalis"]=>
-    string(8) "поле"
+    string(17) "о линейке"
   }
 */
 ```
