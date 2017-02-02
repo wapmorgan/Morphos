@@ -197,6 +197,6 @@ class FirstNamesDeclensionTest extends \PHPUnit_Framework_TestCase {
             array('Нафиса', FirstNamesDeclension::WOMAN),
             array('Асия', FirstNamesDeclension::WOMAN),
             array('Лючия', FirstNamesDeclension::WOMAN),
-);
+        );
     }
 }
