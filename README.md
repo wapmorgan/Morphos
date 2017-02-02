@@ -76,6 +76,7 @@ string|array nameCase($name, $case = null, $gender = null)
 ```
 
 Arguments:
+
 - `$name` - full name as `Фамилия Имя` or `Фамилия Имя Отчество`.
 - `$case` - can be `null` or one of `Cases` constants. If constant, a string will be returned. If null, an array will be returned.
 - `$gender` - `NamesDeclension::MAN` or `NamesDeclension::WOMAN` or `null`.
