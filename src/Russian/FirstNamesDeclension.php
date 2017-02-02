@@ -4,6 +4,25 @@ namespace morphos\Russian;
 class FirstNamesDeclension extends \morphos\NamesDeclension implements Cases {
 	use RussianLanguage;
 
+	protected $exceptions = array(
+		'лев' => array(
+			self::IMENIT_1 => 'Лев',
+			self::RODIT_2 => 'Льва',
+			self::DAT_3 => 'Льву',
+			self::VINIT_4 => 'Льва',
+			self::TVORIT_5 => 'Львом',
+			self::PREDLOJ_6 => 'о Льве',
+		),
+		'павел' => array(
+			self::IMENIT_1 => 'Павел',
+			self::RODIT_2 => 'Павла',
+			self::DAT_3 => 'Павлу',
+			self::VINIT_4 => 'Павла',
+			self::TVORIT_5 => 'Павлом',
+			self::PREDLOJ_6 => 'о Павле',
+		)
+	);
+
 	public function hasForms($name, $gender) {
 		//var_dump(upper(slice($name, -1)));
 		$name = lower($name);
@@ -33,10 +52,8 @@ class FirstNamesDeclension extends \morphos\NamesDeclension implements Cases {
 			if (in_array(upper(slice($name, -1)), array_diff(self::$consonants, array('Й', /*'Ч', 'Щ'*/)))) { // hard consonant
 				$prefix = name($name);
 				// special cases for Лев, Павел
-				if ($name == 'лев')
-					return $this->getFormsForLev();
-				else if ($name == 'павел')
-					return $this->getFormsForPavel();
+				if (isset($this->exceptions[$name]))
+					return $this->exceptions[$name];
 				else {
 					return array(
 						self::IMENIT_1 => $prefix,
@@ -169,29 +186,6 @@ class FirstNamesDeclension extends \morphos\NamesDeclension implements Cases {
 				self::PREDLOJ_6 => $this->choosePrepositionByFirstLetter($prefix, 'об', 'о').' '.$prefix.'и',
 			);
 		}
-
-	}
-
-	private function getFormsForLev() {
-		return array(
-			self::IMENIT_1 => 'Лев',
-			self::RODIT_2 => 'Льва',
-			self::DAT_3 => 'Льву',
-			self::VINIT_4 => 'Льва',
-			self::TVORIT_5 => 'Львом',
-			self::PREDLOJ_6 => 'о Льве',
-		);
-	}
-
-	private function getFormsForPavel() {
-		return array(
-			self::IMENIT_1 => 'Павел',
-			self::RODIT_2 => 'Павла',
-			self::DAT_3 => 'Павлу',
-			self::VINIT_4 => 'Павла',
-			self::TVORIT_5 => 'Павлом',
-			self::PREDLOJ_6 => 'о Павле',
-		);
 	}
 
 	public function getForm($name, $form, $gender) {
@@ -200,8 +194,8 @@ class FirstNamesDeclension extends \morphos\NamesDeclension implements Cases {
 			if (isset($forms[$form]))
 				return $forms[$form];
 			else
-				return false;
+				return $name;
 		else
-			return false;
+			return $name;
 	}
 }
