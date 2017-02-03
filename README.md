@@ -349,8 +349,10 @@ echo $count.' '.Plurality::pluralize($word, $count, false);
 
 All number creation classes are similar and have two common methods:
 
-- `string getForm($number, $case)` - Get one form of a number.
-- `array getForms($number)` - Get all forms of a number.
+- `string getForm($number, $case, $gender = NumeralCreation::MALE)` - Get one form of a number.
+- `array getForms($number, $gender = NumeralCreation::MALE)` - Get all forms of a number.
+
+`$gender` is one of `morphos\NumeralCreation` constants: `MALE` or `FEMALE` or `NEUTER`.
 
 ### Cardinal numbers (`CardinalNumeral`)
 
@@ -359,6 +361,7 @@ _Creation of cardinal numerals in russian language._
 Create declension class object:
 
 ```php
+use morphos\NumeralCreation;
 use morphos\Russian\CardinalNumeral;
 use morphos\Russian\Cases;
 
@@ -371,6 +374,7 @@ Get text representation of a number:
 $number = 4351;
 
 $numeral = $cardinal->getForm($number, Cases::IMENIT); // четыре тысячи триста пятьдесят один
+$numeral = $cardinal->getForm($number, Cases::IMENIT, NumeralCreation::FEMALE); // четыре тысячи триста пятьдесят одна
 ```
 
 If you need all forms, you can get all forms of a name:

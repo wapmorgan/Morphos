@@ -59,20 +59,56 @@ class CardinalNumeral extends NumeralCreation implements Cases {
 
     protected $precalculated = array(
         'один' => array(
-            self::IMENIT => 'один',
-            self::RODIT => 'одного',
-            self::DAT => 'одному',
-            self::VINIT => 'один',
-            self::TVORIT => 'одним',
-            self::PREDLOJ => 'об одном',
+            self::MALE => array(
+                self::IMENIT => 'один',
+                self::RODIT => 'одного',
+                self::DAT => 'одному',
+                self::VINIT => 'один',
+                self::TVORIT => 'одним',
+                self::PREDLOJ => 'об одном',
+            ),
+            self::FEMALE => array(
+                self::IMENIT => 'одна',
+                self::RODIT => 'одной',
+                self::DAT => 'одной',
+                self::VINIT => 'одну',
+                self::TVORIT => 'одной',
+                self::PREDLOJ => 'об одной',
+            ),
+            self::NEUTER => array(
+                self::IMENIT => 'одно',
+                self::RODIT => 'одного',
+                self::DAT => 'одному',
+                self::VINIT => 'одно',
+                self::TVORIT => 'одним',
+                self::PREDLOJ => 'об одном',
+            ),
         ),
         'два' => array(
-            self::IMENIT => 'два',
-            self::RODIT => 'двух',
-            self::DAT => 'двум',
-            self::VINIT => 'два',
-            self::TVORIT => 'двумя',
-            self::PREDLOJ => 'о двух',
+            self::MALE => array(
+                self::IMENIT => 'два',
+                self::RODIT => 'двух',
+                self::DAT => 'двум',
+                self::VINIT => 'два',
+                self::TVORIT => 'двумя',
+                self::PREDLOJ => 'о двух',
+            ),
+            self::FEMALE => array(
+                self::IMENIT => 'две',
+                self::RODIT => 'двух',
+                self::DAT => 'двум',
+                self::VINIT => 'два',
+                self::TVORIT => 'двумя',
+                self::PREDLOJ => 'о двух',
+            ),
+            self::NEUTER => array(
+                self::IMENIT => 'два',
+                self::RODIT => 'двух',
+                self::DAT => 'двум',
+                self::VINIT => 'два',
+                self::TVORIT => 'двумя',
+                self::PREDLOJ => 'о двух',
+            ),
         ),
         'три' => array(
             self::IMENIT => 'три',
@@ -116,12 +152,16 @@ class CardinalNumeral extends NumeralCreation implements Cases {
         ),
     );
 
-    public function getForms($number) {
+    public function getForms($number, $gender = self::MALE) {
         // simple numeral
         if (isset($this->words[$number]) || isset($this->exponents[$number])) {
             $word = isset($this->words[$number]) ? $this->words[$number] : $this->exponents[$number];
             if (isset($this->precalculated[$word])) {
-                return $this->precalculated[$word];
+                if (isset($this->precalculated[$word][self::MALE])) {
+                    return $this->precalculated[$word][$gender];
+                } else {
+                    return $this->precalculated[$word];
+                }
             } else if (($number >= 5 && $number <= 20) || $number == 30) {
                 $prefix = slice($word, 0, -1);
                 return array(
@@ -182,7 +222,7 @@ class CardinalNumeral extends NumeralCreation implements Cases {
             foreach (array_reverse($this->exponents, true) as $word_number => $word) {
                 if ($number >= $word_number) {
                     $count = floor($number / $word_number);
-                    $parts[] = $this->getForms($count);
+                    $parts[] = $this->getForms($count, ($word_number == 1000 ? self::FEMALE : self::MALE));
 
                     // get forms of word
                     if (empty($this->declension)) $this->declension = new GeneralDeclension();
@@ -211,7 +251,7 @@ class CardinalNumeral extends NumeralCreation implements Cases {
 
             foreach (array_reverse($this->words, true) as $word_number => $word) {
                 if ($number >= $word_number) {
-                    $parts[] = $this->getForms($word_number);
+                    $parts[] = $this->getForms($word_number, $gender);
                     $number %= $word_number;
                 }
             }
@@ -229,8 +269,8 @@ class CardinalNumeral extends NumeralCreation implements Cases {
         }
     }
 
-    public function getForm($number, $form) {
-        $forms = $this->getForms($number);
+    public function getForm($number, $form, $gender = self::MALE) {
+        $forms = $this->getForms($number, $gender);
         return $forms[$form];
     }
 }
