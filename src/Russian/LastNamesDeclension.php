@@ -7,6 +7,9 @@ namespace morphos\Russian;
 class LastNamesDeclension extends \morphos\NamesDeclension implements Cases {
     use RussianLanguage;
 
+    static protected $menPostfixes = array('ов', 'ев' ,'ин' ,'ын', 'ой', 'ий');
+    static protected $womenPostfixes = array('ва', 'на', 'ая', 'яя');
+
     public function hasForms($name, $gender) {
         $name = lower($name);
         if ($gender == self::MAN) {
@@ -26,6 +29,16 @@ class LastNamesDeclension extends \morphos\NamesDeclension implements Cases {
             return true;
 
         return false;
+    }
+
+    public function detectGender($name) {
+        $name = lower($name);
+        if (in_array(slice($name, -2), self::$menPostfixes))
+            return self::MAN;
+        if (in_array(slice($name, -2), self::$womenPostfixes))
+            return self::WOMAN;
+
+        return null;
     }
 
     public function getForms($name, $gender) {
