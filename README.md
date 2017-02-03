@@ -65,6 +65,7 @@ Russian morphology:
 morphos\
         Russian\
                 nameCase()
+                detectGender()
                 Cases
                 FirstNamesDeclension
                 LastNamesDeclension
@@ -93,6 +94,7 @@ All declension classes are similar and have three common methods:
 - `boolean hasForms($word, $gender)` - Check if name is mutable.
 - `string getForm($word, $case, $gender)` - Declines name.
 - `array getForms($word, $gender)` - Declines name to all cases.
+- `string detectGender($word)` - Tries to detect gender for given name.
 
 `Case` is one constant of `Cases` class constants (described below).
 
@@ -116,8 +118,8 @@ Check whether there are forms for this name and if they exist get it:
 $user_name = 'Иван';
 
 // we want to get it's genetivus form
-if ($dec->hasForms($user_name, NamesDeclension::MAN)) {
-    $name = $dec->getForm($user_name, Cases::RODIT, NamesDeclension::MAN);
+if ($dec->hasForms($user_name, $dec->detectGender($user_name))) {
+    $name = $dec->getForm($user_name, Cases::RODIT, $dec->detectGender($user_name));
 } else { // immutable name
     $name = $user_name;
 }
@@ -126,7 +128,7 @@ if ($dec->hasForms($user_name, NamesDeclension::MAN)) {
 If you need all forms, you can get all forms of a name:
 
 ```php
-var_dump($dec->getForms($user_name, NamesDeclension::MAN));
+var_dump($dec->getForms($user_name, $dec->detectGender($user_name)));
 /* Will produce something like
   array(6) {
     ["nominativus"]=>
@@ -164,13 +166,13 @@ Check whether there are forms for this name and if they exist get it:
 // for example, let it be Иван
 $user_name = 'Сергеевич';
 
-$name = $dec->getForm($user_name, Cases::RODIT, NamesDeclension::MAN);
+$name = $dec->getForm($user_name, Cases::RODIT, $dec->detectGender($user_name));
 ```
 
 If you need all forms, you can get all forms of a name:
 
 ```php
-var_dump($dec->getForms($user_name, NamesDeclension::MAN));
+var_dump($dec->getForms($user_name, $dec->detectGender($user_name)));
 /* Will produce something like
   array(6) {
     ["nominativus"]=>
@@ -207,8 +209,8 @@ Check whether there are forms for this name and if they exist get it:
 ```php
 $user_last_name = 'Иванов';
 
-if ($dec->hasForms($user_last_name, NamesDeclension::MAN)) {
-    $dativus_last_name = $dec->getForm($user_last_name, Cases::RODIT, NamesDeclension::MAN);
+if ($dec->hasForms($user_last_name, $dec->detectGender($user_last_name))) {
+    $dativus_last_name = $dec->getForm($user_last_name, Cases::RODIT, $dec->detectGender($user_last_name));
 } else { // immutable last name
     $dativus_last_name = $user_last_name;
 }
@@ -219,7 +221,7 @@ echo 'Мы хотим подарить товарищу '.$dativus_last_name.' �
 If you need all forms, you can get all forms of a name:
 
 ```php
-var_dump($dec->getForms($user_last_name, NamesDeclension::MAN));
+var_dump($dec->getForms($user_last_name, $dec->detectGender($user_last_name)));
 /* Will produce something like
   array(6) {
   ["nominativus"]=>
