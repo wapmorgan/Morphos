@@ -19,7 +19,8 @@ Tests & Quality: [![Build Status](https://travis-ci.org/wapmorgan/Morphos.svg)](
         3. Last names
         4. Nouns
     2. Pluralization
-    3. Cases
+    3. Number creation
+    4. Cases
 4. English
     1. Pluralization
 5. Addition of new languages
@@ -71,6 +72,7 @@ morphos\
                 LastNamesDeclension
                 GeneralDeclension
                 Plurality
+                CardinalNumber
 ```
 
 ## Declension
@@ -288,7 +290,6 @@ var_dump($dec->getForms('линейка', false));
 */
 ```
 
-
 ## Pluralization (`Plurality`)
 _Pluralization nouns in Russian._
 
@@ -342,6 +343,56 @@ $count = 10;
 
 echo $count.' '.Plurality::pluralize($word, $count, false);
 // result: 10 домов
+```
+
+## Number creation
+
+All number creation classes are similar and have two common methods:
+
+- `string getForm($number, $case)` - Get one form of a number.
+- `array getForms($number)` - Get all forms of a number.
+
+### Cardinal numbers (`CardinalNumber`)
+
+_Declension of middle names in russian language._
+
+Create declension class object:
+
+```php
+use morphos\Russian\CardinalNumber;
+use morphos\Russian\Cases;
+
+$cardinal = new CardinalNumber();
+```
+
+Get text representation of a number:
+
+```php
+$number = 4351;
+
+$numeral = $cardinal->getForm($number, Cases::IMENIT); // четыре тысячи триста пятьдесят один
+```
+
+If you need all forms, you can get all forms of a name:
+
+```php
+var_dump($cardinal->getForms($number));
+/* Will produce something like
+  array(6) {
+    ["nominativus"]=>
+    string(66) "четыре тысячи триста пятьдесят один"
+    ["genetivus"]=>
+    string(74) "четырех тысяч трехсот пятидесяти одного"
+    ["dativus"]=>
+    string(80) "четырем тысячам тремстам пятидесяти одному"
+    ["accusative"]=>
+    string(66) "четыре тысячи триста пятьдесят один"
+    ["ablativus"]=>
+    string(90) "четырьмя тысячами тремястами пятьюдесятью одним"
+    ["praepositionalis"]=>
+    string(81) "о четырех тысячах трехстах пятидесяти одном"
+  }
+*/
 ```
 
 ## Cases (`Cases`)
