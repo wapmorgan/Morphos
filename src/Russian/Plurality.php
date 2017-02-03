@@ -21,14 +21,14 @@ class Plurality extends \morphos\Plurality implements Cases {
 		if ($dec === null) $dec = new GeneralDeclension();
 		if ($plu === null) $plu = new self();
 
-		$ending = $count % 10;
-		if (($count > 20 && $ending == 1) || $count == 1) {
-			return $word;
-		} else if (($count > 20 && in_array($ending, range(2, 4))) || in_array($count, range(2, 4))) {
-			return $dec->getForm($word, self::RODIT_2, $animateness);
-		} else {
-			$forms = $plu->getForms($word, $animateness);
-			return $forms[self::RODIT_2];
+		switch (self::getNumeralForm($count)) {
+			case self::ONE:
+				return $word;
+			case self::TWO_FOUR:
+				return $dec->getForm($word, self::RODIT_2, $animateness);
+			case self::FIVE_OTHER:
+				$forms = $plu->getForms($word, $animateness);
+				return $forms[self::RODIT_2];
 		}
 	}
 
