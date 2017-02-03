@@ -1,4 +1,5 @@
 <?php
+namespace morhos\test\Russian;
 require __DIR__.'/../../vendor/autoload.php';
 
 use morphos\Russian\Cases;
