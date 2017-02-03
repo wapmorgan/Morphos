@@ -100,7 +100,7 @@ class GeneralDeclension extends \morphos\GeneralDeclension implements Cases {
 	public function declinateFirstDeclension($word, $animateness = false) {
 		$word = lower($word);
 		$last = slice($word, -1);
-		$soft_last = $last == 'й' || (in_array($last, ['ь', 'е', 'ё', 'ю', 'я']) && self::isConsonant(slice($word, -2, -1)));
+		$soft_last = $last == 'й' || (in_array($last, ['ь', 'е', 'ё', 'ю', 'я']) && (self::isConsonant(slice($word, -2, -1)) || slice($word, -2, -1) == 'и'));
 		$prefix = self::getPrefixOfFirstDeclension($word, $last);
 		$forms =  array(
 			Cases::IMENIT_1 => $word,
