@@ -63,6 +63,11 @@ class Plurality extends \morphos\Plurality implements Cases {
 			else
 				$forms[Cases::RODIT_2] = $prefix;
 		}
+		else if (slice($word, -2) == 'ка') {
+			// чашка, вилка, ложка, тарелка
+			if (slice($word, -3, -2) == 'л') $forms[Cases::RODIT_2] = slice($word, 0, -2).'ок';
+			else $forms[Cases::RODIT_2] = slice($word, 0, -2).'ек';
+		}
 		else if (in_array($last, array('а'))) // обида, ябеда
 			$forms[Cases::RODIT_2] = $prefix;
 		else if (in_array($last, array('я'))) // молния
