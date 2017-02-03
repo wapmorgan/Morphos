@@ -60,6 +60,10 @@ trait RussianLanguage {
 		return in_array(upper($consonant), self::$consonants);
 	}
 
+	static private function isVowel($char) {
+		return in_array(upper($char), self::$vowels);
+	}
+
 	public function countSyllables($string) {
 		return chars_count($string, array_map(__NAMESPACE__.'\\lower', self::$vowels));
 	}
