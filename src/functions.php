@@ -114,6 +114,8 @@ namespace morphos\Russian {
 		if ($middle === null) $middle = new MiddleNamesDeclension();
 		if ($last === null) $last = new LastNamesDeclension();
 
+		if ($gender === null) $gender = detectGender($fullname);
+
 		$name = explode(' ', $fullname);
 		if ($case === null) {
 			$result = array();
@@ -147,5 +149,18 @@ namespace morphos\Russian {
 			}
 		}
 		return implode(' ', $name);
+	}
+
+	function detectGender($fullname) {
+		static $first, $middle, $last;
+		if ($first === null) $first = new FirstNamesDeclension();
+		if ($middle === null) $middle = new MiddleNamesDeclension();
+		if ($last === null) $last = new LastNamesDeclension();
+
+		$name = explode(' ', lower($fullname));
+
+		return (isset($name[2]) ? $middle->detectGender($name[2]) : null) ?:
+			$first->detectGender($name[1]) ?:
+			$last->detectGender($name[0]);
 	}
 }
