@@ -1,6 +1,8 @@
 <?php
+namespace morhos\test\Russian;
 require __DIR__.'/../../vendor/autoload.php';
 
+use morphos\NamesDeclension;
 use morphos\Russian\Cases;
 use morphos\Russian\FirstNamesDeclension;
 
@@ -183,7 +185,7 @@ class FirstNamesDeclensionTest extends \PHPUnit_Framework_TestCase {
      */
     public function testDetectGenderMen($name) {
         $result = $this->declension->detectGender($name);
-        if ($result !== null) $this->assertEquals(morphos\NamesDeclension::MAN, $result);
+        if ($result !== null) $this->assertEquals(NamesDeclension::MAN, $result);
     }
 
     /**
@@ -191,7 +193,7 @@ class FirstNamesDeclensionTest extends \PHPUnit_Framework_TestCase {
      */
     public function testDetectGenderWomen($name) {
         $result = $this->declension->detectGender($name);
-        if ($result !== null) $this->assertEquals(morphos\NamesDeclension::WOMAN, $result);
+        if ($result !== null) $this->assertEquals(NamesDeclension::WOMAN, $result);
     }
 
     public function mutableNamesProvider() {
