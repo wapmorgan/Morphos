@@ -53,7 +53,7 @@ class Plurality extends \morphos\Plurality implements Cases {
 		$last = slice($word, -1);
 
 		if (($declension = GeneralDeclension::getDeclension($word)) == GeneralDeclension::FIRST_DECLENSION) {
-			$soft_last = $last == 'й' || (in_array($last, ['ь', 'е', 'ё', 'ю', 'я']) && self::isConsonant(slice($word, -2, -1)));
+			$soft_last = $last == 'й' || (in_array($last, ['ь', 'е', 'ё', 'ю', 'я']) && (self::isConsonant(slice($word, -2, -1)) || slice($word, -2, -1) == 'и'));
 			$prefix = GeneralDeclension::getPrefixOfFirstDeclension($word, $last);
 		} else if ($declension == GeneralDeclension::SECOND_DECLENSION) {
 			 $soft_last = $this->checkLastConsonantSoftness($word);
@@ -76,6 +76,8 @@ class Plurality extends \morphos\Plurality implements Cases {
 			// exceptions
 			if (in_array($word, $this->neuterExceptions))
 				$forms[Cases::RODIT_2] = $prefix.'ей';
+			else if (slice($word, -2, -1) == 'и')
+				$forms[Cases::RODIT_2] = $prefix.'й';
 			else
 				$forms[Cases::RODIT_2] = $prefix;
 		}
