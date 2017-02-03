@@ -49,6 +49,7 @@ class GeneralDeclension extends \morphos\GeneralDeclension implements Cases {
 		'лось',
 		'гвоздь',
 		'медведь',
+		'день',
 	);
 
 	public function hasForms($word, $animateness = false) {
@@ -193,7 +194,9 @@ class GeneralDeclension extends \morphos\GeneralDeclension implements Cases {
 	}
 
 	static public function getPrefixOfFirstDeclension($word, $last) {
-		if (in_array($last, ['о', 'е', 'ё', 'ь', 'й']))
+		if ($word == 'день')
+			$prefix = 'дн';
+		else if (in_array($last, ['о', 'е', 'ё', 'ь', 'й']))
 			$prefix = slice($word, 0, -1);
 		else
 			$prefix = $word;
