@@ -1,12 +1,12 @@
 <?php
 namespace morphos\Russian;
 
-use morphos\NumberCreation;
+use morphos\NumeralCreation;
 
 /**
  * Rules are from http://www.fio.ru/pravila/grammatika/sklonenie-imen-chislitelnykh/
  */
-class CardinalNumber extends NumberCreation implements Cases {
+class CardinalNumeral extends NumeralCreation implements Cases {
     use RussianLanguage;
 
     protected $words = array(

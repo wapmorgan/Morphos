@@ -19,7 +19,7 @@ Tests & Quality: [![Build Status](https://travis-ci.org/wapmorgan/Morphos.svg)](
         3. Last names
         4. Nouns
     2. Pluralization
-    3. Number creation
+    3. Numeral creation
     4. Cases
 4. English
     1. Pluralization
@@ -72,7 +72,7 @@ morphos\
                 LastNamesDeclension
                 GeneralDeclension
                 Plurality
-                CardinalNumber
+                CardinalNumeral
 ```
 
 ## Declension
@@ -345,24 +345,24 @@ echo $count.' '.Plurality::pluralize($word, $count, false);
 // result: 10 домов
 ```
 
-## Number creation
+## Numeral creation
 
 All number creation classes are similar and have two common methods:
 
 - `string getForm($number, $case)` - Get one form of a number.
 - `array getForms($number)` - Get all forms of a number.
 
-### Cardinal numbers (`CardinalNumber`)
+### Cardinal numbers (`CardinalNumeral`)
 
 _Creation of cardinal numerals in russian language._
 
 Create declension class object:
 
 ```php
-use morphos\Russian\CardinalNumber;
+use morphos\Russian\CardinalNumeral;
 use morphos\Russian\Cases;
 
-$cardinal = new CardinalNumber();
+$cardinal = new CardinalNumeral();
 ```
 
 Get text representation of a number:

@@ -1,7 +1,7 @@
 <?php
 namespace morphos;
 
-class NumberCreation implements Cases {
+class NumeralCreation implements Cases {
     public function getForms($number) {}
     public function getForm($number, $case) {}
 }

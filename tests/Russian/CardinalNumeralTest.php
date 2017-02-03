@@ -3,13 +3,13 @@ namespace morphos\test\Russian;
 require __DIR__.'/../../vendor/autoload.php';
 
 use morphos\Russian\Cases;
-use morphos\Russian\CardinalNumber;
+use morphos\Russian\CardinalNumeral;
 
-class CardinalNumberTest extends \PHPUnit_Framework_TestCase {
+class CardinalNumeralTest extends \PHPUnit_Framework_TestCase {
     protected $cardinal;
 
     public function setUp() {
-        $this->cardinal = new CardinalNumber();
+        $this->cardinal = new CardinalNumeral();
     }
 
     /**
