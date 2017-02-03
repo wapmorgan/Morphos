@@ -230,7 +230,7 @@ class CardinalNumber extends NumberCreation implements Cases {
     }
 
     public function getForm($number, $form) {
-        $forms = $this->getForms($name);
+        $forms = $this->getForms($number);
         return $forms[$form];
     }
 }
