@@ -63,7 +63,7 @@ class Plurality extends \morphos\Plurality implements Cases {
 
 		$forms = array();
 
-		if ($last == 'ч' || slice($word, -2) == 'чь' || ($this->isVowel($last) && slice($word, -2, -1) == 'ч'))
+		if ($last == 'ч' || slice($word, -2) == 'чь' || ($this->isVowel($last) && in_array(slice($word, -2, -1), array('ч', 'к')))) // before ч, чь, ч+vowel, к+vowel
 			$forms[Cases::IMENIT_1] = $prefix.'и';
 		else if ($last == 'н')
 			$forms[Cases::IMENIT_1] = $prefix.'ы';
@@ -81,9 +81,9 @@ class Plurality extends \morphos\Plurality implements Cases {
 			else
 				$forms[Cases::RODIT_2] = $prefix;
 		}
-		else if (slice($word, -2) == 'ка') {
-			// чашка, вилка, ложка, тарелка
+		else if (slice($word, -2) == 'ка') { // words ending with -ка: чашка, вилка, ложка, тарелка, копейка, батарейка
 			if (slice($word, -3, -2) == 'л') $forms[Cases::RODIT_2] = slice($word, 0, -2).'ок';
+			else if (slice($word, -3, -2) == 'й') $forms[Cases::RODIT_2] = slice($word, 0, -3).'ек';
 			else $forms[Cases::RODIT_2] = slice($word, 0, -2).'ек';
 		}
 		else if (in_array($last, array('а'))) // обида, ябеда
