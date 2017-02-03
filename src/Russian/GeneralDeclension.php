@@ -156,7 +156,7 @@ class GeneralDeclension extends \morphos\GeneralDeclension implements Cases {
 		$forms[Cases::DAT_3] = self::getPredCaseOf12Declensions($word, $last, $prefix);
 
 		// VINIT_4
-		$forms[Cases::VINIT_4] = $this->chooseVowelAfterConsonant($last, $soft_last, $prefix.'ю', $prefix.'у');
+		$forms[Cases::VINIT_4] = $this->chooseVowelAfterConsonant($last, $soft_last && slice($word, -2, -1) != 'ч', $prefix.'ю', $prefix.'у');
 
 		// TVORIT_5
 		if ($last == 'ь')
