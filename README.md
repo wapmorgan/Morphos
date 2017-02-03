@@ -31,6 +31,11 @@ Tests & Quality: [![Build Status](https://travis-ci.org/wapmorgan/Morphos.svg)](
 composer require wapmorgan/morphos
 ```
 
+Adapters:
+
+- Adapter for Laravel (Blade): [wapmorgan/morphos-blade](https://github.com/wapmorgan/Morphos-Blade)
+- Adapter for Symfony (Twig): [wapmorgan/morphos-twig](https://github.com/wapmorgan/Morphos-Twig)
+
 ## Quick Start
 Decline russian names:
 
