@@ -178,6 +178,22 @@ class FirstNamesDeclensionTest extends \PHPUnit_Framework_TestCase {
         $this->assertTrue($this->declension->hasForms($name, $gender));
     }
 
+    /**
+     * @dataProvider allMenNamesProvider()
+     */
+    public function testDetectGenderMen($name) {
+        $result = $this->declension->detectGender($name);
+        if ($result !== null) $this->assertEquals(morphos\NamesDeclension::MAN, $result);
+    }
+
+    /**
+     * @dataProvider allWomenNamesProvider()
+     */
+    public function testDetectGenderWomen($name) {
+        $result = $this->declension->detectGender($name);
+        if ($result !== null) $this->assertEquals(morphos\NamesDeclension::WOMAN, $result);
+    }
+
     public function mutableNamesProvider() {
         return array(
             array('Иван', FirstNamesDeclension::MAN),

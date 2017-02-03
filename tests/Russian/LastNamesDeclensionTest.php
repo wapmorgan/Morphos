@@ -34,6 +34,14 @@ class LastNamesDeclensionTest extends \PHPUnit_Framework_TestCase {
             ), $forms);
     }
 
+    /**
+     * @dataProvider lastNamesProvider()
+     */
+    public function testDetectGender($name, $gender) {
+        $result = $this->declension->detectGender($name);
+        if ($result !== null) $this->assertEquals($gender, $result);
+    }
+
     public function lastNamesProvider() {
         return array(
             array('Смирнов', NamesDeclension::MAN, 'Смирнова', 'Смирнову', 'Смирнова', 'Смирновым', 'о Смирнове'),
