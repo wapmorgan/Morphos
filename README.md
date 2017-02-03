@@ -52,6 +52,12 @@ var_dump(morphos\Russian\Plurality::pluralize('дом', 10)); // домов
 var_dump(morphos\Russian\Plurality::pluralize('гидродендрариум', 2)); // гидродендрариума
 ```
 
+Generate russian cardinal numerals:
+
+```php
+var_dump(morphos\Russian\CardinalNumeral::generate(567)); // пятьсот шестьдесят семь
+```
+
 Pluralize english nouns:
 
 ```php
@@ -351,6 +357,7 @@ All number creation classes are similar and have two common methods:
 
 - `string getForm($number, $case, $gender = NumeralCreation::MALE)` - Get one form of a number.
 - `array getForms($number, $gender = NumeralCreation::MALE)` - Get all forms of a number.
+- `string #generate($number, $gender = NumeralCreation::MALE)` - Generates a cardinal numeral for a number.
 
 `$gender` is one of `morphos\NumeralCreation` constants: `MALE` or `FEMALE` or `NEUTER`.
 
@@ -397,6 +404,17 @@ var_dump($cardinal->getForms($number));
     string(81) "о четырех тысячах трехстах пятидесяти одном"
   }
 */
+```
+
+Generate numeral of a number:
+
+```php
+use morphos\Russian\CardinalNumeral;
+
+$number = 4351;
+
+echo CardinalNumeral::generate($number);
+// result: четыре тысячи триста пятьдесят один
 ```
 
 ## Cases (`Cases`)

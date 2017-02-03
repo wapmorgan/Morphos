@@ -273,4 +273,11 @@ class CardinalNumeral extends NumeralCreation implements Cases {
         $forms = $this->getForms($number, $gender);
         return $forms[$form];
     }
+
+    static public function generate($number, $gender = self::MALE) {
+        static $card;
+        if ($card === null) $card = new self();
+
+        return $card->getForm($number, self::IMENIT, $gender);
+    }
 }
