@@ -50,6 +50,7 @@ class GeneralDeclension extends \morphos\GeneralDeclension implements Cases {
 		'гвоздь',
 		'медведь',
 		'день',
+		'рубль',
 	);
 
 	public function hasForms($word, $animateness = false) {
