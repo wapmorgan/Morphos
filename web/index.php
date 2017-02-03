@@ -28,11 +28,14 @@ if (isset($_POST['word'])) {
 }
 ?>
 <form method="post">
-Введите Имя: <input name="name" value="<?= isset($_POST['name']) ? $_POST['name'] : null ?>"> <label><input type="radio" name="gender" value="m" <?= !isset($_POST['gender']) || $_POST['gender'] != 'w' ? "checked='checked'" : null ?> /> Муж. </label> <label><input type="radio" name="gender" value="w" <?= isset($_POST['gender']) && $_POST['gender'] == 'w' ? "checked='checked'" : null ?> /> Жен. </label><input type="submit"/>
+Введите Имя: <input name="name" value="<?= isset($_POST['name']) ? $_POST['name'] : null ?>"> <label><input type="radio" name="gender" value="m" <?= isset($_POST['gender']) && $_POST['gender'] == 'm' ? "checked='checked'" : null ?> /> Муж. </label> <label><input type="radio" name="gender" value="w" <?= isset($_POST['gender']) && $_POST['gender'] == 'w' ? "checked='checked'" : null ?> /> Жен. </label><input type="submit"/>
 </form>
 <?php
 if (isset($_POST['name'])) {
-	$gender = isset($_POST['gender']) && $_POST['gender'] == 'w' ? morphos\NamesDeclension::WOMAN : morphos\NamesDeclension::MAN;
+	$gender = isset($_POST['gender']) ? $_POST['gender'] : null;
+	echo '<pre>';
+		var_dump($gender ?: morphos\Russian\detectGender($_POST['name']));
+	echo '</pre>';
 	echo '<pre>';
 		var_dump(morphos\Russian\nameCase($_POST['name'], null, $gender));
 	echo '</pre>';
