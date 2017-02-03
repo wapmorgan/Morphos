@@ -354,7 +354,7 @@ All number creation classes are similar and have two common methods:
 
 ### Cardinal numbers (`CardinalNumber`)
 
-_Declension of middle names in russian language._
+_Creation of cardinal numerals in russian language._
 
 Create declension class object:
 
