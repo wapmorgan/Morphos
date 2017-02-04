@@ -55,6 +55,7 @@ class GeneralDeclension extends \morphos\GeneralDeclension implements Cases {
 
 	static protected $immutableWords = array(
 		'евро',
+		'пенни',
 	);
 
 	public function hasForms($word, $animateness = false) {

@@ -18,6 +18,7 @@ class Plurality extends \morphos\Plurality implements Cases {
 
 	static protected $immutableWords = array(
 		'евро',
+		'пенни',
 	);
 
 	static public function pluralize($word, $count, $animateness = false) {
