@@ -16,6 +16,10 @@ class Plurality extends \morphos\Plurality implements Cases {
 		'море',
 	);
 
+	static protected $immutableWords = array(
+		'евро',
+	);
+
 	static public function pluralize($word, $count, $animateness = false) {
 		static $dec, $plu;
 		if ($dec === null) $dec = new GeneralDeclension();
@@ -51,6 +55,17 @@ class Plurality extends \morphos\Plurality implements Cases {
 		$word = lower($word);
 		$prefix = slice($word, 0, -1);
 		$last = slice($word, -1);
+
+		if (in_array($word, self::$immutableWords)) {
+			return array(
+				self::IMENIT => $word,
+				self::RODIT => $word,
+				self::DAT => $word,
+				self::VINIT => $word,
+				self::TVORIT => $word,
+				self::PREDLOJ => $this->choosePrepositionByFirstLetter($word, 'об', 'о').' '.$word,
+			);
+		}
 
 		if (($declension = GeneralDeclension::getDeclension($word)) == GeneralDeclension::FIRST_DECLENSION) {
 			$soft_last = $last == 'й' || (in_array($last, ['ь', 'е', 'ё', 'ю', 'я']) && (self::isConsonant(slice($word, -2, -1)) || slice($word, -2, -1) == 'и'));

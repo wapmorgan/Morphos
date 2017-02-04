@@ -53,9 +53,13 @@ class GeneralDeclension extends \morphos\GeneralDeclension implements Cases {
 		'рубль',
 	);
 
+	static protected $immutableWords = array(
+		'евро',
+	);
+
 	public function hasForms($word, $animateness = false) {
 		$word = lower($word);
-		if (in_array(slice($word, -1), array('у', 'и', 'е', 'о', 'ю')))
+		if (in_array(slice($word, -1), array('у', 'и', 'е', 'о', 'ю')) || in_array($word, self::$immutableWords))
 			return false;
 		return true;
 	}
@@ -75,7 +79,16 @@ class GeneralDeclension extends \morphos\GeneralDeclension implements Cases {
 	public function getForms($word, $animateness = false) {
 		$word = lower($word);
 
-		if (isset($this->abnormalExceptions[$word])) {
+		if (in_array($word, self::$immutableWords)) {
+			return array(
+				self::IMENIT => $word,
+				self::RODIT => $word,
+				self::DAT => $word,
+				self::VINIT => $word,
+				self::TVORIT => $word,
+				self::PREDLOJ => $this->choosePrepositionByFirstLetter($word, 'об', 'о').' '.$word,
+			);
+		} else if (isset($this->abnormalExceptions[$word])) {
 			$prefix = slice($word, -1);
 			return array(
 				self::IMENIT => $word,
