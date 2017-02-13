@@ -41,8 +41,8 @@ Adapters:
 Decline russian names:
 
 ```php
-var_dump(morphos\Russian\nameCase('Иванов Петр', morphos\Cases::GENETIVE, morphos\NamesDeclension::MAN)); // Иванова Петра
-var_dump(morphos\Russian\nameCase('Кулаков Святослав Матвеевич', morphos\Cases::GENETIVE, morphos\NamesDeclension::MAN)); // Кулакова Святослава Матвеевича
+var_dump(morphos\Russian\nameCase('Иванов Петр', morphos\Cases::GENITIVE, morphos\NamesDeclension::MAN)); // Иванова Петра
+var_dump(morphos\Russian\nameCase('Кулаков Святослав Матвеевич', morphos\Cases::GENITIVE, morphos\NamesDeclension::MAN)); // Кулакова Святослава Матвеевича
 ```
 
 Pluralize russian nouns:
@@ -171,7 +171,7 @@ $dec = new MiddleNamesDeclension();
 Check whether there are forms for this name and if they exist get it:
 
 ```php
-// for example, let it be Иван
+// for example, let it be Сергеевич
 $user_name = 'Сергеевич';
 
 $name = $dec->getForm($user_name, Cases::RODIT, $dec->detectGender($user_name));
@@ -283,7 +283,7 @@ var_dump($dec->getForms('линейка', false));
     ["nominativus"]=>
     string(14) "линейка"
     ["genetivus"]=>
-    string(14) "линейкы"
+    string(14) "линейки"
     ["dativus"]=>
     string(14) "линейке"
     ["accusative"]=>
@@ -421,7 +421,7 @@ echo CardinalNumeral::generate($number);
 Cases in russian language:
 
 * `morphos\Russian\Cases::IMENIT` - nominative case
-* `morphos\Russian\Cases::RODIT` - genetive case
+* `morphos\Russian\Cases::RODIT` - genitive case
 * `morphos\Russian\Cases::DAT` - dative case
 * `morphos\Russian\Cases::VINIT` - accusative case
 * `morphos\Russian\Cases::TVORIT` - ablative case
