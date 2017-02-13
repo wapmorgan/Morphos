@@ -119,18 +119,14 @@ use morphos\Russian\FirstNamesDeclension;
 $dec = new FirstNamesDeclension();
 ```
 
-Check whether there are forms for this name and if they exist get it:
+Get any form of a name:
 
 ```php
 // for example, let it be Иван
 $user_name = 'Иван';
 
-// we want to get it's genetivus form
-if ($dec->hasForms($user_name, $dec->detectGender($user_name))) {
-    $name = $dec->getForm($user_name, Cases::RODIT, $dec->detectGender($user_name));
-} else { // immutable name
-    $name = $user_name;
-}
+// it will return the same values for all cases if first name is immutable
+$name = $dec->getForm($user_name, Cases::RODIT, $dec->detectGender($user_name));
 ```
 
 If you need all forms, you can get all forms of a name:
@@ -168,7 +164,7 @@ use morphos\Russian\MiddleNamesDeclension;
 $dec = new MiddleNamesDeclension();
 ```
 
-Check whether there are forms for this name and if they exist get it:
+Get any form of a name:
 
 ```php
 // for example, let it be Сергеевич
@@ -217,11 +213,8 @@ Check whether there are forms for this name and if they exist get it:
 ```php
 $user_last_name = 'Иванов';
 
-if ($dec->hasForms($user_last_name, $dec->detectGender($user_last_name))) {
-    $dativus_last_name = $dec->getForm($user_last_name, Cases::RODIT, $dec->detectGender($user_last_name));
-} else { // immutable last name
-    $dativus_last_name = $user_last_name;
-}
+// it will return the original name if name is immutable
+$dativus_last_name = $dec->getForm($user_last_name, Cases::RODIT, $dec->detectGender($user_last_name));
 
 echo 'Мы хотим подарить товарищу '.$dativus_last_name.' небольшой презент.';
 ```
@@ -334,8 +327,8 @@ var_dump($plu->getForms('поле', false));
     ["ablativus"]=>
     string(12) "полями"
     ["praepositionalis"]=>
-    string(10) "полях"
-  }
+    string(13) "о полях"
+}
 */
 ```
 
