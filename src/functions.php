@@ -114,6 +114,10 @@ namespace morphos\Russian {
 		if ($middle === null) $middle = new MiddleNamesDeclension();
 		if ($last === null) $last = new LastNamesDeclension();
 
+		if (in_array($case, array('m', 'w'))) {
+			$gender = $case;
+			$case = null;
+		}
 		if ($gender === null) $gender = detectGender($fullname);
 
 		$name = explode(' ', $fullname);
