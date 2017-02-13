@@ -12,8 +12,12 @@ class LastNamesDeclension extends \morphos\NamesDeclension implements Cases {
 
     public function hasForms($name, $gender) {
         $name = lower($name);
+
+        if (in_array(slice($name, -1), array('а', 'я')))
+            return true;
+
         if ($gender == self::MAN) {
-            if (in_array(slice($name, -2), array('ов', 'ев', 'ин', 'ын')) || in_array(slice($name, -4), array('ский', 'ской', 'цкий', 'цкой')))
+            if (in_array(slice($name, -2), array('ов', 'ев', 'ин', 'ын', 'ий', 'ой')))
                 return true;
             if (in_array(upper(slice($name, -1)), RussianLanguage::$consonants))
                 return true;
@@ -21,12 +25,9 @@ class LastNamesDeclension extends \morphos\NamesDeclension implements Cases {
             if (slice($name, -1) == 'ь')
                 return true;
         } else {
-            if (in_array(slice($name, -3), array('ова', 'ева', 'ина', 'ына')) || in_array(slice($name, -4), array('ская')))
+            if (in_array(slice($name, -2), array('ва', 'на')) || in_array(slice($name, -4), array('ская')))
                 return true;
         }
-
-        if (in_array(slice($name, -1), array('а', 'я')))
-            return true;
 
         return false;
     }
