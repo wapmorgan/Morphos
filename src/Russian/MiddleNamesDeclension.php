@@ -45,8 +45,10 @@ class MiddleNamesDeclension extends \morphos\NamesDeclension implements Cases {
                 Cases::TVORIT => $prefix.'ой',
                 Cases::PREDLOJ => $this->choosePrepositionByFirstLetter($prefix, 'об', 'о').' '.$prefix.'е',
             );
-        } else {
-            return false;
         }
+
+        // immutable middle name
+        $name = name($name);
+        return array_fill_keys(array(self::IMENIT_1, self::RODIT_2, self::DAT_3, self::VINIT_4, self::TVORIT_5), $name) + array(self::PREDLOJ_6 => $this->choosePrepositionByFirstLetter($name, 'об', 'о').' '.$name);
     }
 }

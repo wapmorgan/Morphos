@@ -501,7 +501,7 @@ class FirstNamesDeclension extends \morphos\NamesDeclension implements Cases {
 		}
 
 		// common rules for ия and я
-		if (slice($name, -1) == 'я' and slice($name, -2, -1) != 'и') {
+		if (slice($name, -1) == 'я' && slice($name, -2, -1) != 'и') {
 			$prefix = name(slice($name, 0, -1));
 			return array(
 				self::IMENIT_1 => $prefix.'я',

@@ -56,8 +56,7 @@ class LastNamesDeclension extends \morphos\NamesDeclension implements Cases {
                     self::PREDLOJ_6 => $this->choosePrepositionByFirstLetter($prefix, 'об', 'о').' '.$prefix.'е'
                 );
             }
-
-            if (in_array(slice($name, -4), array('ский', 'ской', 'цкий', 'цкой'))) {
+            else if (in_array(slice($name, -4), array('ский', 'ской', 'цкий', 'цкой'))) {
                 $prefix = name(slice($name, 0, -2));
                 return array(
                     self::IMENIT_1 => name($name),
