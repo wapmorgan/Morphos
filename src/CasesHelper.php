@@ -23,12 +23,10 @@ trait CasesHelper {
                 return Cases::DATIVE;
 
             case Cases::ACCUSATIVE:
-            case 'a':
                 return Cases::ACCUSATIVE;
 
             case Cases::ABLATIVE:
             case 'ablativus':
-            case 'a':
                 return Cases::ABLATIVE;
 
             case Cases::PREPOSITIONAL:
