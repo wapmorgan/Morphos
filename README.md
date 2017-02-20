@@ -99,9 +99,9 @@ Arguments:
 
 All declension classes are similar and have three common methods:
 
-- `boolean hasForms($word, $gender)` - Check if name is mutable.
-- `string getForm($word, $case, $gender)` - Declines name.
-- `array getForms($word, $gender)` - Declines name to all cases.
+- `boolean isMutable($word, $gender)` - Check if name is mutable.
+- `string getCase($word, $case, $gender)` - Declines name.
+- `array getCases($word, $gender)` - Declines name to all cases.
 - `string detectGender($word)` - Tries to detect gender for given name.
 
 `Case` is one constant of `Cases` class constants (described below).
@@ -126,13 +126,13 @@ Get any form of a name:
 $user_name = 'Иван';
 
 // it will return the same values for all cases if first name is immutable
-$name = $dec->getForm($user_name, Cases::RODIT, $dec->detectGender($user_name));
+$name = $dec->getCase($user_name, Cases::RODIT, $dec->detectGender($user_name));
 ```
 
 If you need all forms, you can get all forms of a name:
 
 ```php
-var_dump($dec->getForms($user_name, $dec->detectGender($user_name)));
+var_dump($dec->getCases($user_name, $dec->detectGender($user_name)));
 /* Will produce something like
   array(6) {
     ["nominative"]=>
@@ -170,13 +170,13 @@ Get any form of a name:
 // for example, let it be Сергеевич
 $user_name = 'Сергеевич';
 
-$name = $dec->getForm($user_name, Cases::RODIT, $dec->detectGender($user_name));
+$name = $dec->getCase($user_name, Cases::RODIT, $dec->detectGender($user_name));
 ```
 
 If you need all forms, you can get all forms of a name:
 
 ```php
-var_dump($dec->getForms($user_name, $dec->detectGender($user_name)));
+var_dump($dec->getCases($user_name, $dec->detectGender($user_name)));
 /* Will produce something like
   array(6) {
     ["nominative"]=>
@@ -214,7 +214,7 @@ Check whether there are forms for this name and if they exist get it:
 $user_last_name = 'Иванов';
 
 // it will return the original name if name is immutable
-$dativus_last_name = $dec->getForm($user_last_name, Cases::RODIT, $dec->detectGender($user_last_name));
+$dativus_last_name = $dec->getCase($user_last_name, Cases::RODIT, $dec->detectGender($user_last_name));
 
 echo 'Мы хотим подарить товарищу '.$dativus_last_name.' небольшой презент.';
 ```
@@ -222,7 +222,7 @@ echo 'Мы хотим подарить товарищу '.$dativus_last_name.' �
 If you need all forms, you can get all forms of a name:
 
 ```php
-var_dump($dec->getForms($user_last_name, $dec->detectGender($user_last_name)));
+var_dump($dec->getCases($user_last_name, $dec->detectGender($user_last_name)));
 /* Will produce something like
   array(6) {
     ["nominative"]=>
@@ -246,9 +246,9 @@ _Declension of nouns in russian language._
 
 General declension class also have few similar methods but arguments are different:
 
-- `boolean hasForms($word, bool $animateness = false)` - Check if noun is mutable.
-- `string getForm($word, $case, $animateness = false)` - Declines noun.
-- `array getForms($word, $animateness = false)` - Declines noun to all cases.
+- `boolean isMutable($word, bool $animateness = false)` - Check if noun is mutable.
+- `string getCase($word, $case, $animateness = false)` - Declines noun.
+- `array getCases($word, $animateness = false)` - Declines noun to all cases.
 
 Create declension class object:
 
@@ -262,15 +262,15 @@ $dec = new GeneralDeclension();
 Check whether there are forms for this word (second arg is an animateness) and get them:
 
 ```php
-if ($dec->hasForms('поле', false)) {
-    $form = $dec->getForm('поле', Cases::RODIT, false);
+if ($dec->isMutable('поле', false)) {
+    $form = $dec->getCase('поле', Cases::RODIT, false);
 }
 ```
 
 Get all forms of a word at once:
 
 ```php
-var_dump($dec->getForms('линейка', false));
+var_dump($dec->getCases('линейка', false));
 /* Will produce something like
   array(6) {
     ["nominative"]=>
@@ -294,8 +294,8 @@ _Pluralization nouns in Russian._
 
 This class have similar methods but not only:
 
-- `string getForm($word, $case, $animateness = false)` - Pluralizes noun and declines.
-- `array getForms($word, $animateness = false)` - Pluralizes noun and declines to all cases.
+- `string getCase($word, $case, $animateness = false)` - Pluralizes noun and declines.
+- `array getCases($word, $animateness = false)` - Pluralizes noun and declines to all cases.
 - `string #pluralize($word, $count, $animateness = false)` - Pluralizes noun to coincide with numeral.
 
 Get plural form of a noun:
@@ -306,14 +306,14 @@ use morphos\Russian\Plurality;
 $plu = new Plurality();
 
 $word = 'дом';
-$plural = $plu->getForm($word, Cases::IMENIT);
+$plural = $plu->getCase($word, Cases::IMENIT);
 echo 'Множественное число для '.$word.' - '.$plural;
 ```
 
 Pluralize word and get all forms:
 
 ```php
-var_dump($plu->getForms('поле', false));
+var_dump($plu->getCases('поле', false));
 /* Result will be like
   array(6) {
     ["nominative"]=>
@@ -348,8 +348,8 @@ echo $count.' '.Plurality::pluralize($word, $count, false);
 
 All number creation classes are similar and have two common methods:
 
-- `string getForm($number, $case, $gender = NumeralCreation::MALE)` - Get one form of a number.
-- `array getForms($number, $gender = NumeralCreation::MALE)` - Get all forms of a number.
+- `string getCase($number, $case, $gender = NumeralCreation::MALE)` - Get one form of a number.
+- `array getCases($number, $gender = NumeralCreation::MALE)` - Get all forms of a number.
 - `string #generate($number, $gender = NumeralCreation::MALE)` - Generates a cardinal numeral for a number.
 
 `$gender` is one of `morphos\NumeralCreation` constants: `MALE` or `FEMALE` or `NEUTER`.
@@ -373,14 +373,14 @@ Get text representation of a number:
 ```php
 $number = 4351;
 
-$numeral = $cardinal->getForm($number, Cases::IMENIT); // четыре тысячи триста пятьдесят один
-$numeral = $cardinal->getForm($number, Cases::IMENIT, NumeralCreation::FEMALE); // четыре тысячи триста пятьдесят одна
+$numeral = $cardinal->getCase($number, Cases::IMENIT); // четыре тысячи триста пятьдесят один
+$numeral = $cardinal->getCase($number, Cases::IMENIT, NumeralCreation::FEMALE); // четыре тысячи триста пятьдесят одна
 ```
 
 If you need all forms, you can get all forms of a name:
 
 ```php
-var_dump($cardinal->getForms($number));
+var_dump($cardinal->getCases($number));
 /* Will produce something like
   array(6) {
     ["nominative"]=>
