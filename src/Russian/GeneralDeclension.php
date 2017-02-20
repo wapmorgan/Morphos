@@ -58,7 +58,7 @@ class GeneralDeclension extends \morphos\GeneralDeclension implements Cases {
 		'пенни',
 	);
 
-	public function hasForms($word, $animateness = false) {
+	public function isMutable($word, $animateness = false) {
 		$word = lower($word);
 		if (in_array(slice($word, -1), array('у', 'и', 'е', 'о', 'ю')) || in_array($word, self::$immutableWords))
 			return false;
@@ -77,7 +77,7 @@ class GeneralDeclension extends \morphos\GeneralDeclension implements Cases {
 		}
 	}
 
-	public function getForms($word, $animateness = false) {
+	public function getCases($word, $animateness = false) {
 		$word = lower($word);
 
 		if (in_array($word, self::$immutableWords)) {
@@ -203,9 +203,9 @@ class GeneralDeclension extends \morphos\GeneralDeclension implements Cases {
 		);
 	}
 
-	public function getForm($word, $case, $animateness = false) {
+	public function getCase($word, $case, $animateness = false) {
 		$case = self::canonizeCase($case);
-		$forms = $this->getForms($word, $animateness);
+		$forms = $this->getCases($word, $animateness);
 		return $forms[$case];
 	}
 

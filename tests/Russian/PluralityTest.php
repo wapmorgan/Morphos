@@ -42,7 +42,7 @@ class PluralityTest extends \PHPUnit_Framework_TestCase {
      * @dataProvider pluralWordsProvider
      */
     public function testPluralDeclenation($word, $animateness, $declenated) {
-        $this->assertEquals($declenated, array_values($this->plu->getForms($word, $animateness)));
+        $this->assertEquals($declenated, array_values($this->plu->getCases($word, $animateness)));
     }
 
     public function pluralWordsProvider() {

@@ -16,7 +16,7 @@ class CardinalNumeralTest extends \PHPUnit_Framework_TestCase {
     /**
      * @dataProvider numbersProvider
      */
-    public function testGetForms($number, $gender, $case, $case2, $case3, $case4, $case5, $case6) {
+    public function testGetCases($number, $gender, $case, $case2, $case3, $case4, $case5, $case6) {
         $this->assertEquals(array(
             Cases::IMENIT => $case,
             Cases::RODIT => $case2,
@@ -24,7 +24,7 @@ class CardinalNumeralTest extends \PHPUnit_Framework_TestCase {
             Cases::VINIT => $case4,
             Cases::TVORIT => $case5,
             Cases::PREDLOJ => $case6,
-        ), $this->cardinal->getForms($number, $gender));
+        ), $this->cardinal->getCases($number, $gender));
     }
 
     public function numbersProvider() {

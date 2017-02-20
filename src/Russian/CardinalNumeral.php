@@ -152,7 +152,7 @@ class CardinalNumeral extends NumeralCreation implements Cases {
         ),
     );
 
-    public function getForms($number, $gender = self::MALE) {
+    public function getCases($number, $gender = self::MALE) {
         // simple numeral
         if (isset($this->words[$number]) || isset($this->exponents[$number])) {
             $word = isset($this->words[$number]) ? $this->words[$number] : $this->exponents[$number];
@@ -222,7 +222,7 @@ class CardinalNumeral extends NumeralCreation implements Cases {
             foreach (array_reverse($this->exponents, true) as $word_number => $word) {
                 if ($number >= $word_number) {
                     $count = floor($number / $word_number);
-                    $parts[] = $this->getForms($count, ($word_number == 1000 ? self::FEMALE : self::MALE));
+                    $parts[] = $this->getCases($count, ($word_number == 1000 ? self::FEMALE : self::MALE));
 
                     // get forms of word
                     if (empty($this->declension)) $this->declension = new GeneralDeclension();
@@ -230,16 +230,16 @@ class CardinalNumeral extends NumeralCreation implements Cases {
 
                     switch (Plurality::getNumeralForm($count)) {
                         case Plurality::ONE:
-                            $parts[] = $this->declension->getForms($word, false);
+                            $parts[] = $this->declension->getCases($word, false);
                             break;
                         case Plurality::TWO_FOUR:
-                            $part = $this->plurality->getForms($word);
+                            $part = $this->plurality->getCases($word);
                             if ($word_number != 1000) // get dative case of word for 1000000 and 1000000000
-                                $part[Cases::IMENIT] = $part[Cases::VINIT] = $this->declension->getForm($word, Cases::RODIT);
+                                $part[Cases::IMENIT] = $part[Cases::VINIT] = $this->declension->getCase($word, Cases::RODIT);
                             $parts[] = $part;
                             break;
                         case Plurality::FIVE_OTHER:
-                            $part = $this->plurality->getForms($word);
+                            $part = $this->plurality->getCases($word);
                             $part[Cases::IMENIT] = $part[Cases::VINIT] = $part[Cases::RODIT];
                             $parts[] = $part;
                             break;
@@ -251,7 +251,7 @@ class CardinalNumeral extends NumeralCreation implements Cases {
 
             foreach (array_reverse($this->words, true) as $word_number => $word) {
                 if ($number >= $word_number) {
-                    $parts[] = $this->getForms($word_number, $gender);
+                    $parts[] = $this->getCases($word_number, $gender);
                     $number %= $word_number;
                 }
             }
@@ -269,9 +269,9 @@ class CardinalNumeral extends NumeralCreation implements Cases {
         }
     }
 
-    public function getForm($number, $case, $gender = self::MALE) {
+    public function getCase($number, $case, $gender = self::MALE) {
         $case = self::canonizeCase($case);
-        $forms = $this->getForms($number, $gender);
+        $forms = $this->getCases($number, $gender);
         return $forms[$case];
     }
 
@@ -279,6 +279,6 @@ class CardinalNumeral extends NumeralCreation implements Cases {
         static $card;
         if ($card === null) $card = new self();
 
-        return $card->getForm($number, self::IMENIT, $gender);
+        return $card->getCase($number, self::IMENIT, $gender);
     }
 }

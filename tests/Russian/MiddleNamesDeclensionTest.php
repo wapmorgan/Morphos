@@ -16,8 +16,8 @@ class MiddleNamesDeclensionTest extends \PHPUnit_Framework_TestCase {
     /**
      * @dataProvider middleNamesProvider
      */
-    public function testGetForms($name, $gender, $name2, $name3, $name4, $name5, $name6) {
-        $forms = $this->declension->getForms($name, $gender);
+    public function testGetCases($name, $gender, $name2, $name3, $name4, $name5, $name6) {
+        $forms = $this->declension->getCases($name, $gender);
         $this->assertEquals(array(
             Cases::IMENIT => $name,
             Cases::RODIT => $name2,

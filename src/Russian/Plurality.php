@@ -30,9 +30,9 @@ class Plurality extends \morphos\Plurality implements Cases {
 			case self::ONE:
 				return $word;
 			case self::TWO_FOUR:
-				return $dec->getForm($word, self::RODIT, $animateness);
+				return $dec->getCase($word, self::RODIT, $animateness);
 			case self::FIVE_OTHER:
-				$forms = $plu->getForms($word, $animateness);
+				$forms = $plu->getCases($word, $animateness);
 				return $forms[self::RODIT];
 		}
 	}
@@ -47,13 +47,13 @@ class Plurality extends \morphos\Plurality implements Cases {
 			return self::FIVE_OTHER;
 	}
 
-	public function getForm($word, $case, $animateness = false) {
+	public function getCase($word, $case, $animateness = false) {
 		$case = self::canonizeCase($case);
-		$forms = $this->getForms($word, $animateness);
+		$forms = $this->getCases($word, $animateness);
 		return $forms[$case];
 	}
 
-	public function getForms($word, $animateness = false) {
+	public function getCases($word, $animateness = false) {
 		$word = lower($word);
 		$prefix = slice($word, 0, -1);
 		$last = slice($word, -1);

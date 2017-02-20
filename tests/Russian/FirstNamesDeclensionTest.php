@@ -16,15 +16,15 @@ class FirstNamesDeclensionTest extends \PHPUnit_Framework_TestCase {
     /**
      * @dataProvider allMenNamesProvider
      */
-    public function testHasFormsMen($name) {
-        $this->assertTrue($this->declension->hasForms($name, FirstNamesDeclension::MAN));
+    public function testMutableMen($name) {
+        $this->assertTrue($this->declension->isMutable($name, FirstNamesDeclension::MAN));
     }
 
     /**
      * @dataProvider allWomenNamesProvider
      */
-    public function testHasFormsWomen($name) {
-        $this->assertTrue($this->declension->hasForms($name, FirstNamesDeclension::WOMAN));
+    public function testMutableWomen($name) {
+        $this->assertTrue($this->declension->isMutable($name, FirstNamesDeclension::WOMAN));
     }
 
     public function allMenNamesProvider() {
@@ -50,7 +50,7 @@ class FirstNamesDeclensionTest extends \PHPUnit_Framework_TestCase {
             Cases::VINIT => $name4,
             Cases::TVORIT => $name5,
             Cases::PREDLOJ => $name6,
-        ), $this->declension->getForms($name, FirstNamesDeclension::MAN));
+        ), $this->declension->getCases($name, FirstNamesDeclension::MAN));
     }
 
     /**
@@ -64,7 +64,7 @@ class FirstNamesDeclensionTest extends \PHPUnit_Framework_TestCase {
             Cases::VINIT => $name4,
             Cases::TVORIT => $name5,
             Cases::PREDLOJ => $name6,
-        ), $this->declension->getForms($name, FirstNamesDeclension::WOMAN));
+        ), $this->declension->getCases($name, FirstNamesDeclension::WOMAN));
     }
 
     public function menNamesProvider() {
@@ -156,7 +156,7 @@ class FirstNamesDeclensionTest extends \PHPUnit_Framework_TestCase {
      * @dataProvider immutableNamesProvider()
      */
     public function testImmutabeNames($name, $gender) {
-        $this->assertFalse($this->declension->hasForms($name, $gender));
+        $this->assertFalse($this->declension->isMutable($name, $gender));
     }
 
     public function immutableNamesProvider() {
@@ -177,7 +177,7 @@ class FirstNamesDeclensionTest extends \PHPUnit_Framework_TestCase {
      * @dataProvider mutableNamesProvider()
      */
     public function testMutableNames($name, $gender) {
-        $this->assertTrue($this->declension->hasForms($name, $gender));
+        $this->assertTrue($this->declension->isMutable($name, $gender));
     }
 
     /**

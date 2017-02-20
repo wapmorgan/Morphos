@@ -10,7 +10,7 @@ class LastNamesDeclension extends \morphos\NamesDeclension implements Cases {
     static protected $menPostfixes = array('ов', 'ев' ,'ин' ,'ын', 'ой', 'ий');
     static protected $womenPostfixes = array('ва', 'на', 'ая', 'яя');
 
-    public function hasForms($name, $gender) {
+    public function isMutable($name, $gender) {
         $name = lower($name);
 
         if (in_array(slice($name, -1), array('а', 'я')))
@@ -42,7 +42,7 @@ class LastNamesDeclension extends \morphos\NamesDeclension implements Cases {
         return null;
     }
 
-    public function getForms($name, $gender) {
+    public function getCases($name, $gender) {
         $name = lower($name);
         if ($gender == self::MAN) {
             if (in_array(slice($name, -2), array('ов', 'ев', 'ин', 'ын'))) {
@@ -139,9 +139,9 @@ class LastNamesDeclension extends \morphos\NamesDeclension implements Cases {
         return array_fill_keys(array(self::IMENIT, self::RODIT, self::DAT, self::VINIT, self::TVORIT), $name) + array(self::PREDLOJ => $this->choosePrepositionByFirstLetter($name, 'об', 'о').' '.$name);
     }
 
-    public function getForm($name, $case, $gender) {
+    public function getCase($name, $case, $gender) {
         $case = self::canonizeCase($case);
-        $forms = $this->getForms($name, $gender);
+        $forms = $this->getCases($name, $gender);
         if ($forms !== false)
             if (isset($forms[$case]))
                 return $forms[$case];

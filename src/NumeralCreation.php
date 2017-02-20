@@ -6,6 +6,6 @@ class NumeralCreation implements Cases {
     const FEMALE = 'f';
     const NEUTER = 'n';
 
-    public function getForms($number) {}
-    public function getForm($number, $case) {}
+    public function getCases($number) {}
+    public function getCase($number, $case) {}
 }

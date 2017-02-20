@@ -124,12 +124,12 @@ namespace morphos\Russian {
 		if ($case === null) {
 			$result = array();
 			if (count($name) == 2) {
-				$name[0] = $last->getForms($name[0], $gender);
-				$name[1] = $first->getForms($name[1], $gender);
+				$name[0] = $last->getCases($name[0], $gender);
+				$name[1] = $first->getCases($name[1], $gender);
 			} else if (count($name) == 3) {
-				$name[0] = $last->getForms($name[0], $gender);
-				$name[1] = $first->getForms($name[1], $gender);
-				$name[2] = $middle->getForms($name[2], $gender);
+				$name[0] = $last->getCases($name[0], $gender);
+				$name[1] = $first->getCases($name[1], $gender);
+				$name[2] = $middle->getCases($name[2], $gender);
 			}
 			foreach (array(Cases::IMENIT, Cases::RODIT, Cases::DAT, Cases::VINIT, Cases::TVORIT, Cases::PREDLOJ) as $case) {
 				foreach ($name as $partNum => $namePart) {
@@ -141,14 +141,14 @@ namespace morphos\Russian {
 			return $result;
 		} else {
 			if (count($name) == 2) {
-				$name[0] = $last->getForm($name[0], $case, $gender);
-				$name[1] = $first->getForm($name[1], $case, $gender);
+				$name[0] = $last->getCase($name[0], $case, $gender);
+				$name[1] = $first->getCase($name[1], $case, $gender);
 				if ($case == Cases::PREDLOJ) list(, $name[1]) = explode(' ', $name[1]);
 			} else if (count($name) == 3) {
-				$name[0] = $last->getForm($name[0], $case, $gender);
-				$name[1] = $first->getForm($name[1], $case, $gender);
+				$name[0] = $last->getCase($name[0], $case, $gender);
+				$name[1] = $first->getCase($name[1], $case, $gender);
 				if ($case == Cases::PREDLOJ) list(, $name[1]) = explode(' ', $name[1]);
-				$name[2] = $middle->getForm($name[2], $case, $gender);
+				$name[2] = $middle->getCase($name[2], $case, $gender);
 				if ($case == Cases::PREDLOJ) list(, $name[2]) = explode(' ', $name[2]);
 			}
 		}
