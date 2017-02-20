@@ -135,17 +135,17 @@ If you need all forms, you can get all forms of a name:
 var_dump($dec->getForms($user_name, $dec->detectGender($user_name)));
 /* Will produce something like
   array(6) {
-    ["nominativus"]=>
+    ["nominative"]=>
     string(8) "Иван"
-    ["genetivus"]=>
+    ["genitive"]=>
     string(10) "Ивана"
-    ["dativus"]=>
+    ["dative"]=>
     string(10) "Ивану"
     ["accusative"]=>
     string(10) "Ивана"
-    ["ablativus"]=>
+    ["ablative"]=>
     string(12) "Иваном"
-    ["praepositionalis"]=>
+    ["prepositional"]=>
     string(15) "об Иване"
   }
 */
@@ -179,17 +179,17 @@ If you need all forms, you can get all forms of a name:
 var_dump($dec->getForms($user_name, $dec->detectGender($user_name)));
 /* Will produce something like
   array(6) {
-    ["nominativus"]=>
+    ["nominative"]=>
     string(18) "Сергеевич"
-    ["genetivus"]=>
+    ["genitive"]=>
     string(20) "Сергеевича"
-    ["dativus"]=>
+    ["dative"]=>
     string(20) "Сергеевичу"
     ["accusative"]=>
     string(20) "Сергеевича"
-    ["ablativus"]=>
+    ["ablative"]=>
     string(22) "Сергеевичем"
-    ["praepositionalis"]=>
+    ["prepositional"]=>
     string(23) "о Сергеевиче"
   }
 */
@@ -225,19 +225,19 @@ If you need all forms, you can get all forms of a name:
 var_dump($dec->getForms($user_last_name, $dec->detectGender($user_last_name)));
 /* Will produce something like
   array(6) {
-  ["nominativus"]=>
-  string(12) "Иванов"
-  ["genetivus"]=>
-  string(14) "Иванова"
-  ["dativus"]=>
-  string(14) "Иванову"
-  ["accusative"]=>
-  string(14) "Иванова"
-  ["ablativus"]=>
-  string(16) "Ивановым"
-  ["praepositionalis"]=>
-  string(19) "об Иванове"
-}
+    ["nominative"]=>
+    string(12) "Иванов"
+    ["genitive"]=>
+    string(14) "Иванова"
+    ["dative"]=>
+    string(14) "Иванову"
+    ["accusative"]=>
+    string(14) "Иванова"
+    ["ablative"]=>
+    string(16) "Ивановым"
+    ["prepositional"]=>
+    string(19) "об Иванове"
+  }
 */
 ```
 
@@ -273,17 +273,17 @@ Get all forms of a word at once:
 var_dump($dec->getForms('линейка', false));
 /* Will produce something like
   array(6) {
-    ["nominativus"]=>
+    ["nominative"]=>
     string(14) "линейка"
-    ["genetivus"]=>
+    ["genitive"]=>
     string(14) "линейки"
-    ["dativus"]=>
+    ["dative"]=>
     string(14) "линейке"
     ["accusative"]=>
     string(14) "линейку"
-    ["ablativus"]=>
+    ["ablative"]=>
     string(16) "линейкой"
-    ["praepositionalis"]=>
+    ["prepositional"]=>
     string(17) "о линейке"
   }
 */
@@ -316,19 +316,19 @@ Pluralize word and get all forms:
 var_dump($plu->getForms('поле', false));
 /* Result will be like
   array(6) {
-    ["nominativus"]=>
+    ["nominative"]=>
     string(8) "поля"
-    ["genetivus"]=>
+    ["genitive"]=>
     string(10) "полей"
-    ["dativus"]=>
+    ["dative"]=>
     string(10) "полям"
     ["accusative"]=>
     string(8) "поля"
-    ["ablativus"]=>
+    ["ablative"]=>
     string(12) "полями"
-    ["praepositionalis"]=>
+    ["prepositional"]=>
     string(13) "о полях"
-}
+  }
 */
 ```
 
@@ -383,17 +383,17 @@ If you need all forms, you can get all forms of a name:
 var_dump($cardinal->getForms($number));
 /* Will produce something like
   array(6) {
-    ["nominativus"]=>
+    ["nominative"]=>
     string(66) "четыре тысячи триста пятьдесят один"
-    ["genetivus"]=>
+    ["genitive"]=>
     string(74) "четырех тысяч трехсот пятидесяти одного"
-    ["dativus"]=>
+    ["dative"]=>
     string(80) "четырем тысячам тремстам пятидесяти одному"
     ["accusative"]=>
     string(66) "четыре тысячи триста пятьдесят один"
-    ["ablativus"]=>
+    ["ablative"]=>
     string(90) "четырьмя тысячами тремястами пятьюдесятью одним"
-    ["praepositionalis"]=>
+    ["prepositional"]=>
     string(81) "о четырех тысячах трехстах пятидесяти одном"
   }
 */
