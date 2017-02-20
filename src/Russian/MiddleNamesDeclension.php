@@ -5,7 +5,7 @@ namespace morphos\Russian;
  * Rules are from http://surnameonline.ru/patronymic.html
  */
 class MiddleNamesDeclension extends \morphos\NamesDeclension implements Cases {
-    use RussianLanguage;
+    use RussianLanguage, CasesHelper;
 
     public function detectGender($name) {
         $name = lower($name);
@@ -17,9 +17,10 @@ class MiddleNamesDeclension extends \morphos\NamesDeclension implements Cases {
         return null;
     }
 
-    public function getForm($name, $form, $gender) {
+    public function getForm($name, $case, $gender) {
+        $case = self::canonizeCase($case);
         $forms = $this->getForms($name, $gender);
-        return $forms[$form];
+        return $forms[$case];
     }
 
     public function getForms($name, $gender) {
@@ -49,6 +50,6 @@ class MiddleNamesDeclension extends \morphos\NamesDeclension implements Cases {
 
         // immutable middle name
         $name = name($name);
-        return array_fill_keys(array(self::IMENIT_1, self::RODIT_2, self::DAT_3, self::VINIT_4, self::TVORIT_5), $name) + array(self::PREDLOJ_6 => $this->choosePrepositionByFirstLetter($name, 'об', 'о').' '.$name);
+        return array_fill_keys(array(self::IMENIT, self::RODIT, self::DAT, self::VINIT, self::TVORIT), $name) + array(self::PREDLOJ => $this->choosePrepositionByFirstLetter($name, 'об', 'о').' '.$name);
     }
 }

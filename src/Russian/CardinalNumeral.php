@@ -7,7 +7,7 @@ use morphos\NumeralCreation;
  * Rules are from http://www.fio.ru/pravila/grammatika/sklonenie-imen-chislitelnykh/
  */
 class CardinalNumeral extends NumeralCreation implements Cases {
-    use RussianLanguage;
+    use RussianLanguage, CasesHelper;
 
     protected $words = array(
         1 => 'один',
@@ -269,9 +269,10 @@ class CardinalNumeral extends NumeralCreation implements Cases {
         }
     }
 
-    public function getForm($number, $form, $gender = self::MALE) {
+    public function getForm($number, $case, $gender = self::MALE) {
+        $case = self::canonizeCase($case);
         $forms = $this->getForms($number, $gender);
-        return $forms[$form];
+        return $forms[$case];
     }
 
     static public function generate($number, $gender = self::MALE) {

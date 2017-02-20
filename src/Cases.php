@@ -2,11 +2,11 @@
 namespace morphos;
 
 interface Cases {
-	const NOMINATIVE = 'nominativus';
-	const GENITIVE = 'genetivus';
-	const GENETIVE = 'genetivus';
-	const DATIVE = 'dativus';
+	const NOMINATIVE = 'nominative';
+	const GENITIVE = 'genitive';
+	const GENETIVE = 'genitive';
+	const DATIVE = 'dative';
 	const ACCUSATIVE = 'accusative';
-	const ABLATIVE = 'ablativus';
-	const PREPOSITIONAL = 'praepositionalis';
+	const ABLATIVE = 'ablative';
+	const PREPOSITIONAL = 'prepositional';
 }

@@ -5,7 +5,7 @@ namespace morphos\Russian;
  * Rules are from http://morpher.ru/Russian/Noun.aspx
  */
 class Plurality extends \morphos\Plurality implements Cases {
-	use RussianLanguage;
+	use RussianLanguage, CasesHelper;
 
 	const ONE = 1;
 	const TWO_FOUR = 2;
@@ -30,10 +30,10 @@ class Plurality extends \morphos\Plurality implements Cases {
 			case self::ONE:
 				return $word;
 			case self::TWO_FOUR:
-				return $dec->getForm($word, self::RODIT_2, $animateness);
+				return $dec->getForm($word, self::RODIT, $animateness);
 			case self::FIVE_OTHER:
 				$forms = $plu->getForms($word, $animateness);
-				return $forms[self::RODIT_2];
+				return $forms[self::RODIT];
 		}
 	}
 
@@ -47,9 +47,10 @@ class Plurality extends \morphos\Plurality implements Cases {
 			return self::FIVE_OTHER;
 	}
 
-	public function getForm($word, $form, $animateness = false) {
+	public function getForm($word, $case, $animateness = false) {
+		$case = self::canonizeCase($case);
 		$forms = $this->getForms($word, $animateness);
-		return $forms[$form];
+		return $forms[$case];
 	}
 
 	public function getForms($word, $animateness = false) {
@@ -80,56 +81,56 @@ class Plurality extends \morphos\Plurality implements Cases {
 		$forms = array();
 
 		if ($last == 'ч' || slice($word, -2) == 'чь' || ($this->isVowel($last) && in_array(slice($word, -2, -1), array('ч', 'к')))) // before ч, чь, ч+vowel, к+vowel
-			$forms[Cases::IMENIT_1] = $prefix.'и';
+			$forms[Cases::IMENIT] = $prefix.'и';
 		else if ($last == 'н')
-			$forms[Cases::IMENIT_1] = $prefix.'ы';
+			$forms[Cases::IMENIT] = $prefix.'ы';
 		else
-			$forms[Cases::IMENIT_1] = $this->chooseVowelAfterConsonant($last, $soft_last, $prefix.'я', $prefix.'а');
+			$forms[Cases::IMENIT] = $this->chooseVowelAfterConsonant($last, $soft_last, $prefix.'я', $prefix.'а');
 
 
-		// RODIT_2
+		// RODIT
 		if (in_array($last, array('о', 'е'))) {
 			// exceptions
 			if (in_array($word, $this->neuterExceptions))
-				$forms[Cases::RODIT_2] = $prefix.'ей';
+				$forms[Cases::RODIT] = $prefix.'ей';
 			else if (slice($word, -2, -1) == 'и')
-				$forms[Cases::RODIT_2] = $prefix.'й';
+				$forms[Cases::RODIT] = $prefix.'й';
 			else
-				$forms[Cases::RODIT_2] = $prefix;
+				$forms[Cases::RODIT] = $prefix;
 		}
 		else if (slice($word, -2) == 'ка') { // words ending with -ка: чашка, вилка, ложка, тарелка, копейка, батарейка
-			if (slice($word, -3, -2) == 'л') $forms[Cases::RODIT_2] = slice($word, 0, -2).'ок';
-			else if (slice($word, -3, -2) == 'й') $forms[Cases::RODIT_2] = slice($word, 0, -3).'ек';
-			else $forms[Cases::RODIT_2] = slice($word, 0, -2).'ек';
+			if (slice($word, -3, -2) == 'л') $forms[Cases::RODIT] = slice($word, 0, -2).'ок';
+			else if (slice($word, -3, -2) == 'й') $forms[Cases::RODIT] = slice($word, 0, -3).'ек';
+			else $forms[Cases::RODIT] = slice($word, 0, -2).'ек';
 		}
 		else if (in_array($last, array('а'))) // обида, ябеда
-			$forms[Cases::RODIT_2] = $prefix;
+			$forms[Cases::RODIT] = $prefix;
 		else if (in_array($last, array('я'))) // молния
-			$forms[Cases::RODIT_2] = $prefix.'й';
+			$forms[Cases::RODIT] = $prefix.'й';
 		else if (RussianLanguage::isHissingConsonant($last) || ($soft_last && $last != 'й') || slice($word, -2) == 'чь')
-			$forms[Cases::RODIT_2] = $prefix.'ей';
+			$forms[Cases::RODIT] = $prefix.'ей';
 		else if ($last == 'й')
-			$forms[Cases::RODIT_2] = $prefix.'ев';
+			$forms[Cases::RODIT] = $prefix.'ев';
 		else // (self::isConsonant($last) && !RussianLanguage::isHissingConsonant($last))
-			$forms[Cases::RODIT_2] = $prefix.'ов';
+			$forms[Cases::RODIT] = $prefix.'ов';
 
-		// DAT_3
-		$forms[Cases::DAT_3] = $this->chooseVowelAfterConsonant($last, $soft_last && slice($word, -2, -1) != 'ч', $prefix.'ям', $prefix.'ам');
+		// DAT
+		$forms[Cases::DAT] = $this->chooseVowelAfterConsonant($last, $soft_last && slice($word, -2, -1) != 'ч', $prefix.'ям', $prefix.'ам');
 
-		// VINIT_4
-		$forms[Cases::VINIT_4] = GeneralDeclension::getVinitCaseByAnimateness($forms, $animateness);
+		// VINIT
+		$forms[Cases::VINIT] = GeneralDeclension::getVinitCaseByAnimateness($forms, $animateness);
 
-		// TVORIT_5
+		// TVORIT
 		// my personal rule
 		if ($last == 'ь' && $declension == GeneralDeclension::THIRD_DECLENSION && slice($word, -2) != 'чь') {
-			$forms[Cases::TVORIT_5] = $prefix.'ми';
+			$forms[Cases::TVORIT] = $prefix.'ми';
 		} else {
-			$forms[Cases::TVORIT_5] = $this->chooseVowelAfterConsonant($last, $soft_last && slice($word, -2, -1) != 'ч', $prefix.'ями', $prefix.'ами');
+			$forms[Cases::TVORIT] = $this->chooseVowelAfterConsonant($last, $soft_last && slice($word, -2, -1) != 'ч', $prefix.'ями', $prefix.'ами');
 		}
 
-		// PREDLOJ_6
-		$forms[Cases::PREDLOJ_6] = $this->chooseVowelAfterConsonant($last, $soft_last && slice($word, -2, -1) != 'ч', $prefix.'ях', $prefix.'ах');
-		$forms[Cases::PREDLOJ_6] = $this->choosePrepositionByFirstLetter($forms[Cases::PREDLOJ_6], 'об', 'о').' '.$forms[Cases::PREDLOJ_6];
+		// PREDLOJ
+		$forms[Cases::PREDLOJ] = $this->chooseVowelAfterConsonant($last, $soft_last && slice($word, -2, -1) != 'ч', $prefix.'ях', $prefix.'ах');
+		$forms[Cases::PREDLOJ] = $this->choosePrepositionByFirstLetter($forms[Cases::PREDLOJ], 'об', 'о').' '.$forms[Cases::PREDLOJ];
 		return $forms;
 	}
 }
