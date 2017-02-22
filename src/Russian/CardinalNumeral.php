@@ -256,6 +256,7 @@ class CardinalNumeral extends NumeralCreation implements Cases {
                 }
             }
 
+            // make one array with cases and delete 'o/об' prepositional from all parts except the last one
             foreach (array(self::IMENIT, self::RODIT, self::DAT, self::VINIT, self::TVORIT, self::PREDLOJ) as $case) {
                 $result[$case] = array();
                 foreach ($parts as $partN => $part) {
