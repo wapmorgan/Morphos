@@ -80,7 +80,6 @@ morphos\
                 Plurality
 
                 nameCase()
-                detectGender()
 ```
 
 ## Declension
@@ -161,7 +160,7 @@ $user_name = 'Сергеевич';
 $name = $dec->getCase($user_name, 'родительный');
 
 // If you need all forms, you can get all forms of a name:
-var_dump($dec->getCases($user_name, $dec->detectGender($user_name)));
+var_dump($dec->getCases($user_name));
 /* Will produce something like
   array(6) {
     ["nominative"]=>
@@ -198,7 +197,7 @@ $dative_last_name = $dec->getCase($user_last_name, 'родительный');
 echo 'Мы хотим подарить товарищу '.$dative_last_name.' небольшой презент.';
 
 // If you need all forms, you can get all forms of a name:
-var_dump($dec->getCases($user_last_name, $dec->detectGender($user_last_name)));
+var_dump($dec->getCases($user_last_name));
 /* Will produce something like
   array(6) {
     ["nominative"]=>
