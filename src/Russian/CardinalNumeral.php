@@ -52,6 +52,7 @@ class CardinalNumeral extends NumeralCreation implements Cases {
         1000 => 'тысяча',
         1000000 => 'миллион',
         1000000000 => 'миллиард',
+        1000000000000 => 'триллион',
     );
 
     protected $declension;
@@ -212,6 +213,9 @@ class CardinalNumeral extends NumeralCreation implements Cases {
                     self::TVORIT => $prefix.'ьюстами',
                     self::PREDLOJ => $this->choosePrepositionByFirstLetter($word, 'об', 'о').' '.$prefix.'истах',
                 );
+            } else if (isset($this->exponents[$number])) {
+                if (empty($this->declension)) $this->declension = new GeneralDeclension();
+                return $this->declension->getCases($word, false);
             }
         }
         // compound numeral
@@ -234,7 +238,7 @@ class CardinalNumeral extends NumeralCreation implements Cases {
                             break;
                         case Plurality::TWO_FOUR:
                             $part = $this->plurality->getCases($word);
-                            if ($word_number != 1000) // get dative case of word for 1000000 and 1000000000
+                            if ($word_number != 1000) // get dative case of word for 1000000, 1000000000 and 1000000000000
                                 $part[Cases::IMENIT] = $part[Cases::VINIT] = $this->declension->getCase($word, Cases::RODIT);
                             $parts[] = $part;
                             break;
