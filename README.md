@@ -236,15 +236,15 @@ $dec = new GeneralDeclension();
 Check whether there are forms for this word (second arg is an animateness) and get them:
 
 ```php
-if ($dec->isMutable('поле', false)) {
-    $form = $dec->getCase('поле', 'родительный', false);
+if ($dec->isMutable('поле')) {
+    $form = $dec->getCase('поле', 'родительный');
 }
 ```
 
 Get all forms of a word at once:
 
 ```php
-var_dump($dec->getCases('линейка', false));
+var_dump($dec->getCases('линейка'));
 /* Will produce something like
   array(6) {
     ["nominative"]=>
@@ -275,8 +275,8 @@ This class have similar methods but not only:
 Get plural form of a noun:
 
 ```php
-use morphos\Russian\Cases;
 use morphos\Russian\Plurality;
+
 $plu = new Plurality();
 
 $word = 'дом';
