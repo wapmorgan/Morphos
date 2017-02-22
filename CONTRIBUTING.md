@@ -9,50 +9,25 @@ Here is a list of basic abstract classes:
 #### `morphos\NamesDeclensions`
 Class for names declension.
 
-* 
-  ```php
-  abstract public function hasForms($name, $gender)
-  ```
-  Checks, whether there are rules for this name.
-
-* 
-  ```php
-  abstract public function getForms($name, $gender)
-  ```
-  Generates all forms of a name.
-
-* 
-  ```php
-  abstract public function getForm($name, $form, $gender)
-  ```
-  Generates one form of a name.
+* `abstract public function isMutable($name, $gender)` - Checks, whether there are rules for this name.
+* `abstract public function getCases($name, $gender)` - Generates all cases of a name.
+* `abstract public function getCase($name, $form, $gender)` - Generates one case of a name.
 
 #### `morphos\GeneralDeclension`
 
-* 
-  ```php
-  public function hasForms($word, $animate = false);
-  ```
-  
-  Checks, whether there are rules for this word.
+* `public function isMutable($word, $animate = false);` - Checks, whether there are rules for this word.
+* `public function getCases($word, $animate = false);` - Generates all cases of a word.
+* `public function getCase($word, $form, $animate = false);` - Generates one case of a word.
 
-* 
-  ```php
-  public function getForms($word, $animate = false);
-  ```
-  
-  Generates all forms of a word.
+#### `morphos\NumeralCreation`
 
-* 
-  ```php
-  public function getForm($word, $form, $animate = false);
-  ```
-  
-  Generates one form of a word.
+* `public function getCases($number)` - Generates all cases for a number.
+* `public function getCase($number, $case)` - Generates one case for a number.
+* `static public function generate($number)` - Generates nominative numeral for a number.
 
 ### Useful functions
 
-For simple access to string processing Morphos creates few functions in global namespace:
+For simple access to string processing **Morphos defines few functions in global namespace**:
 
 1. `set_encoding()` - Sets encoding for using in morphos/* functions.
 2. `length()` - Calculates count of characters in string.
