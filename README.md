@@ -71,14 +71,16 @@ Russian morphology:
 ```php
 morphos\
         Russian\
+                CardinalNumeral
+                Cases
+                GeneralDeclension
+                FirstNamesDeclension
+                MiddleNamesDeclension
+                LastNamesDeclension
+                Plurality
+
                 nameCase()
                 detectGender()
-                Cases
-                FirstNamesDeclension
-                LastNamesDeclension
-                GeneralDeclension
-                Plurality
-                CardinalNumeral
 ```
 
 ## Declension
@@ -93,44 +95,37 @@ Arguments:
 
 - `$name` - full name as `Фамилия Имя` or `Фамилия Имя Отчество`.
 - `$case` - can be `null`, one of `Cases` constants, a string (described below in `Cases` section). If not null, a string will be returned. If null, an array will be returned.
-- `$gender` - `NamesDeclension::MAN` or `NamesDeclension::WOMAN` or `null`.
+- `$gender` - `NamesDeclension::MAN` or `NamesDeclension::WOMAN` or `null` for autodetection.
 
 ### Declension classes
 
 All declension classes are similar and have three common methods:
 
-- `boolean isMutable($word, $gender)` - Check if name is mutable.
-- `string getCase($word, $case, $gender)` - Declines name.
-- `array getCases($word, $gender)` - Declines name to all cases.
+- `boolean isMutable($word, $gender = null)` - Check if name is mutable.
+- `string getCase($word, $case, $gender = null)` - Declines name. `$case` is one constant of `morphos\Cases` or `morphos\Russian\Cases` class constants (described below).
+- `array getCases($word, $gender = null)` - Declines name to all cases.
 - `string detectGender($word)` - Tries to detect gender for given name.
 
-`Case` is one constant of `Cases` class constants (described below).
+`$gender` is `NamesDeclension::MAN` or `NamesDeclension::WOMAN` or `null` for autodetection. **Note that detection of middle name and last name can make right decision, but first names sometimes can not be used to determine gender of it's owner. Especially if name is not native Russian name.** So just specify gender if you want to declinate first names.
 
 #### First names (`FirstNamesDeclension`)
 _Declension of first names in russian language._
 
-Create declension class object:
+Usage:
 
 ```php
 use morphos\Russian\FirstNamesDeclension;
 
 $dec = new FirstNamesDeclension();
-```
 
-Get any form of a name:
-
-```php
+// Get any form of a name:
 // for example, let it be Иван
 $user_name = 'Иван';
 
-// it will return the same values for all cases if first name is immutable
-$name = $dec->getCase($user_name, 'родительный', $dec->detectGender($user_name));
-```
+$name = $dec->getCase($user_name, 'родительный');
 
-If you need all forms, you can get all forms of a name:
-
-```php
-var_dump($dec->getCases($user_name, $dec->detectGender($user_name)));
+// If you need all forms, you can get all forms of a name:
+var_dump($dec->getCases($user_name));
 /* Will produce something like
   array(6) {
     ["nominative"]=>
@@ -152,26 +147,20 @@ var_dump($dec->getCases($user_name, $dec->detectGender($user_name)));
 #### Middle names (`MiddleNamesDeclension`)
 _Declension of middle names in russian language._
 
-Create declension class object:
+Usage:
 
 ```php
 use morphos\Russian\MiddleNamesDeclension;
 
 $dec = new MiddleNamesDeclension();
-```
 
-Get any form of a name:
-
-```php
+// Get any form of a name:
 // for example, let it be Сергеевич
 $user_name = 'Сергеевич';
 
-$name = $dec->getCase($user_name, 'родительный', $dec->detectGender($user_name));
-```
+$name = $dec->getCase($user_name, 'родительный');
 
-If you need all forms, you can get all forms of a name:
-
-```php
+// If you need all forms, you can get all forms of a name:
 var_dump($dec->getCases($user_name, $dec->detectGender($user_name)));
 /* Will produce something like
   array(6) {
@@ -194,28 +183,21 @@ var_dump($dec->getCases($user_name, $dec->detectGender($user_name)));
 #### Last names (`LastNamesDeclension`)
 _Declension of last names in russian language._
 
-Create declension class object:
+Usage:
 
 ```php
 use morphos\Russian\LastNamesDeclension;
 
 $dec = new LastNamesDeclension();
-```
 
-Check whether there are forms for this name and if they exist get it:
-
-```php
+// Get any case of a last name
 $user_last_name = 'Иванов';
 
-// it will return the original name if name is immutable
-$dativus_last_name = $dec->getCase($user_last_name, 'родительный', $dec->detectGender($user_last_name));
+$dative_last_name = $dec->getCase($user_last_name, 'родительный');
 
-echo 'Мы хотим подарить товарищу '.$dativus_last_name.' небольшой презент.';
-```
+echo 'Мы хотим подарить товарищу '.$dative_last_name.' небольшой презент.';
 
-If you need all forms, you can get all forms of a name:
-
-```php
+// If you need all forms, you can get all forms of a name:
 var_dump($dec->getCases($user_last_name, $dec->detectGender($user_last_name)));
 /* Will produce something like
   array(6) {
@@ -289,7 +271,7 @@ This class have similar methods but not only:
 
 - `string getCase($word, $case, $animateness = false)` - Pluralizes noun and declines.
 - `array getCases($word, $animateness = false)` - Pluralizes noun and declines to all cases.
-- `string #pluralize($word, $count, $animateness = false)` - Pluralizes noun to coincide with numeral.
+- `string @pluralize($word, $count, $animateness = false)` - Pluralizes noun to coincide with numeral.
 
 Get plural form of a noun:
 
@@ -299,14 +281,13 @@ use morphos\Russian\Plurality;
 $plu = new Plurality();
 
 $word = 'дом';
-$plural = $plu->getCase($word, Cases::IMENIT);
-echo 'Множественное число для '.$word.' - '.$plural;
+echo 'Множественное число для '.$word.' - '.$plu->getCase($word, 'именительный'); // дома
 ```
 
 Pluralize word and get all forms:
 
 ```php
-var_dump($plu->getCases('поле', false));
+var_dump($plu->getCases('поле'));
 /* Result will be like
   array(6) {
     ["nominative"]=>
@@ -333,8 +314,7 @@ use morphos\Russian\Plurality;
 $word = 'дом';
 $count = 10;
 
-echo $count.' '.Plurality::pluralize($word, $count, false);
-// result: 10 домов
+echo $count.' '.Plurality::pluralize($word, $count, false); // result: 10 домов
 ```
 
 ## Numeral creation
@@ -343,7 +323,7 @@ All number creation classes are similar and have two common methods:
 
 - `string getCase($number, $case, $gender = NumeralCreation::MALE)` - Get one form of a number.
 - `array getCases($number, $gender = NumeralCreation::MALE)` - Get all forms of a number.
-- `string #generate($number, $gender = NumeralCreation::MALE)` - Generates a cardinal numeral for a number.
+- `string @generate($number, $gender = NumeralCreation::MALE)` - Generates a cardinal numeral for a number.
 
 `$gender` is one of `morphos\NumeralCreation` constants: `MALE` or `FEMALE` or `NEUTER`.
 
@@ -356,7 +336,6 @@ Create declension class object:
 ```php
 use morphos\NumeralCreation;
 use morphos\Russian\CardinalNumeral;
-use morphos\Russian\Cases;
 
 $cardinal = new CardinalNumeral();
 ```
@@ -397,9 +376,7 @@ Generate numeral of a number:
 ```php
 use morphos\Russian\CardinalNumeral;
 
-$number = 4351;
-
-echo CardinalNumeral::generate($number);
+echo CardinalNumeral::generate(4351);
 // result: четыре тысячи триста пятьдесят один
 ```
 
