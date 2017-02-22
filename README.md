@@ -23,6 +23,7 @@ Tests & Quality: [![Build Status](https://travis-ci.org/wapmorgan/Morphos.svg)](
     4. Cases
 4. English
     1. Pluralization
+    2. Numeral creation
 5. Addition of new languages
 
 ## Installation
@@ -64,6 +65,12 @@ Pluralize english nouns:
 var_dump(morphos\English\Plurality::pluralize('house', 10)); // houses
 ```
 
+Generate english cardinal numerals:
+
+```php
+var_dump(morphos\English\CardinalNumeral::generate(567)); // five hundred sixty-seven
+```
+
 # Russian
 
 Russian morphology:
@@ -98,7 +105,7 @@ Arguments:
 
 ### Declension classes
 
-All declension classes are similar and have three common methods:
+All declension classes are similar and have four common methods:
 
 - `boolean isMutable($word, $gender = null)` - Check if name is mutable.
 - `string getCase($word, $case, $gender = null)` - Declines name. `$case` is one constant of `morphos\Cases` or `morphos\Russian\Cases` class constants (described below).
@@ -318,7 +325,7 @@ echo $count.' '.Plurality::pluralize($word, $count, false); // result: 10 дом
 
 ## Numeral creation
 
-All number creation classes are similar and have two common methods:
+All number creation classes are similar and have three common methods:
 
 - `string getCase($number, $case, $gender = NumeralCreation::MALE)` - Get one form of a number.
 - `array getCases($number, $gender = NumeralCreation::MALE)` - Get all forms of a number.
@@ -395,6 +402,7 @@ English morphology:
 ```php
 morphos\
         English\
+                CardinalNumeral
                 Plurality
 ```
 
@@ -409,6 +417,30 @@ $word = 'foot';
 $count = 10;
 echo $count.' '.$plu->pluralize($word, $count);
 // result: 10 feet
+```
+
+## Numeral creation
+
+All number creation classes are similar and have two common methods:
+
+- `string @generate($number)` - Generates a cardinal numeral for a number.
+
+### Cardinal numbers (`CardinalNumeral`)
+
+_Creation of cardinal numerals in russian language._
+
+Create declension class object:
+
+```php
+use morphos\English\CardinalNumeral;
+```
+
+Get text representation of a number:
+
+```php
+$number = 4351;
+
+$numeral = CardinalNumeral::generate($number); // four thousand, three hundred fifty-one
 ```
 
 # Addition of new languages
