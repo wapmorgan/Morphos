@@ -20,10 +20,13 @@ Tests & Quality: [![Build Status](https://travis-ci.org/wapmorgan/Morphos.svg)](
         4. Nouns
     2. Pluralization
     3. Numeral creation
+        1. Cardinal numerals
+        2. Ordinal numerals
     4. Cases
 4. English
     1. Pluralization
     2. Numeral creation
+        1. Cardinal numerals
 5. Addition of new languages
 
 ## Installation
@@ -59,6 +62,12 @@ Generate russian cardinal numerals:
 var_dump(morphos\Russian\CardinalNumeral::generate(567)); // пятьсот шестьдесят семь
 ```
 
+Generate russian ordinal numerals:
+
+```php
+var_dump(morphos\Russian\CardinalNumeral::generate(961)); // девятьсот шестьдесят первый
+```
+
 Pluralize english nouns:
 
 ```php
@@ -82,8 +91,9 @@ morphos\
                 Cases
                 GeneralDeclension
                 FirstNamesDeclension
-                MiddleNamesDeclension
                 LastNamesDeclension
+                MiddleNamesDeclension
+                OrdinalNumeral
                 Plurality
 
                 nameCase()
@@ -355,7 +365,7 @@ $numeral = $cardinal->getCase($number, 'именительный'); // четы�
 $numeral = $cardinal->getCase($number, 'именительный', NumeralCreation::FEMALE); // четыре тысячи триста пятьдесят одна
 ```
 
-If you need all forms, you can get all forms of a name:
+If you need all forms, you can get all cases of a numeral:
 
 ```php
 var_dump($cardinal->getCases($number));
@@ -384,6 +394,59 @@ use morphos\Russian\CardinalNumeral;
 
 echo CardinalNumeral::generate(4351);
 // result: четыре тысячи триста пятьдесят один
+```
+
+### Ordinal numbers (`OrdinalNumeral`)
+
+_Creation of ordinal numerals in russian language._
+
+Create declension class object:
+
+```php
+use morphos\NumeralCreation;
+use morphos\Russian\OrdinalNumeral;
+
+$ordinal = new OrdinalNumeral();
+```
+
+Get text representation of a number:
+
+```php
+$number = 67945;
+
+$numeral = $ordinal->getCase($number, 'именительный'); // шестьдесят семь тысяч девятьсот сорок пятый
+$numeral = $ordinal->getCase($number, 'именительный', NumeralCreation::FEMALE); // шестьдесят семь тысяч девятьсот сорок пятая
+```
+
+If you need all forms, you can get all cases of a numeral:
+
+```php
+var_dump($ordinal->getCases($number));
+/* Will produce something like
+  array(6) {
+      ["nominative"]=>
+      string(81) "шестьдесят семь тысяч девятьсот сорок пятый"
+      ["genitive"]=>
+      string(83) "шестьдесят семь тысяч девятьсот сорок пятого"
+      ["dative"]=>
+      string(83) "шестьдесят семь тысяч девятьсот сорок пятому"
+      ["accusative"]=>
+      string(81) "шестьдесят семь тысяч девятьсот сорок пятый"
+      ["ablative"]=>
+      string(81) "шестьдесят семь тысяч девятьсот сорок пятым"
+      ["prepositional"]=>
+      string(84) "о шестьдесят семь тысяч девятьсот сорок пятом"
+    }
+*/
+```
+
+Generate numeral of a number:
+
+```php
+use morphos\Russian\OrdinalNumeral;
+
+echo CardinalNumeral::generate(67945);
+// result: шестьдесят семь тысяч девятьсот сорок пятый
 ```
 
 ## Cases (`Cases`)
