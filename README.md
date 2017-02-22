@@ -345,7 +345,7 @@ All number creation classes are similar and have three common methods:
 
 _Creation of cardinal numerals in russian language._
 
-Create declension class object:
+Create generation class object:
 
 ```php
 use morphos\NumeralCreation;
@@ -398,7 +398,7 @@ echo CardinalNumeral::generate(4351);
 
 _Creation of ordinal numerals in russian language._
 
-Create declension class object:
+Create generation class object:
 
 ```php
 use morphos\NumeralCreation;
