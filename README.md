@@ -482,7 +482,7 @@ echo $count.' '.$plu->pluralize($word, $count);
 
 ## Numeral creation
 
-All number creation classes are similar and have two common methods:
+All number creation classes are similar and have one common methods:
 
 - `string @generate($number)` - Generates a cardinal numeral for a number.
 
