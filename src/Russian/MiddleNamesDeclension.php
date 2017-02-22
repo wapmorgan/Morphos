@@ -17,21 +17,22 @@ class MiddleNamesDeclension extends \morphos\NamesDeclension implements Cases {
         return null;
     }
 
-    public function isMutable($name, $gender) {
+    public function isMutable($name, $gender = null) {
         $name = lower($name);
         if (in_array(slice($name, -2), array('ич', 'на')))
             return true;
         return false;
     }
 
-    public function getCase($name, $case, $gender) {
+    public function getCase($name, $case, $gender = null) {
         $case = self::canonizeCase($case);
         $forms = $this->getCases($name, $gender);
         return $forms[$case];
     }
 
-    public function getCases($name, $gender) {
+    public function getCases($name, $gender = null) {
         $name = lower($name);
+        if ($gender === null) $gender = $this->detectGender($name);
         if (slice($name, -2) == 'ич') {
             // man rules
             $name = name($name);

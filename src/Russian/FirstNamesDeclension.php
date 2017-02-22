@@ -347,9 +347,10 @@ class FirstNamesDeclension extends \morphos\NamesDeclension implements Cases {
 		'ярослава',
 	);
 
-	public function isMutable($name, $gender) {
+	public function isMutable($name, $gender = null) {
 		//var_dump(upper(slice($name, -1)));
 		$name = lower($name);
+		if ($gender === null) $gender = $this->detectGender($name);
 		// man rules
 		if ($gender === self::MAN) {
 			// soft consonant
@@ -382,8 +383,9 @@ class FirstNamesDeclension extends \morphos\NamesDeclension implements Cases {
 		return null;
 	}
 
-	public function getCases($name, $gender) {
+	public function getCases($name, $gender = null) {
 		$name = lower($name);
+		if ($gender === null) $gender = $this->detectGender($name);
 		if ($gender == self::MAN) {
 			if (in_array(upper(slice($name, -1)), array_diff(self::$consonants, array('Й', /*'Ч', 'Щ'*/)))) { // hard consonant
 				$prefix = name($name);
@@ -527,15 +529,9 @@ class FirstNamesDeclension extends \morphos\NamesDeclension implements Cases {
         return array_fill_keys(array(self::IMENIT, self::RODIT, self::DAT, self::VINIT, self::TVORIT), $name) + array(self::PREDLOJ => $this->choosePrepositionByFirstLetter($name, 'об', 'о').' '.$name);
 	}
 
-	public function getCase($name, $case, $gender) {
+	public function getCase($name, $case, $gender = null) {
 		$case = self::canonizeCase($case);
 		$forms = $this->getCases($name, $gender);
-		if ($forms !== false)
-			if (isset($forms[$case]))
-				return $forms[$case];
-			else
-				return $name;
-		else
-			return $name;
+		return $forms[$case];
 	}
 }
