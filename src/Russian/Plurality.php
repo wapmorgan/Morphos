@@ -69,10 +69,10 @@ class Plurality extends \morphos\Plurality implements Cases {
 			);
 		}
 
-		if (($declension = GeneralDeclension::getDeclension($word)) == GeneralDeclension::FIRST_DECLENSION) {
+		if (($declension = GeneralDeclension::getDeclension($word)) == GeneralDeclension::SECOND_DECLENSION) {
 			$soft_last = $last == 'й' || (in_array($last, ['ь', 'е', 'ё', 'ю', 'я']) && (self::isConsonant(slice($word, -2, -1)) || slice($word, -2, -1) == 'и'));
 			$prefix = GeneralDeclension::getPrefixOfFirstDeclension($word, $last);
-		} else if ($declension == GeneralDeclension::SECOND_DECLENSION) {
+		} else if ($declension == GeneralDeclension::FIRST_DECLENSION) {
 			 $soft_last = $this->checkLastConsonantSoftness($word);
 		} else {
 			$soft_last = false;
