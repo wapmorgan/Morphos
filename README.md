@@ -65,7 +65,7 @@ var_dump(morphos\Russian\CardinalNumeral::generate(567)); // пятьсот ше
 Generate russian ordinal numerals:
 
 ```php
-var_dump(morphos\Russian\CardinalNumeral::generate(961)); // девятьсот шестьдесят первый
+var_dump(morphos\Russian\OrdinalNumeral::generate(961)); // девятьсот шестьдесят первый
 ```
 
 Pluralize english nouns:
