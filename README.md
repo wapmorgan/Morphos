@@ -250,12 +250,10 @@ use morphos\Russian\GeneralDeclension;
 $dec = new GeneralDeclension();
 ```
 
-Check whether there are forms for this word (second arg is an animateness) and get them:
+Following code will return original word if it's immutable:
 
 ```php
-if ($dec->isMutable('поле')) {
-    $form = $dec->getCase('поле', 'родительный');
-}
+$form = $dec->getCase('поле', 'родительный');
 ```
 
 Get all forms of a word at once:
@@ -337,9 +335,9 @@ echo $count.' '.Plurality::pluralize($word, $count, false); // result: 10 дом
 
 All number creation classes are similar and have three common methods:
 
-- `string getCase($number, $case, $gender = NumeralCreation::MALE)` - Get one form of a number.
-- `array getCases($number, $gender = NumeralCreation::MALE)` - Get all forms of a number.
-- `string @generate($number, $gender = NumeralCreation::MALE)` - Generates a cardinal numeral for a number.
+- `string getCase($number, $case, $gender = NumeralCreation::MALE)` - Get one case of a numeral for a number.
+- `array getCases($number, $gender = NumeralCreation::MALE)` - Get all case of a numeral for a number.
+- `string @generate($number, $gender = NumeralCreation::MALE)` - Generates a cardinal or ordinal numeral for a number.
 
 `$gender` is one of `morphos\NumeralCreation` constants: `MALE` or `FEMALE` or `NEUTER`.
 
