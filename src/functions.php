@@ -140,6 +140,7 @@ namespace morphos\Russian {
 			}
 			return $result;
 		} else {
+			$case = CasesHelper::canonizeCase($case);
 			if (count($name) == 2) {
 				$name[0] = $last->getCase($name[0], $case, $gender);
 				$name[1] = $first->getCase($name[1], $case, $gender);
