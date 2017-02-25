@@ -190,6 +190,9 @@ class OrdinalNumeral extends NumeralCreation implements Cases {
                             if (($number % 10) > $word_number) {
                                 continue;
                             }
+                            // check that there is no two-digits number with it's own name (e.g. 13 for 113)
+                            if (isset($this->words[$number % 100]) && $number % 100 > $word_number)
+                                continue;
                         } else if ($word_number <= 90) {
                             // check for case when word_number smaller than should be used (e.g. 10, 11, 12 when it can be 13)
                             if (($number % 100) > $word_number) {
