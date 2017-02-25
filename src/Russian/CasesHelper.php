@@ -44,7 +44,7 @@ trait CasesHelper {
                 return Cases::PREDLOJ;
 
             default:
-                return parent::canonizeCase($case);
+                return \morphos\CasesHelper::canonizeCase($case);
         }
     }
 }
