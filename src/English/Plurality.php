@@ -33,7 +33,7 @@ class Plurality extends \morphos\Plurality {
 
 	static public $consonants = array('b', 'c', 'd', 'f', 'g', 'h', 'j', 'k', 'l', 'm', 'n', 'p', 'q', 'r', 's', 't', 'v', 'x', 'z', 'w');
 
-	static public function pluralize($word, $count) {
+	static public function pluralize($word, $count = 2) {
 		if ($count == 1)
 			return $word;
 

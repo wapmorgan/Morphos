@@ -71,7 +71,7 @@ var_dump(morphos\Russian\OrdinalNumeral::generate(961)); // девятьсот �
 Pluralize english nouns:
 
 ```php
-var_dump(morphos\English\Plurality::pluralize('house', 10)); // houses
+var_dump(morphos\English\Plurality::pluralize('house')); // houses
 ```
 
 Generate english cardinal numerals:
@@ -473,10 +473,7 @@ Pluralization a word in English:
 ```php
 use morphos\English\Plurality;
 
-$plu = new Plurality();
-$word = 'foot';
-$count = 10;
-echo $count.' '.$plu->pluralize($word, $count);
+echo '10 '.Plurality::pluralize('foot');
 // result: 10 feet
 ```
 
