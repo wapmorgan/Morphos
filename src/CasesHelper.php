@@ -5,7 +5,7 @@ use Exception;
 
 trait CasesHelper {
     static public function canonizeCase($case) {
-        $case = lower($case);
+        $case = S::lower($case);
         switch ($case) {
             case Cases::NOMINATIVE:
             case 'nominativus':

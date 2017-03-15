@@ -1,6 +1,8 @@
 <?php
 namespace morphos\Russian;
 
+use morphos\S;
+
 function name($fullname, $case = null, $gender = null) {
     static $first, $middle, $last;
     if ($first === null) $first = new FirstNamesDeclension();
