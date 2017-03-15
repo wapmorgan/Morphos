@@ -1,6 +1,6 @@
 {
 	"name": "wapmorgan/morphos",
-	"description": "A morphological solution written completely in the PHP language. Supports Russian and English. Provides classes to decline Names, decline and pluralize nouns and generate cardinal and ordinal numerals.",
+	"description": "A morphological solution written completely in the PHP language. Supports Russian and English. Provides classes to decline personal names, decline and pluralize nouns and generate cardinal and ordinal numerals.",
 	"license": "MIT",
 	"keywords": ["language", "morphology", "russian", "english", "pluralization", "declension", "numerals", "cardinal", "ordinal"],
 	"require": {
@@ -8,7 +8,10 @@
 		"ext-mbstring": "*"
 	},
 	"autoload": {
-		"files": ["src/functions.php"],
+		"files": [
+			"src/English/functions.php",
+			"src/Russian/functions.php"
+		],
 		"psr-4": {
 			"morphos\\": "src/"
 		}

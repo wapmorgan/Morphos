@@ -2,6 +2,7 @@
 namespace morphos\Russian;
 
 use morphos\NumeralCreation;
+use morphos\S;
 
 /**
  * Rules are from http://www.fio.ru/pravila/grammatika/sklonenie-imen-chislitelnykh/
@@ -102,7 +103,7 @@ class OrdinalNumeral extends NumeralCreation implements Cases {
             $word = isset($this->words[$number]) ? $this->words[$number] : $this->exponents[$number];
             // special rules for 3
             if ($number == 3) {
-                $prefix = slice($word, 0, -2);
+                $prefix = S::slice($word, 0, -2);
                 return array(
                     self::IMENIT => $prefix.($gender == self::MALE ? 'ий' : ($gender == self::FEMALE ? 'ья' : 'ье')),
                     self::RODIT => $prefix.($gender == self::FEMALE ? 'ьей' : 'ьего'),
@@ -114,7 +115,7 @@ class OrdinalNumeral extends NumeralCreation implements Cases {
             } else {
                 switch ($gender) {
                     case self::MALE:
-                        $prefix = slice($word, 0, $number == 40 ? -1 : -2);
+                        $prefix = S::slice($word, 0, $number == 40 ? -1 : -2);
                         return array(
                             self::IMENIT => $word,
                             self::RODIT => $prefix.'ого',
@@ -125,7 +126,7 @@ class OrdinalNumeral extends NumeralCreation implements Cases {
                         );
 
                     case self::FEMALE:
-                        $prefix = slice($word, 0, $number == 40 ? -1 : -2);
+                        $prefix = S::slice($word, 0, $number == 40 ? -1 : -2);
                         return array(
                             self::IMENIT => $prefix.'ая',
                             self::RODIT => $prefix.'ой',
@@ -136,7 +137,7 @@ class OrdinalNumeral extends NumeralCreation implements Cases {
                         );
 
                     case self::NEUTER:
-                        $prefix = slice($word, 0, $number == 40 ? -1 : -2);
+                        $prefix = S::slice($word, 0, $number == 40 ? -1 : -2);
                         return array(
                             self::IMENIT => $prefix.'ое',
                             self::RODIT => $prefix.'го',

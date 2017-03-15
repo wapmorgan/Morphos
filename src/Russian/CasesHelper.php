@@ -1,11 +1,13 @@
 <?php
 namespace morphos\Russian;
 
+use morphos\S;
+
 trait CasesHelper {
     use \morphos\CasesHelper;
 
     static public function canonizeCase($case) {
-        $case = lower($case);
+        $case = S::lower($case);
         switch ($case) {
             case Cases::IMENIT:
             case 'именительный':

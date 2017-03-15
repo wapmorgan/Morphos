@@ -2,6 +2,7 @@
 namespace morphos\Russian;
 
 use morphos\NumeralCreation;
+use morphos\S;
 
 /**
  * Rules are from http://www.fio.ru/pravila/grammatika/sklonenie-imen-chislitelnykh/
@@ -164,7 +165,7 @@ class CardinalNumeral extends NumeralCreation implements Cases {
                     return $this->precalculated[$word];
                 }
             } else if (($number >= 5 && $number <= 20) || $number == 30) {
-                $prefix = slice($word, 0, -1);
+                $prefix = S::slice($word, 0, -1);
                 return array(
                     self::IMENIT => $word,
                     self::RODIT => $prefix.'и',
@@ -174,7 +175,7 @@ class CardinalNumeral extends NumeralCreation implements Cases {
                     self::PREDLOJ => $this->choosePrepositionByFirstLetter($prefix, 'об', 'о').' '.$prefix.'и',
                 );
             } else if (in_array($number, array(40, 90, 100))) {
-                $prefix = $number == 40 ? $word : slice($word, 0, -1);
+                $prefix = $number == 40 ? $word : S::slice($word, 0, -1);
                 return array(
                     self::IMENIT => $word,
                     self::RODIT => $prefix.'а',
@@ -184,7 +185,7 @@ class CardinalNumeral extends NumeralCreation implements Cases {
                     self::PREDLOJ => $this->choosePrepositionByFirstLetter($prefix, 'об', 'о').' '.$prefix.'а',
                 );
             } else if (($number >= 50 && $number <= 80)) {
-                $prefix = slice($word, 0, -6);
+                $prefix = S::slice($word, 0, -6);
                 return array(
                     self::IMENIT => $prefix.'ьдесят',
                     self::RODIT => $prefix.'идесяти',
@@ -194,7 +195,7 @@ class CardinalNumeral extends NumeralCreation implements Cases {
                     self::PREDLOJ => $this->choosePrepositionByFirstLetter($word, 'об', 'о').' '.$prefix.'идесяти',
                 );
             } else if (in_array($number, array(300, 400))) {
-                $prefix = slice($word, 0, -4);
+                $prefix = S::slice($word, 0, -4);
                 return array(
                     self::IMENIT => $word,
                     self::RODIT => $prefix.'ехсот',
@@ -204,7 +205,7 @@ class CardinalNumeral extends NumeralCreation implements Cases {
                     self::PREDLOJ => $this->choosePrepositionByFirstLetter($word, 'об', 'о').' '.$prefix.'ехстах',
                 );
             } else if ($number >= 500 && $number <= 900) {
-                $prefix = slice($word, 0, -4);
+                $prefix = S::slice($word, 0, -4);
                 return array(
                     self::IMENIT => $word,
                     self::RODIT => $prefix.'исот',

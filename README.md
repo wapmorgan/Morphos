@@ -45,15 +45,15 @@ Adapters:
 Decline russian names:
 
 ```php
-var_dump(morphos\Russian\nameCase('Иванов Петр', 'родительный', morphos\NamesDeclension::MAN)); // Иванова Петра
-var_dump(morphos\Russian\nameCase('Кулаков Святослав Матвеевич', 'родительный', morphos\NamesDeclension::MAN)); // Кулакова Святослава Матвеевича
+var_dump(morphos\Russian\name('Иванов Петр', 'родительный', morphos\NamesDeclension::MAN)); // Иванова Петра
+var_dump(morphos\Russian\name('Кулаков Святослав Матвеевич', 'родительный', morphos\NamesDeclension::MAN)); // Кулакова Святослава Матвеевича
 ```
 
 Pluralize russian nouns:
 
 ```php
-var_dump(morphos\Russian\Plurality::pluralize('дом', 10)); // домов
-var_dump(morphos\Russian\Plurality::pluralize('гидродендрариум', 2)); // гидродендрариума
+var_dump(morphos\Russian\pluralize('дом', 10)); // домов
+var_dump(morphos\Russian\pluralize('гидродендрариум', 2)); // гидродендрариума
 ```
 
 Generate russian cardinal numerals:
@@ -71,7 +71,7 @@ var_dump(morphos\Russian\OrdinalNumeral::generate(961)); // девятьсот �
 Pluralize english nouns:
 
 ```php
-var_dump(morphos\English\Plurality::pluralize('house')); // houses
+var_dump(morphos\English\pluralize('house')); // houses
 ```
 
 Generate english cardinal numerals:
@@ -84,6 +84,11 @@ var_dump(morphos\English\CardinalNumeral::generate(567)); // five hundred sixty-
 
 Russian morphology:
 
+* `morphos\Russian\name($fullname, $case, $gender = AUTO)`
+* `morphos\Russian\pluralize($noun, $count = 2, $animateness = false)`
+
+Russian class hierarchy:
+
 ```php
 morphos\
         Russian\
@@ -95,8 +100,6 @@ morphos\
                 MiddleNamesDeclension
                 OrdinalNumeral
                 Plurality
-
-                nameCase()
 ```
 
 ## Declension
@@ -104,7 +107,7 @@ morphos\
 To compound all declension functionality in one call there is `nameCase` function:
 
 ```php
-string|array nameCase($name, $case = null, $gender = null)
+string|array name($name, $case = null, $gender = null)
 ```
 
 Arguments:

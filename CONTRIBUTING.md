@@ -25,11 +25,12 @@ Class for names declension.
 * `public function getCase($number, $case)` - Generates one case for a number.
 * `static public function generate($number)` - Generates nominative numeral for a number.
 
-### Useful functions
+### String helper
+Morphos distributed with a string helper supporting multibyte encodings. Class is `morphos\S`.
 
-For simple access to string processing **Morphos defines few functions in global namespace**:
+It has following static methods:
 
-1. `set_encoding()` - Sets encoding for using in morphos/* functions.
+1. `set_encoding()` - Sets encoding for using in all functions.
 2. `length()` - Calculates count of characters in string.
 3. `slice()` - Slices string like python.
 4. `lower()` - Lower case.

@@ -1,6 +1,8 @@
 <?php
 namespace morphos\Russian;
 
+use morphos\S;
+
 /**
  * Rules are from http://morpher.ru/Russian/Noun.aspx
  */
@@ -55,18 +57,18 @@ class GeneralDeclension extends \morphos\GeneralDeclension implements Cases {
 	);
 
 	public function isMutable($word, $animateness = false) {
-		$word = lower($word);
-		if (in_array(slice($word, -1), array('у', 'и', 'е', 'о', 'ю')) || in_array($word, self::$immutableWords))
+		$word = S::lower($word);
+		if (in_array(S::slice($word, -1), array('у', 'и', 'е', 'о', 'ю')) || in_array($word, self::$immutableWords))
 			return false;
 		return true;
 	}
 
 	static public function getDeclension($word) {
-		$word = lower($word);
-		$last = slice($word, -1);
-		if (in_array($last, ['а', 'я']) && slice($word, -2) != 'мя') {
+		$word = S::lower($word);
+		$last = S::slice($word, -1);
+		if (in_array($last, ['а', 'я']) && S::slice($word, -2) != 'мя') {
 			return 1;
-		} else if (self::isConsonant($last) || in_array($last, ['о', 'е', 'ё']) || ($last == 'ь' && self::isConsonant(slice($word, -2, -1)) && !RussianLanguage::isHissingConsonant(slice($word, -2, -1)) && in_array($word, self::$masculineWithSoft))) {
+		} else if (self::isConsonant($last) || in_array($last, ['о', 'е', 'ё']) || ($last == 'ь' && self::isConsonant(S::slice($word, -2, -1)) && !RussianLanguage::isHissingConsonant(S::slice($word, -2, -1)) && in_array($word, self::$masculineWithSoft))) {
 			return 2;
 		} else {
 			return 3;
@@ -74,7 +76,7 @@ class GeneralDeclension extends \morphos\GeneralDeclension implements Cases {
 	}
 
 	public function getCases($word, $animateness = false) {
-		$word = lower($word);
+		$word = S::lower($word);
 
 		if (in_array($word, self::$immutableWords)) {
 			return array(
@@ -86,7 +88,7 @@ class GeneralDeclension extends \morphos\GeneralDeclension implements Cases {
 				self::PREDLOJ => $this->choosePrepositionByFirstLetter($word, 'об', 'о').' '.$word,
 			);
 		} else if (isset($this->abnormalExceptions[$word])) {
-			$prefix = slice($word, -1);
+			$prefix = S::slice($word, -1);
 			return array(
 				self::IMENIT => $word,
 				self::RODIT => $prefix.'и',
@@ -108,22 +110,22 @@ class GeneralDeclension extends \morphos\GeneralDeclension implements Cases {
 	}
 
 	public function declinateFirstDeclension($word) {
-		$word = lower($word);
-		$prefix = slice($word, 0, -1);
-		$last = slice($word, -1);
+		$word = S::lower($word);
+		$prefix = S::slice($word, 0, -1);
+		$last = S::slice($word, -1);
 		$soft_last = $this->checkLastConsonantSoftness($word);
 		$forms =  array(
 			Cases::IMENIT => $word,
 		);
 
 		// RODIT
-		$forms[Cases::RODIT] = $this->chooseVowelAfterConsonant($last, $soft_last || (in_array(slice($word, -2, -1), array('г', 'к', 'х'))), $prefix.'и', $prefix.'ы');
+		$forms[Cases::RODIT] = $this->chooseVowelAfterConsonant($last, $soft_last || (in_array(S::slice($word, -2, -1), array('г', 'к', 'х'))), $prefix.'и', $prefix.'ы');
 
 		// DAT
 		$forms[Cases::DAT] = self::getPredCaseOf12Declensions($word, $last, $prefix);
 
 		// VINIT
-		$forms[Cases::VINIT] = $this->chooseVowelAfterConsonant($last, $soft_last && slice($word, -2, -1) != 'ч', $prefix.'ю', $prefix.'у');
+		$forms[Cases::VINIT] = $this->chooseVowelAfterConsonant($last, $soft_last && S::slice($word, -2, -1) != 'ч', $prefix.'ю', $prefix.'у');
 
 		// TVORIT
 		if ($last == 'ь')
@@ -143,9 +145,9 @@ class GeneralDeclension extends \morphos\GeneralDeclension implements Cases {
 	}
 
 	public function declinateSecondDeclension($word, $animateness = false) {
-		$word = lower($word);
-		$last = slice($word, -1);
-		$soft_last = $last == 'й' || (in_array($last, ['ь', 'е', 'ё', 'ю', 'я']) && (self::isConsonant(slice($word, -2, -1)) || slice($word, -2, -1) == 'и'));
+		$word = S::lower($word);
+		$last = S::slice($word, -1);
+		$soft_last = $last == 'й' || (in_array($last, ['ь', 'е', 'ё', 'ю', 'я']) && (self::isConsonant(S::slice($word, -2, -1)) || S::slice($word, -2, -1) == 'и'));
 		$prefix = self::getPrefixOfFirstDeclension($word, $last);
 		$forms =  array(
 			Cases::IMENIT => $word,
@@ -187,8 +189,8 @@ class GeneralDeclension extends \morphos\GeneralDeclension implements Cases {
 	}
 
 	public function declinateThirdDeclension($word) {
-		$word = lower($word);
-		$prefix = slice($word, 0, -1);
+		$word = S::lower($word);
+		$prefix = S::slice($word, 0, -1);
 		return array(
 			Cases::IMENIT => $word,
 			Cases::RODIT => $prefix.'и',
@@ -209,7 +211,7 @@ class GeneralDeclension extends \morphos\GeneralDeclension implements Cases {
 		if ($word == 'день')
 			$prefix = 'дн';
 		else if (in_array($last, ['о', 'е', 'ё', 'ь', 'й']))
-			$prefix = slice($word, 0, -1);
+			$prefix = S::slice($word, 0, -1);
 		else
 			$prefix = $word;
 		return $prefix;
@@ -223,7 +225,7 @@ class GeneralDeclension extends \morphos\GeneralDeclension implements Cases {
 	}
 
 	static public function getPredCaseOf12Declensions($word, $last, $prefix) {
-		if (slice($word, -2) == 'ий') {
+		if (S::slice($word, -2) == 'ий') {
 			if ($last == 'ё')
 				return $prefix.'е';
 			else
