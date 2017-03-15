@@ -42,50 +42,44 @@ Adapters:
 - Adapter for Symfony (Twig): [wapmorgan/morphos-twig](https://github.com/wapmorgan/Morphos-Twig)
 
 ## Quick Start
-Decline russian names:
+- Decline russian names:
+  ```php
+  var_dump(morphos\Russian\name('Иванов Петр', 'родительный', morphos\NamesDeclension::MAN)); // Иванова Петра
+  ```
 
-```php
-var_dump(morphos\Russian\name('Иванов Петр', 'родительный', morphos\NamesDeclension::MAN)); // Иванова Петра
-var_dump(morphos\Russian\name('Кулаков Святослав Матвеевич', 'родительный', morphos\NamesDeclension::MAN)); // Кулакова Святослава Матвеевича
-```
+- Pluralize russian nouns:
+  ```php
+  var_dump(morphos\Russian\pluralize('дом', 10)); // домов
+  ```
 
-Pluralize russian nouns:
+- Generate russian cardinal numerals:
+  ```php
+  var_dump(morphos\Russian\CardinalNumeral::generate(567)); // пятьсот шестьдесят семь
+  ```
 
-```php
-var_dump(morphos\Russian\pluralize('дом', 10)); // домов
-var_dump(morphos\Russian\pluralize('гидродендрариум', 2)); // гидродендрариума
-```
+- Generate russian ordinal numerals:
+  ```php
+  var_dump(morphos\Russian\OrdinalNumeral::generate(961)); // девятьсот шестьдесят первый
+  ```
 
-Generate russian cardinal numerals:
+- Pluralize english nouns:
+  ```php
+  var_dump(morphos\English\pluralize('house')); // houses
+  ```
 
-```php
-var_dump(morphos\Russian\CardinalNumeral::generate(567)); // пятьсот шестьдесят семь
-```
-
-Generate russian ordinal numerals:
-
-```php
-var_dump(morphos\Russian\OrdinalNumeral::generate(961)); // девятьсот шестьдесят первый
-```
-
-Pluralize english nouns:
-
-```php
-var_dump(morphos\English\pluralize('house')); // houses
-```
-
-Generate english cardinal numerals:
-
-```php
-var_dump(morphos\English\CardinalNumeral::generate(567)); // five hundred sixty-seven
-```
+- Generate english cardinal numerals:
+  ```php
+  var_dump(morphos\English\CardinalNumeral::generate(567)); // five hundred sixty-seven
+  ```
 
 # Russian
 
-Russian morphology:
+Russian morphology shortcuts:
 
 * `morphos\Russian\name($fullname, $case, $gender = AUTO)`
 * `morphos\Russian\pluralize($noun, $count = 2, $animateness = false)`
+* `morphos\Russian\CardinalNumeral::generate($number, $gender = self::MALE)`
+* `morphos\Russian\OrdinalNumeral::generate($number, $gender = self::MALE)`
 
 Russian class hierarchy:
 
@@ -462,7 +456,13 @@ Cases in russian language:
 
 # English
 
-English morphology:
+English morphology shortcuts:
+
+- `morphos\English\pluralize($word, $count = 2)`
+- `morphos\English\CardinalNumeral::generate($number)`
+
+English class hierarchy:
+
 ```php
 morphos\
         English\
