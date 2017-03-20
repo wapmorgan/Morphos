@@ -13,13 +13,9 @@ Tests & Quality: [![Build Status](https://travis-ci.org/wapmorgan/Morphos.svg)](
 1. Installation
 2. Quick start
 3. Russian
-    1. Declension
-        1. First names
-        2. Middle names
-        3. Last names
-        4. Nouns
-    2. Pluralization
-    3. Numeral creation
+    1. Personal names
+    2. Nouns
+    3. Numerals
         1. Cardinal numerals
         2. Ordinal numerals
     4. Cases
@@ -96,7 +92,7 @@ morphos\
                 Plurality
 ```
 
-## Declension
+## Personal names
 
 To compound all declension functionality in one call there is `nameCase` function:
 
@@ -110,7 +106,11 @@ Arguments:
 - `$case` - can be `null`, one of `Cases` constants, a string (described below in `Cases` section). If not null, a string will be returned. If null, an array will be returned.
 - `$gender` - `NamesDeclension::MAN` or `NamesDeclension::WOMAN` or `null` for autodetection.
 
-### Declension classes
+There is three declension classes:
+
+- `FirstNamesDeclension` - declension of first names in russian language
+- `MiddleNamesDeclension` - declension of middle names in russian language
+- `LastNamesDeclension` - declension of last names in russian language
 
 All declension classes are similar and have four common methods:
 
@@ -121,21 +121,18 @@ All declension classes are similar and have four common methods:
 
 `$gender` is `NamesDeclension::MAN` or `NamesDeclension::WOMAN` or `null` for autodetection. **Note that detection of middle name and last name can make right decision, but first names sometimes can not be used to determine gender of it's owner. Especially if name is not native Russian name.** So just specify gender if you want to declinate first names.
 
-#### First names (`FirstNamesDeclension`)
-_Declension of first names in russian language._
+Examples:
 
-Usage:
+**FirstNamesDeclension**
 
 ```php
-use morphos\Russian\FirstNamesDeclension;
-
-$dec = new FirstNamesDeclension();
+$dec = new morphos\Russian\FirstNamesDeclension();
 
 // Get any form of a name:
 // for example, let it be Иван
 $user_name = 'Иван';
 
-$name = $dec->getCase($user_name, 'родительный');
+$name = $dec->getCase($user_name, 'родительный'); // Ивана
 
 // If you need all forms, you can get all forms of a name:
 var_dump($dec->getCases($user_name));
@@ -157,21 +154,16 @@ var_dump($dec->getCases($user_name));
 */
 ```
 
-#### Middle names (`MiddleNamesDeclension`)
-_Declension of middle names in russian language._
-
-Usage:
+**MiddleNamesDeclension**
 
 ```php
-use morphos\Russian\MiddleNamesDeclension;
-
-$dec = new MiddleNamesDeclension();
+$dec = new morphos\Russian\MiddleNamesDeclension();
 
 // Get any form of a name:
 // for example, let it be Сергеевич
 $user_name = 'Сергеевич';
 
-$name = $dec->getCase($user_name, 'родительный');
+$name = $dec->getCase($user_name, 'родительный'); // Сергеевича
 
 // If you need all forms, you can get all forms of a name:
 var_dump($dec->getCases($user_name));
@@ -193,20 +185,15 @@ var_dump($dec->getCases($user_name));
 */
 ```
 
-#### Last names (`LastNamesDeclension`)
-_Declension of last names in russian language._
-
-Usage:
+**LastNamesDeclension**
 
 ```php
-use morphos\Russian\LastNamesDeclension;
-
-$dec = new LastNamesDeclension();
+$dec = new morphos\Russian\LastNamesDeclension();
 
 // Get any case of a last name
 $user_last_name = 'Иванов';
 
-$dative_last_name = $dec->getCase($user_last_name, 'родительный');
+$dative_last_name = $dec->getCase($user_last_name, 'дательный'); // Иванову
 
 echo 'Мы хотим подарить товарищу '.$dative_last_name.' небольшой презент.';
 
@@ -230,32 +217,27 @@ var_dump($dec->getCases($user_last_name));
 */
 ```
 
-### General words (`GeneralDeclension`)
-_Declension of nouns in russian language._
+## Nouns
 
-General declension class also have few similar methods but arguments are different:
+### Nouns declension
+
+Nouns declension class also have few similar methods but arguments are different:
 
 - `boolean isMutable($word, bool $animateness = false)` - Check if noun is mutable.
 - `string getCase($word, $case, $animateness = false)` - Declines noun.
 - `array getCases($word, $animateness = false)` - Declines noun to all cases.
 
-Create declension class object:
+Usage:
 
 ```php
 use morphos\Russian\GeneralDeclension;
 
 $dec = new GeneralDeclension();
-```
 
-Following code will return original word if it's immutable:
-
-```php
+// Following code will return original word if it's immutable:
 $form = $dec->getCase('поле', 'родительный');
-```
 
-Get all forms of a word at once:
-
-```php
+// Get all forms of a word at once:
 var_dump($dec->getCases('линейка'));
 /* Will produce something like
   array(6) {
@@ -275,16 +257,15 @@ var_dump($dec->getCases('линейка'));
 */
 ```
 
-## Pluralization (`Plurality`)
-_Pluralization nouns in Russian._
+### Nouns pluralization
 
-This class have similar methods but not only:
+`Plurality` class have similar methods but not only:
 
 - `string getCase($word, $case, $animateness = false)` - Pluralizes noun and declines.
 - `array getCases($word, $animateness = false)` - Pluralizes noun and declines to all cases.
 - `string @pluralize($word, $count, $animateness = false)` - Pluralizes noun to coincide with numeral.
 
-Get plural form of a noun:
+Usage:
 
 ```php
 use morphos\Russian\Plurality;
@@ -293,11 +274,8 @@ $plu = new Plurality();
 
 $word = 'дом';
 echo 'Множественное число для '.$word.' - '.$plu->getCase($word, 'именительный'); // дома
-```
 
-Pluralize word and get all forms:
-
-```php
+// Pluralize word and get all forms:
 var_dump($plu->getCases('поле'));
 /* Result will be like
   array(6) {
@@ -315,17 +293,13 @@ var_dump($plu->getCases('поле'));
     string(13) "о полях"
   }
 */
-```
 
-Pluralize noun to use it with numeral:
+// Also you can use shortcut
+// Pluralize noun to use it with numeral
 
-```php
-use morphos\Russian\Plurality;
-
-$word = 'дом';
 $count = 10;
 
-echo $count.' '.Plurality::pluralize($word, $count, false); // result: 10 домов
+echo $count.' '.morphos\Russian\pluralize('дом', $count, false); // result: 10 домов
 ```
 
 ## Numeral creation
@@ -338,7 +312,7 @@ All number creation classes are similar and have three common methods:
 
 `$gender` is one of `morphos\NumeralCreation` constants: `MALE` or `FEMALE` or `NEUTER`.
 
-### Cardinal numbers (`CardinalNumeral`)
+### Cardinal numerals (`CardinalNumeral`)
 
 _Creation of cardinal numerals in russian language._
 
@@ -391,7 +365,7 @@ echo CardinalNumeral::generate(4351);
 // result: четыре тысячи триста пятьдесят один
 ```
 
-### Ordinal numbers (`OrdinalNumeral`)
+### Ordinal numerals (`OrdinalNumeral`)
 
 _Creation of ordinal numerals in russian language._
 
