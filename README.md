@@ -16,14 +16,14 @@ Tests & Quality: [![Build Status](https://travis-ci.org/wapmorgan/Morphos.svg)](
     1. Personal names
     2. Nouns
     3. Numerals
-        1. Cardinal numerals
-        2. Ordinal numerals
+        1. Cardinal
+        2. Ordinal
     4. Cases
 4. English
-    1. Pluralization
-    2. Numeral creation
-        1. Cardinal numerals
-5. Addition of new languages
+    1. Nouns
+    2. Numerals
+        1. Cardinal
+5. Contibuting
 
 ## Installation
 
@@ -103,7 +103,7 @@ string|array name($name, $case = null, $gender = null)
 Arguments:
 
 - `$name` - full name as `Фамилия Имя` or `Фамилия Имя Отчество`.
-- `$case` - can be `null`, one of `Cases` constants, a string (described below in `Cases` section). If not null, a string will be returned. If null, an array will be returned.
+- `$case` - can be `null`, one of `Cases` constants, a string (described below). If not null, a string will be returned. If null, an array will be returned.
 - `$gender` - `NamesDeclension::MAN` or `NamesDeclension::WOMAN` or `null` for autodetection.
 
 There is three declension classes:
@@ -120,6 +120,15 @@ All declension classes are similar and have four common methods:
 - `string detectGender($word)` - Tries to detect gender for given name.
 
 `$gender` is `NamesDeclension::MAN` or `NamesDeclension::WOMAN` or `null` for autodetection. **Note that detection of middle name and last name can make right decision, but first names sometimes can not be used to determine gender of it's owner. Especially if name is not native Russian name.** So just specify gender if you want to declinate first names.
+
+Cases in russian language:
+
+* nominative case - `morphos\Russian\Cases::IMENIT` or `именительный`
+* genitive case - `morphos\Russian\Cases::RODIT` or `родительный`
+* dative case - `morphos\Russian\Cases::DAT` or `дательный`
+* accusative case - `morphos\Russian\Cases::VINIT` or `винительный`
+* ablative case - `morphos\Russian\Cases::TVORIT` or `творительный`
+* prepositional case - `morphos\Russian\Cases::PREDLOJ` or `предложный`
 
 Examples:
 
@@ -302,7 +311,7 @@ $count = 10;
 echo $count.' '.morphos\Russian\pluralize('дом', $count, false); // result: 10 домов
 ```
 
-## Numeral creation
+## Numerals
 
 All number creation classes are similar and have three common methods:
 
@@ -312,7 +321,7 @@ All number creation classes are similar and have three common methods:
 
 `$gender` is one of `morphos\NumeralCreation` constants: `MALE` or `FEMALE` or `NEUTER`.
 
-### Cardinal numerals (`CardinalNumeral`)
+### Cardinal (`CardinalNumeral`)
 
 _Creation of cardinal numerals in russian language._
 
@@ -365,7 +374,7 @@ echo CardinalNumeral::generate(4351);
 // result: четыре тысячи триста пятьдесят один
 ```
 
-### Ordinal numerals (`OrdinalNumeral`)
+### Ordinal (`OrdinalNumeral`)
 
 _Creation of ordinal numerals in russian language._
 
@@ -418,16 +427,6 @@ echo CardinalNumeral::generate(67945);
 // result: шестьдесят семь тысяч девятьсот сорок пятый
 ```
 
-## Cases (`Cases`)
-Cases in russian language:
-
-* `morphos\Russian\Cases::IMENIT` or `именительный` - nominative case
-* `morphos\Russian\Cases::RODIT` or `родительный` - genitive case
-* `morphos\Russian\Cases::DAT` or `дательный` - dative case
-* `morphos\Russian\Cases::VINIT` or `винительный` - accusative case
-* `morphos\Russian\Cases::TVORIT` or `творительный` - ablative case
-* `morphos\Russian\Cases::PREDLOJ` or `предложный` - prepositional case
-
 # English
 
 English morphology shortcuts:
@@ -454,13 +453,13 @@ echo '10 '.Plurality::pluralize('foot');
 // result: 10 feet
 ```
 
-## Numeral creation
+## Numerals
 
 All number creation classes are similar and have one common methods:
 
 - `string @generate($number)` - Generates a cardinal numeral for a number.
 
-### Cardinal numbers (`CardinalNumeral`)
+### Cardinal (`CardinalNumeral`)
 
 _Creation of cardinal numerals in russian language._
 
@@ -478,6 +477,6 @@ $number = 4351;
 $numeral = CardinalNumeral::generate($number); // four thousand, three hundred fifty-one
 ```
 
-# Addition of new languages
+# Contibuting
 
 See [CONTRIBUTING.md](CONTRIBUTING.md) for this.
