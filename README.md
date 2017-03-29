@@ -461,7 +461,7 @@ All number creation classes are similar and have one common methods:
 
 ### Cardinal (`CardinalNumeral`)
 
-_Creation of cardinal numerals in russian language._
+_Creation of cardinal numerals in english language._
 
 Create declension class object:
 
