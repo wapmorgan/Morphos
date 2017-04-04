@@ -445,7 +445,7 @@ class FirstNamesDeclension extends \morphos\NamesDeclension implements Cases {
 					self::TVORIT => $prefix.'ем',
 					self::PREDLOJ => $this->choosePrepositionByFirstLetter($prefix, 'об', 'о').' '.$prefix.$postfix,
 				);
-			} else if (S::slice($name, -1) == 'а' && ($before = S::slice($name, -2, -1)) && self::isConsonant($before) && !in_array($before, array(/*'г', 'к', 'х', */'ц'))) {
+			} else if (S::slice($name, -1) == 'а' && self::isConsonant($before = S::slice($name, -2, -1)) && !in_array($before, array(/*'г', 'к', 'х', */'ц'))) {
 				$prefix = S::name(S::slice($name, 0, -1));
 				$postfix = (RussianLanguage::isHissingConsonant($before) || in_array($before, array('г', 'к', 'х'))) ? 'и' : 'ы';
 				return array(
