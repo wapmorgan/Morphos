@@ -73,12 +73,14 @@ class FirstNamesDeclension extends \morphos\NamesDeclension implements Cases {
 		'веньямин',
 		'венцеслав',
 		'виктор',
+		'виген',
 		'вилен',
 		'виталий',
 		'владилен',
 		'владимир',
 		'владислав',
 		'владлен',
+		'вова',
 		'всеволод',
 		'всеслав',
 		'вячеслав',
@@ -382,28 +384,46 @@ class FirstNamesDeclension extends \morphos\NamesDeclension implements Cases {
 		else if (in_array($name, self::$womenNames))
 			return self::WOMAN;
 
-		return null;
+		$man = $woman = 0;
+		$last1 = S::slice($name, -1);
+		$last2 = S::slice($name, -2);
+		$last3 = S::slice($name, -3);
+
+		// try to detect gender by some statistical rules
+		//
+		if ($last1 == 'й') $man += 0.9;
+		if ($last1 == 'ь') $man += 0.02;
+		if (in_array($last1, self::$consonants)) $man += 0.01;
+		if (in_array($last2, array('он', 'ов', 'ав', 'ам', 'ол', 'ан', 'рд', 'мп'))) $man += 0.3;
+		if (in_array($last2, array('вь', 'фь', 'ль'))) $woman += 0.1;
+		if (in_array($last2, array('ла'))) $woman += 0.04;
+		if (in_array($last2, array('то', 'ма'))) $man += 0.01;
+		if (in_array($last3, array('лья', 'вва', 'ока', 'ука', 'ита'))) $man += 0.2;
+		if (in_array($last3, array('има'))) $woman += 0.15;
+		if (in_array($last3, array('лия', 'ния', 'сия', 'дра', 'лла', 'кла', 'опа'))) $woman += 0.5;
+		if (in_array(S::slice($name, -4), array('льда', 'фира', 'нина', 'лита', 'алья'))) $woman += 0.5;
+
+		return $man == $woman ? null
+			: ($man > $woman ? self::MAN : self::WOMAN);
 	}
 
 	public function getCases($name, $gender = null) {
 		$name = S::lower($name);
 		if ($gender === null) $gender = $this->detectGender($name);
 		if ($gender == self::MAN) {
-			if (in_array(S::upper(S::slice($name, -1)), array_diff(self::$consonants, array('Й', /*'Ч', 'Щ'*/)))) { // hard consonant
+			// special cases for Лев, Павел
+			if (isset($this->exceptions[$name]))
+				return $this->exceptions[$name];
+			else if (in_array(S::upper(S::slice($name, -1)), array_diff(self::$consonants, array('Й', /*'Ч', 'Щ'*/)))) { // hard consonant
 				$prefix = S::name($name);
-				// special cases for Лев, Павел
-				if (isset($this->exceptions[$name]))
-					return $this->exceptions[$name];
-				else {
-					return array(
-						self::IMENIT => $prefix,
-						self::RODIT => $prefix.'а',
-						self::DAT => $prefix.'у',
-						self::VINIT => $prefix.'а',
-						self::TVORIT => RussianLanguage::isHissingConsonant(S::slice($name, -1)) || S::slice($name, -1) == 'ц' ? $prefix.'ем' : $prefix.'ом',
-						self::PREDLOJ => $this->choosePrepositionByFirstLetter($prefix, 'об', 'о').' '.$prefix.'е',
-					);
-				}
+				return array(
+					self::IMENIT => $prefix,
+					self::RODIT => $prefix.'а',
+					self::DAT => $prefix.'у',
+					self::VINIT => $prefix.'а',
+					self::TVORIT => RussianLanguage::isHissingConsonant(S::slice($name, -1)) || S::slice($name, -1) == 'ц' ? $prefix.'ем' : $prefix.'ом',
+					self::PREDLOJ => $this->choosePrepositionByFirstLetter($prefix, 'об', 'о').' '.$prefix.'е',
+				);
 			} else if (S::slice($name, -1) == 'ь' && in_array(S::upper(S::slice($name, -2, -1)), self::$consonants)) { // soft consonant
 				$prefix = S::name(S::slice($name, 0, -1));
 				return array(
@@ -528,7 +548,7 @@ class FirstNamesDeclension extends \morphos\NamesDeclension implements Cases {
 		}
 
 		$name = S::name($name);
-        return array_fill_keys(array(self::IMENIT, self::RODIT, self::DAT, self::VINIT, self::TVORIT), $name) + array(self::PREDLOJ => $this->choosePrepositionByFirstLetter($name, 'об', 'о').' '.$name);
+		return array_fill_keys(array(self::IMENIT, self::RODIT, self::DAT, self::VINIT, self::TVORIT), $name) + array(self::PREDLOJ => $this->choosePrepositionByFirstLetter($name, 'об', 'о').' '.$name);
 	}
 
 	public function getCase($name, $case, $gender = null) {
