@@ -409,123 +409,19 @@ class FirstNamesDeclension extends \morphos\NamesDeclension implements Cases {
 
 	public function getCases($name, $gender = null) {
 		$name = S::lower($name);
-		if ($gender === null) $gender = $this->detectGender($name);
-		if ($gender == self::MAN) {
-			// special cases for Лев, Павел
-			if (isset($this->exceptions[$name]))
-				return $this->exceptions[$name];
-			else if (in_array(S::upper(S::slice($name, -1)), array_diff(self::$consonants, array('Й', /*'Ч', 'Щ'*/)))) { // hard consonant
-				$prefix = S::name($name);
-				return array(
-					self::IMENIT => $prefix,
-					self::RODIT => $prefix.'а',
-					self::DAT => $prefix.'у',
-					self::VINIT => $prefix.'а',
-					self::TVORIT => RussianLanguage::isHissingConsonant(S::slice($name, -1)) || S::slice($name, -1) == 'ц' ? $prefix.'ем' : $prefix.'ом',
-					self::PREDLOJ => $this->choosePrepositionByFirstLetter($prefix, 'об', 'о').' '.$prefix.'е',
-				);
-			} else if (S::slice($name, -1) == 'ь' && in_array(S::upper(S::slice($name, -2, -1)), self::$consonants)) { // soft consonant
-				$prefix = S::name(S::slice($name, 0, -1));
-				return array(
-					self::IMENIT => $prefix.'ь',
-					self::RODIT => $prefix.'я',
-					self::DAT => $prefix.'ю',
-					self::VINIT => $prefix.'я',
-					self::TVORIT => $prefix.'ем',
-					self::PREDLOJ => $this->choosePrepositionByFirstLetter($prefix, 'об', 'о').' '.$prefix.'е',
-				);
-			} else if (in_array(S::slice($name, -2), array('ай', 'ей', 'ой', 'уй', 'яй', 'юй', 'ий'))) {
-				$prefix = S::name(S::slice($name, 0, -1));
-				$postfix = S::slice($name, -2) == 'ий' ? 'и' : 'е';
-				return array(
-					self::IMENIT => $prefix.'й',
-					self::RODIT => $prefix.'я',
-					self::DAT => $prefix.'ю',
-					self::VINIT => $prefix.'я',
-					self::TVORIT => $prefix.'ем',
-					self::PREDLOJ => $this->choosePrepositionByFirstLetter($prefix, 'об', 'о').' '.$prefix.$postfix,
-				);
-			} else if (S::slice($name, -1) == 'а' && self::isConsonant($before = S::slice($name, -2, -1)) && !in_array($before, array(/*'г', 'к', 'х', */'ц'))) {
-				$prefix = S::name(S::slice($name, 0, -1));
-				$postfix = (RussianLanguage::isHissingConsonant($before) || in_array($before, array('г', 'к', 'х'))) ? 'и' : 'ы';
-				return array(
-					self::IMENIT => $prefix.'а',
-					self::RODIT => $prefix.$postfix,
-					self::DAT => $prefix.'е',
-					self::VINIT => $prefix.'у',
-					self::TVORIT => $prefix.'ой',
-					self::PREDLOJ => $this->choosePrepositionByFirstLetter($prefix, 'об', 'о').' '.$prefix.'е',
-				);
-			} else if (S::slice($name, -2) == 'ия') {
-				$prefix = S::name(S::slice($name, 0, -1));
-				return array(
-					self::IMENIT => $prefix.'я',
-					self::RODIT => $prefix.'и',
-					self::DAT => $prefix.'и',
-					self::VINIT => $prefix.'ю',
-					self::TVORIT => $prefix.'ей',
-					self::PREDLOJ => $this->choosePrepositionByFirstLetter($prefix, 'об', 'о').' '.$prefix.'и',
-				);
-			} else if (S::slice($name, -2) == 'ло' || S::slice($name, -2) == 'ко') {
-				$prefix = S::name(S::slice($name, 0, -1));
-				$postfix = S::slice($name, -2, -1) == 'к' ? 'и' : 'ы';
-				return array(
-					self::IMENIT => $prefix.'о',
-					self::RODIT =>  $prefix.$postfix,
-					self::DAT => $prefix.'е',
-					self::VINIT => $prefix.'у',
-					self::TVORIT => $prefix.'ой',
-					self::PREDLOJ => $this->choosePrepositionByFirstLetter($prefix, 'об', 'о').' '.$prefix.'е',
-				);
-			}
-		} else if ($gender == self::WOMAN) {
-			if (S::slice($name, -1) == 'а' && !in_array(S::upper($before = (S::slice($name, -2, -1))), self::$vowels)) {
-				$prefix = S::name(S::slice($name, 0, -1));
-				if ($before != 'ц') {
-					$postfix = (RussianLanguage::isHissingConsonant($before) || in_array($before, array('г', 'к', 'х'))) ? 'и' : 'ы';
-					return array(
-						self::IMENIT => $prefix.'а',
-						self::RODIT => $prefix.$postfix,
-						self::DAT => $prefix.'е',
-						self::VINIT => $prefix.'у',
-						self::TVORIT => $prefix.'ой',
-						self::PREDLOJ => $this->choosePrepositionByFirstLetter($prefix, 'об', 'о').' '.$prefix.'е',
-					);
-				} else {
-					return array(
-						self::IMENIT => $prefix.'а',
-						self::RODIT => $prefix.'ы',
-						self::DAT => $prefix.'е',
-						self::VINIT => $prefix.'у',
-						self::TVORIT => $prefix.'ей',
-						self::PREDLOJ => $this->choosePrepositionByFirstLetter($prefix, 'об', 'о').' '.$prefix.'е',
-					);
-				}
-			} else if (S::slice($name, -1) == 'ь' && self::isConsonant(S::slice($name, -2, -1))) {
-				$prefix = S::name(S::slice($name, 0, -1));
-				return array(
-					self::IMENIT => $prefix.'ь',
-					self::RODIT => $prefix.'и',
-					self::DAT => $prefix.'и',
-					self::VINIT => $prefix.'ь',
-					self::TVORIT => $prefix.'ью',
-					self::PREDLOJ => $this->choosePrepositionByFirstLetter($prefix, 'об', 'о').' '.$prefix.'и',
-				);
-			} else if (RussianLanguage::isHissingConsonant(S::slice($name, -1))) {
-				$prefix = S::name($name);
-				return array(
-					self::IMENIT => $prefix,
-					self::RODIT => $prefix.'и',
-					self::DAT => $prefix.'и',
-					self::VINIT => $prefix,
-					self::TVORIT => $prefix.'ью',
-					self::PREDLOJ => $this->choosePrepositionByFirstLetter($prefix, 'об', 'о').' '.$prefix.'и',
-				);
-			}
-		}
 
 		// common rules for ия and я
-		if (S::slice($name, -1) == 'я' && S::slice($name, -2, -1) != 'и') {
+		if (S::slice($name, -2) == 'ия') {
+			$prefix = S::name(S::slice($name, 0, -1));
+			return array(
+				self::IMENIT => $prefix.'я',
+				self::RODIT => $prefix.'и',
+				self::DAT => $prefix.'и',
+				self::VINIT => $prefix.'ю',
+				self::TVORIT => $prefix.'ей',
+				self::PREDLOJ => $this->choosePrepositionByFirstLetter($prefix, 'об', 'о').' '.$prefix.'и',
+			);
+		} else if (S::slice($name, -1) == 'я') {
 			$prefix = S::name(S::slice($name, 0, -1));
 			return array(
 				self::IMENIT => $prefix.'я',
@@ -533,6 +429,68 @@ class FirstNamesDeclension extends \morphos\NamesDeclension implements Cases {
 				self::DAT => $prefix.'е',
 				self::VINIT => $prefix.'ю',
 				self::TVORIT => $prefix.'ей',
+				self::PREDLOJ => $this->choosePrepositionByFirstLetter($prefix, 'об', 'о').' '.$prefix.'е',
+			);
+		}
+
+		if ($gender === null) $gender = $this->detectGender($name);
+		if ($gender == self::MAN) {
+			if (($result = $this->getCasesMan($name)) !== null)
+				return $result;
+		}
+		else if ($gender == self::WOMAN) {
+			if (($result = $this->getCasesWoman($name)) !== null)
+				return $result;
+		}
+
+		$name = S::name($name);
+		return array_fill_keys(array(self::IMENIT, self::RODIT, self::DAT, self::VINIT, self::TVORIT), $name) + array(self::PREDLOJ => $this->choosePrepositionByFirstLetter($name, 'об', 'о').' '.$name);
+	}
+
+	protected function getCasesMan($name) {
+		// special cases for Лев, Павел
+		if (isset($this->exceptions[$name]))
+			return $this->exceptions[$name];
+		else if (in_array(S::upper(S::slice($name, -1)), array_diff(self::$consonants, array('Й', /*'Ч', 'Щ'*/)))) { // hard consonant
+			$prefix = S::name($name);
+			return array(
+				self::IMENIT => $prefix,
+				self::RODIT => $prefix.'а',
+				self::DAT => $prefix.'у',
+				self::VINIT => $prefix.'а',
+				self::TVORIT => RussianLanguage::isHissingConsonant(S::slice($name, -1)) || S::slice($name, -1) == 'ц' ? $prefix.'ем' : $prefix.'ом',
+				self::PREDLOJ => $this->choosePrepositionByFirstLetter($prefix, 'об', 'о').' '.$prefix.'е',
+			);
+		} else if (S::slice($name, -1) == 'ь' && in_array(S::upper(S::slice($name, -2, -1)), self::$consonants)) { // soft consonant
+			$prefix = S::name(S::slice($name, 0, -1));
+			return array(
+				self::IMENIT => $prefix.'ь',
+				self::RODIT => $prefix.'я',
+				self::DAT => $prefix.'ю',
+				self::VINIT => $prefix.'я',
+				self::TVORIT => $prefix.'ем',
+				self::PREDLOJ => $this->choosePrepositionByFirstLetter($prefix, 'об', 'о').' '.$prefix.'е',
+			);
+		} else if (in_array(S::slice($name, -2), array('ай', 'ей', 'ой', 'уй', 'яй', 'юй', 'ий'))) {
+			$prefix = S::name(S::slice($name, 0, -1));
+			$postfix = S::slice($name, -2) == 'ий' ? 'и' : 'е';
+			return array(
+				self::IMENIT => $prefix.'й',
+				self::RODIT => $prefix.'я',
+				self::DAT => $prefix.'ю',
+				self::VINIT => $prefix.'я',
+				self::TVORIT => $prefix.'ем',
+				self::PREDLOJ => $this->choosePrepositionByFirstLetter($prefix, 'об', 'о').' '.$prefix.$postfix,
+			);
+		} else if (S::slice($name, -1) == 'а' && self::isConsonant($before = S::slice($name, -2, -1)) && !in_array($before, array(/*'г', 'к', 'х', */'ц'))) {
+			$prefix = S::name(S::slice($name, 0, -1));
+			$postfix = (RussianLanguage::isHissingConsonant($before) || in_array($before, array('г', 'к', 'х'))) ? 'и' : 'ы';
+			return array(
+				self::IMENIT => $prefix.'а',
+				self::RODIT => $prefix.$postfix,
+				self::DAT => $prefix.'е',
+				self::VINIT => $prefix.'у',
+				self::TVORIT => $prefix.'ой',
 				self::PREDLOJ => $this->choosePrepositionByFirstLetter($prefix, 'об', 'о').' '.$prefix.'е',
 			);
 		} else if (S::slice($name, -2) == 'ия') {
@@ -545,10 +503,67 @@ class FirstNamesDeclension extends \morphos\NamesDeclension implements Cases {
 				self::TVORIT => $prefix.'ей',
 				self::PREDLOJ => $this->choosePrepositionByFirstLetter($prefix, 'об', 'о').' '.$prefix.'и',
 			);
+		} else if (S::slice($name, -2) == 'ло' || S::slice($name, -2) == 'ко') {
+			$prefix = S::name(S::slice($name, 0, -1));
+			$postfix = S::slice($name, -2, -1) == 'к' ? 'и' : 'ы';
+			return array(
+				self::IMENIT => $prefix.'о',
+				self::RODIT =>  $prefix.$postfix,
+				self::DAT => $prefix.'е',
+				self::VINIT => $prefix.'у',
+				self::TVORIT => $prefix.'ой',
+				self::PREDLOJ => $this->choosePrepositionByFirstLetter($prefix, 'об', 'о').' '.$prefix.'е',
+			);
 		}
 
-		$name = S::name($name);
-		return array_fill_keys(array(self::IMENIT, self::RODIT, self::DAT, self::VINIT, self::TVORIT), $name) + array(self::PREDLOJ => $this->choosePrepositionByFirstLetter($name, 'об', 'о').' '.$name);
+		return null;
+	}
+
+	protected function getCasesWoman($name) {
+		if (S::slice($name, -1) == 'а' && !in_array(S::upper($before = (S::slice($name, -2, -1))), self::$vowels)) {
+			$prefix = S::name(S::slice($name, 0, -1));
+			if ($before != 'ц') {
+				$postfix = (RussianLanguage::isHissingConsonant($before) || in_array($before, array('г', 'к', 'х'))) ? 'и' : 'ы';
+				return array(
+					self::IMENIT => $prefix.'а',
+					self::RODIT => $prefix.$postfix,
+					self::DAT => $prefix.'е',
+					self::VINIT => $prefix.'у',
+					self::TVORIT => $prefix.'ой',
+					self::PREDLOJ => $this->choosePrepositionByFirstLetter($prefix, 'об', 'о').' '.$prefix.'е',
+				);
+			} else {
+				return array(
+					self::IMENIT => $prefix.'а',
+					self::RODIT => $prefix.'ы',
+					self::DAT => $prefix.'е',
+					self::VINIT => $prefix.'у',
+					self::TVORIT => $prefix.'ей',
+					self::PREDLOJ => $this->choosePrepositionByFirstLetter($prefix, 'об', 'о').' '.$prefix.'е',
+				);
+			}
+		} else if (S::slice($name, -1) == 'ь' && self::isConsonant(S::slice($name, -2, -1))) {
+			$prefix = S::name(S::slice($name, 0, -1));
+			return array(
+				self::IMENIT => $prefix.'ь',
+				self::RODIT => $prefix.'и',
+				self::DAT => $prefix.'и',
+				self::VINIT => $prefix.'ь',
+				self::TVORIT => $prefix.'ью',
+				self::PREDLOJ => $this->choosePrepositionByFirstLetter($prefix, 'об', 'о').' '.$prefix.'и',
+			);
+		} else if (RussianLanguage::isHissingConsonant(S::slice($name, -1))) {
+			$prefix = S::name($name);
+			return array(
+				self::IMENIT => $prefix,
+				self::RODIT => $prefix.'и',
+				self::DAT => $prefix.'и',
+				self::VINIT => $prefix,
+				self::TVORIT => $prefix.'ью',
+				self::PREDLOJ => $this->choosePrepositionByFirstLetter($prefix, 'об', 'о').' '.$prefix.'и',
+			);
+		}
+		return null;
 	}
 
 	public function getCase($name, $case, $gender = null) {
