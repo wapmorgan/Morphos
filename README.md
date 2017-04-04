@@ -94,7 +94,7 @@ morphos\
 
 ## Personal names
 
-To compound all declension functionality in one call there is `nameCase` function:
+To compound all declension functionality in one call there is `name` function:
 
 ```php
 string|array name($name, $case = null, $gender = null)
@@ -104,7 +104,7 @@ Arguments:
 
 - `$name` - full name as `Фамилия Имя` or `Фамилия Имя Отчество`.
 - `$case` - can be `null`, one of `Cases` constants, a string (described below). If not null, a string will be returned. If null, an array will be returned.
-- `$gender` - `NamesDeclension::MAN` or `NamesDeclension::WOMAN` or `null` for autodetection.
+- `$gender` - a string (`NamesDeclension::MAN` or `"m"` for male name,  `NamesDeclension::WOMAN` or `"w"` for female name), `null` for autodetection.
 
 There is three declension classes:
 
@@ -244,7 +244,7 @@ use morphos\Russian\GeneralDeclension;
 $dec = new GeneralDeclension();
 
 // Following code will return original word if it's immutable:
-$form = $dec->getCase('поле', 'родительный');
+$form = $dec->getCase('поле', 'родительный'); // поля
 
 // Get all forms of a word at once:
 var_dump($dec->getCases('линейка'));
