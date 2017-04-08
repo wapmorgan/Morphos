@@ -7,12 +7,6 @@ use morphos\Russian\Cases;
 use morphos\Russian\OrdinalNumeral;
 
 class OrdinalNumeralTest extends \PHPUnit_Framework_TestCase {
-    protected $ordinal;
-
-    public function setUp() {
-        $this->ordinal = new OrdinalNumeral();
-    }
-
     /**
      * @dataProvider numbersProvider
      */
@@ -24,7 +18,7 @@ class OrdinalNumeralTest extends \PHPUnit_Framework_TestCase {
             Cases::VINIT => $case4,
             Cases::TVORIT => $case5,
             Cases::PREDLOJ => $case6,
-        ), $this->ordinal->getCases($number, $gender));
+        ), OrdinalNumeral::getCases($number, $gender));
     }
 
     public function numbersProvider() {

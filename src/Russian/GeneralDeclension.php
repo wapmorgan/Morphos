@@ -13,7 +13,7 @@ class GeneralDeclension extends \morphos\GeneralDeclension implements Cases {
 	const SECOND_DECLENSION = 2;
 	const THIRD_DECLENSION = 3;
 
-	protected $abnormalExceptions = array(
+	static protected $abnormalExceptions = array(
 		'бремя',
 		'вымя',
 		'темя',
@@ -56,7 +56,7 @@ class GeneralDeclension extends \morphos\GeneralDeclension implements Cases {
 		'пенни',
 	);
 
-	public function isMutable($word, $animateness = false) {
+	static public function isMutable($word, $animateness = false) {
 		$word = S::lower($word);
 		if (in_array(S::slice($word, -1), array('у', 'и', 'е', 'о', 'ю')) || in_array($word, self::$immutableWords))
 			return false;
@@ -75,7 +75,7 @@ class GeneralDeclension extends \morphos\GeneralDeclension implements Cases {
 		}
 	}
 
-	public function getCases($word, $animateness = false) {
+	static public function getCases($word, $animateness = false) {
 		$word = S::lower($word);
 
 		if (in_array($word, self::$immutableWords)) {
@@ -85,9 +85,9 @@ class GeneralDeclension extends \morphos\GeneralDeclension implements Cases {
 				self::DAT => $word,
 				self::VINIT => $word,
 				self::TVORIT => $word,
-				self::PREDLOJ => $this->choosePrepositionByFirstLetter($word, 'об', 'о').' '.$word,
+				self::PREDLOJ => self::choosePrepositionByFirstLetter($word, 'об', 'о').' '.$word,
 			);
-		} else if (isset($this->abnormalExceptions[$word])) {
+		} else if (isset(self::$abnormalExceptions[$word])) {
 			$prefix = S::slice($word, -1);
 			return array(
 				self::IMENIT => $word,
@@ -95,56 +95,56 @@ class GeneralDeclension extends \morphos\GeneralDeclension implements Cases {
 				self::DAT => $prefix.'и',
 				self::VINIT => $word,
 				self::TVORIT => $prefix,
-				self::PREDLOJ => $this->choosePrepositionByFirstLetter($prefix, 'об', 'о').' '.$prefix.'и',
+				self::PREDLOJ => self::choosePrepositionByFirstLetter($prefix, 'об', 'о').' '.$prefix.'и',
 			);
 		}
 
 		switch (self::getDeclension($word)) {
 			case self::FIRST_DECLENSION:
-				return $this->declinateFirstDeclension($word);
+				return self::declinateFirstDeclension($word);
 			case self::SECOND_DECLENSION:
-				return $this->declinateSecondDeclension($word, $animateness);
+				return self::declinateSecondDeclension($word, $animateness);
 			case self::THIRD_DECLENSION:
-				return $this->declinateThirdDeclension($word);
+				return self::declinateThirdDeclension($word);
 		}
 	}
 
-	public function declinateFirstDeclension($word) {
+	static public function declinateFirstDeclension($word) {
 		$word = S::lower($word);
 		$prefix = S::slice($word, 0, -1);
 		$last = S::slice($word, -1);
-		$soft_last = $this->checkLastConsonantSoftness($word);
+		$soft_last = self::checkLastConsonantSoftness($word);
 		$forms =  array(
 			Cases::IMENIT => $word,
 		);
 
 		// RODIT
-		$forms[Cases::RODIT] = $this->chooseVowelAfterConsonant($last, $soft_last || (in_array(S::slice($word, -2, -1), array('г', 'к', 'х'))), $prefix.'и', $prefix.'ы');
+		$forms[Cases::RODIT] = self::chooseVowelAfterConsonant($last, $soft_last || (in_array(S::slice($word, -2, -1), array('г', 'к', 'х'))), $prefix.'и', $prefix.'ы');
 
 		// DAT
 		$forms[Cases::DAT] = self::getPredCaseOf12Declensions($word, $last, $prefix);
 
 		// VINIT
-		$forms[Cases::VINIT] = $this->chooseVowelAfterConsonant($last, $soft_last && S::slice($word, -2, -1) != 'ч', $prefix.'ю', $prefix.'у');
+		$forms[Cases::VINIT] = self::chooseVowelAfterConsonant($last, $soft_last && S::slice($word, -2, -1) != 'ч', $prefix.'ю', $prefix.'у');
 
 		// TVORIT
 		if ($last == 'ь')
 			$forms[Cases::TVORIT] = $prefix.'ой';
 		else {
-			$forms[Cases::TVORIT] = $this->chooseVowelAfterConsonant($last, $soft_last, $prefix.'ей', $prefix.'ой');
+			$forms[Cases::TVORIT] = self::chooseVowelAfterConsonant($last, $soft_last, $prefix.'ей', $prefix.'ой');
 		}
 
-		// 	if ($last == 'й' || (self::isConsonant($last) && !RussianLanguage::isHissingConsonant($last)) || $this->checkLastConsonantSoftness($word))
+		// 	if ($last == 'й' || (self::isConsonant($last) && !RussianLanguage::isHissingConsonant($last)) || self::checkLastConsonantSoftness($word))
 		// 	$forms[Cases::TVORIT] = $prefix.'ей';
 		// else
 		// 	$forms[Cases::TVORIT] = $prefix.'ой'; # http://morpher.ru/Russian/Spelling.aspx#sibilant
 
 		// PREDLOJ the same as DAT
-		$forms[Cases::PREDLOJ] = $this->choosePrepositionByFirstLetter($forms[Cases::DAT], 'об', 'о').' '.$forms[Cases::DAT];
+		$forms[Cases::PREDLOJ] = self::choosePrepositionByFirstLetter($forms[Cases::DAT], 'об', 'о').' '.$forms[Cases::DAT];
 		return $forms;
 	}
 
-	public function declinateSecondDeclension($word, $animateness = false) {
+	static public function declinateSecondDeclension($word, $animateness = false) {
 		$word = S::lower($word);
 		$last = S::slice($word, -1);
 		$soft_last = $last == 'й' || (in_array($last, ['ь', 'е', 'ё', 'ю', 'я']) && (self::isConsonant(S::slice($word, -2, -1)) || S::slice($word, -2, -1) == 'и'));
@@ -154,10 +154,10 @@ class GeneralDeclension extends \morphos\GeneralDeclension implements Cases {
 		);
 
 		// RODIT
-		$forms[Cases::RODIT] = $this->chooseVowelAfterConsonant($last, $soft_last, $prefix.'я', $prefix.'а');
+		$forms[Cases::RODIT] = self::chooseVowelAfterConsonant($last, $soft_last, $prefix.'я', $prefix.'а');
 
 		// DAT
-		$forms[Cases::DAT] = $this->chooseVowelAfterConsonant($last, $soft_last, $prefix.'ю', $prefix.'у');
+		$forms[Cases::DAT] = self::chooseVowelAfterConsonant($last, $soft_last, $prefix.'ю', $prefix.'у');
 
 		// VINIT
 		if (in_array($last, ['о', 'е', 'ё']))
@@ -183,12 +183,12 @@ class GeneralDeclension extends \morphos\GeneralDeclension implements Cases {
 
 		// PREDLOJ
 		$forms[Cases::PREDLOJ] = self::getPredCaseOf12Declensions($word, $last, $prefix);
-		$forms[Cases::PREDLOJ] = $this->choosePrepositionByFirstLetter($forms[Cases::PREDLOJ], 'об', 'о').' '.$forms[Cases::PREDLOJ];
+		$forms[Cases::PREDLOJ] = self::choosePrepositionByFirstLetter($forms[Cases::PREDLOJ], 'об', 'о').' '.$forms[Cases::PREDLOJ];
 
 		return $forms;
 	}
 
-	public function declinateThirdDeclension($word) {
+	static public function declinateThirdDeclension($word) {
 		$word = S::lower($word);
 		$prefix = S::slice($word, 0, -1);
 		return array(
@@ -197,13 +197,13 @@ class GeneralDeclension extends \morphos\GeneralDeclension implements Cases {
 			Cases::DAT => $prefix.'и',
 			Cases::VINIT => $word,
 			Cases::TVORIT => $prefix.'ью',
-			Cases::PREDLOJ => $this->choosePrepositionByFirstLetter($prefix, 'об', 'о').' '.$prefix.'и',
+			Cases::PREDLOJ => self::choosePrepositionByFirstLetter($prefix, 'об', 'о').' '.$prefix.'и',
 		);
 	}
 
-	public function getCase($word, $case, $animateness = false) {
+	static public function getCase($word, $case, $animateness = false) {
 		$case = self::canonizeCase($case);
-		$forms = $this->getCases($word, $animateness);
+		$forms = self::getCases($word, $animateness);
 		return $forms[$case];
 	}
 

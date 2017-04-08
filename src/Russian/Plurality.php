@@ -13,7 +13,7 @@ class Plurality extends \morphos\Plurality implements Cases {
 	const TWO_FOUR = 2;
 	const FIVE_OTHER = 3;
 
-	protected $neuterExceptions = array(
+	static protected $neuterExceptions = array(
 		'поле',
 		'море',
 	);
@@ -24,18 +24,13 @@ class Plurality extends \morphos\Plurality implements Cases {
 	);
 
 	static public function pluralize($word, $count = 2, $animateness = false) {
-		static $dec, $plu;
-		if ($dec === null) $dec = new GeneralDeclension();
-		if ($plu === null) $plu = new self();
-
 		switch (self::getNumeralForm($count)) {
 			case self::ONE:
 				return $word;
 			case self::TWO_FOUR:
-				return $dec->getCase($word, self::RODIT, $animateness);
+				return GeneralDeclension::getCase($word, self::RODIT, $animateness);
 			case self::FIVE_OTHER:
-				$forms = $plu->getCases($word, $animateness);
-				return $forms[self::RODIT];
+				return Plurality::getCase($word, self::RODIT, $animateness);
 		}
 	}
 
@@ -49,13 +44,13 @@ class Plurality extends \morphos\Plurality implements Cases {
 			return self::FIVE_OTHER;
 	}
 
-	public function getCase($word, $case, $animateness = false) {
+	static public function getCase($word, $case, $animateness = false) {
 		$case = self::canonizeCase($case);
-		$forms = $this->getCases($word, $animateness);
+		$forms = self::getCases($word, $animateness);
 		return $forms[$case];
 	}
 
-	public function getCases($word, $animateness = false) {
+	static public function getCases($word, $animateness = false) {
 		$word = S::lower($word);
 		$prefix = S::slice($word, 0, -1);
 		$last = S::slice($word, -1);
@@ -67,7 +62,7 @@ class Plurality extends \morphos\Plurality implements Cases {
 				self::DAT => $word,
 				self::VINIT => $word,
 				self::TVORIT => $word,
-				self::PREDLOJ => $this->choosePrepositionByFirstLetter($word, 'об', 'о').' '.$word,
+				self::PREDLOJ => self::choosePrepositionByFirstLetter($word, 'об', 'о').' '.$word,
 			);
 		}
 
@@ -75,25 +70,25 @@ class Plurality extends \morphos\Plurality implements Cases {
 			$soft_last = $last == 'й' || (in_array($last, ['ь', 'е', 'ё', 'ю', 'я']) && (self::isConsonant(S::slice($word, -2, -1)) || S::slice($word, -2, -1) == 'и'));
 			$prefix = GeneralDeclension::getPrefixOfFirstDeclension($word, $last);
 		} else if ($declension == GeneralDeclension::FIRST_DECLENSION) {
-			$soft_last = $this->checkLastConsonantSoftness($word);
+			$soft_last = self::checkLastConsonantSoftness($word);
 		} else {
 			$soft_last = false;
 		}
 
 		$forms = array();
 
-		if ($last == 'ч' || S::slice($word, -2) == 'чь' || ($this->isVowel($last) && in_array(S::slice($word, -2, -1), array('ч', 'к')))) // before ч, чь, ч+vowel, к+vowel
+		if ($last == 'ч' || S::slice($word, -2) == 'чь' || (self::isVowel($last) && in_array(S::slice($word, -2, -1), array('ч', 'к')))) // before ч, чь, ч+vowel, к+vowel
 			$forms[Cases::IMENIT] = $prefix.'и';
 		else if ($last == 'н')
 			$forms[Cases::IMENIT] = $prefix.'ы';
 		else
-			$forms[Cases::IMENIT] = $this->chooseVowelAfterConsonant($last, $soft_last, $prefix.'я', $prefix.'а');
+			$forms[Cases::IMENIT] = self::chooseVowelAfterConsonant($last, $soft_last, $prefix.'я', $prefix.'а');
 
 
 		// RODIT
 		if (in_array($last, array('о', 'е'))) {
 			// exceptions
-			if (in_array($word, $this->neuterExceptions))
+			if (in_array($word, self::$neuterExceptions))
 				$forms[Cases::RODIT] = $prefix.'ей';
 			else if (S::slice($word, -2, -1) == 'и')
 				$forms[Cases::RODIT] = $prefix.'й';
@@ -117,7 +112,7 @@ class Plurality extends \morphos\Plurality implements Cases {
 			$forms[Cases::RODIT] = $prefix.'ов';
 
 		// DAT
-		$forms[Cases::DAT] = $this->chooseVowelAfterConsonant($last, $soft_last && S::slice($word, -2, -1) != 'ч', $prefix.'ям', $prefix.'ам');
+		$forms[Cases::DAT] = self::chooseVowelAfterConsonant($last, $soft_last && S::slice($word, -2, -1) != 'ч', $prefix.'ям', $prefix.'ам');
 
 		// VINIT
 		$forms[Cases::VINIT] = GeneralDeclension::getVinitCaseByAnimateness($forms, $animateness);
@@ -127,12 +122,12 @@ class Plurality extends \morphos\Plurality implements Cases {
 		if ($last == 'ь' && $declension == GeneralDeclension::THIRD_DECLENSION && S::slice($word, -2) != 'чь') {
 			$forms[Cases::TVORIT] = $prefix.'ми';
 		} else {
-			$forms[Cases::TVORIT] = $this->chooseVowelAfterConsonant($last, $soft_last && S::slice($word, -2, -1) != 'ч', $prefix.'ями', $prefix.'ами');
+			$forms[Cases::TVORIT] = self::chooseVowelAfterConsonant($last, $soft_last && S::slice($word, -2, -1) != 'ч', $prefix.'ями', $prefix.'ами');
 		}
 
 		// PREDLOJ
-		$forms[Cases::PREDLOJ] = $this->chooseVowelAfterConsonant($last, $soft_last && S::slice($word, -2, -1) != 'ч', $prefix.'ях', $prefix.'ах');
-		$forms[Cases::PREDLOJ] = $this->choosePrepositionByFirstLetter($forms[Cases::PREDLOJ], 'об', 'о').' '.$forms[Cases::PREDLOJ];
+		$forms[Cases::PREDLOJ] = self::chooseVowelAfterConsonant($last, $soft_last && S::slice($word, -2, -1) != 'ч', $prefix.'ях', $prefix.'ах');
+		$forms[Cases::PREDLOJ] = self::choosePrepositionByFirstLetter($forms[Cases::PREDLOJ], 'об', 'о').' '.$forms[Cases::PREDLOJ];
 		return $forms;
 	}
 }

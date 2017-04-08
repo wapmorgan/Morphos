@@ -7,24 +7,18 @@ use morphos\Russian\Cases;
 use morphos\Russian\FirstNamesDeclension;
 
 class FirstNamesDeclensionTest extends \PHPUnit_Framework_TestCase {
-    protected $declension;
-
-    public function setUp() {
-        $this->declension = new FirstNamesDeclension();
-    }
-
     /**
      * @dataProvider allMenNamesProvider
      */
     public function testMutableMen($name) {
-        $this->assertTrue($this->declension->isMutable($name, FirstNamesDeclension::MAN));
+        $this->assertTrue(FirstNamesDeclension::isMutable($name, FirstNamesDeclension::MALE));
     }
 
     /**
      * @dataProvider allWomenNamesProvider
      */
     public function testMutableWomen($name) {
-        $this->assertTrue($this->declension->isMutable($name, FirstNamesDeclension::WOMAN));
+        $this->assertTrue(FirstNamesDeclension::isMutable($name, FirstNamesDeclension::FEMALE));
     }
 
     public function allMenNamesProvider() {
@@ -50,7 +44,7 @@ class FirstNamesDeclensionTest extends \PHPUnit_Framework_TestCase {
             Cases::VINIT => $name4,
             Cases::TVORIT => $name5,
             Cases::PREDLOJ => $name6,
-        ), $this->declension->getCases($name, FirstNamesDeclension::MAN));
+        ), FirstNamesDeclension::getCases($name, FirstNamesDeclension::MALE));
     }
 
     /**
@@ -64,7 +58,7 @@ class FirstNamesDeclensionTest extends \PHPUnit_Framework_TestCase {
             Cases::VINIT => $name4,
             Cases::TVORIT => $name5,
             Cases::PREDLOJ => $name6,
-        ), $this->declension->getCases($name, FirstNamesDeclension::WOMAN));
+        ), FirstNamesDeclension::getCases($name, FirstNamesDeclension::FEMALE));
     }
 
     public function menNamesProvider() {
@@ -156,20 +150,20 @@ class FirstNamesDeclensionTest extends \PHPUnit_Framework_TestCase {
      * @dataProvider immutableNamesProvider()
      */
     public function testImmutabeNames($name, $gender) {
-        $this->assertFalse($this->declension->isMutable($name, $gender));
+        $this->assertFalse(FirstNamesDeclension::isMutable($name, $gender));
     }
 
     public function immutableNamesProvider() {
         return array(
-            array('Тореро', FirstNamesDeclension::WOMAN),
-            array('Айбу', FirstNamesDeclension::WOMAN),
-            array('Хосе', FirstNamesDeclension::WOMAN),
-            array('Каншау', FirstNamesDeclension::WOMAN),
-            array('Франсуа', FirstNamesDeclension::WOMAN),
-            array('Тойбухаа', FirstNamesDeclension::WOMAN),
-            array('Качаа', FirstNamesDeclension::WOMAN),
-            array('Зиа', FirstNamesDeclension::WOMAN),
-            array('Хожулаа', FirstNamesDeclension::WOMAN),
+            array('Тореро', FirstNamesDeclension::FEMALE),
+            array('Айбу', FirstNamesDeclension::FEMALE),
+            array('Хосе', FirstNamesDeclension::FEMALE),
+            array('Каншау', FirstNamesDeclension::FEMALE),
+            array('Франсуа', FirstNamesDeclension::FEMALE),
+            array('Тойбухаа', FirstNamesDeclension::FEMALE),
+            array('Качаа', FirstNamesDeclension::FEMALE),
+            array('Зиа', FirstNamesDeclension::FEMALE),
+            array('Хожулаа', FirstNamesDeclension::FEMALE),
         );
     }
 
@@ -177,44 +171,44 @@ class FirstNamesDeclensionTest extends \PHPUnit_Framework_TestCase {
      * @dataProvider mutableNamesProvider()
      */
     public function testMutableNames($name, $gender) {
-        $this->assertTrue($this->declension->isMutable($name, $gender));
+        $this->assertTrue(FirstNamesDeclension::isMutable($name, $gender));
     }
 
     /**
      * @dataProvider allMenNamesProvider()
      */
     public function testDetectGenderMen($name) {
-        $result = $this->declension->detectGender($name);
-        if ($result !== null) $this->assertEquals(NamesDeclension::MAN, $result);
+        $result = FirstNamesDeclension::detectGender($name);
+        if ($result !== null) $this->assertEquals(NamesDeclension::MALE, $result);
     }
 
     /**
      * @dataProvider allWomenNamesProvider()
      */
     public function testDetectGenderWomen($name) {
-        $result = $this->declension->detectGender($name);
-        if ($result !== null) $this->assertEquals(NamesDeclension::WOMAN, $result);
+        $result = FirstNamesDeclension::detectGender($name);
+        if ($result !== null) $this->assertEquals(NamesDeclension::FEMALE, $result);
     }
 
     public function mutableNamesProvider() {
         return array(
-            array('Иван', FirstNamesDeclension::MAN),
-            array('Игорь', FirstNamesDeclension::MAN),
-            array('Андрей', FirstNamesDeclension::MAN),
-            array('Фома', FirstNamesDeclension::MAN),
-            array('Никита', FirstNamesDeclension::MAN),
-            array('Илья', FirstNamesDeclension::MAN),
-            array('Анна', FirstNamesDeclension::WOMAN),
-            array('Наталья', FirstNamesDeclension::WOMAN),
-            array('Виринея', FirstNamesDeclension::WOMAN),
+            array('Иван', FirstNamesDeclension::MALE),
+            array('Игорь', FirstNamesDeclension::MALE),
+            array('Андрей', FirstNamesDeclension::MALE),
+            array('Фома', FirstNamesDeclension::MALE),
+            array('Никита', FirstNamesDeclension::MALE),
+            array('Илья', FirstNamesDeclension::MALE),
+            array('Анна', FirstNamesDeclension::FEMALE),
+            array('Наталья', FirstNamesDeclension::FEMALE),
+            array('Виринея', FirstNamesDeclension::FEMALE),
             // foreign names
-            array('Айдын', FirstNamesDeclension::MAN),
-            array('Наиль', FirstNamesDeclension::MAN),
-            array('Тукай', FirstNamesDeclension::MAN),
-            array('Мустафа', FirstNamesDeclension::MAN),
-            array('Нафиса', FirstNamesDeclension::WOMAN),
-            array('Асия', FirstNamesDeclension::WOMAN),
-            array('Лючия', FirstNamesDeclension::WOMAN),
+            array('Айдын', FirstNamesDeclension::MALE),
+            array('Наиль', FirstNamesDeclension::MALE),
+            array('Тукай', FirstNamesDeclension::MALE),
+            array('Мустафа', FirstNamesDeclension::MALE),
+            array('Нафиса', FirstNamesDeclension::FEMALE),
+            array('Асия', FirstNamesDeclension::FEMALE),
+            array('Лючия', FirstNamesDeclension::FEMALE),
         );
     }
 }

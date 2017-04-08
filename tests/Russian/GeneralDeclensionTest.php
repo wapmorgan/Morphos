@@ -5,12 +5,6 @@ require_once __DIR__.'/../../vendor/autoload.php';
 use morphos\Russian\GeneralDeclension;
 
 class GeneralDeclensionTest extends \PHPUnit_Framework_TestCase {
-    protected $dec;
-
-    public function setUp() {
-        $this->dec = new GeneralDeclension();
-    }
-
     /**
      * @dataProvider wordsProvider
      */
@@ -22,7 +16,7 @@ class GeneralDeclensionTest extends \PHPUnit_Framework_TestCase {
      * @dataProvider wordsProvider
      */
     public function testDeclenation($word, $animateness, $declension, $declenated) {
-        $this->assertEquals($declenated, array_values($this->dec->getCases($word, $animateness)));
+        $this->assertEquals($declenated, array_values(GeneralDeclension::getCases($word, $animateness)));
     }
 
     public function wordsProvider() {
@@ -66,7 +60,7 @@ class GeneralDeclensionTest extends \PHPUnit_Framework_TestCase {
      * @dataProvider immutableWordsProvider
      */
     public function testImmutableWords($word) {
-        $this->assertFalse($this->dec->isMutable($word, false));
+        $this->assertFalse(GeneralDeclension::isMutable($word, false));
     }
 
     public function immutableWordsProvider() {

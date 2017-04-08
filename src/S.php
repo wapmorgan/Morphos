@@ -71,11 +71,11 @@ class S {
     }
 
     /**
-     * Name case. (ex: Thomas Lewis)
+     * Name case. (ex: Thomas, Lewis)
      */
     static public function name($string) {
         if (function_exists('mb_strtoupper')) {
-            return self::upper(self::slice($string, 0, 1)).self::lower(self::slice($string, 1));
+            return implode('-', array_map(function ($word) { return self::upper(self::slice($word, 0, 1)).self::lower(self::slice($word, 1)); }, explode('-', $string)));
         } else {
             return false;
         }

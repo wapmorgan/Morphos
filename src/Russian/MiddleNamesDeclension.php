@@ -9,32 +9,31 @@ use morphos\S;
 class MiddleNamesDeclension extends \morphos\NamesDeclension implements Cases {
     use RussianLanguage, CasesHelper;
 
-    public function detectGender($name) {
+    static public function detectGender($name) {
         $name = S::lower($name);
         if (S::slice($name, -2) == 'ич')
-            return self::MAN;
+            return self::MALE;
         else if (S::slice($name, -2) == 'на')
-            return self::WOMAN;
+            return self::FEMALE;
 
         return null;
     }
 
-    public function isMutable($name, $gender = null) {
+    static public function isMutable($name, $gender = null) {
         $name = S::lower($name);
         if (in_array(S::slice($name, -2), array('ич', 'на')))
             return true;
         return false;
     }
 
-    public function getCase($name, $case, $gender = null) {
+    static public function getCase($name, $case, $gender = null) {
         $case = self::canonizeCase($case);
-        $forms = $this->getCases($name, $gender);
+        $forms = self::getCases($name, $gender);
         return $forms[$case];
     }
 
-    public function getCases($name, $gender = null) {
+    static public function getCases($name, $gender = null) {
         $name = S::lower($name);
-        if ($gender === null) $gender = $this->detectGender($name);
         if (S::slice($name, -2) == 'ич') {
             // man rules
             $name = S::name($name);
@@ -44,7 +43,7 @@ class MiddleNamesDeclension extends \morphos\NamesDeclension implements Cases {
                 Cases::DAT => $name.'у',
                 Cases::VINIT => $name.'а',
                 Cases::TVORIT => $name.'ем',
-                Cases::PREDLOJ => $this->choosePrepositionByFirstLetter($name, 'об', 'о').' '.$name.'е',
+                Cases::PREDLOJ => self::choosePrepositionByFirstLetter($name, 'об', 'о').' '.$name.'е',
             );
         } else if (S::slice($name, -2) == 'на') {
             $prefix = S::name(S::slice($name, 0, -1));
@@ -54,12 +53,12 @@ class MiddleNamesDeclension extends \morphos\NamesDeclension implements Cases {
                 Cases::DAT => $prefix.'е',
                 Cases::VINIT => $prefix.'у',
                 Cases::TVORIT => $prefix.'ой',
-                Cases::PREDLOJ => $this->choosePrepositionByFirstLetter($prefix, 'об', 'о').' '.$prefix.'е',
+                Cases::PREDLOJ => self::choosePrepositionByFirstLetter($prefix, 'об', 'о').' '.$prefix.'е',
             );
         }
 
         // immutable middle name
         $name = S::name($name);
-        return array_fill_keys(array(self::IMENIT, self::RODIT, self::DAT, self::VINIT, self::TVORIT), $name) + array(self::PREDLOJ => $this->choosePrepositionByFirstLetter($name, 'об', 'о').' '.$name);
+        return array_fill_keys(array(self::IMENIT, self::RODIT, self::DAT, self::VINIT, self::TVORIT), $name) + array(self::PREDLOJ => self::choosePrepositionByFirstLetter($name, 'об', 'о').' '.$name);
     }
 }

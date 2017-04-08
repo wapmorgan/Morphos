@@ -43,6 +43,9 @@ class CardinalNumeral extends NumeralCreation {
         1000000000000 => 'trillion',
     );
 
+    static public function getCases($number) {}
+    static public function getCase($number, $case) {}
+
     static public function generate($number) {
         // simple numeral
         if (isset(self::$words[$number]) || isset(self::$exponents[$number])) {

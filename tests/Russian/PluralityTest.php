@@ -5,12 +5,6 @@ require_once __DIR__.'/../../vendor/autoload.php';
 use morphos\Russian\Plurality;
 
 class PluralityTest extends \PHPUnit_Framework_TestCase {
-    protected $plu;
-
-    public function setUp() {
-        $this->plu = new Plurality();
-    }
-
     /**
      * @dataProvider pluralizationWordsProvider
      */
@@ -42,7 +36,7 @@ class PluralityTest extends \PHPUnit_Framework_TestCase {
      * @dataProvider pluralWordsProvider
      */
     public function testPluralDeclenation($word, $animateness, $declenated) {
-        $this->assertEquals($declenated, array_values($this->plu->getCases($word, $animateness)));
+        $this->assertEquals($declenated, array_values(Plurality::getCases($word, $animateness)));
     }
 
     public function pluralWordsProvider() {

@@ -7,12 +7,6 @@ use morphos\Russian\Cases;
 use morphos\Russian\CardinalNumeral;
 
 class CardinalNumeralTest extends \PHPUnit_Framework_TestCase {
-    protected $cardinal;
-
-    public function setUp() {
-        $this->cardinal = new CardinalNumeral();
-    }
-
     /**
      * @dataProvider numbersProvider
      */
@@ -24,7 +18,7 @@ class CardinalNumeralTest extends \PHPUnit_Framework_TestCase {
             Cases::VINIT => $case4,
             Cases::TVORIT => $case5,
             Cases::PREDLOJ => $case6,
-        ), $this->cardinal->getCases($number, $gender));
+        ), CardinalNumeral::getCases($number, $gender));
     }
 
     public function numbersProvider() {

@@ -7,17 +7,11 @@ use morphos\Russian\MiddleNamesDeclension;
 use morphos\NamesDeclension;
 
 class MiddleNamesDeclensionTest extends \PHPUnit_Framework_TestCase {
-    protected $declension;
-
-    public function setUp() {
-        $this->declension = new MiddleNamesDeclension();
-    }
-
     /**
      * @dataProvider middleNamesProvider
      */
     public function testGetCases($name, $gender, $name2, $name3, $name4, $name5, $name6) {
-        $forms = $this->declension->getCases($name, $gender);
+        $forms = MiddleNamesDeclension::getCases($name, $gender);
         $this->assertEquals(array(
             Cases::IMENIT => $name,
             Cases::RODIT => $name2,
@@ -32,15 +26,15 @@ class MiddleNamesDeclensionTest extends \PHPUnit_Framework_TestCase {
      * @dataProvider middleNamesProvider()
      */
     public function testDetectGender($name, $gender) {
-        $this->assertEquals($gender, $this->declension->detectGender($name));
+        $this->assertEquals($gender, MiddleNamesDeclension::detectGender($name));
     }
 
     public function middleNamesProvider() {
         return array(
-            array('Владимирович', NamesDeclension::MAN, 'Владимировича', 'Владимировичу', 'Владимировича', 'Владимировичем', 'о Владимировиче'),
-            array('Валерьянович', NamesDeclension::MAN, 'Валерьяновича', 'Валерьяновичу', 'Валерьяновича', 'Валерьяновичем', 'о Валерьяновиче'),
-            array('Богдановна', NamesDeclension::WOMAN, 'Богдановны', 'Богдановне', 'Богдановну', 'Богдановной', 'о Богдановне'),
-            array('Сергеевна', NamesDeclension::WOMAN, 'Сергеевны', 'Сергеевне', 'Сергеевну', 'Сергеевной', 'о Сергеевне'),
+            array('Владимирович', NamesDeclension::MALE, 'Владимировича', 'Владимировичу', 'Владимировича', 'Владимировичем', 'о Владимировиче'),
+            array('Валерьянович', NamesDeclension::MALE, 'Валерьяновича', 'Валерьяновичу', 'Валерьяновича', 'Валерьяновичем', 'о Валерьяновиче'),
+            array('Богдановна', NamesDeclension::FEMALE, 'Богдановны', 'Богдановне', 'Богдановну', 'Богдановной', 'о Богдановне'),
+            array('Сергеевна', NamesDeclension::FEMALE, 'Сергеевны', 'Сергеевне', 'Сергеевну', 'Сергеевной', 'о Сергеевне'),
         );
     }
 
