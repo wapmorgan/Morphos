@@ -13,6 +13,9 @@ class GeneralDeclension extends \morphos\GeneralDeclension implements Cases {
 	const SECOND_DECLENSION = 2;
 	const THIRD_DECLENSION = 3;
 
+	/**
+	 * These words has 2 declension type.
+	 */
 	static protected $abnormalExceptions = array(
 		'бремя',
 		'вымя',
@@ -25,6 +28,8 @@ class GeneralDeclension extends \morphos\GeneralDeclension implements Cases {
 		'имя',
 		'племя',
 		'семя',
+		'путь' => array('путь', 'пути', 'пути', 'путь', 'путем', 'о пути'),
+		'дитя' => array('дитя', 'дитяти', 'дитяти', 'дитя', 'дитятей', 'о дитяти')
 	);
 
 	static protected $masculineWithSoft = array(
@@ -66,6 +71,9 @@ class GeneralDeclension extends \morphos\GeneralDeclension implements Cases {
 	static public function getDeclension($word) {
 		$word = S::lower($word);
 		$last = S::slice($word, -1);
+		if (isset(self::$abnormalExceptions[$word]) || in_array($word, self::$abnormalExceptions))
+			return 2;
+
 		if (in_array($last, ['а', 'я']) && S::slice($word, -2) != 'мя') {
 			return 1;
 		} else if (self::isConsonant($last) || in_array($last, ['о', 'е', 'ё']) || ($last == 'ь' && self::isConsonant(S::slice($word, -2, -1)) && !RussianLanguage::isHissingConsonant(S::slice($word, -2, -1)) && in_array($word, self::$masculineWithSoft))) {
@@ -88,14 +96,16 @@ class GeneralDeclension extends \morphos\GeneralDeclension implements Cases {
 				self::PREDLOJ => self::choosePrepositionByFirstLetter($word, 'об', 'о').' '.$word,
 			);
 		} else if (isset(self::$abnormalExceptions[$word])) {
-			$prefix = S::slice($word, -1);
+			return array_combine(array(self::IMENIT, self::RODIT, self::DAT, self::VINIT, self::TVORIT, self::PREDLOJ), self::$abnormalExceptions[$word]);
+		} else if (in_array($word, self::$abnormalExceptions)) {
+			$prefix = S::slice($word, 0, -1);
 			return array(
 				self::IMENIT => $word,
-				self::RODIT => $prefix.'и',
-				self::DAT => $prefix.'и',
+				self::RODIT => $prefix.'ени',
+				self::DAT => $prefix.'ени',
 				self::VINIT => $word,
-				self::TVORIT => $prefix,
-				self::PREDLOJ => self::choosePrepositionByFirstLetter($prefix, 'об', 'о').' '.$prefix.'и',
+				self::TVORIT => $prefix.'енем',
+				self::PREDLOJ => self::choosePrepositionByFirstLetter($prefix, 'об', 'о').' '.$prefix.'ени',
 			);
 		}
 
