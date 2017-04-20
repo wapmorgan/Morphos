@@ -2,6 +2,6 @@
 namespace morphos;
 
 abstract class NumeralCreation implements Cases, Gender {
-    abstract static public function getCases($number);
-    abstract static public function getCase($number, $case);
+    static public function getCases($number) {}
+    static public function getCase($number, $case) {}
 }
