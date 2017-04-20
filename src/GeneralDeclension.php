@@ -2,7 +2,7 @@
 namespace morphos;
 
 abstract class GeneralDeclension implements Cases {
-	abstract static public function isMutable($name);
-	abstract static public function getCases($name);
-	abstract static public function getCase($name, $case);
+	static public function isMutable($name) {}
+	static public function getCases($name) {}
+	static public function getCase($name, $case) {}
 }
