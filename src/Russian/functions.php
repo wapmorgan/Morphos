@@ -11,6 +11,8 @@ function name($fullname, $case = null, $gender = null) {
     if ($gender === null) $gender = detectGender($fullname);
 
     $name = explode(' ', $fullname);
+    if (count($name) < 2 || count($name) > 3)
+        return false;
     if ($case === null) {
         $result = array();
         if (count($name) == 2) {
@@ -49,6 +51,8 @@ function name($fullname, $case = null, $gender = null) {
 function detectGender($fullname) {
     static $first, $middle, $last;
     $name = explode(' ', S::lower($fullname));
+    if (count($name) < 2 || count($name) > 3)
+        return false;
 
     return (isset($name[2]) ? MiddleNamesDeclension::detectGender($name[2]) : null) ?:
         FirstNamesDeclension::detectGender($name[1]) ?:
