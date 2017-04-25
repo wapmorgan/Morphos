@@ -7,6 +7,17 @@ use morphos\Russian\GeographicalNamesDeclension;
 use morphos\Russian\Plurality;
 use morphos\Russian\OrdinalNumeral;
 
+function safe_string($string) {
+	return preg_replace('~[^А-Яа-яЁё ]~u', null, trim($string));
+}
+
+foreach (array('name', 'noun', 'geographical-name') as $field) {
+	if (isset($_POST[$field])) {
+		$_POST[$field] = safe_string($_POST[$field]);
+		var_dump($_POST[$field]);
+	}
+}
+
 ?><html>
 <head>
 	<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
@@ -84,10 +95,11 @@ use morphos\Russian\OrdinalNumeral;
 <?php if (isset($_POST['noun'])): ?>
 	<?php
 	$animate = !empty($_POST['animate']);
+	$noun = $_POST['noun'];
 	?>
 	<?php if (!isset($_POST['count'])): ?>
 	<?php
-	$cases = GeneralDeclension::getCases($_POST['noun'], $animate);
+	$cases = GeneralDeclension::getCases($noun, $animate);
 	?>
 		<table>
 			<tr>
@@ -95,7 +107,7 @@ use morphos\Russian\OrdinalNumeral;
 						<table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
 							<tbody>
 								<tr>
-									<td class="mdl-data-table__cell--non-numeric" colspan="2" style="text-align: center;"><?=$_POST['noun']?> (<?=GeneralDeclension::getDeclension($_POST['noun'])?> склонение)</td>
+									<td class="mdl-data-table__cell--non-numeric" colspan="2" style="text-align: center;"><?= $noun ?> (<?=GeneralDeclension::getDeclension($noun)?> склонение)</td>
 								</tr>
 								<?php foreach(array(Cases::IMENIT => 'Именительный', Cases::RODIT => 'Родительный', Cases::DAT => 'Дательный', Cases::VINIT => 'Винительный', Cases::TVORIT => 'Творительный', Cases::PREDLOJ => 'Предложный') as $case => $name): ?>
 									<tr>
@@ -108,12 +120,12 @@ use morphos\Russian\OrdinalNumeral;
 				</td>
 				<td>
 	<?php
-	$cases = Plurality::getCases($_POST['noun'], $animate);
+	$cases = Plurality::getCases($noun, $animate);
 	?>
 						<table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
 							<tbody>
 								<tr>
-									<td class="mdl-data-table__cell--non-numeric" colspan="2" style="text-align: center;"><?=$_POST['noun']?> (<?=GeneralDeclension::getDeclension($_POST['noun'])?> склонение) во множественном числе</td>
+									<td class="mdl-data-table__cell--non-numeric" colspan="2" style="text-align: center;"><?=$_POST['noun']?> (<?=GeneralDeclension::getDeclension($noun)?> склонение) во множественном числе</td>
 								</tr>
 								<?php foreach(array(Cases::IMENIT => 'Именительный', Cases::RODIT => 'Родительный', Cases::DAT => 'Дательный', Cases::VINIT => 'Винительный', Cases::TVORIT => 'Творительный', Cases::PREDLOJ => 'Предложный') as $case => $name): ?>
 									<tr>
@@ -130,15 +142,15 @@ use morphos\Russian\OrdinalNumeral;
 				<table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
 					<tbody>
 						<tr>
-							<td class="mdl-data-table__cell--non-numeric" colspan="2" style="text-align: center;"><?=$_POST['noun']?> (<?=GeneralDeclension::getDeclension($_POST['noun'])?> склонение)</td>
+							<td class="mdl-data-table__cell--non-numeric" colspan="2" style="text-align: center;"><?=$noun?> (<?=GeneralDeclension::getDeclension($noun)?> склонение)</td>
 						</tr>
 						<?php for ($i = 1; $i <= 20; $i++): ?>
 							<tr>
-								<td class="mdl-data-table__cell--non-numeric"><?=$i.' '.PLurality::pluralize($_POST['noun'], $i, $animate)?></td>
-								<td class="mdl-data-table__cell--non-numeric"><?=($i+20).' '.PLurality::pluralize($_POST['noun'], $i + 20, $animate)?></td>
-								<td class="mdl-data-table__cell--non-numeric"><?=($i+40).' '.PLurality::pluralize($_POST['noun'], $i + 40, $animate)?></td>
-								<td class="mdl-data-table__cell--non-numeric"><?=($i+60).' '.PLurality::pluralize($_POST['noun'], $i + 60, $animate)?></td>
-								<td class="mdl-data-table__cell--non-numeric"><?=($i+80).' '.PLurality::pluralize($_POST['noun'], $i + 80, $animate)?></td>
+								<td class="mdl-data-table__cell--non-numeric"><?=$i.' '.PLurality::pluralize($noun, $i, $animate)?></td>
+								<td class="mdl-data-table__cell--non-numeric"><?=($i+20).' '.PLurality::pluralize($noun, $i + 20, $animate)?></td>
+								<td class="mdl-data-table__cell--non-numeric"><?=($i+40).' '.PLurality::pluralize($noun, $i + 40, $animate)?></td>
+								<td class="mdl-data-table__cell--non-numeric"><?=($i+60).' '.PLurality::pluralize($noun, $i + 60, $animate)?></td>
+								<td class="mdl-data-table__cell--non-numeric"><?=($i+80).' '.PLurality::pluralize($noun, $i + 80, $animate)?></td>
 							</tr>
 						<?php endfor; ?>
 					</tbody>
@@ -157,7 +169,12 @@ use morphos\Russian\OrdinalNumeral;
 							<table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp" style="margin: 0 0 0 auto;">
 								<tbody>
 									<tr>
-										<td class="mdl-data-table__cell--non-numeric">Введите название города или улицы: <input name="geographical-name" value="<?= isset($_POST['geographical-name']) ? $_POST['geographical-name'] : null ?>"></td>
+										<td class="mdl-data-table__cell--non-numeric">
+											<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+											<input name="geographical-name" value="<?= isset($_POST['geographical-name']) ? $_POST['geographical-name'] : null ?>" class="mdl-textfield__input" id="geographical-name-input">
+											<label class="mdl-textfield__label" for="name-inpuy">Улица, город, страна</label>
+											</div>
+										</td>
 									</tr>
 									<tr>
 										<td class="mdl-data-table__cell--non-numeric">
@@ -171,12 +188,13 @@ use morphos\Russian\OrdinalNumeral;
 					<div class="mdl-cell mdl-cell--6-col" style="text-align: left;">
 			<?php if (isset($_POST['geographical-name'])): ?>
 	<?php
-	$cases = GeographicalNamesDeclension::getCases($_POST['geographical-name']);
+	$geographical_name = $_POST['geographical-name'];
+	$cases = GeographicalNamesDeclension::getCases($geographical_name);
 	?>
 						<table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
 							<tbody>
 								<tr>
-									<td class="mdl-data-table__cell--non-numeric" colspan="2" style="text-align: center;"><?=$_POST['geographical-name']?></td>
+									<td class="mdl-data-table__cell--non-numeric" colspan="2" style="text-align: center;"><?=$geographical_name?></td>
 								</tr>
 								<?php foreach(array(Cases::IMENIT => 'Именительный', Cases::RODIT => 'Родительный', Cases::DAT => 'Дательный', Cases::VINIT => 'Винительный', Cases::TVORIT => 'Творительный', Cases::PREDLOJ => 'Предложный') as $case => $name): ?>
 									<tr>
@@ -198,7 +216,12 @@ use morphos\Russian\OrdinalNumeral;
 							<table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp" style="margin: 0 0 0 auto;">
 								<tbody>
 									<tr>
-										<td class="mdl-data-table__cell--non-numeric">Введите Имя: <input name="name" value="<?= isset($_POST['name']) ? $_POST['name'] : null ?>"></td>
+										<td class="mdl-data-table__cell--non-numeric">
+											<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+												<input name="name" value="<?= isset($_POST['name']) ? $_POST['name'] : null ?>" class="mdl-textfield__input" id="name-input">
+												<label class="mdl-textfield__label" for="name-inpuy">Фамилия Имя [Отчество]</label>
+											</div>
+										</td>
 									</tr>
 									<tr>
 										<td class="mdl-data-table__cell--non-numeric">
@@ -220,13 +243,15 @@ use morphos\Russian\OrdinalNumeral;
 					<div class="mdl-cell mdl-cell--6-col" style="text-align: left;">
 <?php if (isset($_POST['name'])): ?>
 	<?php
-	$gender = !empty($_POST['gender']) ? $_POST['gender'] : morphos\Russian\detectGender($_POST['name']);
-	$cases = morphos\Russian\name($_POST['name'], null, $gender);
+	$name = $_POST['name'];
+	$gender = !empty($_POST['gender']) ? $_POST['gender'] : morphos\Russian\detectGender($name);
+	$cases = morphos\Russian\name($name, null, $gender);
+	if ($cases !== false):
 	?>
 						<table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
 							<tbody>
 								<tr>
-									<td class="mdl-data-table__cell--non-numeric" colspan="2" style="text-align: center;"><?=$_POST['name']?> (<?=$gender?>)</td>
+									<td class="mdl-data-table__cell--non-numeric" colspan="2" style="text-align: center;"><?=$name?> (<?=$gender?>)</td>
 								</tr>
 								<?php foreach(array(Cases::IMENIT => 'Именительный', Cases::RODIT => 'Родительный', Cases::DAT => 'Дательный', Cases::VINIT => 'Винительный', Cases::TVORIT => 'Творительный', Cases::PREDLOJ => 'Предложный') as $case => $name): ?>
 									<tr>
@@ -236,6 +261,7 @@ use morphos\Russian\OrdinalNumeral;
 								<?php endforeach; ?>
 							</tbody>
 						</table>
+		<?php endif; ?>
 		<?php endif; ?>
 					</div>
 				</div>
@@ -248,7 +274,7 @@ use morphos\Russian\OrdinalNumeral;
 								<table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp" style="margin: 0 0 0 auto;">
 									<tbody>
 										<tr>
-											<td class="mdl-data-table__cell--non-numeric">Введите число: <input name="number" value="<?= isset($_POST['number']) ? $_POST['number'] : null ?>"></td>
+											<td class="mdl-data-table__cell--non-numeric">Введите число: <input name="number" value="<?= isset($_POST['number']) ? intval($_POST['number']) : null ?>"></td>
 										</tr>
 										<tr>
 											<td class="mdl-data-table__cell--non-numeric"><input type="submit" value="Сгенерировать количественные числительные"/></td>
@@ -303,7 +329,7 @@ use morphos\Russian\OrdinalNumeral;
 						<table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
 							<tbody>
 								<tr>
-									<td class="mdl-data-table__cell--non-numeric" colspan="2" style="text-align: center;">П<?=$number?> (<?=$gender?>)</td>
+									<td class="mdl-data-table__cell--non-numeric" colspan="2" style="text-align: center;"><?=$number?> (<?=$gender?>)</td>
 								</tr>
 								<?php foreach(array(Cases::IMENIT => 'Именительный', Cases::RODIT => 'Родительный', Cases::DAT => 'Дательный', Cases::VINIT => 'Винительный', Cases::TVORIT => 'Творительный', Cases::PREDLOJ => 'Предложный') as $case => $name): ?>
 									<tr>
