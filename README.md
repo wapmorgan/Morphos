@@ -103,7 +103,7 @@ Arguments:
 
 - `$name` - full name as `Фамилия Имя` or `Фамилия Имя Отчество`.
 - `$case` - can be `null`, one of `Cases` constants, a string (described below). If not null, a string will be returned. If null, an array will be returned.
-- `$gender` - one of `Gender` constants, a string (`"m"` for male name,  `"w"` for female name), `null` for autodetection.
+- `$gender` - one of `Gender` constants, a string (`"m"` for male name,  `"f"` for female name), `null` for autodetection.
 
 There is three declension classes:
 
