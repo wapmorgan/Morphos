@@ -4,7 +4,7 @@ namespace morphos\Russian;
 use morphos\S;
 
 function name($fullname, $case = null, $gender = null) {
-    if (in_array($case, array('m', 'w'))) {
+    if (in_array($case, array('m', 'f'))) {
         $gender = $case;
         $case = null;
     }
