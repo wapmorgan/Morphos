@@ -1,5 +1,6 @@
 <?php
 require dirname(dirname(__FILE__)).'/vendor/autoload.php';
+use morphos\Gender;
 use morphos\Russian\CardinalNumeral;
 use morphos\Russian\Cases;
 use morphos\Russian\GeneralDeclension;
@@ -14,9 +15,10 @@ function safe_string($string) {
 foreach (array('name', 'noun', 'geographical-name') as $field) {
 	if (isset($_POST[$field])) {
 		$_POST[$field] = safe_string($_POST[$field]);
-		var_dump($_POST[$field]);
 	}
 }
+
+$gender_labels = array(Gender::MALE => 'мужской', Gender::FEMALE => 'женский', Gender::NEUTER => 'средний');
 
 ?><html>
 <head>
@@ -79,7 +81,11 @@ foreach (array('name', 'noun', 'geographical-name') as $field) {
 								<table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp" style="margin: 0 0 0 auto;">
 									<tbody>
 										<tr>
-											<td class="mdl-data-table__cell--non-numeric">Введите имя существительное: <input name="noun" value="<?= isset($_POST['noun']) ? $_POST['noun'] : null ?>"></td>
+											<td class="mdl-data-table__cell--non-numeric">
+												<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+													<input name="noun" value="<?= isset($_POST['noun']) ? $_POST['noun'] : null ?>" class="mdl-textfield__input" id="noun-input">
+													<label class="mdl-textfield__label" for="noun-input">Существительное</label>
+											</td>
 										</tr>
 										<tr>
 											<td class="mdl-data-table__cell--non-numeric"><label><input type="checkbox" name="animate" <?= isset($_POST['animate']) ? "checked='checked'" : null ?> /> Одушевлённое</label></td>
@@ -172,7 +178,7 @@ foreach (array('name', 'noun', 'geographical-name') as $field) {
 										<td class="mdl-data-table__cell--non-numeric">
 											<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
 											<input name="geographical-name" value="<?= isset($_POST['geographical-name']) ? $_POST['geographical-name'] : null ?>" class="mdl-textfield__input" id="geographical-name-input">
-											<label class="mdl-textfield__label" for="name-inpuy">Улица, город, страна</label>
+											<label class="mdl-textfield__label" for="geographical-name-input">Город, страна</label>
 											</div>
 										</td>
 									</tr>
@@ -226,7 +232,7 @@ foreach (array('name', 'noun', 'geographical-name') as $field) {
 									<tr>
 										<td class="mdl-data-table__cell--non-numeric">
 											Выберите пол:
-											<label><input type="radio" name="gender" value="" <?= isset($_POST['gender']) && $_POST['gender'] == '' ? "checked='checked'" : null ?> /> Автоматически </label>
+											<label><input type="radio" name="gender" value="" <?= !isset($_POST['gender']) || !in_array($_POST['gender'], array(Gender::MALE, Gender::FEMALE)) ? "checked='checked'" : null ?> /> Автоматически </label>
 											<label><input type="radio" name="gender" value="<?=morphos\Gender::MALE?>" <?= isset($_POST['gender']) && $_POST['gender'] == morphos\Gender::MALE ? "checked='checked'" : null ?> /> Мужской </label>
 											<label><input type="radio" name="gender" value="<?=morphos\Gender::FEMALE?>" <?= isset($_POST['gender']) && $_POST['gender'] == morphos\Gender::FEMALE ? "checked='checked'" : null ?> /> Женский </label>
 										</td>
@@ -251,7 +257,7 @@ foreach (array('name', 'noun', 'geographical-name') as $field) {
 						<table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
 							<tbody>
 								<tr>
-									<td class="mdl-data-table__cell--non-numeric" colspan="2" style="text-align: center;"><?=$name?> (<?=$gender?>)</td>
+									<td class="mdl-data-table__cell--non-numeric" colspan="2" style="text-align: center;"><?=$name?> (<?= $gender_labels[$gender] ?> пол)</td>
 								</tr>
 								<?php foreach(array(Cases::IMENIT => 'Именительный', Cases::RODIT => 'Родительный', Cases::DAT => 'Дательный', Cases::VINIT => 'Винительный', Cases::TVORIT => 'Творительный', Cases::PREDLOJ => 'Предложный') as $case => $name): ?>
 									<tr>
@@ -274,10 +280,12 @@ foreach (array('name', 'noun', 'geographical-name') as $field) {
 								<table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp" style="margin: 0 0 0 auto;">
 									<tbody>
 										<tr>
-											<td class="mdl-data-table__cell--non-numeric">Введите число: <input name="number" value="<?= isset($_POST['number']) ? intval($_POST['number']) : null ?>"></td>
-										</tr>
-										<tr>
-											<td class="mdl-data-table__cell--non-numeric"><input type="submit" value="Сгенерировать количественные числительные"/></td>
+											<td class="mdl-data-table__cell--non-numeric">
+												<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+													<input name="number" value="<?= isset($_POST['number']) ? intval($_POST['number']) : null ?>" class="mdl-textfield__input" id="number-input">
+													<label class="mdl-textfield__label" for="number-input">Число</label>
+												</div>
+											</td>
 										</tr>
 										<tr>
 											<td class="mdl-data-table__cell--non-numeric">
@@ -288,7 +296,7 @@ foreach (array('name', 'noun', 'geographical-name') as $field) {
 											</td>
 										</tr>
 										<tr>
-											<td class="mdl-data-table__cell--non-numeric"><input type="submit" name="ordinal" value="Сгенерировать порядковые числительные"/></td>
+											<td class="mdl-data-table__cell--non-numeric"><input type="submit" name="ordinal" value="Сгенерировать числительные"/></td>
 										</tr>
 									</tbody>
 								</table>
@@ -298,51 +306,26 @@ foreach (array('name', 'noun', 'geographical-name') as $field) {
 <?php if (isset($_POST['number'])): ?>
 	<?php
 	$number = intval($_POST['number']);
-	?>
-	<?php
-	if (!isset($_POST['ordinal'])):
-	$cases = CardinalNumeral::getCases($number);
-	?>
-		<table>
-			<tr>
-				<td>
-						<table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
-							<tbody>
-								<tr>
-									<td class="mdl-data-table__cell--non-numeric" colspan="2" style="text-align: center;"><?=$number?></td>
-								</tr>
-								<?php foreach(array(Cases::IMENIT => 'Именительный', Cases::RODIT => 'Родительный', Cases::DAT => 'Дательный', Cases::VINIT => 'Винительный', Cases::TVORIT => 'Творительный', Cases::PREDLOJ => 'Предложный') as $case => $name): ?>
-									<tr>
-										<td class="mdl-data-table__cell--non-numeric"><?=$name?></td>
-										<td class="mdl-data-table__cell--non-numeric"><?=$cases[$case]?></td>
-									</tr>
-								<?php endforeach; ?>
-							</tbody>
-						</table>
-				</td>
-				<td>
-	<?php
-	else:
 	$gender = isset($_POST['gender']) ? $_POST['gender'] : morphos\Gender::MALE;
-	$cases = OrdinalNumeral::getCases($number, $gender);
+	$cardinal = CardinalNumeral::getCases($number, $gender);
+  $ordinal = OrdinalNumeral::getCases($number, $gender);
 	?>
-						<table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
-							<tbody>
-								<tr>
-									<td class="mdl-data-table__cell--non-numeric" colspan="2" style="text-align: center;"><?=$number?> (<?=$gender?>)</td>
-								</tr>
-								<?php foreach(array(Cases::IMENIT => 'Именительный', Cases::RODIT => 'Родительный', Cases::DAT => 'Дательный', Cases::VINIT => 'Винительный', Cases::TVORIT => 'Творительный', Cases::PREDLOJ => 'Предложный') as $case => $name): ?>
-									<tr>
-										<td class="mdl-data-table__cell--non-numeric"><?=$name?></td>
-										<td class="mdl-data-table__cell--non-numeric"><?=$cases[$case]?></td>
-									</tr>
-								<?php endforeach; ?>
-							</tbody>
-						</table>
-				</td>
-			</tr>
-		</table>
-			<?php endif; ?>
+	<table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
+		<thead>
+				<th class="mdl-data-table__cell--non-numeric" style="text-align: center;"><?=$number?> (<?= $gender_labels[$gender] ?> род)</th>
+				<th class="mdl-data-table__cell--non-numeric" style="text-align: center;">Количественное</th>
+				<th class="mdl-data-table__cell--non-numeric" style="text-align: center;">Порядковое</th>
+		</thead>
+		<tbody>
+			<?php foreach(array(Cases::IMENIT => 'Именительный', Cases::RODIT => 'Родительный', Cases::DAT => 'Дательный', Cases::VINIT => 'Винительный', Cases::TVORIT => 'Творительный', Cases::PREDLOJ => 'Предложный') as $case => $name): ?>
+				<tr>
+					<td class="mdl-data-table__cell--non-numeric"><?=$name?></td>
+					<td class="mdl-data-table__cell--non-numeric"><?=$cardinal[$case]?></td>
+					<td class="mdl-data-table__cell--non-numeric"><?=$ordinal[$case]?></td>
+				</tr>
+			<?php endforeach; ?>
+		</tbody>
+	</table>
 		<?php endif; ?>
 						</div>
 					</div>
