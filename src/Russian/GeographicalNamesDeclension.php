@@ -31,8 +31,41 @@ class GeographicalNamesDeclension extends \morphos\GeneralDeclension implements 
 
     static public function getCases($name) {
         $name = S::lower($name);
+
+        // check for name of two words
+        if (strpos($name, ' ') !== false) {
+            $parts = explode(' ', $name);
+            $cases = array();
+            $result = array();
+            foreach ($parts as $i => $part) {
+                $result[$i] = static::getCases($part);
+                if ($i > 0)
+                    $result[$i][self::PREDLOJ] = substr(strstr($result[$i][self::PREDLOJ], ' '), 1);
+            }
+
+            $cases = array();
+            foreach (array(self::IMENIT, self::RODIT, self::DAT, self::VINIT, self::TVORIT, self::PREDLOJ) as $case) {
+                foreach ($parts as $i => $part) {
+                    $cases[$case][] = $result[$i][$case];
+                }
+                $cases[$case] = implode(' ', $cases[$case]);
+            }
+            return $cases;
+        }
+
         if (!in_array($name, self::$abbreviations)) {
-            if (S::slice($name, -1) == 'а') {
+            if (S::slice($name, -2) == 'ий') {
+                // Нижний, Русский
+                $prefix = S::name(S::slice($name, 0, -2));
+                return array(
+                    self::IMENIT => $prefix.'ий',
+                    self::RODIT => $prefix.(self::isVelarConsonant(S::slice($name, -3, -2)) ? 'ого' : 'его'),
+                    self::DAT => $prefix.(self::isVelarConsonant(S::slice($name, -3, -2)) ? 'ому' : 'ему'),
+                    self::VINIT => $prefix.'ий',
+                    self::TVORIT => $prefix.'им',
+                    self::PREDLOJ => self::choosePrepositionByFirstLetter($prefix, 'об', 'о').' '.$prefix.'ем',
+                );
+            } else if (S::slice($name, -1) == 'а') {
                 // Москва, Рига
                 $prefix = S::name(S::slice($name, 0, -1));
                 return array(
