@@ -338,11 +338,10 @@ echo $count.' '.morphos\Russian\pluralize('дом', $count, false); // result: 1
 
 ## Numerals
 
-All number creation classes are similar and have three common methods:
+All number creation classes are similar and have twp common methods:
 
 - `string getCase($number, $case, $gender = Gender::MALE)` - Get one case of a numeral for a number.
 - `array getCases($number, $gender = Gender::MALE)` - Get all case of a numeral for a number.
-- `string generate($number, $gender = Gender::MALE)` - Generates a cardinal or ordinal numeral for a number.
 
 `$gender` is one of `morphos\Gender` constants: `MALE` or `FEMALE` or `NEUTER`.
 
