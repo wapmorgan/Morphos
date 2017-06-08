@@ -103,7 +103,7 @@ class Plurality extends \morphos\Plurality implements Cases {
 
 		if ($last == 'ч' || in_array(S::slice($word, -2), array('чь', 'сь')) || (self::isVowel($last) && in_array(S::slice($word, -2, -1), array('ч', 'к')))) // before ч, чь, сь, ч+vowel, к+vowel
 			$forms[Cases::IMENIT] = $prefix.'и';
-		else if ($last == 'н')
+		else if ($last == 'н' || $last == 'ц')
 			$forms[Cases::IMENIT] = $prefix.'ы';
 		else
 			$forms[Cases::IMENIT] = self::chooseVowelAfterConsonant($last, $soft_last, $prefix.'я', $prefix.'а');
