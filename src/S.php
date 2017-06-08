@@ -109,4 +109,12 @@ class S {
             return false;
         }
     }
+
+    static public function indexOf($string, $substring, $caseSensetive = false, $startOffset = 0) {
+        if (function_exists('mb_stripos')) {
+            return $caseSensetive ? mb_strpos($string, $substring, $startOffset) : mb_stripos($string, $substring, $startOffset);
+        } else {
+            return false;
+        }
+    }
 }

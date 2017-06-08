@@ -23,6 +23,24 @@ class Plurality extends \morphos\Plurality implements Cases {
 		'пенни',
 	);
 
+	static protected $runawayVowelsExceptions = array(
+		'писе*ц',
+		'песе*ц',
+		'глото*к',
+	);
+
+	static protected $runawayVowelsNormalized = false;
+
+	static protected function getRunAwayVowelsList() {
+		if (self::$runawayVowelsNormalized === false) {
+			self::$runawayVowelsNormalized = array();
+			foreach (self::$runawayVowelsExceptions as $word) {
+				self::$runawayVowelsNormalized[str_replace('*', null, $word)] = S::indexOf($word, '*') - 1;
+			}
+		}
+		return self::$runawayVowelsNormalized;
+	}
+
 	static public function pluralize($word, $count = 2, $animateness = false) {
 		switch (self::getNumeralForm($count)) {
 			case self::ONE:
@@ -55,6 +73,12 @@ class Plurality extends \morphos\Plurality implements Cases {
 		$prefix = S::slice($word, 0, -1);
 		$last = S::slice($word, -1);
 
+		$runaway_vowels_list = static::getRunAwayVowelsList();
+		if (isset($runaway_vowels_list[$word])) {
+			$vowel_offset = $runaway_vowels_list[$word];
+			$word = S::slice($word, 0, $vowel_offset) . S::slice($word, $vowel_offset + 1);
+		}
+
 		if (in_array($word, self::$immutableWords)) {
 			return array(
 				self::IMENIT => $word,
@@ -72,21 +96,22 @@ class Plurality extends \morphos\Plurality implements Cases {
 		} else if ($declension == GeneralDeclension::FIRST_DECLENSION) {
 			$soft_last = self::checkLastConsonantSoftness($word);
 		} else {
-			$soft_last = false;
+			$soft_last = S::slice($word, -2) == 'сь';
 		}
 
 		$forms = array();
 
-		if ($last == 'ч' || S::slice($word, -2) == 'чь' || (self::isVowel($last) && in_array(S::slice($word, -2, -1), array('ч', 'к')))) // before ч, чь, ч+vowel, к+vowel
+		if ($last == 'ч' || in_array(S::slice($word, -2), array('чь', 'сь')) || (self::isVowel($last) && in_array(S::slice($word, -2, -1), array('ч', 'к')))) // before ч, чь, сь, ч+vowel, к+vowel
 			$forms[Cases::IMENIT] = $prefix.'и';
 		else if ($last == 'н')
 			$forms[Cases::IMENIT] = $prefix.'ы';
 		else
 			$forms[Cases::IMENIT] = self::chooseVowelAfterConsonant($last, $soft_last, $prefix.'я', $prefix.'а');
 
-
 		// RODIT
-		if (in_array($last, array('о', 'е'))) {
+		if ($word == 'письмо')
+			$forms[Cases::RODIT] = 'писем';
+		else if (in_array($last, array('о', 'е'))) {
 			// exceptions
 			if (in_array($word, self::$neuterExceptions))
 				$forms[Cases::RODIT] = $prefix.'ей';
@@ -104,7 +129,7 @@ class Plurality extends \morphos\Plurality implements Cases {
 			$forms[Cases::RODIT] = $prefix;
 		else if (in_array($last, array('я'))) // молния
 			$forms[Cases::RODIT] = $prefix.'й';
-		else if (RussianLanguage::isHissingConsonant($last) || ($soft_last && $last != 'й') || S::slice($word, -2) == 'чь')
+		else if (RussianLanguage::isHissingConsonant($last) || ($soft_last && $last != 'й') || in_array(S::slice($word, -2), array('чь', 'сь')))
 			$forms[Cases::RODIT] = $prefix.'ей';
 		else if ($last == 'й')
 			$forms[Cases::RODIT] = $prefix.'ев';
@@ -119,7 +144,7 @@ class Plurality extends \morphos\Plurality implements Cases {
 
 		// TVORIT
 		// my personal rule
-		if ($last == 'ь' && $declension == GeneralDeclension::THIRD_DECLENSION && S::slice($word, -2) != 'чь') {
+		if ($last == 'ь' && $declension == GeneralDeclension::THIRD_DECLENSION && !in_array(S::slice($word, -2), array('чь', 'сь'))) {
 			$forms[Cases::TVORIT] = $prefix.'ми';
 		} else {
 			$forms[Cases::TVORIT] = self::chooseVowelAfterConsonant($last, $soft_last && S::slice($word, -2, -1) != 'ч', $prefix.'ями', $prefix.'ами');
