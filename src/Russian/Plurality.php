@@ -53,6 +53,9 @@ class Plurality extends \morphos\Plurality implements Cases {
 	}
 
 	static public function getNumeralForm($count) {
+		if($count > 100) {
+			$count %= 100;
+		}
 		$ending = $count % 10;
 		if (($count > 20 && $ending == 1) || $count == 1)
 			return self::ONE;
