@@ -1,21 +1,14 @@
 <?php
-
 namespace morhos\test\Russian;
-require_once __DIR__ . '/../../vendor/autoload.php';
+require_once __DIR__.'/../../vendor/autoload.php';
 
 use morphos\Russian\Plurality;
 
-class PluralityTest extends \PHPUnit_Framework_TestCase
-{
-
+class PluralityTest extends \PHPUnit_Framework_TestCase {
     /**
-     * @param $word
-     * @param $pluralized2
-     * @param $pluralized5
      * @dataProvider pluralizationWordsProvider
      */
-    public function testPluralization($word, $pluralized2, $pluralized5)
-    {
+    public function testPluralization($word, $pluralized2, $pluralized5) {
         // One
         $this->assertEquals($word, Plurality::pluralize($word, 1));
         $this->assertEquals($word, Plurality::pluralize($word, 101));
@@ -35,8 +28,7 @@ class PluralityTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($pluralized5, Plurality::pluralize($word, 1513));
     }
 
-    public function pluralizationWordsProvider()
-    {
+    public function pluralizationWordsProvider() {
         return array(
             array('дом', 'дома', 'домов'),
             array('поле', 'поля', 'полей'),
@@ -56,18 +48,13 @@ class PluralityTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @param $word
-     * @param $animateness
-     * @param $declenated
      * @dataProvider pluralWordsProvider
      */
-    public function testPluralDeclenation($word, $animateness, $declenated)
-    {
+    public function testPluralDeclenation($word, $animateness, $declenated) {
         $this->assertEquals($declenated, array_values(Plurality::getCases($word, $animateness)));
     }
 
-    public function pluralWordsProvider()
-    {
+    public function pluralWordsProvider() {
         return array(
             array('дом', false, array('дома', 'домов', 'домам', 'дома', 'домами', 'о домах')),
             array('склон', false, array('склоны', 'склонов', 'склонам', 'склоны', 'склонами', 'о склонах')),
