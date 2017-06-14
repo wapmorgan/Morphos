@@ -105,7 +105,7 @@ Arguments:
 - `$case` - can be `null`, one of `Cases` constants, a string (described below). If not null, a string will be returned. If null, an array will be returned.
 - `$gender` - one of `Gender` constants, a string (`"m"` for male name,  `"f"` for female name), `null` for autodetection.
 
-There is three declension classes:
+There is three declension classes for partial declension:
 
 - `FirstNamesDeclension` - declension of first names in russian language
 - `MiddleNamesDeclension` - declension of middle names in russian language
@@ -338,18 +338,18 @@ echo $count.' '.morphos\Russian\pluralize('дом', $count, false); // result: 1
 
 ## Numerals
 
-All number creation classes are similar and have twp common methods:
+All number creation classes are similar and have two common methods:
 
 - `string getCase($number, $case, $gender = Gender::MALE)` - Get one case of a numeral for a number.
-- `array getCases($number, $gender = Gender::MALE)` - Get all case of a numeral for a number.
+- `array getCases($number, $gender = Gender::MALE)` - Get all cases of a numeral for a number.
 
-`$gender` is one of `morphos\Gender` constants: `MALE` or `FEMALE` or `NEUTER`.
+`$gender` is `morphos\Gender::MALE` (or `"m"`) or `morphos\Gender::FEMALE` (or `"f"`) or `morphos\Gender::NEUTER` (or `"n"`).
 
 ### Cardinal (`CardinalNumeral`)
 
-_Creation of cardinal numerals in russian language._
+_Creation of cardinal numerals (количественные числительные) in russian language._
 
-Create generation class object:
+Example:
 
 ```php
 use morphos\Gender;
@@ -386,9 +386,9 @@ var_dump(CardinalNumeral::getCases($number));
 
 ### Ordinal (`OrdinalNumeral`)
 
-_Creation of ordinal numerals in russian language._
+_Creation of ordinal numerals (порядковые числительные) in russian language._
 
-Create generation class object:
+Example:
 
 ```php
 use morphos\Gender;
