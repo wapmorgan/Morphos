@@ -41,32 +41,32 @@ Adapters:
 ## Quick Start
 - Decline russian names:
   ```php
-  var_dump(morphos\Russian\name('Иванов Петр', 'родительный', morphos\Gender::MALE)); // Иванова Петра
+  morphos\Russian\name('Иванов Петр', 'родительный', morphos\Gender::MALE) => 'Иванова Петра'
   ```
 
 - Pluralize russian nouns:
   ```php
-  var_dump(morphos\Russian\pluralize('дом', 10)); // домов
+  morphos\Russian\pluralize('дом', 10) => 'домов'
   ```
 
 - Generate russian cardinal numerals:
   ```php
-  var_dump(morphos\Russian\CardinalNumeral::getCase(567, 'именительный')); // пятьсот шестьдесят семь
+  morphos\Russian\CardinalNumeral::getCase(567, 'именительный') => 'пятьсот шестьдесят семь'
   ```
 
 - Generate russian ordinal numerals:
   ```php
-  var_dump(morphos\Russian\OrdinalNumeral::getCase(961, 'именительный')); // девятьсот шестьдесят первый
+  morphos\Russian\OrdinalNumeral::getCase(961, 'именительный') => 'девятьсот шестьдесят первый'
   ```
 
 - Pluralize english nouns:
   ```php
-  var_dump(morphos\English\pluralize('house')); // houses
+  morphos\English\pluralize('house') => 'houses'
   ```
 
 - Generate english cardinal numerals:
   ```php
-  var_dump(morphos\English\CardinalNumeral::generate(567)); // five hundred sixty-seven
+  morphos\English\CardinalNumeral::generate(567) => 'five hundred sixty-seven'
   ```
 
 # Russian
@@ -122,12 +122,12 @@ All declension classes are similar and have four common methods:
 
 Cases in russian language:
 
-* nominative case - `morphos\Russian\Cases::IMENIT` or `именительный`
-* genitive case - `morphos\Russian\Cases::RODIT` or `родительный`
-* dative case - `morphos\Russian\Cases::DAT` or `дательный`
-* accusative case - `morphos\Russian\Cases::VINIT` or `винительный`
-* ablative case - `morphos\Russian\Cases::TVORIT` or `творительный`
-* prepositional case - `morphos\Russian\Cases::PREDLOJ` or `предложный`
+* Nominative case - `morphos\Russian\Cases::IMENIT` or `именительный`
+* Genitive case - `morphos\Russian\Cases::RODIT` or `родительный`
+* Dative case - `morphos\Russian\Cases::DAT` or `дательный`
+* Accusative case - `morphos\Russian\Cases::VINIT` or `винительный`
+* Ablative case - `morphos\Russian\Cases::TVORIT` or `творительный`
+* Prepositional case - `morphos\Russian\Cases::PREDLOJ` or `предложный`
 
 Examples:
 
@@ -139,26 +139,17 @@ use morphos\Russian\FirstNamesDeclension;
 // for example, let it be Иван
 $user_name = 'Иван';
 
-$name = FirstNamesDeclension::getCase($user_name, 'родительный'); // Ивана
+FirstNamesDeclension::getCase($user_name, 'родительный') => 'Ивана'
 
 // If you need all forms, you can get all forms of a name:
-var_dump(FirstNamesDeclension::getCases($user_name));
-/* Will produce something like
-  array(6) {
-    ["nominative"]=>
-    string(8) "Иван"
-    ["genitive"]=>
-    string(10) "Ивана"
-    ["dative"]=>
-    string(10) "Ивану"
-    ["accusative"]=>
-    string(10) "Ивана"
-    ["ablative"]=>
-    string(12) "Иваном"
-    ["prepositional"]=>
-    string(15) "об Иване"
-  }
-*/
+FirstNamesDeclension::getCases($user_name) => array(6) {
+    "nominative" => "Иван",
+    "genitive" => "Ивана",
+    "dative" => "Ивану",
+    "accusative" => "Ивана",
+    "ablative" => "Иваном",
+    "prepositional" => "об Иване"
+}
 ```
 
 **MiddleNamesDeclension**
@@ -169,26 +160,17 @@ use morphos\Russian\MiddleNamesDeclension;
 // for example, let it be Сергеевич
 $user_name = 'Сергеевич';
 
-$name = MiddleNamesDeclension::getCase($user_name, 'родительный'); // Сергеевича
+MiddleNamesDeclension::getCase($user_name, 'родительный') => 'Сергеевича'
 
 // If you need all forms, you can get all forms of a name:
-var_dump(MiddleNamesDeclension::getCases($user_name));
-/* Will produce something like
-  array(6) {
-    ["nominative"]=>
-    string(18) "Сергеевич"
-    ["genitive"]=>
-    string(20) "Сергеевича"
-    ["dative"]=>
-    string(20) "Сергеевичу"
-    ["accusative"]=>
-    string(20) "Сергеевича"
-    ["ablative"]=>
-    string(22) "Сергеевичем"
-    ["prepositional"]=>
-    string(23) "о Сергеевиче"
-  }
-*/
+MiddleNamesDeclension::getCases($user_name) => array(6) {
+    "nominative" => "Сергеевич",
+    "genitive" => "Сергеевича",
+    "dative" => "Сергеевичу",
+    "accusative" => "Сергеевича",
+    "ablative" => "Сергеевичем",
+    "prepositional" => "о Сергеевиче"
+}
 ```
 
 **LastNamesDeclension**
@@ -203,23 +185,14 @@ $dative_last_name = LastNamesDeclension::getCase($user_last_name, 'датель�
 echo 'Мы хотим подарить товарищу '.$dative_last_name.' небольшой презент.';
 
 // If you need all forms, you can get all forms of a name:
-var_dump(LastNamesDeclension::getCases($user_last_name));
-/* Will produce something like
-  array(6) {
-    ["nominative"]=>
-    string(12) "Иванов"
-    ["genitive"]=>
-    string(14) "Иванова"
-    ["dative"]=>
-    string(14) "Иванову"
-    ["accusative"]=>
-    string(14) "Иванова"
-    ["ablative"]=>
-    string(16) "Ивановым"
-    ["prepositional"]=>
-    string(19) "об Иванове"
-  }
-*/
+LastNamesDeclension::getCases($user_last_name) => array(6) {
+    "nominative" => "Иванов",
+    "genitive" => "Иванова",
+    "dative" => "Иванову",
+    "accusative" => "Иванова",
+    "ablative" => "Ивановым",
+    "prepositional" => "об Иванове"
+}
 ```
 
 ## Geographical names
@@ -237,23 +210,14 @@ use morphos\Russian\GeographicalNamesDeclension;
 
 echo 'Пора бы поехать в '.GeographicalNamesDeclension::getCase('Москва', 'винительный'); // Москву
 // If you need all forms, you can get all forms of a name:
-var_dump(GeographicalNamesDeclension::getCases('Саратов'));
-/*
-  array(6) {
-    ["nominative"]=>
-    string(14) "Саратов"
-    ["genitive"]=>
-    string(16) "Саратова"
-    ["dative"]=>
-    string(16) "Саратову"
-    ["accusative"]=>
-    string(14) "Саратов"
-    ["ablative"]=>
-    string(18) "Саратовом"
-    ["prepositional"]=>
-    string(19) "о Саратове"
-  }
-*/
+GeographicalNamesDeclension::getCases('Саратов') => array(6) {
+    "nominative" => "Саратов",
+    "genitive" => "Саратова",
+    "dative" => "Саратову",
+    "accusative" => "Саратов",
+    "ablative" => "Саратовом",
+    "prepositional" => "о Саратове"
+}
 ```
 
 ## Nouns
@@ -271,26 +235,17 @@ Usage:
 ```php
 use morphos\Russian\GeneralDeclension;
 // Following code will return original word if it's immutable:
-$form = GeneralDeclension::getCase('поле', 'родительный'); // поля
+GeneralDeclension::getCase('поле', 'родительный') => 'поля'
 
 // Get all forms of a word at once:
-var_dump(GeneralDeclension::getCases('линейка'));
-/* Will produce something like
-  array(6) {
-    ["nominative"]=>
-    string(14) "линейка"
-    ["genitive"]=>
-    string(14) "линейки"
-    ["dative"]=>
-    string(14) "линейке"
-    ["accusative"]=>
-    string(14) "линейку"
-    ["ablative"]=>
-    string(16) "линейкой"
-    ["prepositional"]=>
-    string(17) "о линейке"
-  }
-*/
+GeneralDeclension::getCases('линейка') => array(6) {
+    "nominative" => "линейка",
+    "genitive" => "линейки",
+    "dative" => "линейке",
+    "accusative" => "линейку",
+    "ablative" => "линейкой",
+    "prepositional" => "о линейке"
+}
 ```
 
 ### Nouns pluralization
@@ -310,23 +265,14 @@ $word = 'дом';
 echo 'Множественное число для '.$word.' - '.Plurality::getCase($word, 'именительный'); // дома
 
 // Pluralize word and get all forms:
-var_dump(Plurality::getCases('поле'));
-/* Result will be like
-  array(6) {
-    ["nominative"]=>
-    string(8) "поля"
-    ["genitive"]=>
-    string(10) "полей"
-    ["dative"]=>
-    string(10) "полям"
-    ["accusative"]=>
-    string(8) "поля"
-    ["ablative"]=>
-    string(12) "полями"
-    ["prepositional"]=>
-    string(13) "о полях"
-  }
-*/
+Plurality::getCases('поле') => array(6) {
+    "nominative" => "поля",
+    "genitive" => "полей",
+    "dative" => "полям",
+    "accusative" => "поля",
+    "ablative" => "полями",
+    "prepositional" => "о полях"
+}
 
 // Also you can use shortcut
 // Pluralize noun to use it with numeral
@@ -358,30 +304,21 @@ use morphos\Russian\CardinalNumeral;
 // Get text representation of a number:
 $number = 4351;
 
-$numeral = CardinalNumeral::getCase($number, 'именительный'); // четыре тысячи триста пятьдесят один
-$numeral = CardinalNumeral::getCase($number, 'именительный', Gender::FEMALE); // четыре тысячи триста пятьдесят одна
+CardinalNumeral::getCase($number, 'именительный') => 'четыре тысячи триста пятьдесят один'
+CardinalNumeral::getCase($number, 'именительный', Gender::FEMALE) => 'четыре тысячи триста пятьдесят одна'
 ```
 
 If you need all forms, you can get all cases of a numeral:
 
 ```php
-var_dump(CardinalNumeral::getCases($number));
-/* Will produce something like
-  array(6) {
-    ["nominative"]=>
-    string(66) "четыре тысячи триста пятьдесят один"
-    ["genitive"]=>
-    string(74) "четырех тысяч трехсот пятидесяти одного"
-    ["dative"]=>
-    string(80) "четырем тысячам тремстам пятидесяти одному"
-    ["accusative"]=>
-    string(66) "четыре тысячи триста пятьдесят один"
-    ["ablative"]=>
-    string(90) "четырьмя тысячами тремястами пятьюдесятью одним"
-    ["prepositional"]=>
-    string(81) "о четырех тысячах трехстах пятидесяти одном"
-  }
-*/
+CardinalNumeral::getCases($number) => array(6) {
+    "nominative" => "четыре тысячи триста пятьдесят один",
+    "genitive" => "четырех тысяч трехсот пятидесяти одного",
+    "dative" => "четырем тысячам тремстам пятидесяти одному",
+    "accusative" => "четыре тысячи триста пятьдесят один",
+    "ablative" => "четырьмя тысячами тремястами пятьюдесятью одним",
+    "prepositional" => "о четырех тысячах трехстах пятидесяти одном"
+}
 ```
 
 ### Ordinal (`OrdinalNumeral`)
@@ -397,30 +334,21 @@ use morphos\Russian\OrdinalNumeral;
 // Get text representation of a number:
 $number = 67945;
 
-$numeral = OrdinalNumeral::getCase($number, 'именительный'); // шестьдесят семь тысяч девятьсот сорок пятый
-$numeral = OrdinalNumeral::getCase($number, 'именительный', Gender::FEMALE); // шестьдесят семь тысяч девятьсот сорок пятая
+OrdinalNumeral::getCase($number, 'именительный') => 'шестьдесят семь тысяч девятьсот сорок пятый'
+OrdinalNumeral::getCase($number, 'именительный', Gender::FEMALE) => 'шестьдесят семь тысяч девятьсот сорок пятая'
 ```
 
 If you need all forms, you can get all cases of a numeral:
 
 ```php
-var_dump(OrdinalNumeral::getCases($number));
-/* Will produce something like
-  array(6) {
-      ["nominative"]=>
-      string(81) "шестьдесят семь тысяч девятьсот сорок пятый"
-      ["genitive"]=>
-      string(83) "шестьдесят семь тысяч девятьсот сорок пятого"
-      ["dative"]=>
-      string(83) "шестьдесят семь тысяч девятьсот сорок пятому"
-      ["accusative"]=>
-      string(81) "шестьдесят семь тысяч девятьсот сорок пятый"
-      ["ablative"]=>
-      string(81) "шестьдесят семь тысяч девятьсот сорок пятым"
-      ["prepositional"]=>
-      string(84) "о шестьдесят семь тысяч девятьсот сорок пятом"
-    }
-*/
+OrdinalNumeral::getCases($number) => array(6) {
+    "nominative" => "шестьдесят семь тысяч девятьсот сорок пятый",
+    "genitive" => "шестьдесят семь тысяч девятьсот сорок пятого",
+    "dative" => "шестьдесят семь тысяч девятьсот сорок пятому",
+    "accusative" => "шестьдесят семь тысяч девятьсот сорок пятый",
+    "ablative" => "шестьдесят семь тысяч девятьсот сорок пятым",
+    "prepositional" => "о шестьдесят семь тысяч девятьсот сорок пятом"
+}
 ```
 
 # English
@@ -445,8 +373,7 @@ Pluralization a word in English:
 ```php
 use morphos\English\Plurality;
 
-echo '10 '.Plurality::pluralize('foot');
-// result: 10 feet
+echo '10 '.Plurality::pluralize('foot') => '10 feet'
 ```
 
 ## Numerals
@@ -470,7 +397,7 @@ Get text representation of a number:
 ```php
 $number = 4351;
 
-$numeral = CardinalNumeral::generate($number); // four thousand, three hundred fifty-one
+CardinalNumeral::generate($number) => 'four thousand, three hundred fifty-one'
 ```
 
 # Contibuting
