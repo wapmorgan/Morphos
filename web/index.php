@@ -257,7 +257,7 @@ $gender_labels = array(Gender::MALE => 'мужской', Gender::FEMALE => 'же
 						<table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
 							<tbody>
 								<tr>
-									<td class="mdl-data-table__cell--non-numeric" colspan="2" style="text-align: center;"><?=$name?> (<?= $gender_labels[$gender] ?> пол)</td>
+									<td class="mdl-data-table__cell--non-numeric" colspan="2" style="text-align: center;"><?=$name?> (<?= isset($gender_labels[$gender]) ? $gender_labels[$gender] : 'неопределенный' ?> пол)</td>
 								</tr>
 								<?php foreach(array(Cases::IMENIT => 'Именительный', Cases::RODIT => 'Родительный', Cases::DAT => 'Дательный', Cases::VINIT => 'Винительный', Cases::TVORIT => 'Творительный', Cases::PREDLOJ => 'Предложный') as $case => $name): ?>
 									<tr>
