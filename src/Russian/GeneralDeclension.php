@@ -54,6 +54,7 @@ class GeneralDeclension extends \morphos\GeneralDeclension implements Cases {
 		'медведь',
 		'день',
 		'рубль',
+		'дождь',
 	);
 
 	static protected $immutableWords = array(
@@ -76,7 +77,7 @@ class GeneralDeclension extends \morphos\GeneralDeclension implements Cases {
 
 		if (in_array($last, ['а', 'я']) && S::slice($word, -2) != 'мя') {
 			return 1;
-		} else if (self::isConsonant($last) || in_array($last, ['о', 'е', 'ё']) || ($last == 'ь' && self::isConsonant(S::slice($word, -2, -1)) && !RussianLanguage::isHissingConsonant(S::slice($word, -2, -1)) && in_array($word, self::$masculineWithSoft))) {
+		} else if (self::isConsonant($last) || in_array($last, ['о', 'е', 'ё']) || ($last == 'ь' && self::isConsonant(S::slice($word, -2, -1)) && !self::isHissingConsonant(S::slice($word, -2, -1)) && in_array($word, self::$masculineWithSoft))) {
 			return 2;
 		} else {
 			return 3;
@@ -144,7 +145,7 @@ class GeneralDeclension extends \morphos\GeneralDeclension implements Cases {
 			$forms[Cases::TVORIT] = self::chooseVowelAfterConsonant($last, $soft_last, $prefix.'ей', $prefix.'ой');
 		}
 
-		// 	if ($last == 'й' || (self::isConsonant($last) && !RussianLanguage::isHissingConsonant($last)) || self::checkLastConsonantSoftness($word))
+		// 	if ($last == 'й' || (self::isConsonant($last) && !self::isHissingConsonant($last)) || self::checkLastConsonantSoftness($word))
 		// 	$forms[Cases::TVORIT] = $prefix.'ей';
 		// else
 		// 	$forms[Cases::TVORIT] = $prefix.'ой'; # http://morpher.ru/Russian/Spelling.aspx#sibilant
@@ -157,7 +158,7 @@ class GeneralDeclension extends \morphos\GeneralDeclension implements Cases {
 	static public function declinateSecondDeclension($word, $animateness = false) {
 		$word = S::lower($word);
 		$last = S::slice($word, -1);
-		$soft_last = $last == 'й' || (in_array($last, ['ь', 'е', 'ё', 'ю', 'я']) && (self::isConsonant(S::slice($word, -2, -1)) || S::slice($word, -2, -1) == 'и'));
+		$soft_last = $last == 'й' || (in_array($last, ['ь', 'е', 'ё', 'ю', 'я']) && ((self::isConsonant(S::slice($word, -2, -1)) && !self::isHissingConsonant(S::slice($word, -2, -1))) || S::slice($word, -2, -1) == 'и'));
 		$prefix = self::getPrefixOfFirstDeclension($word, $last);
 		$forms =  array(
 			Cases::IMENIT => $word,
@@ -179,11 +180,11 @@ class GeneralDeclension extends \morphos\GeneralDeclension implements Cases {
 		// TVORIT
 		// if ($last == 'ь')
 		// 	$forms[Cases::TVORIT] = $prefix.'ом';
-		// else if ($last == 'й' || (self::isConsonant($last) && !RussianLanguage::isHissingConsonant($last)))
+		// else if ($last == 'й' || (self::isConsonant($last) && !self::isHissingConsonant($last)))
 		// 	$forms[Cases::TVORIT] = $prefix.'ем';
 		// else
 		// 	$forms[Cases::TVORIT] = $prefix.'ом'; # http://morpher.ru/Russian/Spelling.aspx#sibilant
-		if (RussianLanguage::isHissingConsonant($last) || $last == 'ц') {
+		if (self::isHissingConsonant($last) || (in_array($last, ['ь', 'е', 'ё', 'ю', 'я']) && self::isHissingConsonant(S::slice($word, -2, -1))) || $last == 'ц') {
 			$forms[Cases::TVORIT] = $prefix.'ем';
 		} else if (in_array($last, ['й'/*, 'ч', 'щ'*/]) || $soft_last) {
 			$forms[Cases::TVORIT] = $prefix.'ем';
