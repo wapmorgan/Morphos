@@ -236,7 +236,7 @@ class GeneralDeclension extends \morphos\GeneralDeclension implements Cases {
 	}
 
 	static public function getPredCaseOf12Declensions($word, $last, $prefix) {
-		if (S::slice($word, -2) == 'ий') {
+		if (in_array(S::slice($word, -2), array('ий', 'ие'))) {
 			if ($last == 'ё')
 				return $prefix.'е';
 			else
