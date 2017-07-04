@@ -115,7 +115,7 @@ class Plurality extends \morphos\Plurality implements Cases {
 		}
 
 		if (($declension = GeneralDeclension::getDeclension($word)) == GeneralDeclension::SECOND_DECLENSION) {
-			$soft_last = $last == 'й' || (in_array($last, ['ь', 'е', 'ё', 'ю', 'я']) && (self::isConsonant(S::slice($word, -2, -1)) || S::slice($word, -2, -1) == 'и'));
+			$soft_last = $last == 'й' || (in_array($last, ['ь', 'е', 'ё', 'ю', 'я']) && ((self::isConsonant(S::slice($word, -2, -1)) && !self::isHissingConsonant(S::slice($word, -2, -1))) || S::slice($word, -2, -1) == 'и'));
 			$prefix = GeneralDeclension::getPrefixOfSecondDeclension($word, $last);
 		} else if ($declension == GeneralDeclension::FIRST_DECLENSION) {
 			$soft_last = self::checkLastConsonantSoftness($word);
