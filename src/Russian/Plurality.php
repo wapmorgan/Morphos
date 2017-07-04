@@ -73,14 +73,6 @@ class Plurality extends \morphos\Plurality implements Cases {
 
 	static public function getCases($word, $animateness = false) {
 		$word = S::lower($word);
-		$prefix = S::slice($word, 0, -1);
-		$last = S::slice($word, -1);
-
-		$runaway_vowels_list = static::getRunAwayVowelsList();
-		if (isset($runaway_vowels_list[$word])) {
-			$vowel_offset = $runaway_vowels_list[$word];
-			$word = S::slice($word, 0, $vowel_offset) . S::slice($word, $vowel_offset + 1);
-		}
 
 		if (in_array($word, self::$immutableWords)) {
 			return array(
@@ -91,6 +83,25 @@ class Plurality extends \morphos\Plurality implements Cases {
 				self::TVORIT => $word,
 				self::PREDLOJ => self::choosePrepositionByFirstLetter($word, 'об', 'о').' '.$word,
 			);
+		}
+
+		// Адъективное склонение (Сущ, образованные от прилагательных и причастий) - прохожий, существительное
+		if (in_array(S::slice($word, -2), array('ой', 'ий', 'ый', 'ая', 'ое', 'ее')) && $word != 'гений') {
+			return self::declinateAdjective($word, $animateness);
+		}
+
+		// Субстантивное склонение (существительные)
+		return self::declinateSubstative($word, $animateness);
+	}
+
+	static protected function declinateSubstative($word, $animateness) {
+		$prefix = S::slice($word, 0, -1);
+		$last = S::slice($word, -1);
+
+		$runaway_vowels_list = static::getRunAwayVowelsList();
+		if (isset($runaway_vowels_list[$word])) {
+			$vowel_offset = $runaway_vowels_list[$word];
+			$word = S::slice($word, 0, $vowel_offset) . S::slice($word, $vowel_offset + 1);
 		}
 
 		if (($declension = GeneralDeclension::getDeclension($word)) == GeneralDeclension::SECOND_DECLENSION) {
@@ -157,5 +168,22 @@ class Plurality extends \morphos\Plurality implements Cases {
 		$forms[Cases::PREDLOJ] = self::chooseVowelAfterConsonant($last, $soft_last && S::slice($word, -2, -1) != 'ч', $prefix.'ях', $prefix.'ах');
 		$forms[Cases::PREDLOJ] = self::choosePrepositionByFirstLetter($forms[Cases::PREDLOJ], 'об', 'о').' '.$forms[Cases::PREDLOJ];
 		return $forms;
+	}
+
+	/**
+	 * Rules are from http://rusgram.narod.ru/1216-1231.html
+	 */
+	static protected function declinateAdjective($word, $animateness) {
+		$prefix = S::slice($word, 0, -2);
+		$vowel = self::isHissingConsonant(S::slice($prefix, -1)) ? 'и' : 'ы';
+		return array(
+			Cases::IMENIT => $prefix.$vowel.'е',
+			Cases::RODIT => $prefix.$vowel.'х',
+			Cases::DAT => $prefix.$vowel.'м',
+			Cases::VINIT => $prefix.$vowel.($animateness ? 'х' : 'е'),
+			Cases::TVORIT => $prefix.$vowel.'ми',
+			Cases::PREDLOJ => self::choosePrepositionByFirstLetter($prefix, 'об', 'о').' '.$prefix.$vowel.'х',
+		);
+		}
 	}
 }
