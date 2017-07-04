@@ -92,6 +92,12 @@ class GeneralDeclension extends \morphos\GeneralDeclension implements Cases {
 	static public function getCases($word, $animateness = false) {
 		$word = S::lower($word);
 
+		// Адъективное склонение (Сущ, образованные от прилагательных и причастий) - прохожий, существительное
+		if (in_array(S::slice($word, -2), array('ой', 'ий', 'ый', 'ая', 'ое', 'ее')) && $word != 'гений') {
+			return self::declinateAdjective($word, $animateness);
+		}
+
+		// Субстантивное склонение (существительные)
 		if (in_array($word, self::$immutableWords)) {
 			return array(
 				self::IMENIT => $word,
@@ -215,6 +221,65 @@ class GeneralDeclension extends \morphos\GeneralDeclension implements Cases {
 			Cases::TVORIT => $prefix.'ью',
 			Cases::PREDLOJ => self::choosePrepositionByFirstLetter($prefix, 'об', 'о').' '.$prefix.'и',
 		);
+	}
+
+	/**
+	 * Rules are from http://rusgram.narod.ru/1216-1231.html
+	 */
+	static public function declinateAdjective($word, $animateness) {
+		$prefix = S::slice($word, 0, -2);
+
+		switch (S::slice($word, -2)) {
+			// Male adjectives
+			case 'ой':
+			case 'ый':
+				$prefix = S::slice($word, 0, -2);
+				return array(
+					Cases::IMENIT => $word,
+					Cases::RODIT => $prefix.'ого',
+					Cases::DAT => $prefix.'ому',
+					Cases::VINIT => $word,
+					Cases::TVORIT => $prefix.'ым',
+					Cases::PREDLOJ => self::choosePrepositionByFirstLetter($prefix, 'об', 'о').' '.$prefix.'ом',
+				);
+
+			case 'ий':
+				$prefix = S::slice($word, 0, -2);
+				return array(
+					Cases::IMENIT => $word,
+					Cases::RODIT => $prefix.'его',
+					Cases::DAT => $prefix.'ему',
+					Cases::VINIT => $prefix.'его',
+					Cases::TVORIT => $prefix.'им',
+					Cases::PREDLOJ => self::choosePrepositionByFirstLetter($prefix, 'об', 'о').' '.$prefix.'ем',
+				);
+
+			// Neuter adjectives
+			case 'ое':
+			case 'ее':
+				$prefix = S::slice($word, 0, -1);
+				return array(
+					Cases::IMENIT => $word,
+					Cases::RODIT => $prefix.'го',
+					Cases::DAT => $prefix.'му',
+					Cases::VINIT => $word,
+					Cases::TVORIT => S::slice($word, 0, -2).(S::slice($word, -2, -1) == 'о' ? 'ы' : 'и').'м',
+					Cases::PREDLOJ => self::choosePrepositionByFirstLetter($prefix, 'об', 'о').' '.$prefix.'м',
+				);
+
+			// Female adjectives
+			case 'ая':
+				$prefix = S::slice($word, 0, -2);
+				$ending = self::isHissingConsonant(S::slice($prefix, -1)) ? 'ей' : 'ой';
+				return array(
+					Cases::IMENIT => $word,
+					Cases::RODIT => $prefix.$ending,
+					Cases::DAT => $prefix.$ending,
+					Cases::VINIT => $prefix.'ую',
+					Cases::TVORIT => $prefix.$ending,
+					Cases::PREDLOJ => self::choosePrepositionByFirstLetter($prefix, 'об', 'о').' '.$prefix.$ending,
+				);
+		}
 	}
 
 	static public function getCase($word, $case, $animateness = false) {
