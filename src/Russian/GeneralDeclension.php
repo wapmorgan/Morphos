@@ -33,15 +33,12 @@ class GeneralDeclension extends \morphos\GeneralDeclension implements Cases {
 	);
 
 	static protected $masculineWithSoft = array(
-		'камень',
 		'олень',
 		'конь',
 		'ячмень',
 		'путь',
-		'парень',
 		'зверь',
 		'шкворень',
-		'пень',
 		'пельмень',
 		'тюлень',
 		'выхухоль',
@@ -52,9 +49,17 @@ class GeneralDeclension extends \morphos\GeneralDeclension implements Cases {
 		'лось',
 		'гвоздь',
 		'медведь',
-		'день',
 		'рубль',
 		'дождь',
+	);
+
+	static protected $masculineWithSoftAndRunAwayVowels = array(
+		'день',
+		'пень',
+		'парень',
+		'камень',
+		'корень',
+		'трутень',
 	);
 
 	static protected $immutableWords = array(
@@ -77,7 +82,7 @@ class GeneralDeclension extends \morphos\GeneralDeclension implements Cases {
 
 		if (in_array($last, ['а', 'я']) && S::slice($word, -2) != 'мя') {
 			return 1;
-		} else if (self::isConsonant($last) || in_array($last, ['о', 'е', 'ё']) || ($last == 'ь' && self::isConsonant(S::slice($word, -2, -1)) && !self::isHissingConsonant(S::slice($word, -2, -1)) && in_array($word, self::$masculineWithSoft))) {
+		} else if (self::isConsonant($last) || in_array($last, ['о', 'е', 'ё']) || ($last == 'ь' && self::isConsonant(S::slice($word, -2, -1)) && !self::isHissingConsonant(S::slice($word, -2, -1)) && (in_array($word, self::$masculineWithSoft)) || in_array($word, self::$masculineWithSoftAndRunAwayVowels))) {
 			return 2;
 		} else {
 			return 3;
@@ -159,7 +164,7 @@ class GeneralDeclension extends \morphos\GeneralDeclension implements Cases {
 		$word = S::lower($word);
 		$last = S::slice($word, -1);
 		$soft_last = $last == 'й' || (in_array($last, ['ь', 'е', 'ё', 'ю', 'я']) && ((self::isConsonant(S::slice($word, -2, -1)) && !self::isHissingConsonant(S::slice($word, -2, -1))) || S::slice($word, -2, -1) == 'и'));
-		$prefix = self::getPrefixOfFirstDeclension($word, $last);
+		$prefix = self::getPrefixOfSecondDeclension($word, $last);
 		$forms =  array(
 			Cases::IMENIT => $word,
 		);
@@ -218,11 +223,15 @@ class GeneralDeclension extends \morphos\GeneralDeclension implements Cases {
 		return $forms[$case];
 	}
 
-	static public function getPrefixOfFirstDeclension($word, $last) {
-		if ($word == 'день')
-			$prefix = 'дн';
+	static public function getPrefixOfSecondDeclension($word, $last) {
+		// слова с бегающей гласной в корне
+		if (in_array($word, self::$masculineWithSoftAndRunAwayVowels))
+			$prefix = S::slice($word, 0, -3).S::slice($word, -2, -1);
 		else if (in_array($last, ['о', 'е', 'ё', 'ь', 'й']))
 			$prefix = S::slice($word, 0, -1);
+		// уменьшительные формы слов (котенок) и слова с суффиксом ок
+		else if (S::slice($word, -2) == 'ок' && S::length($word) > 3)
+			$prefix = S::slice($word, 0, -2).'к';
 		else
 			$prefix = $word;
 		return $prefix;
