@@ -184,6 +184,5 @@ class Plurality extends \morphos\Plurality implements Cases {
 			Cases::TVORIT => $prefix.$vowel.'ми',
 			Cases::PREDLOJ => self::choosePrepositionByFirstLetter($prefix, 'об', 'о').' '.$prefix.$vowel.'х',
 		);
-		}
 	}
 }
