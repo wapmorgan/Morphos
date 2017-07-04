@@ -233,7 +233,6 @@ class GeneralDeclension extends \morphos\GeneralDeclension implements Cases {
 			// Male adjectives
 			case 'ой':
 			case 'ый':
-				$prefix = S::slice($word, 0, -2);
 				return array(
 					Cases::IMENIT => $word,
 					Cases::RODIT => $prefix.'ого',
@@ -244,7 +243,6 @@ class GeneralDeclension extends \morphos\GeneralDeclension implements Cases {
 				);
 
 			case 'ий':
-				$prefix = S::slice($word, 0, -2);
 				return array(
 					Cases::IMENIT => $word,
 					Cases::RODIT => $prefix.'его',
@@ -269,7 +267,6 @@ class GeneralDeclension extends \morphos\GeneralDeclension implements Cases {
 
 			// Female adjectives
 			case 'ая':
-				$prefix = S::slice($word, 0, -2);
 				$ending = self::isHissingConsonant(S::slice($prefix, -1)) ? 'ей' : 'ой';
 				return array(
 					Cases::IMENIT => $word,
