@@ -1,5 +1,5 @@
 # Morphos
-A morphological solution written completely in PHP.
+A morphological solution for Russian and English language written completely in PHP.
 
 [![Composer package](http://xn--e1adiijbgl.xn--p1acf/badge/wapmorgan/morphos)](https://packagist.org/packages/wapmorgan/morphos)
 [![Latest Stable Version](https://poser.pugx.org/wapmorgan/morphos/v/stable)](https://packagist.org/packages/wapmorgan/morphos)
