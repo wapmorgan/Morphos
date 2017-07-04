@@ -18,6 +18,16 @@ class Plurality extends \morphos\Plurality implements Cases {
 		'море',
 	);
 
+	static protected $genitiveExceptions = array(
+		'письмо' => 'писем',
+		'пятно' => 'пятен',
+		'кресло' => 'кресел',
+		'коромысло' => 'коромысел',
+		'ядро' => 'ядер',
+		'блюдце' => 'блюдец',
+		'полотенце' => 'полотенец',
+	);
+
 	static protected $immutableWords = array(
 		'евро',
 		'пенни',
@@ -123,8 +133,8 @@ class Plurality extends \morphos\Plurality implements Cases {
 			$forms[Cases::IMENIT] = self::chooseVowelAfterConsonant($last, $soft_last, $prefix.'я', $prefix.'а');
 
 		// RODIT
-		if ($word == 'письмо')
-			$forms[Cases::RODIT] = 'писем';
+		if (isset(self::$genitiveExceptions[$word]))
+			$forms[Cases::RODIT] = self::$genitiveExceptions[$word];
 		else if (in_array($last, array('о', 'е'))) {
 			// exceptions
 			if (in_array($word, self::$neuterExceptions))
