@@ -117,7 +117,7 @@ class LastNamesDeclension extends \morphos\NamesDeclension implements Cases {
                 self::TVORIT => $prefix.'ой',
                 self::PREDLOJ => self::choosePrepositionByFirstLetter($prefix, 'об', 'о').' '.$prefix.'е'
             );
-        } else if (in_array(S::upper(S::slice($name, -1)), RussianLanguage::$consonants)) {
+        } else if (in_array(S::upper(S::slice($name, -1)), RussianLanguage::$consonants) && $gender == self::MALE) {
             $prefix = S::name($name);
             return array(
                 self::IMENIT => S::name($name),
@@ -127,7 +127,7 @@ class LastNamesDeclension extends \morphos\NamesDeclension implements Cases {
                 self::TVORIT => $prefix.'ом',
                 self::PREDLOJ => self::choosePrepositionByFirstLetter($prefix, 'об', 'о').' '.$prefix.'е'
             );
-        } else if (S::slice($name, -1) == 'ь') {
+        } else if (S::slice($name, -1) == 'ь' && $gender == self::MALE) {
             $prefix = S::name(S::slice($name, 0, -1));
             return array(
                 self::IMENIT => S::name($name),
