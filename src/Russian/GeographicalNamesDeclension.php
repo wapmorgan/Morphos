@@ -99,8 +99,8 @@ class GeographicalNamesDeclension extends \morphos\GeneralDeclension implements 
                     self::PREDLOJ => self::choosePrepositionByFirstLetter($prefix, 'об', 'о').' '.$prefix.'е',
                 );
             } else if (self::isConsonant(S::slice($name, -1))) {
-                $prefix = S::name($name);
                 // Париж, Валаам, Киев
+                $prefix = S::name($name);
                 return array(
                     self::IMENIT => $prefix,
                     self::RODIT => $prefix.'а',
@@ -108,6 +108,61 @@ class GeographicalNamesDeclension extends \morphos\GeneralDeclension implements 
                     self::VINIT => $prefix,
                     self::TVORIT => $prefix.(self::isVelarConsonant(S::slice($name, -2, -1)) ? 'ем' : 'ом'),
                     self::PREDLOJ => self::choosePrepositionByFirstLetter($prefix, 'об', 'о').' '.$prefix.'е',
+                );
+            } else if (S::slice($name, -2) == 'ль') {
+                // Ставрополь, Ярославль
+                $prefix = S::name(S::slice($name, 0, -1));
+                return array(
+                    self::IMENIT => $prefix.'ь',
+                    self::RODIT => $prefix.'я',
+                    self::DAT => $prefix.'ю',
+                    self::VINIT => $prefix.'ь',
+                    self::TVORIT => $prefix.'ем',
+                    self::PREDLOJ => self::choosePrepositionByFirstLetter($prefix, 'об', 'о').' '.$prefix.'е',
+                );
+            } else if (S::slice($name, -2) == 'рь') {
+                // Тверь
+                $prefix = S::name(S::slice($name, 0, -1));
+                return array(
+                    self::IMENIT => $prefix.'ь',
+                    self::RODIT => $prefix.'и',
+                    self::DAT => $prefix.'и',
+                    self::VINIT => $prefix.'ь',
+                    self::TVORIT => $prefix.'ью',
+                    self::PREDLOJ => self::choosePrepositionByFirstLetter($prefix, 'об', 'о').' '.$prefix.'и',
+                );
+            } else if (S::slice($name, -2) == 'ки') {
+                // Березники, Ессентуки
+                $prefix = S::name(S::slice($name, 0, -1));
+                return array(
+                    self::IMENIT => $prefix.'и',
+                    self::RODIT => $prefix.'ов',
+                    self::DAT => $prefix.'ам',
+                    self::VINIT => $prefix.'и',
+                    self::TVORIT => $prefix.'ами',
+                    self::PREDLOJ => self::choosePrepositionByFirstLetter($prefix, 'об', 'о').' '.$prefix.'ах',
+                );
+            } else if  (S::slice($name, -2) == 'мь') {
+                // Пермь, Кемь
+                $prefix = S::name(S::slice($name, 0, -1));
+                return array(
+                    self::IMENIT => $prefix.'ь',
+                    self::RODIT => $prefix.'и',
+                    self::DAT => $prefix.'и',
+                    self::VINIT => $prefix.'ь',
+                    self::TVORIT => $prefix.'ью',
+                    self::PREDLOJ => self::choosePrepositionByFirstLetter($prefix, 'об', 'о').' '.$prefix.'и',
+                );
+            } else if  (S::slice($name, -2) == 'нь') {
+                // Рязань, Назрань
+                $prefix = S::name(S::slice($name, 0, -1));
+                return array(
+                    self::IMENIT => $prefix.'ь',
+                    self::RODIT => $prefix.'и',
+                    self::DAT => $prefix.'и',
+                    self::VINIT => $prefix.'ь',
+                    self::TVORIT => $prefix.'ью',
+                    self::PREDLOJ => self::choosePrepositionByFirstLetter($prefix, 'об', 'о').' '.$prefix.'и',
                 );
             }
 
