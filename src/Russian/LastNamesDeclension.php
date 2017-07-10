@@ -84,7 +84,7 @@ class LastNamesDeclension extends \morphos\NamesDeclension implements Cases {
                 );
             }
 
-            if (in_array(S::slice($name, -4), array('ская'))) {
+            if (in_array(S::slice($name, -2), array('ая'))) {
                 $prefix = S::name(S::slice($name, 0, -2));
                 return array(
                     self::IMENIT => S::name($name),

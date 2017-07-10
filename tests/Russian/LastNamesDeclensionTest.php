@@ -41,16 +41,18 @@ class LastNamesDeclensionTest extends \PHPUnit_Framework_TestCase {
         return array(
             array('Смирнов', NamesDeclension::MALE, 'Смирнова', 'Смирнову', 'Смирнова', 'Смирновым', 'о Смирнове'),
             array('Кромской', NamesDeclension::MALE, 'Кромского', 'Кромскому', 'Кромского', 'Кромским', 'о Кромском'),
-            array('Смирнова', NamesDeclension::FEMALE, 'Смирновой', 'Смирновой', 'Смирнову', 'Смирновой', 'о Смирновой'),
-            array('Кромская', NamesDeclension::FEMALE, 'Кромской', 'Кромской', 'Кромскую', 'Кромской', 'о Кромской'),
-            array('Зима', NamesDeclension::FEMALE, 'Зимы', 'Зиме', 'Зиму', 'Зимой', 'о Зиме'),
-            array('Зоя', NamesDeclension::FEMALE, 'Зои', 'Зое', 'Зою', 'Зоей', 'о Зое'),
             array('Ус', NamesDeclension::MALE, 'Уса', 'Усу', 'Уса', 'Усом', 'об Усе'),
             array('Кузьмич', NamesDeclension::MALE, 'Кузьмича', 'Кузьмичу', 'Кузьмича', 'Кузьмичом', 'о Кузьмиче'),
             array('Берг', NamesDeclension::MALE, 'Берга', 'Бергу', 'Берга', 'Бергом', 'о Берге'),
             array('Медведь', NamesDeclension::MALE, 'Медведя', 'Медведю', 'Медведя', 'Медведем', 'о Медведе'),
             array('Суздаль', NamesDeclension::MALE, 'Суздаля', 'Суздалю', 'Суздаля', 'Суздалем', 'о Суздале'),
             array('Тронь', NamesDeclension::MALE, 'Троня', 'Троню', 'Троня', 'Тронем', 'о Троне'),
+
+            array('Смирнова', NamesDeclension::FEMALE, 'Смирновой', 'Смирновой', 'Смирнову', 'Смирновой', 'о Смирновой'),
+            array('Кромская', NamesDeclension::FEMALE, 'Кромской', 'Кромской', 'Кромскую', 'Кромской', 'о Кромской'),
+            array('Закипная', NamesDeclension::FEMALE, 'Закипной', 'Закипной', 'Закипную', 'Закипной', 'о Закипной'),
+            array('Зима', NamesDeclension::FEMALE, 'Зимы', 'Зиме', 'Зиму', 'Зимой', 'о Зиме'),
+            array('Зоя', NamesDeclension::FEMALE, 'Зои', 'Зое', 'Зою', 'Зоей', 'о Зое'),
         );
     }
 
