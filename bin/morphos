@@ -2,32 +2,30 @@
 <?php
 require __DIR__.'/../vendor/autoload.php';
 
-use morphos\Russian\CardinalNumeral;
 use morphos\Russian\GeneralDeclension;
 use morphos\Russian\GeographicalNamesDeclension;
-use morphos\Russian\OrdinalNumeral;
 use morphos\Russian\Plurality;
 use morphos\S;
 
 function dump() {
-    $dumper = function ($value, $level = 0, $verbose = false) use (&$dumper) {
+    $dumper = function ($value, $level = 0, $verbose = true) use (&$dumper) {
         $output = null;
         if (is_array($value)) {
             $output .= str_repeat('  ', $level).' array('.count($value).'):'.PHP_EOL;
             $i = 0;
             foreach ($value as $key => $element) {
-                if ($key === $i++) $output .= str_repeat('  ', $level + 1) . $dumper($element).PHP_EOL;
-                else $output .= str_repeat('  ', $level + 1).'['.$dumper($key).'] => '.$dumper($element).PHP_EOL;
+                if ($key === $i++) $output .= str_repeat('  ', $level + 1) . $dumper($element, $level, false).PHP_EOL;
+                else $output .= str_repeat('  ', $level + 1).'['.$dumper($key, $level, false).'] => '.$dumper($element, $level, false).PHP_EOL;
             }
         } else if (is_string($value)) {
-            $output .= '\''.$value.'\'';
+            $output .= $verbose ? 'string('.strlen($value).'): "'.$value.'"'.PHP_EOL: '\''.$value.'\'';
         }
         return $output;
     };
 
     $output = null;
     foreach (func_get_args() as $var) {
-        $output .= $dumper($var, 0, true);
+        $output .= $dumper($var);
     }
     return $output;
 }
@@ -63,8 +61,15 @@ class ConsoleLine {
 
 $line = new ConsoleLine();
 
-for ($i = 1; $i < $argc; $i++)
+$language = 'ru';
+for ($i = 1; $i < $argc; $i++) {
+    if ($i == 1 && in_array($argv[$i], ['ru', 'en'])) {
+        $language = $argv[$i];
+        continue;
+
+    }
     $line->addLineForEmulation(trim($argv[$i]));
+}
 
 fwrite(STDOUT, 'Напишите слово / комбинацию Фамилия Имя [Отчество] для проверки склонения или ? для полной справки'.PHP_EOL);
 
@@ -92,9 +97,16 @@ while (true) {
 
     // генерация числительных
     if (is_numeric($word)) {
-        $cardinal_numerals = CardinalNumeral::getCases($word);
+
+        if ($language == 'ru') {
+            $cardinal_numerals = morphos\Russian\CardinalNumeral::getCases($word);
+            $ordinal_numerals = morphos\Russian\OrdinalNumeral::getCases($word);
+        } else if ($language == 'en') {
+            $cardinal_numerals = morphos\English\CardinalNumeral::generate($word);
+            $ordinal_numerals = morphos\English\OrdinalNumeral::generate($word).' ('.morphos\English\OrdinalNumeral::generate($word, true).')';
+        }
+
         fwrite(STDOUT, 'Числительное количественное: '.dump($cardinal_numerals));
-        $ordinal_numerals = OrdinalNumeral::getCases($word);
         fwrite(STDOUT, 'Числительное порядковое: '.dump($ordinal_numerals));
     } else if (strpos($word, ' ') === false) {
         // только одно слово

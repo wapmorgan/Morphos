@@ -7,6 +7,7 @@ English morphology shortcuts:
 
 - `morphos\English\pluralize($word, $count = 2)`
 - `morphos\English\CardinalNumeral::generate($number)`
+- `morphos\English\OrdinalNumeral::generate($number)`
 
 English class hierarchy:
 
@@ -14,6 +15,7 @@ English class hierarchy:
 morphos\
         English\
                 CardinalNumeral
+                OrdinalNumeral
                 Plurality
 ```
 
@@ -40,7 +42,6 @@ All number creation classes are similar and have one common methods:
 
 _Creation of cardinal numerals in english language._
 
-Create declension class object:
 
 ```php
 use morphos\English\CardinalNumeral;
@@ -52,4 +53,22 @@ Get text representation of a number:
 $number = 4351;
 
 CardinalNumeral::generate($number) => 'four thousand, three hundred fifty-one'
+```
+
+### Ordinal (`OrdinalNumeral`)
+
+_Creation of ordinal numerals in english language._
+
+
+```php
+use morphos\English\OrdinalNumeral;
+```
+
+Get text representation of a number or short form:
+
+```php
+$number = 4351;
+
+OrdinalNumeral::generate($number) => 'four thousand, three hundred fifty-first'
+OrdinalNumeral::generate($number, true) => '4351st'
 ```

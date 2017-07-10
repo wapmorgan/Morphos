@@ -5,7 +5,7 @@ use morphos\NumeralCreation;
 
 class CardinalNumeral extends NumeralCreation {
 
-    static protected $words = array(
+    static public $words = array(
         1 => 'one',
         2 => 'two',
         3 => 'three',
@@ -35,7 +35,7 @@ class CardinalNumeral extends NumeralCreation {
         90 => 'ninety',
     );
 
-    static protected $exponents = array(
+    static public $exponents = array(
         100 => 'hundred',
         1000 => 'thousand',
         1000000 => 'million',
