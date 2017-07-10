@@ -36,7 +36,11 @@ class ConsoleLine {
     protected $readlineSupport;
 
     public function __construct() {
-        $this->readlineSupport = extension_loaded('readline');
+        $this->readlineSupport = /*strncasecmp(PHP_OS, 'win', 3) !== 0 && */extension_loaded('readline');
+    }
+
+    public function addLineForEmulation($line) {
+        $this->emulation[] = $line;
     }
 
     public function addToHistory($command) {
@@ -45,16 +49,22 @@ class ConsoleLine {
     }
 
     public function readLine($prompt) {
+        if (!empty($this->emulation))
+            return array_shift($this->emulation);
+
         if ($this->readlineSupport)
             return trim(readline($prompt));
         else {
             fwrite(STDOUT, $prompt);
-            return trim(fgets(STDIN));
+            return fgets(STDIN);
         }
     }
 }
 
 $line = new ConsoleLine();
+
+for ($i = 1; $i < $argc; $i++)
+    $line->addLineForEmulation(trim($argv[$i]));
 
 fwrite(STDOUT, 'Напишите слово / комбинацию Фамилия Имя [Отчество] для проверки склонения или ? для полной справки'.PHP_EOL);
 
