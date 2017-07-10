@@ -1,0 +1,112 @@
+#!/usr/bin/env php
+<?php
+require __DIR__.'/../vendor/autoload.php';
+
+use morphos\Russian\CardinalNumeral;
+use morphos\Russian\GeneralDeclension;
+use morphos\Russian\GeographicalNamesDeclension;
+use morphos\Russian\OrdinalNumeral;
+use morphos\Russian\Plurality;
+use morphos\S;
+
+function dump() {
+    $dumper = function ($value, $level = 0, $verbose = false) use (&$dumper) {
+        $output = null;
+        if (is_array($value)) {
+            $output .= str_repeat('  ', $level).' array('.count($value).'):'.PHP_EOL;
+            $i = 0;
+            foreach ($value as $key => $element) {
+                if ($key === $i++) $output .= str_repeat('  ', $level + 1) . $dumper($element).PHP_EOL;
+                else $output .= str_repeat('  ', $level + 1).'['.$dumper($key).'] => '.$dumper($element).PHP_EOL;
+            }
+        } else if (is_string($value)) {
+            $output .= '\''.$value.'\'';
+        }
+        return $output;
+    };
+
+    $output = null;
+    foreach (func_get_args() as $var) {
+        $output .= $dumper($var, 0, true);
+    }
+    return $output;
+}
+
+class ConsoleLine {
+    protected $readlineSupport;
+
+    public function __construct() {
+        $this->readlineSupport = extension_loaded('readline');
+    }
+
+    public function addToHistory($command) {
+        if ($this->readlineSupport)
+            readline_add_history($command);
+    }
+
+    public function readLine($prompt) {
+        if ($this->readlineSupport)
+            return trim(readline($prompt));
+        else {
+            fwrite(STDOUT, $prompt);
+            return trim(fgets(STDIN));
+        }
+    }
+}
+
+$line = new ConsoleLine();
+
+fwrite(STDOUT, 'Напишите слово / комбинацию Фамилия Имя [Отчество] для проверки склонения или ? для полной справки'.PHP_EOL);
+
+while (true) {
+    $word = $line->readLine('> ');
+    if (empty($word)) {
+        continue;
+    }
+
+    if ($word === '?') {
+        fwrite(STDOUT, 'Возможные входные параметры:
+- слово
+Должно быть существительным. Склоняет слово во всех падежах в единственном и множественном числах.
+- Слово
+Склонение географического названия.
+- Фамилия Имя
+- Фамилия Имя Отчество
+Порядок следования (сначала всегда идёт Фамилия) соблюдать обязательно! Склоняет имя во всех падежах.
+- 123
+Любое число. Генерирует порядковое и количественное числительные во всех падежах.
+');
+        continue;
+    }
+    $line->addToHistory($word);
+
+    // генерация числительных
+    if (is_numeric($word)) {
+        $cardinal_numerals = CardinalNumeral::getCases($word);
+        fwrite(STDOUT, 'Числительное количественное: '.dump($cardinal_numerals));
+        $ordinal_numerals = OrdinalNumeral::getCases($word);
+        fwrite(STDOUT, 'Числительное порядковое: '.dump($ordinal_numerals));
+    } else if (strpos($word, ' ') === false) {
+        // только одно слово
+        $first_char = S::slice($word, 0, 1);
+        // географическое название
+        if ($first_char == S::upper($first_char)) {
+            $names = GeographicalNamesDeclension::getCases($word);
+            fwrite(STDOUT, 'Географическое название: '.dump($names));
+        }
+        // существительное
+        else {
+            $cases = GeneralDeclension::getCases($word);
+            $plural_cases = Plurality::getCases($word);
+            fwrite(STDOUT, 'Существительное в единственном числе: '.dump($cases));
+            fwrite(STDOUT, 'Существительное во множественном числе: '.dump($plural_cases));
+        }
+    }
+    // Фамилия Имя
+    else {
+        $gender = morphos\Russian\detectGender($word);
+        $cases = morphos\Russian\name($word);
+        fwrite(STDOUT, 'Предполагаемый пол: '.$gender.PHP_EOL);
+        fwrite(STDOUT, 'Склонение: '.dump($cases));
+    }
+}
