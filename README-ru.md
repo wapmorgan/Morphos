@@ -160,7 +160,7 @@ GeographicalNamesDeclension::getCases('Саратов') => array(6) {
 - `string getCase($word, $case, $animateness = false)` - Declines noun.
 - `array getCases($word, $animateness = false)` - Declines noun to all cases.
 
-Usage:
+_Пример_
 
 ```php
 use morphos\Russian\GeneralDeclension;
