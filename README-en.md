@@ -1,7 +1,7 @@
 # English
 
-* [Pluralization](#Pluralization)
-* [Numerals](#Numerals)
+* [Pluralization](#pluralization)
+* [Numerals](#numerals)
 
 English morphology shortcuts:
 
