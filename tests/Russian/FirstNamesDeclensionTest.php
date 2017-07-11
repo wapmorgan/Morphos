@@ -2,6 +2,7 @@
 namespace morhos\test\Russian;
 require __DIR__.'/../../vendor/autoload.php';
 
+use morphos\Gender;
 use morphos\NamesDeclension;
 use morphos\Russian\Cases;
 use morphos\Russian\FirstNamesDeclension;
@@ -210,5 +211,12 @@ class FirstNamesDeclensionTest extends \PHPUnit_Framework_TestCase {
             array('Асия', FirstNamesDeclension::FEMALE),
             array('Лючия', FirstNamesDeclension::FEMALE),
         );
+    }
+
+    /**
+     * @dataProvider menNamesProvider()
+     */
+    public function testGetCase($name, $case2) {
+        $this->assertEquals($case2, FirstNamesDeclension::getCase($name, Cases::RODIT, Gender::MALE));
     }
 }

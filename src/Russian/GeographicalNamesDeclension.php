@@ -98,7 +98,7 @@ class GeographicalNamesDeclension extends \morphos\GeneralDeclension implements 
                     self::TVORIT => $prefix.'ем',
                     self::PREDLOJ => self::choosePrepositionByFirstLetter($prefix, 'об', 'о').' '.$prefix.'е',
                 );
-            } else if (self::isConsonant(S::slice($name, -1))) {
+            } else if (self::isConsonant(S::slice($name, -1)) && S::slice($name, -2) != 'ов') {
                 // Париж, Валаам, Киев
                 $prefix = S::name($name);
                 return array(
@@ -181,7 +181,7 @@ class GeographicalNamesDeclension extends \morphos\GeneralDeclension implements 
                     self::RODIT => $prefix.'а',
                     self::DAT => $prefix.'у',
                     self::VINIT => S::name($name),
-                    self::TVORIT => $prefix.'ем',
+                    self::TVORIT => $prefix.'ым',
                     self::PREDLOJ => self::choosePrepositionByFirstLetter($prefix, 'об', 'о').' '.$prefix.'е',
                 );
             }

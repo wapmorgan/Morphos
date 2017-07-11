@@ -491,16 +491,6 @@ class FirstNamesDeclension extends \morphos\NamesDeclension implements Cases {
 				self::TVORIT => $prefix.'ой',
 				self::PREDLOJ => self::choosePrepositionByFirstLetter($prefix, 'об', 'о').' '.$prefix.'е',
 			);
-		} else if (S::slice($name, -2) == 'ия') {
-			$prefix = S::name(S::slice($name, 0, -1));
-			return array(
-				self::IMENIT => $prefix.'я',
-				self::RODIT => $prefix.'и',
-				self::DAT => $prefix.'и',
-				self::VINIT => $prefix.'ю',
-				self::TVORIT => $prefix.'ей',
-				self::PREDLOJ => self::choosePrepositionByFirstLetter($prefix, 'об', 'о').' '.$prefix.'и',
-			);
 		} else if (S::slice($name, -2) == 'ло' || S::slice($name, -2) == 'ко') {
 			$prefix = S::name(S::slice($name, 0, -1));
 			$postfix = S::slice($name, -2, -1) == 'к' ? 'и' : 'ы';

@@ -138,9 +138,9 @@ class OrdinalNumeral extends NumeralCreation implements Cases {
                         $prefix = S::slice($word, 0, $number == 40 ? -1 : -2);
                         return array(
                             self::IMENIT => $prefix.'ое',
-                            self::RODIT => $prefix.'го',
+                            self::RODIT => $prefix.'ого',
                             self::DAT => $prefix.'ому',
-                            self::VINIT => $word,
+                            self::VINIT => $prefix.'ое',
                             self::TVORIT => $prefix.'ым',
                             self::PREDLOJ => self::choosePrepositionByFirstLetter($prefix, 'об', 'о').' '.$prefix.'ом',
                         );

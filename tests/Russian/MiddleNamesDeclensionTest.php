@@ -38,4 +38,24 @@ class MiddleNamesDeclensionTest extends \PHPUnit_Framework_TestCase {
         );
     }
 
+    /**
+     * @dataProvider mutableNamesProvider()
+     */
+    public function testMutableNames($name, $gender) {
+        $this->assertTrue(MiddleNamesDeclension::isMutable($name, $gender));
+    }
+
+    public function mutableNamesProvider() {
+        return array(
+            array('Иванович', NamesDeclension::MALE),
+            array('Петровна', NamesDeclension::FEMALE),
+        );
+    }
+
+    /**
+     * @dataProvider middleNamesProvider()
+     */
+    public function testGetCase($name, $gender, $case2) {
+        $this->assertEquals($case2, MiddleNamesDeclension::getCase($name, Cases::RODIT, $gender));
+    }
 }
