@@ -36,11 +36,11 @@ class CardinalNumeral extends NumeralCreation {
     );
 
     static public $exponents = array(
-        100 => 'hundred',
-        1000 => 'thousand',
-        1000000 => 'million',
-        1000000000 => 'billion',
-        1000000000000 => 'trillion',
+        '100' => 'hundred',
+        '1000' => 'thousand',
+        '1000000' => 'million',
+        '1000000000' => 'billion',
+        '1000000000000' => 'trillion',
     );
 
     static public function getCases($number) {}

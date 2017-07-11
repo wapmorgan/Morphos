@@ -50,10 +50,11 @@ class CardinalNumeral extends NumeralCreation implements Cases {
     );
 
     static protected $exponents = array(
-        1000 => 'тысяча',
-        1000000 => 'миллион',
-        1000000000 => 'миллиард',
-        1000000000000 => 'триллион',
+        '1000' => 'тысяча',
+        '1000000' => 'миллион',
+        '1000000000' => 'миллиард',
+        '1000000000000' => 'триллион',
+        '1000000000000000' => 'квадриллион',
     );
 
     static protected $precalculated = array(
