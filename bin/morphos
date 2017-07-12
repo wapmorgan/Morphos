@@ -1,5 +1,10 @@
 #!/usr/bin/env php
 <?php
+use morphos\Russian\GeneralDeclension;
+use morphos\Russian\GeographicalNamesDeclension;
+use morphos\Russian\Plurality;
+use morphos\S;
+
 $paths = [
     // as a root package or phar
     __DIR__.'/../vendor/autoload.php',
@@ -18,11 +23,6 @@ function init_composer(array $paths) {
     return false;
 }
 if (!init_composer($paths)) die('Run `composer install` firstly.'.PHP_EOL);
-
-use morphos\Russian\GeneralDeclension;
-use morphos\Russian\GeographicalNamesDeclension;
-use morphos\Russian\Plurality;
-use morphos\S;
 
 function dump() {
     $dumper = function ($value, $level = 0, $verbose = true) use (&$dumper) {
