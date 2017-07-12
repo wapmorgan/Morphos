@@ -1,6 +1,23 @@
 #!/usr/bin/env php
 <?php
-require __DIR__.'/../vendor/autoload.php';
+$paths = [
+    // as a root package or phar
+    __DIR__.'/../vendor/autoload.php',
+    // as a dependency from bin
+    __DIR__.'/../autoload.php',
+    // as a dependency from package folder
+    __DIR__.'/../../../autoload.php',
+    ];
+function init_composer(array $paths) {
+    foreach ($paths as $path) {
+        if (file_exists($path)) {
+            require_once $path;
+            return true;
+        }
+    }
+    return false;
+}
+if (!init_composer($paths)) die('Run `composer install` firstly.'.PHP_EOL);
 
 use morphos\Russian\GeneralDeclension;
 use morphos\Russian\GeographicalNamesDeclension;
