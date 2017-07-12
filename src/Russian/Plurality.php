@@ -155,7 +155,7 @@ class Plurality extends \morphos\Plurality implements Cases {
 			$forms[Cases::RODIT] = $prefix.'й';
 		else if (RussianLanguage::isHissingConsonant($last) || ($soft_last && $last != 'й') || in_array(S::slice($word, -2), array('чь', 'сь')))
 			$forms[Cases::RODIT] = $prefix.'ей';
-		else if ($last == 'й')
+		else if ($last == 'й' || S::slice($word, -2) == 'яц') // месяц
 			$forms[Cases::RODIT] = $prefix.'ев';
 		else // (self::isConsonant($last) && !RussianLanguage::isHissingConsonant($last))
 			$forms[Cases::RODIT] = $prefix.'ов';
