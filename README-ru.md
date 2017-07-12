@@ -6,8 +6,9 @@
 * [Числительные](#Числительные)
   * [Количественные числительные](#Количественные-числительные)
   * [Порядковые числительные](#Порядковые-числительные)
-* [Валюты](#Валюты)
 * [Окончание глаголов](#Окончание-глаголов)
+* [Валюты](#Валюты)
+* [Временные интервалы](#Временные-интервалы)
 
 Для русского языка доступны следующие функции:
 
@@ -335,4 +336,27 @@ $gender = morphos\Gender::FEMALE;
 
 $name.' '.morphos\Russian\verb('добавил', $gender) => 'Анастасия добавила'
 $name.' '.morphos\Russian\verb('поделился', $gender).' публикацией' => 'Анастасия поделилась публикацией'
+```
+
+## Временные интервалы
+
+Класс `TimeUnitSpeller` позволяет записать человеческим языком временной интервал, задаваемый объектом `DateInterval`.
+
+_Пример_
+
+```php
+use morphos\Russian\TimeUnitSpeller;
+
+TimeUnitSpeller::spellInterval(new DateInterval('P5YT2M')) => '5 лет 2 часа'
+```
+
+Также можно передать вторым аргументом одну из следующих опций или их комбинацию (побитовое или `|`):
+
+- `TimeUnitSpeller::DIRECTION` - добавляет "назад" для положительных интвералов и "через" для отрицательных.
+- `TimeUnitSpeller::SEPARATE` - добавляет запятые между составными интервала и союз перед последней частью.
+
+```php
+TimeUnitSpeller::spellInterval(new DateInterval('P5YT2M'), TimeUnitSpeller::DIRECTION) => '5 лет 2 часа назад'
+TimeUnitSpeller::spellInterval(new DateInterval('P5YT2M'), TimeUnitSpeller::SEPARATE) => '5 лет и 2 часа'
+TimeUnitSpeller::spellInterval(new DateInterval('P5YT2M'), TimeUnitSpeller::DIRECTION | TimeUnitSpeller::SEPARATE) => '5 лет и 2 часа назад'
 ```
