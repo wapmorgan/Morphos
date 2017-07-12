@@ -15,6 +15,7 @@ Tests & Quality: [![Build Status](https://travis-ci.org/wapmorgan/Morphos.svg)](
 - [✓] Declension of Geographical names (Страны/Города) (Russian)
 - [✓] Declension/Pluralization of nouns and adjectives (Russian, English)
 - [✓] Generation numerals of numbers (количественные и порядковые) (Russian, English)
+- [✓] Spelling out amounts of money (Russian)
 
 ## Table of contents
 
@@ -30,40 +31,40 @@ Tests & Quality: [![Build Status](https://travis-ci.org/wapmorgan/Morphos.svg)](
 composer require wapmorgan/morphos
 ```
 
-Adapters:
-
 - Adapter for Laravel (Blade): [wapmorgan/morphos-blade](https://github.com/wapmorgan/Morphos-Blade)
 - Adapter for Symfony (Twig): [wapmorgan/morphos-twig](https://github.com/wapmorgan/Morphos-Twig)
 
 ## Quick Start
-- Decline russian names:
+- Russian:
   ```php
+  // Decline russian names:
   morphos\Russian\name('Иванов Петр', 'родительный', morphos\Gender::MALE) => 'Иванова Петра'
-  ```
 
-- Pluralize russian nouns:
-  ```php
+  // Decline geographical names:
+  morphos\Russian\GeographicalNamesDeclension::getCase('Москва', 'родительный') => 'Москвы'
+
+  // Pluralize russian nouns:
   morphos\Russian\pluralize('дом', 10) => 'домов'
-  ```
 
-- Generate russian cardinal numerals:
-  ```php
+  // Generate russian cardinal numerals:
   morphos\Russian\CardinalNumeral::getCase(567, 'именительный') => 'пятьсот шестьдесят семь'
-  ```
 
-- Generate russian ordinal numerals:
-  ```php
+  // Generate russian ordinal numerals:
   morphos\Russian\OrdinalNumeral::getCase(961, 'именительный') => 'девятьсот шестьдесят первый'
+
+  // other functions described in README-ru.md
   ```
 
-- Pluralize english nouns:
+- English
   ```php
+  // Pluralize english nouns:
   morphos\English\pluralize('house') => 'houses'
-  ```
 
-- Generate english cardinal numerals:
-  ```php
+  // Generate english cardinal numerals:
   morphos\English\CardinalNumeral::generate(567) => 'five hundred sixty-seven'
+
+  // Generate english ordinal numerals:
+  morphos\English\OrdinalNumeral::generate(961) => 'nine hundred sixty-first'
   ```
 
 # Library documentation
