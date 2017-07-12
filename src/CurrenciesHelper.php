@@ -22,14 +22,6 @@ trait CurrenciesHelper {
             case '£':
                 return Currency::POUND;
 
-            case Currency::AUSTRALIAN_DOLLAR:
-            case 'A$':
-                return Currency::AUSTRALIAN_DOLLAR;
-
-            case Currency::CANADIAN_DOLLAR:
-            case 'C$':
-                return Currency::CANADIAN_DOLLAR;
-
             case Currency::FRANC:
             case 'Fr':
                 return Currency::FRANC;
@@ -42,20 +34,8 @@ trait CurrenciesHelper {
             case 'Kr':
                 return Currency::KRONA;
 
-            case Currency::ZELAND_DOLLAR:
-            case 'NZ$':
-                return Currency::ZELAND_DOLLAR;
-
             case Currency::PESO:
                 return Currency::PESO;
-
-            case Currency::SINGAPORE_DOLLAR:
-            case 'S$':
-                return Currency::SINGAPORE_DOLLAR;
-
-            case Currency::HONG_KONG_DOLLAR:
-            case 'HK$':
-                return Currency::HONG_KONG_DOLLAR;
 
             case Currency::WON:
             case '₩':
@@ -80,6 +60,10 @@ trait CurrenciesHelper {
             case Currency::RAND:
             case 'R':
                 return Currency::RAND;
+
+            case Currency::HRYVNIA:
+            case '₴':
+                return Currency::HRYVNIA;
 
             default:
                 throw new Exception('Invalid currency: '.$currency);

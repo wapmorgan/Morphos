@@ -13,21 +13,17 @@ class MoneyFormatter extends \morphos\MoneyFormatter
 		self::EURO => ['евро', Gender::NEUTER, 'цент', Gender::MALE],
 		self::YEN => ['иена', Gender::FEMALE, 'сен', Gender::MALE],
 		self::POUND => ['фунт', Gender::MALE, 'пенни', Gender::NEUTER],
-		self::AUSTRALIAN_DOLLAR => ['доллар', Gender::MALE, 'цент', Gender::MALE],
-		self::CANADIAN_DOLLAR => ['доллар', Gender::MALE, 'цент', Gender::MALE],
 		self::FRANC => ['франк', Gender::MALE, 'сантим', Gender::MALE],
 		self::YUAN => ['юань', Gender::MALE, 'цзяо', Gender::NEUTER],
 		self::KRONA => ['крона', Gender::FEMALE, 'эре', Gender::NEUTER],
-		self::ZELAND_DOLLAR => ['доллар', Gender::MALE, 'цент', Gender::MALE],
 		self::PESO => ['песо', Gender::NEUTER, 'сентаво', Gender::NEUTER],
-		self::SINGAPORE_DOLLAR => ['доллар', Gender::MALE, 'цент', Gender::MALE],
-		self::HONG_KONG_DOLLAR => ['доллар', Gender::MALE, 'цент', Gender::MALE],
 		self::WON => ['вон', Gender::MALE, 'чон', Gender::MALE],
 		self::LIRA => ['лира', Gender::FEMALE, 'куруш', Gender::MALE],
 		self::RUBLE => ['рубль', Gender::MALE, 'копейка', Gender::FEMALE],
 		self::RUPEE => ['рупия', Gender::FEMALE, 'пайка', Gender::FEMALE],
 		self::REAL => ['реал', Gender::MALE, 'сентаво', Gender::NEUTER],
 		self::RAND => ['рэнд', Gender::MALE, 'цент', Gender::MALE],
+		self::HRYVNIA => ['гривна', Gender::FEMALE, 'копейка', Gender::FEMALE],
 	];
 
 	public static function format($value, $currency, $format = self::NORMAL_FORMAT) {
