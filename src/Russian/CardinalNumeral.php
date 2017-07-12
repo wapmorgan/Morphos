@@ -216,6 +216,16 @@ class CardinalNumeral extends NumeralCreation implements Cases {
                 return GeneralDeclension::getCases($word, false);
             }
         }
+        else if ($number == 0) {
+            return array(
+                self::IMENIT => 'ноль',
+                self::RODIT => 'ноля',
+                self::DAT => 'нолю',
+                self::VINIT => 'ноль',
+                self::TVORIT => 'нолём',
+                self::PREDLOJ => 'о ноле',
+            );
+        }
         // compound numeral
         else {
             $parts = array();
