@@ -57,8 +57,8 @@ function detectGender($fullname)
         return false;
 
     return (isset($name[2]) ? MiddleNamesDeclension::detectGender($name[2]) : null) ?:
-        FirstNamesDeclension::detectGender($name[1]) ?:
-        LastNamesDeclension::detectGender($name[0]);
+        LastNamesDeclension::detectGender($name[0]) ?:
+        FirstNamesDeclension::detectGender($name[1]);
 }
 
 function pluralize($word, $count = 2, $animateness = false)
