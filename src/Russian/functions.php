@@ -3,7 +3,8 @@ namespace morphos\Russian;
 
 use morphos\S;
 
-function name($fullname, $case = null, $gender = null) {
+function name($fullname, $case = null, $gender = null)
+{
     if (in_array($case, array('m', 'f'))) {
         $gender = $case;
         $case = null;
@@ -48,7 +49,8 @@ function name($fullname, $case = null, $gender = null) {
     return implode(' ', $name);
 }
 
-function detectGender($fullname) {
+function detectGender($fullname)
+{
     static $first, $middle, $last;
     $name = explode(' ', S::lower($fullname));
     if (count($name) < 2 || count($name) > 3)
@@ -59,6 +61,22 @@ function detectGender($fullname) {
         LastNamesDeclension::detectGender($name[0]);
 }
 
-function pluralize($word, $count = 2, $animateness = false) {
+function pluralize($word, $count = 2, $animateness = false)
+{
     return Plurality::pluralize($word, $count, $animateness);
+}
+
+/**
+ * @param string $verb Verb to modificate if gender is female
+ * @param string $gender If not `m`, verb will be modificated
+ * @return string Correct verb
+ */
+function verb($verb, $gender)
+{
+    // возвратный глагол
+    if (S::slice($verb, -2) == 'ся')
+        return ($gender == 'm' ? $verb : mb_substr($verb, 0, -2).'ась');
+
+    // обычный глагол
+    return ($gender == 'm' ? $verb : $verb.'а');
 }
