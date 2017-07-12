@@ -4,7 +4,7 @@ namespace morphos\Russian;
 use morphos\Gender;
 use morphos\CurrenciesHelper;
 
-class MoneyFormatter extends \morphos\MoneyFormatter
+class MoneySpeller extends \morphos\MoneySpeller
 {
 	use CurrenciesHelper;
 
@@ -26,7 +26,7 @@ class MoneyFormatter extends \morphos\MoneyFormatter
 		self::HRYVNIA => ['гривна', Gender::FEMALE, 'копейка', Gender::FEMALE],
 	];
 
-	public static function format($value, $currency, $format = self::NORMAL_FORMAT) {
+	public static function spell($value, $currency, $format = self::NORMAL_FORMAT) {
 		$currency = self::canonizeCurrency($currency);
 
 		$integer = floor($value);

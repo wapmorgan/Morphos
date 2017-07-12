@@ -25,7 +25,7 @@ morphos\
                 GeneralDeclension
                 FirstNamesDeclension
                 LastNamesDeclension
-                MoneyFormatter
+                MoneySpeller
                 MiddleNamesDeclension
                 OrdinalNumeral
                 Plurality
@@ -273,25 +273,25 @@ OrdinalNumeral::getCases($number) => array(6) {
 ```
 
 ## Валюты
-Вы можете генерировать значения денежных сумм, записанных в виде текста с помощью класса `MoneyFormatter`.
+Вы можете генерировать значения денежных сумм, записанных в виде текста с помощью класса `MoneySpeller`.
 
 _Пример_
 
 ```php
-use morphos\Russian\MoneyFormatter;
+use morphos\Russian\MoneySpeller;
 
-MoneyFormatter::format(123.45, 'RUB') => 'сто двадцать три рубля сорок пять копеек'
-MoneyFormatter::format(123.45, 'RUB', MoneyFormatter::CLARIFICATION_FORMAT) => '123 (сто двадцать три) рубля 45 (сорок пять) копеек'
+MoneySpeller::spell(123.45, 'RUB') => 'сто двадцать три рубля сорок пять копеек'
+MoneySpeller::spell(123.45, 'RUB', MoneySpeller::CLARIFICATION_FORMAT) => '123 (сто двадцать три) рубля 45 (сорок пять) копеек'
 ```
 
 Все доступные форматы вывода:
 
 | Формат                                 | Формат вывода                                                            | Пример                               |
 |----------------------------------------|--------------------------------------------------------------------------|--------------------------------------|
-| `MoneyFormatter::SHORT_FORMAT`         | Сумма записывается цифрами, а валюта словами                             | 1 рубль 50 копеек                    |
-| `MoneyFormatter::NORMAL_FORMAT`        | Сумма и валюта записываются словами                                      | один рубль пятьдесят копеек          |
-| `MoneyFormatter::DUPLICATION_FORMAT`   | Сумма и валюта записываются словами. Сумма дублируется цифрами в скобках | один (1) рубль пятьдесят (50) копеек |
-| `MoneyFormatter::CLARIFICATION_FORMAT` | Сумма записывается словами и цифрами (в скобках), валюта - словами.      | 1 (один) рубль 50 (пятьдесят) копеек |
+| `MoneySpeller::SHORT_FORMAT`         | Сумма записывается цифрами, а валюта словами                             | 1 рубль 50 копеек                    |
+| `MoneySpeller::NORMAL_FORMAT`        | Сумма и валюта записываются словами                                      | один рубль пятьдесят копеек          |
+| `MoneySpeller::DUPLICATION_FORMAT`   | Сумма и валюта записываются словами. Сумма дублируется цифрами в скобках | один (1) рубль пятьдесят (50) копеек |
+| `MoneySpeller::CLARIFICATION_FORMAT` | Сумма записывается словами и цифрами (в скобках), валюта - словами.      | 1 (один) рубль 50 (пятьдесят) копеек |
 
 При указании валюты используйте знак валюты или трехзначный код валюты.
 
