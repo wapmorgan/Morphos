@@ -15,7 +15,7 @@ abstract class TimeUnitSpeller
 	const AGO = 'ago';
 	const IN = 'in';
 
-	const AND = 'and';
+	const AND_WORD = 'and';
 
 	const JUST_NOW = 'just now';
 
@@ -44,7 +44,7 @@ abstract class TimeUnitSpeller
 
 		if ($options & self::SEPARATE && count($parts) > 1) {
 			$last_part = array_pop($parts);
-			$spelled = implode(', ', $parts).' '.static::AND.' '.$last_part;
+			$spelled = implode(', ', $parts).' '.static::AND_WORD.' '.$last_part;
 		} else
 			$spelled = implode(' ', $parts);
 

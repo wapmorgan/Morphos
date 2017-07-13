@@ -17,7 +17,7 @@ class TimeUnitSpeller extends \morphos\TimeUnitSpeller
 	const AGO = 'назад';
 	const IN = 'через';
 
-	const AND = 'и';
+	const AND_WORD = 'и';
 
 	const JUST_NOW = 'только что';
 
