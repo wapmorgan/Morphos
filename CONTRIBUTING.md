@@ -14,15 +14,28 @@ Class for names declension.
 * `public function getCase($name, $form, $gender)` - Generates one case of a name.
 
 #### `morphos\GeneralDeclension`
+Class for general declension.
 
 * `public function isMutable($word, $animate = false);` - Checks, whether there are rules for this word.
 * `public function getCases($word, $animate = false);` - Generates all cases of a word.
 * `public function getCase($word, $form, $animate = false);` - Generates one case of a word.
 
 #### `morphos\NumeralCreation`
+Class for numerals generation.
 
 * `public function getCases($number)` - Generates all cases for a number.
 * `public function getCase($number, $case)` - Generates one case for a number.
+
+#### `morphos\MoneySpeller`
+Class for spelling out money amounts.
+
+* `public function spell($value, $currency)` - Spells money amount in natural language.
+
+#### `morphos\TimeUnitSpeller`
+Class for spelling out date intervals and time units.
+
+* `public function spellUnit($count, $unit)` - Spells time unit in natural language.
+* `public function spellInterval(DateInterval $interval)` - Spells date interval in natural language.
 
 ### String helper
 Morphos distributed with a string helper supporting multibyte encodings. Class is `morphos\S`.

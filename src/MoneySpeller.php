@@ -8,5 +8,5 @@ abstract class MoneySpeller implements Currency
 	const CLARIFICATION_FORMAT = 'clarification';
 	const DUPLICATION_FORMAT = 'duplication';
 
-	abstract public static function spell($value, $currency, $format = self::NORMAL_FORMAT);
+	public static function spell($value, $currency, $format = self::NORMAL_FORMAT) {}
 }
