@@ -10,27 +10,28 @@
 * [Валюты](#Валюты)
 * [Временные интервалы](#Временные-интервалы)
 
-Для русского языка доступны следующие функции:
+Для русского языка доступны следующие функции из пространства имён `morphos\Russian\`:
 
-* `morphos\Russian\name($fullname, $case, $gender = AUTO)`
-* `morphos\Russian\pluralize($noun, $count = 2, $animateness = false)`
-* `morphos\Russian\verb($verb, $gender)`
+* `inflectName($fullname, $case, $gender = AUTO)`
+* `pluralize($noun, $count = 2, $animateness = false)`
+* `verb($verb, $gender)`
 
 и следующие классы:
 
-```php
-morphos\
-        Russian\
-                CardinalNumeral
-                Cases
-                GeneralDeclension
-                FirstNamesDeclension
-                LastNamesDeclension
-                MoneySpeller
-                MiddleNamesDeclension
-                OrdinalNumeral
-                Plurality
-```
+- для склонение личных имён:
+    - `FirstNamesInflection`
+    - `LastNamesInflection`
+    - `MiddleNamesInflection`
+- для склонения и плюрализации существительных:
+    - `NounDeclension`
+    - `NounPluralization`
+- для генерации количественных и порядковых числительных:
+    - `CardinalNumeralGeneratorGenerator`
+    - `OrdinalNumeralGeneratorGenerator`
+- для генерации текстом различных данных:
+    - `MoneySpeller`
+    - `TimeSpeller`
+
 
 ## Имена собственные
 
@@ -47,9 +48,9 @@ string|array name($name, $case = null, $gender = null)
 
 Для склонения отдельных частей имени есть три класса:
 
-- `FirstNamesDeclension` - класс для склонения имён.
-- `MiddleNamesDeclension` - класс для склонения отчеств.
-- `LastNamesDeclension` - класс для склонения фамилий.
+- `FirstNamesInflection` - класс для склонения имён.
+- `MiddleNamesInflection` - класс для склонения отчеств.
+- `LastNamesInflection` - класс для склонения фамилий.
 
 Все классы похожи друг на друга и имеют следующие методы:
 
@@ -72,17 +73,17 @@ string|array name($name, $case = null, $gender = null)
 
 _Примеры_
 
-**FirstNamesDeclension**
+**FirstNamesInflection**
 
 ```php
-use morphos\Russian\FirstNamesDeclension;
+use morphos\Russian\FirstNamesInflection;
 // Возьмем имя Иван
 $user_name = 'Иван';
 
-FirstNamesDeclension::getCase($user_name, 'родительный') => 'Ивана'
+FirstNamesInflection::getCase($user_name, 'родительный') => 'Ивана'
 
 // получаем имя во всех падежах
-FirstNamesDeclension::getCases($user_name) => array(6) {
+FirstNamesInflection::getCases($user_name) => array(6) {
     "nominative" => "Иван",
     "genitive" => "Ивана",
     "dative" => "Ивану",
@@ -92,15 +93,15 @@ FirstNamesDeclension::getCases($user_name) => array(6) {
 }
 ```
 
-**MiddleNamesDeclension**
+**MiddleNamesInflection**
 
 ```php
-use morphos\Russian\MiddleNamesDeclension;
+use morphos\Russian\MiddleNamesInflection;
 $user_name = 'Сергеевич';
 
-MiddleNamesDeclension::getCase($user_name, 'родительный') => 'Сергеевича'
+MiddleNamesInflection::getCase($user_name, 'родительный') => 'Сергеевича'
 
-MiddleNamesDeclension::getCases($user_name) => array(6) {
+MiddleNamesInflection::getCases($user_name) => array(6) {
     "nominative" => "Сергеевич",
     "genitive" => "Сергеевича",
     "dative" => "Сергеевичу",
@@ -110,17 +111,17 @@ MiddleNamesDeclension::getCases($user_name) => array(6) {
 }
 ```
 
-**LastNamesDeclension**
+**LastNamesInflection**
 
 ```php
-use morphos\Russian\LastNamesDeclension;
+use morphos\Russian\LastNamesInflection;
 $user_last_name = 'Иванов';
 
-$dative_last_name = LastNamesDeclension::getCase($user_last_name, 'дательный'); // Иванову
+$dative_last_name = LastNamesInflection::getCase($user_last_name, 'дательный'); // Иванову
 
 echo 'Мы хотим подарить товарищу '.$dative_last_name.' небольшой презент.';
 
-LastNamesDeclension::getCases($user_last_name) => array(6) {
+LastNamesInflection::getCases($user_last_name) => array(6) {
     "nominative" => "Иванов",
     "genitive" => "Иванова",
     "dative" => "Иванову",
@@ -141,11 +142,11 @@ LastNamesDeclension::getCases($user_last_name) => array(6) {
 _Пример_
 
 ```php
-use morphos\Russian\GeographicalNamesDeclension;
+use morphos\Russian\GeographicalNamesInflection;
 
-echo 'Пора бы поехать в '.GeographicalNamesDeclension::getCase('Москва', 'винительный'); // Москву
+echo 'Пора бы поехать в '.GeographicalNamesInflection::getCase('Москва', 'винительный'); // Москву
 // If you need all forms, you can get all forms of a name:
-GeographicalNamesDeclension::getCases('Саратов') => array(6) {
+GeographicalNamesInflection::getCases('Саратов') => array(6) {
     "nominative" => "Саратов",
     "genitive" => "Саратова",
     "dative" => "Саратову",
@@ -159,7 +160,7 @@ GeographicalNamesDeclension::getCases('Саратов') => array(6) {
 
 ### Склонение в единственном числе
 
-Функциональность по склонению имени существительных (а также существительных, перешедших из прилагательных/причастий) определена в классе `GeneralDeclension`:
+Функциональность по склонению имени существительных (а также существительных, перешедших из прилагательных/причастий) определена в классе `NounDeclension`:
 
 - `boolean isMutable($word, bool $animateness = false)` - Check if noun is mutable.
 - `string getCase($word, $case, $animateness = false)` - Declines noun.
@@ -168,12 +169,12 @@ GeographicalNamesDeclension::getCases('Саратов') => array(6) {
 _Пример_
 
 ```php
-use morphos\Russian\GeneralDeclension;
+use morphos\Russian\NounDeclension;
 // Following code will return original word if it's immutable:
-GeneralDeclension::getCase('поле', 'родительный') => 'поля'
+NounDeclension::getCase('поле', 'родительный') => 'поля'
 
 // Get all forms of a word at once:
-GeneralDeclension::getCases('линейка') => array(6) {
+NounDeclension::getCases('линейка') => array(6) {
     "nominative" => "линейка",
     "genitive" => "линейки",
     "dative" => "линейке",
@@ -185,7 +186,7 @@ GeneralDeclension::getCases('линейка') => array(6) {
 
 ### Склонение во множественном числе
 
-Обеспечивается классом `Plurality`, который имеет похожие методы:
+Обеспечивается классом `NounPluralization`, который имеет похожие методы:
 
 - `string getCase($word, $case, $animateness = false)` - получает один из падежей слова во множественном числе.
 - `array getCases($word, $animateness = false)` - склоняет слово во множественном числе.
@@ -194,13 +195,13 @@ GeneralDeclension::getCases('линейка') => array(6) {
 _Пример_
 
 ```php
-use morphos\Russian\Plurality;
+use morphos\Russian\NounPluralization;
 
 $word = 'дом';
-echo 'Множественное число для '.$word.' - '.Plurality::getCase($word, 'именительный'); // дома
+echo 'Множественное число для '.$word.' - '.NounPluralization::getCase($word, 'именительный'); // дома
 
 // Pluralize word and get all forms:
-Plurality::getCases('поле') => array(6) {
+NounPluralization::getCases('поле') => array(6) {
     "nominative" => "поля",
     "genitive" => "полей",
     "dative" => "полям",
@@ -211,7 +212,7 @@ Plurality::getCases('поле') => array(6) {
 
 $count = 10;
 
-echo $count.' '.morphos\Russian\pluralize('дом', $count, false); // result: 10 домов
+echo pluralize('дом', $count, false); // result: 10 домов
 ```
 
 ## Числительные
@@ -223,22 +224,22 @@ echo $count.' '.morphos\Russian\pluralize('дом', $count, false); // result: 1
 
 `$gender` может быть `morphos\Gender::MALE` (или просто `"m"`) или `morphos\Gender::FEMALE` (или просто `"f"`) or `morphos\Gender::NEUTER` (или просто `"n"`).
 
-### Количественные числительные (`CardinalNumeral`)
+### Количественные числительные (`CardinalNumeralGenerator`)
 
 Генерация количественных числительных:
 
 ```php
 use morphos\Gender;
-use morphos\Russian\CardinalNumeral;
+use morphos\Russian\CardinalNumeralGenerator;
 
 $number = 4351;
 
-CardinalNumeral::getCase($number, 'именительный') => 'четыре тысячи триста пятьдесят один'
-CardinalNumeral::getCase($number, 'именительный', Gender::FEMALE) => 'четыре тысячи триста пятьдесят одна'
+CardinalNumeralGenerator::getCase($number, 'именительный') => 'четыре тысячи триста пятьдесят один'
+CardinalNumeralGenerator::getCase($number, 'именительный', Gender::FEMALE) => 'четыре тысячи триста пятьдесят одна'
 ```
 
 ```php
-CardinalNumeral::getCases($number) => array(6) {
+CardinalNumeralGenerator::getCases($number) => array(6) {
     "nominative" => "четыре тысячи триста пятьдесят один",
     "genitive" => "четырех тысяч трехсот пятидесяти одного",
     "dative" => "четырем тысячам тремстам пятидесяти одному",
@@ -248,22 +249,22 @@ CardinalNumeral::getCases($number) => array(6) {
 }
 ```
 
-### Порядковые числительные (`OrdinalNumeral`)
+### Порядковые числительные (`OrdinalNumeralGenerator`)
 
 Генерация порядковых числительных:
 
 ```php
 use morphos\Gender;
-use morphos\Russian\OrdinalNumeral;
+use morphos\Russian\OrdinalNumeralGenerator;
 
 $number = 67945;
 
-OrdinalNumeral::getCase($number, 'именительный') => 'шестьдесят семь тысяч девятьсот сорок пятый'
-OrdinalNumeral::getCase($number, 'именительный', Gender::FEMALE) => 'шестьдесят семь тысяч девятьсот сорок пятая'
+OrdinalNumeralGenerator::getCase($number, 'именительный') => 'шестьдесят семь тысяч девятьсот сорок пятый'
+OrdinalNumeralGenerator::getCase($number, 'именительный', Gender::FEMALE) => 'шестьдесят семь тысяч девятьсот сорок пятая'
 ```
 
 ```php
-OrdinalNumeral::getCases($number) => array(6) {
+OrdinalNumeralGenerator::getCases($number) => array(6) {
     "nominative" => "шестьдесят семь тысяч девятьсот сорок пятый",
     "genitive" => "шестьдесят семь тысяч девятьсот сорок пятого",
     "dative" => "шестьдесят семь тысяч девятьсот сорок пятому",
@@ -340,23 +341,23 @@ $name.' '.morphos\Russian\verb('поделился', $gender).' публикац
 
 ## Временные интервалы
 
-Класс `TimeUnitSpeller` позволяет записать человеческим языком временной интервал, задаваемый объектом `DateInterval`.
+Класс `TimeSpeller` позволяет записать человеческим языком временной интервал, задаваемый объектом `DateInterval`.
 
 _Пример_
 
 ```php
-use morphos\Russian\TimeUnitSpeller;
+use morphos\Russian\TimeSpeller;
 
-TimeUnitSpeller::spellInterval(new DateInterval('P5YT2M')) => '5 лет 2 часа'
+TimeSpeller::spellInterval(new DateInterval('P5YT2M')) => '5 лет 2 часа'
 ```
 
 Также можно передать вторым аргументом одну из следующих опций или их комбинацию (побитовое или `|`):
 
-- `TimeUnitSpeller::DIRECTION` - добавляет "назад" для положительных интвералов и "через" для отрицательных.
-- `TimeUnitSpeller::SEPARATE` - добавляет запятые между составными интервала и союз перед последней частью.
+- `TimeSpeller::DIRECTION` - добавляет "назад" для положительных интвералов и "через" для отрицательных.
+- `TimeSpeller::SEPARATE` - добавляет запятые между составными интервала и союз перед последней частью.
 
 ```php
-TimeUnitSpeller::spellInterval(new DateInterval('P5YT2M'), TimeUnitSpeller::DIRECTION) => '5 лет 2 часа назад'
-TimeUnitSpeller::spellInterval(new DateInterval('P5YT2M'), TimeUnitSpeller::SEPARATE) => '5 лет и 2 часа'
-TimeUnitSpeller::spellInterval(new DateInterval('P5YT2M'), TimeUnitSpeller::DIRECTION | TimeUnitSpeller::SEPARATE) => '5 лет и 2 часа назад'
+TimeSpeller::spellInterval(new DateInterval('P5YT2M'), TimeSpeller::DIRECTION) => '5 лет 2 часа назад'
+TimeSpeller::spellInterval(new DateInterval('P5YT2M'), TimeSpeller::SEPARATE) => '5 лет и 2 часа'
+TimeSpeller::spellInterval(new DateInterval('P5YT2M'), TimeSpeller::DIRECTION | TimeSpeller::SEPARATE) => '5 лет и 2 часа назад'
 ```

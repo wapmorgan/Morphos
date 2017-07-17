@@ -1,28 +1,35 @@
 <?php
 namespace morhos\test\Russian;
+
 require_once __DIR__.'/../../vendor/autoload.php';
 
-use morphos\Russian\GeneralDeclension;
+use morphos\Gender;
+use morphos\Russian\NounDeclension;
 
-class GeneralDeclensionTest extends \PHPUnit_Framework_TestCase {
+class NounDeclensionTest extends \PHPUnit_Framework_TestCase
+{
     /**
      * @dataProvider wordsProvider
      */
-    public function testDeclensionDetect($word, $animateness, $declension) {
+    public function testDeclensionDetect($word, $animateness, $declension)
+    {
         // skip word if it does not have declension
-        if ($declension === null)
+        if ($declension === null) {
             return true;
-        $this->assertEquals($declension, GeneralDeclension::getDeclension($word));
+        }
+        $this->assertEquals($declension, NounDeclension::getDeclension($word));
     }
 
     /**
      * @dataProvider wordsProvider
      */
-    public function testDeclenation($word, $animateness, $declension, $declenated) {
-        $this->assertEquals($declenated, array_values(GeneralDeclension::getCases($word, $animateness)));
+    public function testInflection($word, $animateness, $declension, $inflected)
+    {
+        $this->assertEquals($inflected, array_values(NounDeclension::getCases($word, $animateness)));
     }
 
-    public function wordsProvider() {
+    public function wordsProvider()
+    {
         return array(
             // 1 - Женский, мужской род с окончанием [а, я].
             // 2 - Мужской рода с нулевым или окончанием [о, е],
@@ -89,11 +96,13 @@ class GeneralDeclensionTest extends \PHPUnit_Framework_TestCase {
     /**
      * @dataProvider immutableWordsProvider
      */
-    public function testImmutableWords($word) {
-        $this->assertFalse(GeneralDeclension::isMutable($word, false));
+    public function testImmutableWords($word)
+    {
+        $this->assertFalse(NounDeclension::isMutable($word, false));
     }
 
-    public function immutableWordsProvider() {
+    public function immutableWordsProvider()
+    {
         return array(
             array('авеню'),
             array('атташе'),
@@ -139,4 +148,26 @@ class GeneralDeclensionTest extends \PHPUnit_Framework_TestCase {
             array('монпансье'),
         );
     }
+
+	/**
+	 * @dataProvider gendersProvider()
+	 */
+    public function testGenderDetection($word, $gender)
+	{
+		$this->assertEquals($gender, NounDeclension::detectGender($word));
+	}
+
+	public function gendersProvider()
+	{
+		return [
+			['вилка', Gender::FEMALE],
+			['копейка', Gender::FEMALE],
+			['кирпич', Gender::MALE],
+			['рубль', Gender::MALE],
+			['волчище', Gender::NEUTER],
+			['бремя', Gender::NEUTER],
+			['человек', Gender::MALE],
+			['новость', Gender::FEMALE],
+		];
+	}
 }

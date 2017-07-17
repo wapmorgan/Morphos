@@ -3,8 +3,10 @@ namespace morphos;
 
 use Exception;
 
-trait CurrenciesHelper {
-    static public function canonizeCurrency($currency) {
+trait CurrenciesHelper
+{
+    public static function canonizeCurrency($currency)
+    {
         switch ($currency) {
             case Currency::DOLLAR:
             case '$':

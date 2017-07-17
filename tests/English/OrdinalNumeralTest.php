@@ -1,19 +1,23 @@
 <?php
 namespace morhos\test\English;
+
 require_once __DIR__.'/../../vendor/autoload.php';
 
-use morphos\English\OrdinalNumeral;
+use morphos\English\OrdinalNumeralGenerator;
 
-class OrdinalNumeralTest extends \PHPUnit_Framework_TestCase {
+class OrdinalNumeralTest extends \PHPUnit_Framework_TestCase
+{
     /**
      * @dataProvider numbersProvider
      */
-    public function testGeneration($number, $ordinal, $figOrdinal) {
-        $this->assertEquals($ordinal, OrdinalNumeral::generate($number));
-        $this->assertEquals($figOrdinal, OrdinalNumeral::generate($number, true));
+    public function testGeneration($number, $ordinal, $figOrdinal)
+    {
+        $this->assertEquals($ordinal, OrdinalNumeralGenerator::generate($number));
+        $this->assertEquals($figOrdinal, OrdinalNumeralGenerator::generate($number, true));
     }
 
-    public function numbersProvider() {
+    public function numbersProvider()
+    {
         return array(
             array(132, 'one hundred thirty-second', '132nd'),
             array(2595410, 'two million, five hundred ninety-five thousand, four hundred tenth', '2595410th'),

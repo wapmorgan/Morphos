@@ -1,12 +1,12 @@
 <?php
 require dirname(dirname(__FILE__)).'/vendor/autoload.php';
 use morphos\Gender;
-use morphos\Russian\CardinalNumeral;
+use morphos\Russian\CardinalNumeralGenerator;
 use morphos\Russian\Cases;
-use morphos\Russian\GeneralDeclension;
-use morphos\Russian\GeographicalNamesDeclension;
-use morphos\Russian\Plurality;
-use morphos\Russian\OrdinalNumeral;
+use morphos\Russian\NounDeclension;
+use morphos\Russian\GeographicalNamesInflection;
+use morphos\Russian\NounPluralization;
+use morphos\Russian\OrdinalNumeralGenerator;
 
 function safe_string($string) {
 	return preg_replace('~[^А-Яа-яЁё ]~u', null, trim($string));
@@ -105,7 +105,7 @@ $gender_labels = array(Gender::MALE => 'мужской', Gender::FEMALE => 'же
 	?>
 	<?php if (!isset($_POST['count'])): ?>
 	<?php
-	$cases = GeneralDeclension::getCases($noun, $animate);
+	$cases = NounDeclension::getCases($noun, $animate);
 	?>
 		<table>
 			<tr>
@@ -113,7 +113,7 @@ $gender_labels = array(Gender::MALE => 'мужской', Gender::FEMALE => 'же
 						<table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
 							<tbody>
 								<tr>
-									<td class="mdl-data-table__cell--non-numeric" colspan="2" style="text-align: center;"><?= $noun ?> (<?=GeneralDeclension::getDeclension($noun)?> склонение)</td>
+									<td class="mdl-data-table__cell--non-numeric" colspan="2" style="text-align: center;"><?= $noun ?> (<?=NounDeclension::getDeclension($noun)?> склонение)</td>
 								</tr>
 								<?php foreach(array(Cases::IMENIT => 'Именительный', Cases::RODIT => 'Родительный', Cases::DAT => 'Дательный', Cases::VINIT => 'Винительный', Cases::TVORIT => 'Творительный', Cases::PREDLOJ => 'Предложный') as $case => $name): ?>
 									<tr>
@@ -126,12 +126,12 @@ $gender_labels = array(Gender::MALE => 'мужской', Gender::FEMALE => 'же
 				</td>
 				<td>
 	<?php
-	$cases = Plurality::getCases($noun, $animate);
+	$cases = NounPluralization::getCases($noun, $animate);
 	?>
 						<table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
 							<tbody>
 								<tr>
-									<td class="mdl-data-table__cell--non-numeric" colspan="2" style="text-align: center;"><?=$_POST['noun']?> (<?=GeneralDeclension::getDeclension($noun)?> склонение) во множественном числе</td>
+									<td class="mdl-data-table__cell--non-numeric" colspan="2" style="text-align: center;"><?=$_POST['noun']?> (<?=NounDeclension::getDeclension($noun)?> склонение) во множественном числе</td>
 								</tr>
 								<?php foreach(array(Cases::IMENIT => 'Именительный', Cases::RODIT => 'Родительный', Cases::DAT => 'Дательный', Cases::VINIT => 'Винительный', Cases::TVORIT => 'Творительный', Cases::PREDLOJ => 'Предложный') as $case => $name): ?>
 									<tr>
@@ -148,15 +148,15 @@ $gender_labels = array(Gender::MALE => 'мужской', Gender::FEMALE => 'же
 				<table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
 					<tbody>
 						<tr>
-							<td class="mdl-data-table__cell--non-numeric" colspan="2" style="text-align: center;"><?=$noun?> (<?=GeneralDeclension::getDeclension($noun)?> склонение)</td>
+							<td class="mdl-data-table__cell--non-numeric" colspan="2" style="text-align: center;"><?=$noun?> (<?=NounDeclension::getDeclension($noun)?> склонение)</td>
 						</tr>
 						<?php for ($i = 1; $i <= 20; $i++): ?>
 							<tr>
-								<td class="mdl-data-table__cell--non-numeric"><?=$i.' '.PLurality::pluralize($noun, $i, $animate)?></td>
-								<td class="mdl-data-table__cell--non-numeric"><?=($i+20).' '.PLurality::pluralize($noun, $i + 20, $animate)?></td>
-								<td class="mdl-data-table__cell--non-numeric"><?=($i+40).' '.PLurality::pluralize($noun, $i + 40, $animate)?></td>
-								<td class="mdl-data-table__cell--non-numeric"><?=($i+60).' '.PLurality::pluralize($noun, $i + 60, $animate)?></td>
-								<td class="mdl-data-table__cell--non-numeric"><?=($i+80).' '.PLurality::pluralize($noun, $i + 80, $animate)?></td>
+								<td class="mdl-data-table__cell--non-numeric"><?=$i.' '.NounPluralization::pluralize($noun, $i, $animate)?></td>
+								<td class="mdl-data-table__cell--non-numeric"><?=($i+20).' '.NounPluralization::pluralize($noun, $i + 20, $animate)?></td>
+								<td class="mdl-data-table__cell--non-numeric"><?=($i+40).' '.NounPluralization::pluralize($noun, $i + 40, $animate)?></td>
+								<td class="mdl-data-table__cell--non-numeric"><?=($i+60).' '.NounPluralization::pluralize($noun, $i + 60, $animate)?></td>
+								<td class="mdl-data-table__cell--non-numeric"><?=($i+80).' '.NounPluralization::pluralize($noun, $i + 80, $animate)?></td>
 							</tr>
 						<?php endfor; ?>
 					</tbody>
@@ -195,7 +195,7 @@ $gender_labels = array(Gender::MALE => 'мужской', Gender::FEMALE => 'же
 			<?php if (isset($_POST['geographical-name'])): ?>
 	<?php
 	$geographical_name = $_POST['geographical-name'];
-	$cases = GeographicalNamesDeclension::getCases($geographical_name);
+	$cases = GeographicalNamesInflection::getCases($geographical_name);
 	?>
 						<table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
 							<tbody>
@@ -251,7 +251,7 @@ $gender_labels = array(Gender::MALE => 'мужской', Gender::FEMALE => 'же
 	<?php
 	$name = $_POST['name'];
 	$gender = !empty($_POST['gender']) ? $_POST['gender'] : morphos\Russian\detectGender($name);
-	$cases = morphos\Russian\name($name, null, $gender);
+	$cases = morphos\Russian\inflectName($name, null, $gender);
 	if ($cases !== false):
 	?>
 						<table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
@@ -307,8 +307,8 @@ $gender_labels = array(Gender::MALE => 'мужской', Gender::FEMALE => 'же
 	<?php
 	$number = intval($_POST['number']);
 	$gender = isset($_POST['gender']) ? $_POST['gender'] : morphos\Gender::MALE;
-	$cardinal = CardinalNumeral::getCases($number, $gender);
-  $ordinal = OrdinalNumeral::getCases($number, $gender);
+	$cardinal = CardinalNumeralGenerator::getCases($number, $gender);
+  $ordinal = OrdinalNumeralGenerator::getCases($number, $gender);
 	?>
 	<table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
 		<thead>

@@ -3,8 +3,10 @@ namespace morphos;
 
 use Exception;
 
-trait CasesHelper {
-    static public function canonizeCase($case) {
+trait CasesHelper
+{
+    public static function canonizeCase($case)
+    {
         $case = S::lower($case);
         switch ($case) {
             case Cases::NOMINATIVE:

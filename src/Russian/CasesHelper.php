@@ -3,10 +3,12 @@ namespace morphos\Russian;
 
 use morphos\S;
 
-trait CasesHelper {
+trait CasesHelper
+{
     use \morphos\CasesHelper;
 
-    static public function canonizeCase($case) {
+    public static function canonizeCase($case)
+    {
         $case = S::lower($case);
         switch ($case) {
             case Cases::IMENIT:

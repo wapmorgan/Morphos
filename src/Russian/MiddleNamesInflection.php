@@ -6,33 +6,40 @@ use morphos\S;
 /**
  * Rules are from http://surnameonline.ru/patronymic.html
  */
-class MiddleNamesDeclension extends \morphos\NamesDeclension implements Cases {
+class MiddleNamesInflection extends \morphos\NamesInflection implements Cases
+{
     use RussianLanguage, CasesHelper;
 
-    static public function detectGender($name) {
+    public static function detectGender($name)
+    {
         $name = S::lower($name);
-        if (S::slice($name, -2) == 'ич')
+        if (S::slice($name, -2) == 'ич') {
             return self::MALE;
-        else if (S::slice($name, -2) == 'на')
+        } elseif (S::slice($name, -2) == 'на') {
             return self::FEMALE;
+        }
 
         return null;
     }
 
-    static public function isMutable($name, $gender = null) {
+    public static function isMutable($name, $gender = null)
+    {
         $name = S::lower($name);
-        if (in_array(S::slice($name, -2), array('ич', 'на')))
+        if (in_array(S::slice($name, -2), array('ич', 'на'))) {
             return true;
+        }
         return false;
     }
 
-    static public function getCase($name, $case, $gender = null) {
+    public static function getCase($name, $case, $gender = null)
+    {
         $case = self::canonizeCase($case);
         $forms = self::getCases($name, $gender);
         return $forms[$case];
     }
 
-    static public function getCases($name, $gender = null) {
+    public static function getCases($name, $gender = null)
+    {
         $name = S::lower($name);
         if (S::slice($name, -2) == 'ич') {
             // man rules
@@ -45,7 +52,7 @@ class MiddleNamesDeclension extends \morphos\NamesDeclension implements Cases {
                 Cases::TVORIT => $name.'ем',
                 Cases::PREDLOJ => self::choosePrepositionByFirstLetter($name, 'об', 'о').' '.$name.'е',
             );
-        } else if (S::slice($name, -2) == 'на') {
+        } elseif (S::slice($name, -2) == 'на') {
             $prefix = S::name(S::slice($name, 0, -1));
             return array(
                 Cases::IMENIT => $prefix.'а',

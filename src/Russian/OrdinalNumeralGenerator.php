@@ -1,17 +1,18 @@
 <?php
 namespace morphos\Russian;
 
-use morphos\NumeralCreation;
+use morphos\NumeralGenerator;
 use morphos\S;
 
 /**
  * Rules are from http://www.fio.ru/pravila/grammatika/sklonenie-imen-chislitelnykh/
  *            and http://school-collection.edu.ru/dlrstore-wrapper/ebbc76cf-46b6-4d51-ad92-d9a84db35cfa/[I-RUS_06-05]_[TE_16-SU]/[I-RUS_06-05]_[TE_16-SU].html
  */
-class OrdinalNumeral extends NumeralCreation implements Cases {
+class OrdinalNumeralGenerator extends NumeralGenerator implements Cases
+{
     use RussianLanguage, CasesHelper;
 
-    static protected $words = array(
+    protected static $words = array(
         1 => 'первый',
         2 => 'второй',
         3 => 'третий',
@@ -50,14 +51,14 @@ class OrdinalNumeral extends NumeralCreation implements Cases {
         900 => 'девятисотый',
     );
 
-    static protected $exponents = array(
+    protected static $exponents = array(
         1000 => 'тысячный',
         1000000 => 'миллионный',
         1000000000 => 'миллиардный',
         1000000000000 => 'триллионный',
     );
 
-    static protected $multipliers = array(
+    protected static $multipliers = array(
         2 => 'двух',
         3 => 'трех',
         4 => 'четырех',
@@ -95,7 +96,8 @@ class OrdinalNumeral extends NumeralCreation implements Cases {
         900 => 'девятиста',
     );
 
-    static public function getCases($number, $gender = self::MALE) {
+    public static function getCases($number, $gender = self::MALE)
+    {
         // simple numeral
         if (isset(self::$words[$number]) || isset(self::$exponents[$number])) {
             $word = isset(self::$words[$number]) ? self::$words[$number] : self::$exponents[$number];
@@ -170,8 +172,9 @@ class OrdinalNumeral extends NumeralCreation implements Cases {
                         if ($case == self::PREDLOJ) {
                             list(, $ordinal_part[$case]) = explode(' ', $ordinal_part[$case]);
                             $ordinal_part[$case] = self::choosePrepositionByFirstLetter($ordinal_prefix, 'об', 'о').' '.$ordinal_prefix.$ordinal_part[$case];
-                        } else
+                        } else {
                             $ordinal_part[$case] = $ordinal_prefix.$ordinal_part[$case];
+                        }
                     }
 
                     break;
@@ -184,15 +187,18 @@ class OrdinalNumeral extends NumeralCreation implements Cases {
                 foreach (self::$words as $word_number => $word) {
                     if ($number >= $word_number) {
                         if ($word_number <= 9) {
-                            if ($number % 10 == 0) continue;
+                            if ($number % 10 == 0) {
+                                continue;
+                            }
                             // check for case when word_number smaller than should be used (e.g. 1,2,3 when it can be 4 (number: 344))
                             if (($number % 10) > $word_number) {
                                 continue;
                             }
                             // check that there is no two-digits number with it's own name (e.g. 13 for 113)
-                            if (isset(self::$words[$number % 100]) && $number % 100 > $word_number)
+                            if (isset(self::$words[$number % 100]) && $number % 100 > $word_number) {
                                 continue;
-                        } else if ($word_number <= 90) {
+                            }
+                        } elseif ($word_number <= 90) {
                             // check for case when word_number smaller than should be used (e.g. 10, 11, 12 when it can be 13)
                             if (($number % 100) > $word_number) {
                                 continue;
@@ -207,15 +213,16 @@ class OrdinalNumeral extends NumeralCreation implements Cases {
 
             // if number has second summand, get cardinal form of it
             if ($number > 0) {
-                $cardinal_part = CardinalNumeral::getCase($number, self::IMENIT, $gender);
+                $cardinal_part = CardinalNumeralGenerator::getCase($number, self::IMENIT, $gender);
 
                 // make one array with cases and delete 'o/об' prepositional from all parts except the last one
                 foreach (array(self::IMENIT, self::RODIT, self::DAT, self::VINIT, self::TVORIT, self::PREDLOJ) as $case) {
                     if ($case == self::PREDLOJ) {
                         list(, $ordinal_part[$case]) = explode(' ', $ordinal_part[$case]);
                         $result[$case] = self::choosePrepositionByFirstLetter($cardinal_part, 'об', 'о').' '.$cardinal_part.' '.$ordinal_part[$case];
-                    } else
+                    } else {
                         $result[$case] = $cardinal_part.' '.$ordinal_part[$case];
+                    }
                 }
             } else {
                 $result = $ordinal_part;
@@ -225,7 +232,8 @@ class OrdinalNumeral extends NumeralCreation implements Cases {
         }
     }
 
-    static public function getCase($number, $case, $gender = self::MALE) {
+    public static function getCase($number, $case, $gender = self::MALE)
+    {
         $case = self::canonizeCase($case);
         $forms = self::getCases($number, $gender);
         return $forms[$case];

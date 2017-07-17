@@ -16,13 +16,14 @@ Tests & Quality: [![Build Status](https://travis-ci.org/wapmorgan/Morphos.svg)](
 - [✓] Declension/Pluralization of nouns and adjectives (Russian, English)
 - [✓] Generation numerals of numbers (количественные и порядковые) (Russian, English)
 - [✓] Spelling out amounts of money (Russian)
+- [✓] Spelling out time units and intervals (Russian)
 
 ## Table of contents
 
 1. Installation
 2. Quick start
 3. Library documentation
-4. Contibuting
+4. Contributing
 
 ## Installation
 
@@ -38,19 +39,19 @@ composer require wapmorgan/morphos
 - Russian:
   ```php
   // Decline russian names:
-  morphos\Russian\name('Иванов Петр', 'родительный', morphos\Gender::MALE) => 'Иванова Петра'
+  morphos\Russian\inflectName('Иванов Петр', 'родительный') => 'Иванова Петра'
 
   // Decline geographical names:
-  morphos\Russian\GeographicalNamesDeclension::getCase('Москва', 'родительный') => 'Москвы'
+  morphos\Russian\GeographicalNamesInflection::getCase('Москва', 'родительный') => 'Москвы'
 
   // Pluralize russian nouns:
-  morphos\Russian\pluralize('дом', 10) => 'домов'
+  morphos\Russian\pluralize('дом', 10) => '10 домов'
 
   // Generate russian cardinal numerals:
-  morphos\Russian\CardinalNumeral::getCase(567, 'именительный') => 'пятьсот шестьдесят семь'
+  morphos\Russian\CardinalNumeralGenerator::getCase(567, 'именительный') => 'пятьсот шестьдесят семь'
 
   // Generate russian ordinal numerals:
-  morphos\Russian\OrdinalNumeral::getCase(961, 'именительный') => 'девятьсот шестьдесят первый'
+  morphos\Russian\OrdinalNumeralGenerator::getCase(961, 'именительный') => 'девятьсот шестьдесят первый'
 
   // other functions described in README-ru.md
   ```
@@ -61,10 +62,10 @@ composer require wapmorgan/morphos
   morphos\English\pluralize('house') => 'houses'
 
   // Generate english cardinal numerals:
-  morphos\English\CardinalNumeral::generate(567) => 'five hundred sixty-seven'
+  morphos\English\CardinalNumeralGenerator::generate(567) => 'five hundred sixty-seven'
 
   // Generate english ordinal numerals:
-  morphos\English\OrdinalNumeral::generate(961) => 'nine hundred sixty-first'
+  morphos\English\OrdinalNumeralGenerator::generate(961) => 'nine hundred sixty-first'
   ```
 
 # Library documentation
@@ -72,6 +73,6 @@ composer require wapmorgan/morphos
 - [Русская морфология](README-ru.md) в файле README-ru.md
 - [English morphology](README-en.md) in file README-en.md
 
-# Contibuting
+# Contributing
 
 See [CONTRIBUTING.md](CONTRIBUTING.md) for this.

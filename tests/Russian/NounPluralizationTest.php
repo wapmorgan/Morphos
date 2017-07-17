@@ -1,34 +1,38 @@
 <?php
 namespace morhos\test\Russian;
+
 require_once __DIR__.'/../../vendor/autoload.php';
 
-use morphos\Russian\Plurality;
+use morphos\Russian\NounPluralization;
 
-class PluralityTest extends \PHPUnit_Framework_TestCase {
+class NounPluralizationTest extends \PHPUnit_Framework_TestCase
+{
     /**
      * @dataProvider pluralizationWordsProvider
      */
-    public function testPluralization($word, $pluralized2, $pluralized5) {
+    public function testPluralization($word, $pluralized2, $pluralized5)
+    {
         // One
-        $this->assertEquals($word, Plurality::pluralize($word, 1));
-        $this->assertEquals($word, Plurality::pluralize($word, 101));
-        $this->assertEquals($word, Plurality::pluralize($word, 201));
-        $this->assertEquals($word, Plurality::pluralize($word, 1501));
+        $this->assertEquals($word, NounPluralization::pluralize($word, 1));
+        $this->assertEquals($word, NounPluralization::pluralize($word, 101));
+        $this->assertEquals($word, NounPluralization::pluralize($word, 201));
+        $this->assertEquals($word, NounPluralization::pluralize($word, 1501));
 
         // Two-Four
-        $this->assertEquals($pluralized2, Plurality::pluralize($word, 2));
-        $this->assertEquals($pluralized2, Plurality::pluralize($word, 23));
-        $this->assertEquals($pluralized2, Plurality::pluralize($word, 104));
-        $this->assertEquals($pluralized2, Plurality::pluralize($word, 1503));
+        $this->assertEquals($pluralized2, NounPluralization::pluralize($word, 2));
+        $this->assertEquals($pluralized2, NounPluralization::pluralize($word, 23));
+        $this->assertEquals($pluralized2, NounPluralization::pluralize($word, 104));
+        $this->assertEquals($pluralized2, NounPluralization::pluralize($word, 1503));
 
         // Five
-        $this->assertEquals($pluralized5, Plurality::pluralize($word, 5));
-        $this->assertEquals($pluralized5, Plurality::pluralize($word, 211));
-        $this->assertEquals($pluralized5, Plurality::pluralize($word, 520));
-        $this->assertEquals($pluralized5, Plurality::pluralize($word, 1513));
+        $this->assertEquals($pluralized5, NounPluralization::pluralize($word, 5));
+        $this->assertEquals($pluralized5, NounPluralization::pluralize($word, 211));
+        $this->assertEquals($pluralized5, NounPluralization::pluralize($word, 520));
+        $this->assertEquals($pluralized5, NounPluralization::pluralize($word, 1513));
     }
 
-    public function pluralizationWordsProvider() {
+    public function pluralizationWordsProvider()
+    {
         return array(
             array('дом', 'дома', 'домов'),
             array('поле', 'поля', 'полей'),
@@ -51,11 +55,13 @@ class PluralityTest extends \PHPUnit_Framework_TestCase {
     /**
      * @dataProvider pluralWordsProvider
      */
-    public function testPluralDeclenation($word, $animateness, $declenated) {
-        $this->assertEquals($declenated, array_values(Plurality::getCases($word, $animateness)));
+    public function testPluralInflection($word, $animateness, $inflected)
+    {
+        $this->assertEquals($inflected, array_values(NounPluralization::getCases($word, $animateness)));
     }
 
-    public function pluralWordsProvider() {
+    public function pluralWordsProvider()
+    {
         return array(
             array('дом', false, array('дома', 'домов', 'домам', 'дома', 'домами', 'о домах')),
             array('склон', false, array('склоны', 'склонов', 'склонам', 'склоны', 'склонами', 'о склонах')),

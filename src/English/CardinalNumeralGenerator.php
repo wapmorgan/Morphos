@@ -1,11 +1,11 @@
 <?php
 namespace morphos\English;
 
-use morphos\NumeralCreation;
+use morphos\NumeralGenerator;
 
-class CardinalNumeral extends NumeralCreation {
-
-    static public $words = array(
+class CardinalNumeralGenerator extends NumeralGenerator
+{
+    public static $words = array(
         1 => 'one',
         2 => 'two',
         3 => 'three',
@@ -35,7 +35,7 @@ class CardinalNumeral extends NumeralCreation {
         90 => 'ninety',
     );
 
-    static public $exponents = array(
+    public static $exponents = array(
         '100' => 'hundred',
         '1000' => 'thousand',
         '1000000' => 'million',
@@ -43,10 +43,15 @@ class CardinalNumeral extends NumeralCreation {
         '1000000000000' => 'trillion',
     );
 
-    static public function getCases($number) {}
-    static public function getCase($number, $case) {}
+    public static function getCases($number)
+    {
+    }
+    public static function getCase($number, $case)
+    {
+    }
 
-    static public function generate($number) {
+    public static function generate($number)
+    {
         // simple numeral
         if (isset(self::$words[$number]) || isset(self::$exponents[$number])) {
             return isset(self::$words[$number]) ? self::$words[$number] : self::$exponents[$number];

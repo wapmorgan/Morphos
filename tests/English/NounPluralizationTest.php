@@ -1,18 +1,22 @@
 <?php
 namespace morhos\test\English;
+
 require_once __DIR__.'/../../vendor/autoload.php';
 
-use morphos\English\Plurality;
+use morphos\English\NounPluralization;
 
-class PluralityTest extends \PHPUnit_Framework_TestCase {
+class NounPluralizationTest extends \PHPUnit_Framework_TestCase
+{
     /**
      * @dataProvider wordsProvider
      */
-    public function testPluralization($word, $pluralized) {
-        $this->assertEquals($pluralized, Plurality::pluralize($word, 2));
+    public function testPluralization($word, $pluralized)
+    {
+        $this->assertEquals($pluralized, NounPluralization::pluralize($word, 2));
     }
 
-    public function wordsProvider() {
+    public function wordsProvider()
+    {
         return array(
             array('ship', 'ships'),
             array('gun', 'guns'),

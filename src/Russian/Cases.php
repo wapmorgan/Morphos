@@ -1,8 +1,9 @@
 <?php
 namespace morphos\Russian;
 
-interface Cases extends \morphos\Cases {
-	const IMENIT_1 = self::NOMINATIVE;
+interface Cases extends \morphos\Cases
+{
+    const IMENIT_1 = self::NOMINATIVE;
     const RODIT_2 = self::GENITIVE;
     const DAT_3 = self::DATIVE;
     const VINIT_4 = self::ACCUSATIVE;

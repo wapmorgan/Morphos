@@ -1,8 +1,8 @@
 #!/usr/bin/env php
 <?php
-use morphos\Russian\GeneralDeclension;
-use morphos\Russian\GeographicalNamesDeclension;
-use morphos\Russian\Plurality;
+use morphos\Russian\NounDeclension;
+use morphos\Russian\GeographicalNamesInflection;
+use morphos\Russian\NounPluralization;
 use morphos\S;
 
 $paths = [
@@ -116,11 +116,11 @@ while (true) {
     if (is_numeric($word)) {
 
         if ($language == 'ru') {
-            $cardinal_numerals = morphos\Russian\CardinalNumeral::getCases($word);
-            $ordinal_numerals = morphos\Russian\OrdinalNumeral::getCases($word);
+            $cardinal_numerals = morphos\Russian\CardinalNumeralGenerator::getCases($word);
+            $ordinal_numerals = morphos\Russian\OrdinalNumeralGenerator::getCases($word);
         } else if ($language == 'en') {
-            $cardinal_numerals = morphos\English\CardinalNumeral::generate($word);
-            $ordinal_numerals = morphos\English\OrdinalNumeral::generate($word).' ('.morphos\English\OrdinalNumeral::generate($word, true).')';
+            $cardinal_numerals = morphos\English\CardinalNumeralGenerator::generate($word);
+            $ordinal_numerals = morphos\English\OrdinalNumeralGenerator::generate($word).' ('.morphos\English\OrdinalNumeralGenerator::generate($word, true).')';
         }
 
         fwrite(STDOUT, 'Числительное количественное: '.dump($cardinal_numerals));
@@ -130,13 +130,13 @@ while (true) {
         $first_char = S::slice($word, 0, 1);
         // географическое название
         if ($first_char == S::upper($first_char)) {
-            $names = GeographicalNamesDeclension::getCases($word);
+            $names = GeographicalNamesInflection::getCases($word);
             fwrite(STDOUT, 'Географическое название: '.dump($names));
         }
         // существительное
         else {
-            $cases = GeneralDeclension::getCases($word);
-            $plural_cases = Plurality::getCases($word);
+            $cases = NounDeclension::getCases($word);
+            $plural_cases = NounPluralization::getCases($word);
             fwrite(STDOUT, 'Существительное в единственном числе: '.dump($cases));
             fwrite(STDOUT, 'Существительное во множественном числе: '.dump($plural_cases));
         }
@@ -144,7 +144,7 @@ while (true) {
     // Фамилия Имя
     else {
         $gender = morphos\Russian\detectGender($word);
-        $cases = morphos\Russian\name($word);
+        $cases = morphos\Russian\inflectName($word);
         fwrite(STDOUT, 'Предполагаемый пол: '.$gender.PHP_EOL);
         fwrite(STDOUT, 'Склонение: '.dump($cases));
     }

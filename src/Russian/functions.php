@@ -13,7 +13,7 @@ use morphos\S;
  * @return string|array         Returns string containing the inflection of name to a case, if `$case` is not null.
  *                              Returns an array will inflection to all cases.
  */
-function name($fullname, $case = null, $gender = null)
+function inflectName($fullname, $case = null, $gender = null)
 {
     if (in_array($case, array('m', 'f'))) {
         $gender = $case;
@@ -23,21 +23,24 @@ function name($fullname, $case = null, $gender = null)
     $fullname = normalizeFullName($fullname);
 
     $name = explode(' ', $fullname);
-    if (count($name) < 2 || count($name) > 3)
+    if (count($name) < 2 || count($name) > 3) {
         return false;
+    }
     if ($case === null) {
         $result = array();
         if (count($name) == 2) {
-            $name[0] = LastNamesDeclension::getCases($name[0], $gender);
-            $name[1] = FirstNamesDeclension::getCases($name[1], $gender);
-        } else if (count($name) == 3) {
-            $name[0] = LastNamesDeclension::getCases($name[0], $gender);
-            $name[1] = FirstNamesDeclension::getCases($name[1], $gender);
-            $name[2] = MiddleNamesDeclension::getCases($name[2], $gender);
+            $name[0] = LastNamesInflection::getCases($name[0], $gender);
+            $name[1] = FirstNamesInflection::getCases($name[1], $gender);
+        } elseif (count($name) == 3) {
+            $name[0] = LastNamesInflection::getCases($name[0], $gender);
+            $name[1] = FirstNamesInflection::getCases($name[1], $gender);
+            $name[2] = MiddleNamesInflection::getCases($name[2], $gender);
         }
         foreach (array(Cases::IMENIT, Cases::RODIT, Cases::DAT, Cases::VINIT, Cases::TVORIT, Cases::PREDLOJ) as $case) {
             foreach ($name as $partNum => $namePart) {
-                if ($case == Cases::PREDLOJ && $partNum > 0) list(, $namePart[$case]) = explode(' ', $namePart[$case]);
+                if ($case == Cases::PREDLOJ && $partNum > 0) {
+                    list(, $namePart[$case]) = explode(' ', $namePart[$case]);
+                }
                 $result[$case][] = $namePart[$case];
             }
             $result[$case] = implode(' ', $result[$case]);
@@ -46,15 +49,21 @@ function name($fullname, $case = null, $gender = null)
     } else {
         $case = CasesHelper::canonizeCase($case);
         if (count($name) == 2) {
-            $name[0] = LastNamesDeclension::getCase($name[0], $case, $gender);
-            $name[1] = FirstNamesDeclension::getCase($name[1], $case, $gender);
-            if ($case == Cases::PREDLOJ) list(, $name[1]) = explode(' ', $name[1]);
-        } else if (count($name) == 3) {
-            $name[0] = LastNamesDeclension::getCase($name[0], $case, $gender);
-            $name[1] = FirstNamesDeclension::getCase($name[1], $case, $gender);
-            if ($case == Cases::PREDLOJ) list(, $name[1]) = explode(' ', $name[1]);
-            $name[2] = MiddleNamesDeclension::getCase($name[2], $case, $gender);
-            if ($case == Cases::PREDLOJ) list(, $name[2]) = explode(' ', $name[2]);
+            $name[0] = LastNamesInflection::getCase($name[0], $case, $gender);
+            $name[1] = FirstNamesInflection::getCase($name[1], $case, $gender);
+            if ($case == Cases::PREDLOJ) {
+                list(, $name[1]) = explode(' ', $name[1]);
+            }
+        } elseif (count($name) == 3) {
+            $name[0] = LastNamesInflection::getCase($name[0], $case, $gender);
+            $name[1] = FirstNamesInflection::getCase($name[1], $case, $gender);
+            if ($case == Cases::PREDLOJ) {
+                list(, $name[1]) = explode(' ', $name[1]);
+            }
+            $name[2] = MiddleNamesInflection::getCase($name[2], $case, $gender);
+            if ($case == Cases::PREDLOJ) {
+                list(, $name[2]) = explode(' ', $name[2]);
+            }
         }
     }
     return implode(' ', $name);
@@ -69,12 +78,13 @@ function detectGender($fullname)
 {
     static $first, $middle, $last;
     $name = explode(' ', S::lower($fullname));
-    if (count($name) < 2 || count($name) > 3)
+    if (count($name) < 2 || count($name) > 3) {
         return false;
+    }
 
-    return (isset($name[2]) ? MiddleNamesDeclension::detectGender($name[2]) : null) ?:
-        LastNamesDeclension::detectGender($name[0]) ?:
-        FirstNamesDeclension::detectGender($name[1]);
+    return (isset($name[2]) ? MiddleNamesInflection::detectGender($name[2]) : null) ?:
+        LastNamesInflection::detectGender($name[0]) ?:
+        FirstNamesInflection::detectGender($name[1]);
 }
 
 /**
@@ -88,21 +98,28 @@ function normalizeFullName($name)
     return $name;
 }
 
+/*
+ * @param string $word
+ * @param int $count
+ * @param bool $animateness
+ * @return string
+ */
 function pluralize($word, $count = 2, $animateness = false)
 {
-    return Plurality::pluralize($word, $count, $animateness);
+    return $count.' '.NounPluralization::pluralize($word, $count, $animateness);
 }
 
 /**
- * @param string $verb Verb to modificate if gender is female
- * @param string $gender If not `m`, verb will be modificated
+ * @param string $verb Verb to modify if gender is female
+ * @param string $gender If not `m`, verb will be modified
  * @return string Correct verb
  */
 function verb($verb, $gender)
 {
     // возвратный глагол
-    if (S::slice($verb, -2) == 'ся')
+    if (S::slice($verb, -2) == 'ся') {
         return ($gender == 'm' ? $verb : mb_substr($verb, 0, -2).'ась');
+    }
 
     // обычный глагол
     return ($gender == 'm' ? $verb : $verb.'а');

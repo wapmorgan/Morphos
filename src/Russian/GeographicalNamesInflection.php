@@ -6,30 +6,35 @@ use morphos\S;
 /**
  * Rules are from: https://ru.wikipedia.org/wiki/%D0%A1%D0%BA%D0%BB%D0%BE%D0%BD%D0%B5%D0%BD%D0%B8%D0%B5_%D0%B3%D0%B5%D0%BE%D0%B3%D1%80%D0%B0%D1%84%D0%B8%D1%87%D0%B5%D1%81%D0%BA%D0%B8%D1%85_%D0%BD%D0%B0%D0%B7%D0%B2%D0%B0%D0%BD%D0%B8%D0%B9_%D0%B2_%D1%80%D1%83%D1%81%D1%81%D0%BA%D0%BE%D0%BC_%D1%8F%D0%B7%D1%8B%D0%BA%D0%B5
  */
-class GeographicalNamesDeclension extends \morphos\GeneralDeclension implements Cases {
+class GeographicalNamesInflection extends \morphos\BaseInflection implements Cases
+{
     use RussianLanguage, CasesHelper;
 
-    static protected $abbreviations = array(
+    protected static $abbreviations = array(
         'сша',
         'оаэ',
         'ссср',
         'юар',
     );
 
-    static public function isMutable($name) {
+    public static function isMutable($name)
+    {
         $name = S::lower($name);
         // // ends with 'ы' or 'и': plural form
         // if (in_array(S::slice($name, -1), array('и', 'ы')))
         //     return false;
-        if (in_array($name, self::$abbreviations))
+        if (in_array($name, self::$abbreviations)) {
             return false;
+        }
         // ends with 'е' or 'о', but not with 'ово/ёво/ево/ино/ыно'
-        if (in_array(S::slice($name, -1), array('е', 'о')) && !in_array(S::slice($name, -3, -1), array('ов', 'ёв', 'ев', 'ин', 'ын')))
+        if (in_array(S::slice($name, -1), array('е', 'о')) && !in_array(S::slice($name, -3, -1), array('ов', 'ёв', 'ев', 'ин', 'ын'))) {
             return false;
+        }
         return true;
     }
 
-    static public function getCases($name) {
+    public static function getCases($name)
+    {
         $name = S::lower($name);
 
         // check for name of two words
@@ -39,8 +44,9 @@ class GeographicalNamesDeclension extends \morphos\GeneralDeclension implements 
             $result = array();
             foreach ($parts as $i => $part) {
                 $result[$i] = static::getCases($part);
-                if ($i > 0)
+                if ($i > 0) {
                     $result[$i][self::PREDLOJ] = substr(strstr($result[$i][self::PREDLOJ], ' '), 1);
+                }
             }
 
             $cases = array();
@@ -65,7 +71,7 @@ class GeographicalNamesDeclension extends \morphos\GeneralDeclension implements 
                     self::TVORIT => $prefix.'им',
                     self::PREDLOJ => self::choosePrepositionByFirstLetter($prefix, 'об', 'о').' '.$prefix.'ем',
                 );
-            } else if (S::slice($name, -1) == 'а') {
+            } elseif (S::slice($name, -1) == 'а') {
                 // Москва, Рига
                 $prefix = S::name(S::slice($name, 0, -1));
                 return array(
@@ -76,7 +82,7 @@ class GeographicalNamesDeclension extends \morphos\GeneralDeclension implements 
                     self::TVORIT => $prefix.'ой',
                     self::PREDLOJ => self::choosePrepositionByFirstLetter($prefix, 'об', 'о').' '.$prefix.'е',
                 );
-            } else if (S::slice($name, -1) == 'я') {
+            } elseif (S::slice($name, -1) == 'я') {
                 // Азия
                 $prefix = S::name(S::slice($name, 0, -1));
                 return array(
@@ -87,7 +93,7 @@ class GeographicalNamesDeclension extends \morphos\GeneralDeclension implements 
                     self::TVORIT => $prefix.'ей',
                     self::PREDLOJ => self::choosePrepositionByFirstLetter($prefix, 'об', 'о').' '.$prefix.'и',
                 );
-            } else if (S::slice($name, -1) == 'й') {
+            } elseif (S::slice($name, -1) == 'й') {
                 // Ишимбай
                 $prefix = S::name(S::slice($name, 0, -1));
                 return array(
@@ -98,7 +104,7 @@ class GeographicalNamesDeclension extends \morphos\GeneralDeclension implements 
                     self::TVORIT => $prefix.'ем',
                     self::PREDLOJ => self::choosePrepositionByFirstLetter($prefix, 'об', 'о').' '.$prefix.'е',
                 );
-            } else if (self::isConsonant(S::slice($name, -1)) && S::slice($name, -2) != 'ов') {
+            } elseif (self::isConsonant(S::slice($name, -1)) && S::slice($name, -2) != 'ов') {
                 // Париж, Валаам, Киев
                 $prefix = S::name($name);
                 return array(
@@ -109,7 +115,7 @@ class GeographicalNamesDeclension extends \morphos\GeneralDeclension implements 
                     self::TVORIT => $prefix.(self::isVelarConsonant(S::slice($name, -2, -1)) ? 'ем' : 'ом'),
                     self::PREDLOJ => self::choosePrepositionByFirstLetter($prefix, 'об', 'о').' '.$prefix.'е',
                 );
-            } else if (S::slice($name, -2) == 'ль') {
+            } elseif (S::slice($name, -2) == 'ль') {
                 // Ставрополь, Ярославль
                 $prefix = S::name(S::slice($name, 0, -1));
                 return array(
@@ -120,7 +126,7 @@ class GeographicalNamesDeclension extends \morphos\GeneralDeclension implements 
                     self::TVORIT => $prefix.'ем',
                     self::PREDLOJ => self::choosePrepositionByFirstLetter($prefix, 'об', 'о').' '.$prefix.'е',
                 );
-            } else if (S::slice($name, -2) == 'рь') {
+            } elseif (S::slice($name, -2) == 'рь') {
                 // Тверь
                 $prefix = S::name(S::slice($name, 0, -1));
                 return array(
@@ -131,7 +137,7 @@ class GeographicalNamesDeclension extends \morphos\GeneralDeclension implements 
                     self::TVORIT => $prefix.'ью',
                     self::PREDLOJ => self::choosePrepositionByFirstLetter($prefix, 'об', 'о').' '.$prefix.'и',
                 );
-            } else if (S::slice($name, -2) == 'ки') {
+            } elseif (S::slice($name, -2) == 'ки') {
                 // Березники, Ессентуки
                 $prefix = S::name(S::slice($name, 0, -1));
                 return array(
@@ -142,7 +148,7 @@ class GeographicalNamesDeclension extends \morphos\GeneralDeclension implements 
                     self::TVORIT => $prefix.'ами',
                     self::PREDLOJ => self::choosePrepositionByFirstLetter($prefix, 'об', 'о').' '.$prefix.'ах',
                 );
-            } else if  (S::slice($name, -2) == 'мь') {
+            } elseif (S::slice($name, -2) == 'мь') {
                 // Пермь, Кемь
                 $prefix = S::name(S::slice($name, 0, -1));
                 return array(
@@ -153,7 +159,7 @@ class GeographicalNamesDeclension extends \morphos\GeneralDeclension implements 
                     self::TVORIT => $prefix.'ью',
                     self::PREDLOJ => self::choosePrepositionByFirstLetter($prefix, 'об', 'о').' '.$prefix.'и',
                 );
-            } else if  (S::slice($name, -2) == 'нь') {
+            } elseif (S::slice($name, -2) == 'нь') {
                 // Рязань, Назрань
                 $prefix = S::name(S::slice($name, 0, -1));
                 return array(
@@ -173,7 +179,7 @@ class GeographicalNamesDeclension extends \morphos\GeneralDeclension implements 
                     $prefix = S::name(S::slice($name, 0, -1));
                 }
                 // ов, её, ...
-                else if (in_array(S::slice($name, -2), $suffixes)) {
+                elseif (in_array(S::slice($name, -2), $suffixes)) {
                     $prefix = S::name($name);
                 }
                 return array(
@@ -192,7 +198,8 @@ class GeographicalNamesDeclension extends \morphos\GeneralDeclension implements 
         return array_fill_keys(array(self::IMENIT, self::RODIT, self::DAT, self::VINIT, self::TVORIT), $name) + array(self::PREDLOJ => self::choosePrepositionByFirstLetter($name, 'об', 'о').' '.$name);
     }
 
-    static public function getCase($name, $case) {
+    public static function getCase($name, $case)
+    {
         $case = self::canonizeCase($case);
         $forms = self::getCases($name);
         return $forms[$case];

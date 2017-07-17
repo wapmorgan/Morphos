@@ -1,18 +1,22 @@
 <?php
 namespace morhos\test\Russian;
+
 require_once __DIR__.'/../../vendor/autoload.php';
 
-use morphos\Russian\GeographicalNamesDeclension;
+use morphos\Russian\GeographicalNamesInflection;
 
-class GeographicalNamesDeclensionTest extends \PHPUnit_Framework_TestCase {
+class GeographicalNamesInflectionTest extends \PHPUnit_Framework_TestCase
+{
     /**
      * @dataProvider wordsProvider
      */
-    public function testDeclenation($word, $declenated) {
-        $this->assertEquals($declenated, array_values(GeographicalNamesDeclension::getCases($word)));
+    public function testInflection($word, $inflected)
+    {
+        $this->assertEquals($inflected, array_values(GeographicalNamesInflection::getCases($word)));
     }
 
-    public function wordsProvider() {
+    public function wordsProvider()
+    {
         return array(
             array('москва', array('Москва', 'Москвы', 'Москве', 'Москву', 'Москвой', 'о Москве')),
             array('Киев', array('Киев', 'Киева', 'Киеву', 'Киев', 'Киевом', 'о Киеве')),
@@ -38,11 +42,13 @@ class GeographicalNamesDeclensionTest extends \PHPUnit_Framework_TestCase {
     /**
      * @dataProvider immutableWordsProvider
      */
-    public function testImmutableWords($word) {
-        $this->assertFalse(GeographicalNamesDeclension::isMutable($word));
+    public function testImmutableWords($word)
+    {
+        $this->assertFalse(GeographicalNamesInflection::isMutable($word));
     }
 
-    public function immutableWordsProvider() {
+    public function immutableWordsProvider()
+    {
         return array(
             array('сша'),
             array('оаэ'),

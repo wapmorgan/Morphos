@@ -1,34 +1,40 @@
 <?php
 namespace morhos\test\Russian;
+
 require __DIR__.'/../../vendor/autoload.php';
 
 use morphos\Gender;
-use morphos\NamesDeclension;
+use morphos\NamesInflection;
 use morphos\Russian\Cases;
-use morphos\Russian\FirstNamesDeclension;
+use morphos\Russian\FirstNamesInflection;
 
-class FirstNamesDeclensionTest extends \PHPUnit_Framework_TestCase {
+class FirstNamesInflecionTest extends \PHPUnit_Framework_TestCase
+{
     /**
      * @dataProvider allMenNamesProvider
      */
-    public function testMutableMen($name) {
-        $this->assertTrue(FirstNamesDeclension::isMutable($name, FirstNamesDeclension::MALE));
+    public function testMutableMen($name)
+    {
+        $this->assertTrue(FirstNamesInflection::isMutable($name, FirstNamesInflection::MALE));
     }
 
     /**
      * @dataProvider allWomenNamesProvider
      */
-    public function testMutableWomen($name) {
-        $this->assertTrue(FirstNamesDeclension::isMutable($name, FirstNamesDeclension::FEMALE));
+    public function testMutableWomen($name)
+    {
+        $this->assertTrue(FirstNamesInflection::isMutable($name, FirstNamesInflection::FEMALE));
     }
 
-    public function allMenNamesProvider() {
+    public function allMenNamesProvider()
+    {
         return [
             ['Август'], ['Авдей'], ['Аверкий'], ['Аверьян'], ['Авксентий'], ['Автоном'], ['Агап'], ['Агафон'], ['Аггей'], ['Адам'], ['Адриан и Андриян'], ['Азарий'], ['Аким'], ['Александр'], ['Алексей'], ['Амвросий'], ['Амос'], ['Ананий'], ['Анатолий'], ['Андрей'], ['Андрон'], ['Андроник'], ['Аникей'], ['Аникита'], ['Анисим и Онисим'], ['Антип'], ['Антонин'], ['Аполлинарий'], ['Аполлон'], ['Арефий'], ['Аристарх'], ['Аркадий'], ['Арсений'], ['Артемий'], ['Артем'], ['Архип'], ['Аскольд'], ['Афанасий'], ['Афиноген'], ['Бажен'], ['Богдан'], ['Болеслав'], ['Борис'], ['Борислав'], ['Боян'], ['Бронислав'], ['Будимир'], ['Вадим'], ['Валентин'], ['Валерий'], ['Валерьян'], ['Варлаам'], ['Варфоломей'], ['Василий'], ['Вацлав'], ['Велимир'], ['Венедикт'], ['Вениамин'], ['Викентий'], ['Виктор'], ['Викторин'], ['Виссарион'], ['Виталий'], ['Владилен'], ['Владлен'], ['Владимир'], ['Владислав'], ['Влас'], ['Всеволод'], ['Всемил'], ['Всеслав'], ['Вышеслав'], ['Вячеслав'], ['Гаврила и Гавриил'], ['Галактион'], ['Гедеон'], ['Геннадий'], ['Георгий'], ['Герасим'], ['Герман'], ['Глеб'], ['Гордей'], ['Гостомысл'], ['Гремислав'], ['Григорий'], ['Гурий'], ['Давыд и Давид'], ['Данила и Даниил'], ['Дементий'], ['Демид'], ['Демьян'], ['Денис'], ['Дмитрий'], ['Добромысл'], ['Доброслав'], ['Дорофей'], ['Евгений'], ['Евграф'], ['Евдоким'], ['Евлампий'], ['Евсей'], ['Евстафий'], ['Евстигней'], ['Егор'], ['Елизар'], ['Елисей'], ['Емельян'], ['Епифан'], ['Еремей'], ['Ермил'], ['Ермолай'], ['Ерофей'], ['Ефим'], ['Ефрем'], ['Захар'], ['Зиновий'], ['Иван'], ['Игнатий'], ['Игорь'], ['Измаил'], ['Изот'], ['Изяслав'], ['Иларион'], ['Илья'], ['Иннокентий'], ['Иосиф'], ['Осип'], ['Ипат'], ['Ипатий'], ['Ипполит'], ['Ираклий'], ['Исай'], ['Исидор'], ['Казимир'], ['Каллистрат'], ['Капитон'], ['Карл'], ['Карп'], ['Касьян'], ['Ким'], ['Кир'], ['Кирилл'], ['Клавдий'], ['Климент'], ['Клементий'], ['Клим'], ['Кондрат'], ['Кондратий'], ['Конон'], ['Константин'], ['Корнил'], ['Корней'], ['Корнилий'], ['Кузьма'], ['Куприян'], ['Лавр'], ['Лаврентий'], ['Ладимир'], ['Ладислав'], ['Лазарь'], ['Лев'], ['Леон'], ['Леонид'], ['Леонтий'], ['Лонгин'], ['Лука'], ['Лукьян'], ['Лучезар'], ['Любим'], ['Любомир'], ['Любосмысл'], ['Макар'], ['Максим'], ['Максимильян'], ['Мариан'], ['Марк'], ['Мартын'], ['Мартьян'], ['Матвей'], ['Мефодий'], ['Мечислав'], ['Милан'], ['Милен'], ['Милий'], ['Милован'], ['Мина'], ['Мир'], ['Мирон'], ['Мирослав'], ['Митофан'], ['Михаил'], ['Михей'], ['Модест'], ['Моисей'], ['Мокей'], ['Мстислав'], ['Назар'], ['Наркис'], ['Натан'], ['Наум'], ['Нестор'], ['Никандр'], ['Никанор'], ['Никита'], ['Никифор'], ['Никодим'], ['Николай'], ['Никон'], ['Нифонт'], ['Олег'], ['Олимпий'], ['Онуфрий'], ['Орест'], ['Остап'], ['Остромир'], ['Павел'], ['Панкратий'], ['Панкрат'], ['Пантелеймон'], ['Панфил'], ['Парамон'], ['Парфен'], ['Пахом'], ['Петр'], ['Пимен'], ['Платон'], ['Поликарп'], ['Порфирий'], ['Потап'], ['Пров'], ['Прокл'], ['Прокофий'], ['Прохор'], ['Радим'], ['Радислав'], ['Радован'], ['Ратибор'], ['Ратмир'], ['Родион'], ['Роман'], ['Ростислав'], ['Рубен'], ['Руслан'], ['Рюрик'], ['Савва'], ['Савватий'], ['Савелий'], ['Самсон'], ['Самуил'], ['Светозар'], ['Святополк'], ['Святослав'], ['Севастьян'], ['Селиван'], ['Селиверст'], ['Семен'], ['Серафим'], ['Сергей'], ['Сигизмунд'], ['Сидор'], ['Силантий'], ['Сильвестр'], ['Симон'], ['Сократ'], ['Соломон'], ['Софон'], ['Софрон'], ['Спартак'], ['Спиридон'], ['Станимир'], ['Станислав'], ['Степан'], ['Стоян'], ['Тарас'], ['Твердислав'], ['Творимир'], ['Терентий'], ['Тимофей'], ['Тимур'], ['Тит'], ['Тихон'], ['Трифон'], ['Трофим'], ['Ульян'], ['Устин'], ['Фадей'], ['Федор'], ['Федосий'], ['Федот'], ['Феликс'], ['Феоктист'], ['Феофан'], ['Ферапонт'], ['Филарет'], ['Филимон'], ['Филипп'], ['Фирс'], ['Флорентин'], ['Фока'], ['Фома'], ['Фортунат'], ['Фотий'], ['Фрол'], ['Харитон'], ['Харлампий'], ['Христофор'], ['Чеслав'], ['Эдуард'], ['Эммануил'], ['Эраст'], ['Эрнест'], ['Эрнст'], ['Ювеналий'], ['Юлиан'], ['Юлий'], ['Юрий'], ['Яков'], ['Ян'], ['Якуб'], ['Януарий'], ['Ярополк'], ['Ярослав']
         ];
     }
 
-    public function allWomenNamesProvider() {
+    public function allWomenNamesProvider()
+    {
         return [
             ['Августа'], ['Агата'], ['Агафья'], ['Агнесса'], ['Агния'], ['Аграфена'], ['Агриппина'], ['Ада'], ['Аделаида'], ['Аза'], ['Алевтина'], ['Александра'], ['Алина'], ['Алиса'], ['Алла'], ['Альбина'], ['Анастасия'], ['Ангелина'], ['Анисья'], ['Анна'], ['Антонида'], ['Антонина'], ['Анфиса'], ['Аполлинария'], ['Ариадна'], ['Беатриса'], ['Берта'], ['Борислава'], ['Бронислава'], ['Валентина'], ['Валерия'], ['Ванда'], ['Варвара'], ['Василиса'], ['Васса'], ['Вера'], ['Вероника'], ['Викторина'], ['Виктория'], ['Виргиния'], ['Влада'], ['Владилена'], ['Владлена'], ['Владислава'], ['Власта'], ['Всеслава'], ['Галина'], ['Галя'], ['Ганна'], ['Генриетта'], ['Глафира'], ['Горислава'], ['Дарья'], ['Диана'], ['Дина'], ['Доминика'], ['Домна'], ['Ева'], ['Евгеиня'], ['Евдокия'], ['Евлампия'], ['Екатерина'], ['Елена'], ['Елизавета'], ['Ефросинья'], ['Жанна'], ['Зинаида'], ['Злата'], ['Изабелла'], ['Изольда'], ['Инга'], ['Инесса'], ['Инна'], ['Ираида'], ['Ирина'], ['Ия'], ['Казимира'], ['Калерия'], ['Капитолина'], ['Каролина'], ['Кира'], ['Клавдия'], ['Клара'], ['Кларисса'], ['Клементина'], ['Клеопатра'], ['Конкордия'], ['Ксения'], ['Лада'], ['Лариса'], ['Леокадия'], ['Лиана'], ['Лидия'], ['Лилиана'], ['Клеопатра'], ['Конкордия'], ['Ксения'], ['Лада'], ['Лариса'], ['Леокадия'], ['Лиана'], ['Лидия'], ['Лилиана'], ['Лилия'], ['Лия'], ['Луиза'], ['Лукерья'], ['Любава'], ['Любомила'], ['Любомира'], ['Людмила'], ['Майя'], ['Мальвина'], ['Маргарита'], ['Марианна'], ['Мариетта'], ['Марина'], ['Мария'], ['Марта'], ['Марфа'], ['Меланья'], ['Мелитриса'], ['Милана'], ['Милена'], ['Милица'], ['Мира'], ['Мирослава'], ['Млада'], ['Мстислава'], ['Муза'], ['Надежда'], ['Наталья'], ['Наталия'], ['Неонила'], ['Ника'], ['Нина'], ['Нона'], ['Оксана'], ['Октябрина'], ['Олимпиада'], ['Ольга'], ['Пелагея'], ['Поликсена'], ['Полина'], ['Прасковья'], ['Пульхерия'], ['Рада'], ['Раиса'], ['Регина'], ['Рената'], ['Римма'], ['Рогнеда'], ['Роза'], ['Розалия'], ['Розина'], ['Ростислава'], ['Руфина'], ['Светлана'], ['Серафима'], ['Сильва'], ['Сильвия'], ['Саломея'], ['Софья'], ['Станислава'], ['Стела'], ['Степанида'], ['Сусанна'], ['Таисия'], ['Тамара'], ['Татьяна'], ['Ульяна'], ['Фаина'], ['Федосья'], ['Фелицата'], ['Флора'], ['Флорентина'], ['Фатина'], ['Харитина'], ['Христина'], ['Эвелина'], ['Элеонора'], ['Эльвира'], ['Эмилия'], ['Эмма'], ['Юлия'], ['Ядвига'], ['Ярослава']
         ];
@@ -37,7 +43,8 @@ class FirstNamesDeclensionTest extends \PHPUnit_Framework_TestCase {
     /**
      * @dataProvider menNamesProvider()
      */
-    public function testDeclenationForMen($name, $name2, $name3, $name4, $name5, $name6) {
+    public function testInflectionForMen($name, $name2, $name3, $name4, $name5, $name6)
+    {
         $this->assertEquals(array(
             Cases::IMENIT => $name,
             Cases::RODIT => $name2,
@@ -45,13 +52,14 @@ class FirstNamesDeclensionTest extends \PHPUnit_Framework_TestCase {
             Cases::VINIT => $name4,
             Cases::TVORIT => $name5,
             Cases::PREDLOJ => $name6,
-        ), FirstNamesDeclension::getCases($name, FirstNamesDeclension::MALE));
+        ), FirstNamesInflection::getCases($name, FirstNamesInflection::MALE));
     }
 
     /**
      * @dataProvider womenNamesProvider()
      */
-    public function testDeclenationForWomen($name, $name2, $name3, $name4, $name5, $name6) {
+    public function testInflectionForWomen($name, $name2, $name3, $name4, $name5, $name6)
+    {
         $this->assertEquals(array(
             Cases::IMENIT => $name,
             Cases::RODIT => $name2,
@@ -59,10 +67,11 @@ class FirstNamesDeclensionTest extends \PHPUnit_Framework_TestCase {
             Cases::VINIT => $name4,
             Cases::TVORIT => $name5,
             Cases::PREDLOJ => $name6,
-        ), FirstNamesDeclension::getCases($name, FirstNamesDeclension::FEMALE));
+        ), FirstNamesInflection::getCases($name, FirstNamesInflection::FEMALE));
     }
 
-    public function menNamesProvider() {
+    public function menNamesProvider()
+    {
         return array(
             array('Иван', 'Ивана', 'Ивану', 'Ивана', 'Иваном', 'об Иване'),
             array('Святослав', 'Святослава', 'Святославу', 'Святослава', 'Святославом', 'о Святославе'),
@@ -111,7 +120,8 @@ class FirstNamesDeclensionTest extends \PHPUnit_Framework_TestCase {
         );
     }
 
-    public function womenNamesProvider() {
+    public function womenNamesProvider()
+    {
         return array(
             array('Анна', 'Анны', 'Анне', 'Анну', 'Анной', 'об Анне'),
             array('Эра', 'Эры', 'Эре', 'Эру', 'Эрой', 'об Эре'),
@@ -152,73 +162,84 @@ class FirstNamesDeclensionTest extends \PHPUnit_Framework_TestCase {
     /**
      * @dataProvider immutableNamesProvider()
      */
-    public function testImmutabeNames($name, $gender) {
-        $this->assertFalse(FirstNamesDeclension::isMutable($name, $gender));
+    public function testImmutableNames($name, $gender)
+    {
+        $this->assertFalse(FirstNamesInflection::isMutable($name, $gender));
     }
 
-    public function immutableNamesProvider() {
+    public function immutableNamesProvider()
+    {
         return array(
-            array('Тореро', FirstNamesDeclension::FEMALE),
-            array('Айбу', FirstNamesDeclension::FEMALE),
-            array('Хосе', FirstNamesDeclension::FEMALE),
-            array('Каншау', FirstNamesDeclension::FEMALE),
-            array('Франсуа', FirstNamesDeclension::FEMALE),
-            array('Тойбухаа', FirstNamesDeclension::FEMALE),
-            array('Качаа', FirstNamesDeclension::FEMALE),
-            array('Зиа', FirstNamesDeclension::FEMALE),
-            array('Хожулаа', FirstNamesDeclension::FEMALE),
+            array('Тореро', FirstNamesInflection::FEMALE),
+            array('Айбу', FirstNamesInflection::FEMALE),
+            array('Хосе', FirstNamesInflection::FEMALE),
+            array('Каншау', FirstNamesInflection::FEMALE),
+            array('Франсуа', FirstNamesInflection::FEMALE),
+            array('Тойбухаа', FirstNamesInflection::FEMALE),
+            array('Качаа', FirstNamesInflection::FEMALE),
+            array('Зиа', FirstNamesInflection::FEMALE),
+            array('Хожулаа', FirstNamesInflection::FEMALE),
         );
     }
 
     /**
      * @dataProvider mutableNamesProvider()
      */
-    public function testMutableNames($name, $gender) {
-        $this->assertTrue(FirstNamesDeclension::isMutable($name, $gender));
+    public function testMutableNames($name, $gender)
+    {
+        $this->assertTrue(FirstNamesInflection::isMutable($name, $gender));
     }
 
     /**
      * @dataProvider allMenNamesProvider()
      */
-    public function testDetectGenderMen($name) {
-        $result = FirstNamesDeclension::detectGender($name);
-        if ($result !== null) $this->assertEquals(NamesDeclension::MALE, $result);
+    public function testDetectGenderMen($name)
+    {
+        $result = FirstNamesInflection::detectGender($name);
+        if ($result !== null) {
+            $this->assertEquals(NamesInflection::MALE, $result);
+        }
     }
 
     /**
      * @dataProvider allWomenNamesProvider()
      */
-    public function testDetectGenderWomen($name) {
-        $result = FirstNamesDeclension::detectGender($name);
-        if ($result !== null) $this->assertEquals(NamesDeclension::FEMALE, $result);
+    public function testDetectGenderWomen($name)
+    {
+        $result = FirstNamesInflection::detectGender($name);
+        if ($result !== null) {
+            $this->assertEquals(NamesInflection::FEMALE, $result);
+        }
     }
 
-    public function mutableNamesProvider() {
+    public function mutableNamesProvider()
+    {
         return array(
-            array('Иван', FirstNamesDeclension::MALE),
-            array('Игорь', FirstNamesDeclension::MALE),
-            array('Андрей', FirstNamesDeclension::MALE),
-            array('Фома', FirstNamesDeclension::MALE),
-            array('Никита', FirstNamesDeclension::MALE),
-            array('Илья', FirstNamesDeclension::MALE),
-            array('Анна', FirstNamesDeclension::FEMALE),
-            array('Наталья', FirstNamesDeclension::FEMALE),
-            array('Виринея', FirstNamesDeclension::FEMALE),
+            array('Иван', FirstNamesInflection::MALE),
+            array('Игорь', FirstNamesInflection::MALE),
+            array('Андрей', FirstNamesInflection::MALE),
+            array('Фома', FirstNamesInflection::MALE),
+            array('Никита', FirstNamesInflection::MALE),
+            array('Илья', FirstNamesInflection::MALE),
+            array('Анна', FirstNamesInflection::FEMALE),
+            array('Наталья', FirstNamesInflection::FEMALE),
+            array('Виринея', FirstNamesInflection::FEMALE),
             // foreign names
-            array('Айдын', FirstNamesDeclension::MALE),
-            array('Наиль', FirstNamesDeclension::MALE),
-            array('Тукай', FirstNamesDeclension::MALE),
-            array('Мустафа', FirstNamesDeclension::MALE),
-            array('Нафиса', FirstNamesDeclension::FEMALE),
-            array('Асия', FirstNamesDeclension::FEMALE),
-            array('Лючия', FirstNamesDeclension::FEMALE),
+            array('Айдын', FirstNamesInflection::MALE),
+            array('Наиль', FirstNamesInflection::MALE),
+            array('Тукай', FirstNamesInflection::MALE),
+            array('Мустафа', FirstNamesInflection::MALE),
+            array('Нафиса', FirstNamesInflection::FEMALE),
+            array('Асия', FirstNamesInflection::FEMALE),
+            array('Лючия', FirstNamesInflection::FEMALE),
         );
     }
 
     /**
      * @dataProvider menNamesProvider()
      */
-    public function testGetCase($name, $case2) {
-        $this->assertEquals($case2, FirstNamesDeclension::getCase($name, Cases::RODIT, Gender::MALE));
+    public function testGetCase($name, $case2)
+    {
+        $this->assertEquals($case2, FirstNamesInflection::getCase($name, Cases::RODIT, Gender::MALE));
     }
 }
