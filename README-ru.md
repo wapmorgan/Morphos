@@ -38,7 +38,7 @@
 Чтобы просклонять все части имени можно использовать следующую функцию:
 
 ```php
-string|array name($name, $case = null, $gender = null)
+string|array inflectName($name, $case = null, $gender = null)
 ```
 
 Аргументы:
