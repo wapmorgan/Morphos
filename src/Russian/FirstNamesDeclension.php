@@ -450,9 +450,12 @@ class FirstNamesDeclension extends \morphos\NamesDeclension implements Cases {
 		if (isset(self::$exceptions[$name]))
 			return self::$exceptions[$name];
 		else if (in_array(S::upper(S::slice($name, -1)), array_diff(self::$consonants, array('Й', /*'Ч', 'Щ'*/)))) { // hard consonant
-			$prefix = S::name($name);
+			if (in_array(S::slice($name, -2), ['ек', 'ёк'])) // Витек, Санек
+				$prefix = S::name(S::slice($name, 0, -2)).'ьк';
+			else
+				$prefix = S::name($name);
 			return array(
-				self::IMENIT => $prefix,
+				self::IMENIT => S::name($name),
 				self::RODIT => $prefix.'а',
 				self::DAT => $prefix.'у',
 				self::VINIT => $prefix.'а',

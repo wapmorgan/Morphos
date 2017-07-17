@@ -3,6 +3,16 @@ namespace morphos\Russian;
 
 use morphos\S;
 
+/**
+ * Inflects the name to all / another cases.
+ * @param string      $fullname Name in format: "L F" o "L M F", where L - last name, M - middl name, F - first name
+ * @param null|string $case     Case to inflect to. If null, result will contain inflection to all cases.
+ *                              Should be one of {@link morphos\Cases} or {@link morphos\Russian\Cases} constants.
+ * @param null|tring  $gender   Gender of name owner. If null, auto detection will be used.
+ *                              Should be one of {@link morphos\Gender} constants.
+ * @return string|array         Returns string containing the inflection of name to a case, if `$case` is not null.
+ *                              Returns an array will inflection to all cases.
+ */
 function name($fullname, $case = null, $gender = null)
 {
     if (in_array($case, array('m', 'f'))) {
@@ -10,6 +20,7 @@ function name($fullname, $case = null, $gender = null)
         $case = null;
     }
     if ($gender === null) $gender = detectGender($fullname);
+    $fullname = normalizeFullName($fullname);
 
     $name = explode(' ', $fullname);
     if (count($name) < 2 || count($name) > 3)
@@ -49,6 +60,11 @@ function name($fullname, $case = null, $gender = null)
     return implode(' ', $name);
 }
 
+/**
+ * Guesses the gender of name owner.
+ * @param string $fullname
+ * @return null|string     Null if not detected. One of {@link morphos\Gender} constants.
+ */
 function detectGender($fullname)
 {
     static $first, $middle, $last;
@@ -59,6 +75,17 @@ function detectGender($fullname)
     return (isset($name[2]) ? MiddleNamesDeclension::detectGender($name[2]) : null) ?:
         LastNamesDeclension::detectGender($name[0]) ?:
         FirstNamesDeclension::detectGender($name[1]);
+}
+
+/**
+ * Normalizes a full name. Swaps name parts to make "L F" or "L M F" scheme.
+ * @param string $name Input name
+ * @return string      Normalized name
+ */
+function normalizeFullName($name)
+{
+    $name = preg_replace('~[ ]{2,}~', null, trim($name));
+    return $name;
 }
 
 function pluralize($word, $count = 2, $animateness = false)
