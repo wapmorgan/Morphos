@@ -6,21 +6,21 @@ Addition a new language is simple: create the class inheriting one of basic clas
 
 Here is a list of basic abstract classes:
 
-#### `morphos\NamesDeclensions`
-Class for names declension.
+#### `morphos\NamesInflection`
+Class for names inflection.
 
 * `public function isMutable($name, $gender)` - Checks, whether there are rules for this name.
 * `public function getCases($name, $gender)` - Generates all cases of a name.
 * `public function getCase($name, $form, $gender)` - Generates one case of a name.
 
-#### `morphos\GeneralDeclension`
-Class for general declension.
+#### `morphos\BaseInflection`
+Class for general inflection.
 
 * `public function isMutable($word, $animate = false);` - Checks, whether there are rules for this word.
 * `public function getCases($word, $animate = false);` - Generates all cases of a word.
 * `public function getCase($word, $form, $animate = false);` - Generates one case of a word.
 
-#### `morphos\NumeralCreation`
+#### `morphos\NumeralGenerator`
 Class for numerals generation.
 
 * `public function getCases($number)` - Generates all cases for a number.
@@ -31,7 +31,7 @@ Class for spelling out money amounts.
 
 * `public function spell($value, $currency)` - Spells money amount in natural language.
 
-#### `morphos\TimeUnitSpeller`
+#### `morphos\TimeSpeller`
 Class for spelling out date intervals and time units.
 
 * `public function spellUnit($count, $unit)` - Spells time unit in natural language.
