@@ -22,7 +22,7 @@ abstract class TimeSpeller
     const DIRECTION = 1;
     const SEPARATE = 2;
 
-    abstract public static function spellUnit($count, $unit);
+    public static function spellUnit($count, $unit) {}
 
     public static function spellInterval(DateInterval $interval, $options = 0)
     {
