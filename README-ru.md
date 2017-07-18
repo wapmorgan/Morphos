@@ -162,9 +162,10 @@ GeographicalNamesInflection::getCases('Саратов') => array(6) {
 
 Функциональность по склонению имени существительных (а также существительных, перешедших из прилагательных/причастий) определена в классе `NounDeclension`:
 
-- `boolean isMutable($word, bool $animateness = false)` - Check if noun is mutable.
-- `string getCase($word, $case, $animateness = false)` - Declines noun.
-- `array getCases($word, $animateness = false)` - Declines noun to all cases.
+- `boolean isMutable($word, bool $animateness = false)` - проверяет, изменяемо ли слово.
+- `string getCase($word, $case, $animateness = false)` - склоняет слово в определённый падеж.
+- `array getCases($word, $animateness = false)` - склоняет слово во всех падежах.
+- `string detectGender($word)` - пытается определить пол существительного.
 
 _Пример_
 
