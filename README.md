@@ -11,8 +11,8 @@ Tests & Quality: [![Build Status](https://travis-ci.org/wapmorgan/Morphos.svg)](
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/wapmorgan/Morphos/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/wapmorgan/Morphos/?branch=master)
 
 ## Features
-- [✓] Declension of Personal names (Фамилия, Имя, Отчество) (Russian)
-- [✓] Declension of Geographical names (Страны/Города) (Russian)
+- [✓] Inflection of Personal names (Фамилия, Имя, Отчество) (Russian)
+- [✓] Inflection of Geographical names (Страны/Города) (Russian)
 - [✓] Declension/Pluralization of nouns and adjectives (Russian, English)
 - [✓] Generation numerals of numbers (количественные и порядковые) (Russian, English)
 - [✓] Spelling out amounts of money (Russian)
