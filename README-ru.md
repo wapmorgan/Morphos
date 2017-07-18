@@ -22,6 +22,8 @@
     - `FirstNamesInflection`
     - `LastNamesInflection`
     - `MiddleNamesInflection`
+- для склонения географических названий:
+    - `GeographicalNamesInflection`
 - для склонения и плюрализации существительных:
     - `NounDeclension`
     - `NounPluralization`
