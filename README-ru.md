@@ -28,12 +28,11 @@
     - `NounDeclension`
     - `NounPluralization`
 - для генерации количественных и порядковых числительных:
-    - `CardinalNumeralGeneratorGenerator`
-    - `OrdinalNumeralGeneratorGenerator`
+    - `CardinalNumeralGenerator`
+    - `OrdinalNumeralGenerator`
 - для генерации текстом различных данных:
     - `MoneySpeller`
     - `TimeSpeller`
-
 
 ## Имена собственные
 
