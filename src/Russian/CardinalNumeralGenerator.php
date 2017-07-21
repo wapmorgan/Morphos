@@ -98,7 +98,7 @@ class CardinalNumeralGenerator extends NumeralGenerator implements Cases
                 self::IMENIT => 'две',
                 self::RODIT => 'двух',
                 self::DAT => 'двум',
-                self::VINIT => 'два',
+                self::VINIT => 'две',
                 self::TVORIT => 'двумя',
                 self::PREDLOJ => 'о двух',
             ),
