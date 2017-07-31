@@ -56,6 +56,8 @@ class LastNamesInflectionTest extends \PHPUnit_Framework_TestCase
             array('Суздаль', NamesInflection::MALE, 'Суздаля', 'Суздалю', 'Суздаля', 'Суздалем', 'о Суздале'),
             array('Тронь', NamesInflection::MALE, 'Троня', 'Троню', 'Троня', 'Тронем', 'о Троне'),
             array('Толстой', NamesInflection::MALE, 'Толстого', 'Толстому', 'Толстого', 'Толстым', 'о Толстом'),
+            array('Стальной', NamesInflection::MALE, 'Стального', 'Стальному', 'Стального', 'Стальным', 'о Стальном'),
+            array('Жареный', NamesInflection::MALE, 'Жареного', 'Жареному', 'Жареного', 'Жареным', 'о Жареном'),
 
             array('Смирнова', NamesInflection::FEMALE, 'Смирновой', 'Смирновой', 'Смирнову', 'Смирновой', 'о Смирновой'),
             array('Кромская', NamesInflection::FEMALE, 'Кромской', 'Кромской', 'Кромскую', 'Кромской', 'о Кромской'),
@@ -63,6 +65,23 @@ class LastNamesInflectionTest extends \PHPUnit_Framework_TestCase
             array('Зима', NamesInflection::FEMALE, 'Зимы', 'Зиме', 'Зиму', 'Зимой', 'о Зиме'),
             array('Зоя', NamesInflection::FEMALE, 'Зои', 'Зое', 'Зою', 'Зоей', 'о Зое'),
 			array('Молодыха', NamesInflection::FEMALE, 'Молодыхи', 'Молодыхе', 'Молодыху', 'Молодыхой', 'о Молодыхе'),
+            array('Стальная', NamesInflection::FEMALE, 'Стальной', 'Стальной', 'Стальную', 'Стальной', 'о Стальной'),
         );
+    }
+
+    /**
+     * @dataProvider immutableNamesProvider()
+     */
+    public function testImmutable($name, $gender)
+    {
+        $this->assertFalse(LastNamesInflection::isMutable($name, $gender));
+    }
+
+    public function immutableNamesProvider()
+    {
+        return [
+            ['Фоминых', NamesInflection::MALE],
+            ['Хитрово', NamesInflection::MALE],
+        ];
     }
 }

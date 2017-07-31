@@ -25,18 +25,33 @@ class LastNamesInflection extends \morphos\NamesInflection implements Cases
         }
 
         if ($gender == self::MALE) {
+            // Несклоняемые фамилии (Фоминых, Седых / Стецко, Писаренко)
+            if (in_array(S::slice($name, -2), ['ых', 'ко']))
+                return false;
+
+            // Несклоняемые, образованные из родительного падежа личного или прозвищного имени главы семьи
+            // суффиксы: ово, аго
+            if (in_array(S::slice($name, -3), ['ово', 'аго']))
+                return false;
+
+            // Типичные суффикс мужских фамилий
             if (in_array(S::slice($name, -2), array('ов', 'ев', 'ин', 'ын', 'ий', 'ой'))) {
                 return true;
             }
+
+            // Согласная на конце
             if (self::isConsonant(S::slice($name, -1))) {
                 return true;
             }
 
+            // Мягкий знак на конце
             if (S::slice($name, -1) == 'ь') {
                 return true;
             }
+
         } else {
-            if (in_array(S::slice($name, -2), array('ва', 'на')) || in_array(S::slice($name, -4), array('ская'))) {
+            // Типичные суффиксы женских фамилий
+            if (in_array(S::slice($name, -2), ['ва', 'на', 'ая'])) {
                 return true;
             }
         }
@@ -84,7 +99,12 @@ class LastNamesInflection extends \morphos\NamesInflection implements Cases
                     self::TVORIT => $prefix.'им',
                     self::PREDLOJ => self::choosePrepositionByFirstLetter($prefix, 'об', 'о').' '.$prefix.'ом'
                 );
-            } else if (S::slice($name, -2) == 'ой') {
+            // Верхний / Убогий / Толстой
+            // Верхнего / Убогого / Толстого
+            // Верхнему / Убогому / Толстому
+            // Верхним / Убогим / Толстым
+            // О Верхнем / Об Убогом / О Толстом
+            } else if (in_array(S::slice($name, -2), ['ой', 'ый', 'ий'])) {
                 $prefix = S::name(S::slice($name, 0, -2));
                 return array(
                     self::IMENIT => S::name($name),
@@ -142,7 +162,7 @@ class LastNamesInflection extends \morphos\NamesInflection implements Cases
                 self::TVORIT => $prefix.'ой',
                 self::PREDLOJ => self::choosePrepositionByFirstLetter($prefix, 'об', 'о').' '.$prefix.'е'
             );
-        } elseif (self::isConsonant(S::slice($name, -1)) && $gender == self::MALE) {
+        } elseif (self::isConsonant(S::slice($name, -1)) && $gender == self::MALE && S::slice($name, -2) != 'ых') {
             $prefix = S::name($name);
             return array(
                 self::IMENIT => S::name($name),
