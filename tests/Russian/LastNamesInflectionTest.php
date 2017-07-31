@@ -55,6 +55,7 @@ class LastNamesInflectionTest extends \PHPUnit_Framework_TestCase
             array('Медведь', NamesInflection::MALE, 'Медведя', 'Медведю', 'Медведя', 'Медведем', 'о Медведе'),
             array('Суздаль', NamesInflection::MALE, 'Суздаля', 'Суздалю', 'Суздаля', 'Суздалем', 'о Суздале'),
             array('Тронь', NamesInflection::MALE, 'Троня', 'Троню', 'Троня', 'Тронем', 'о Троне'),
+            array('Толстой', NamesInflection::MALE, 'Толстого', 'Толстому', 'Толстого', 'Толстым', 'о Толстом'),
 
             array('Смирнова', NamesInflection::FEMALE, 'Смирновой', 'Смирновой', 'Смирнову', 'Смирновой', 'о Смирновой'),
             array('Кромская', NamesInflection::FEMALE, 'Кромской', 'Кромской', 'Кромскую', 'Кромской', 'о Кромской'),

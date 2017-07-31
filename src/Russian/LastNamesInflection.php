@@ -84,7 +84,18 @@ class LastNamesInflection extends \morphos\NamesInflection implements Cases
                     self::TVORIT => $prefix.'им',
                     self::PREDLOJ => self::choosePrepositionByFirstLetter($prefix, 'об', 'о').' '.$prefix.'ом'
                 );
+            } else if (S::slice($name, -2) == 'ой') {
+                $prefix = S::name(S::slice($name, 0, -2));
+                return array(
+                    self::IMENIT => S::name($name),
+                    self::RODIT => $prefix.'ого',
+                    self::DAT => $prefix.'ому',
+                    self::VINIT => $prefix.'ого',
+                    self::TVORIT => $prefix.'ым',
+                    self::PREDLOJ => self::choosePrepositionByFirstLetter($prefix, 'об', 'о').' '.$prefix.'ом'
+                );
             }
+
         } else {
             if (in_array(S::slice($name, -3), array('ова', 'ева', 'ина', 'ына'))) {
                 $prefix = S::name(S::slice($name, 0, -1));
