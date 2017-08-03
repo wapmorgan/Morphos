@@ -28,7 +28,8 @@ class MiddleNamesInflection extends \morphos\NamesInflection implements Cases
         if (in_array(S::slice($name, -2), array('ич', 'на'))) {
             return true;
         }
-        return false;
+        // if foreign, try it as a name
+        return FirstNamesInflection::isMutable($name, $gender);
     }
 
     public static function getCase($name, $case, $gender = null)
@@ -64,8 +65,7 @@ class MiddleNamesInflection extends \morphos\NamesInflection implements Cases
             );
         }
 
-        // immutable middle name
-        $name = S::name($name);
-        return array_fill_keys(array(self::IMENIT, self::RODIT, self::DAT, self::VINIT, self::TVORIT), $name) + array(self::PREDLOJ => self::choosePrepositionByFirstLetter($name, 'об', 'о').' '.$name);
+        // inflect other middle names as first names (foreign)
+        return FirstNamesInflection::getCases($name, $gender);
     }
 }
