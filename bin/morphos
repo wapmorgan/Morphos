@@ -107,6 +107,8 @@ while (true) {
 Порядок следования (сначала всегда идёт Фамилия) соблюдать обязательно! Склоняет имя во всех падежах.
 - 123
 Любое число. Генерирует порядковое и количественное числительные во всех падежах.
+- 123 знак
+Любое число и существительное. Генерирует количествонное числительное с существительным в правильной форме во всех падежах.
 ');
         continue;
     }
@@ -125,6 +127,8 @@ while (true) {
 
         fwrite(STDOUT, 'Числительное количественное: '.dump($cardinal_numerals));
         fwrite(STDOUT, 'Числительное порядковое: '.dump($ordinal_numerals));
+    } else if (substr_count($word, ' ') === 1 && (list($number, $noun) = explode(' ', $word)) && is_numeric($number)) {
+        fwrite(STDOUT, 'Число с существительным: '.dump(morphos\Russian\pluralize($noun, $number)));
     } else if (strpos($word, ' ') === false) {
         // только одно слово
         $first_char = S::slice($word, 0, 1);
