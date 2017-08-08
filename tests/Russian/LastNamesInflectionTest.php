@@ -87,6 +87,7 @@ class LastNamesInflectionTest extends \PHPUnit_Framework_TestCase
         return [
             ['Фоминых', NamesInflection::MALE],
             ['Хитрово', NamesInflection::MALE],
+            ['Бози', NamesInflection::MALE],
         ];
     }
 }

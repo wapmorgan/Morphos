@@ -4,7 +4,7 @@ namespace morphos\Russian;
 use morphos\S;
 
 /**
- * Inflects the name to all / another cases.
+ * Inflects the name to all cases / one case.
  * @param string      $fullname Name in format: "L F" o "L M F", where L - last name, M - middl name, F - first name
  * @param null|string $case     Case to inflect to. If null, result will contain inflection to all cases.
  *                              Should be one of {@link morphos\Cases} or {@link morphos\Russian\Cases} constants.
