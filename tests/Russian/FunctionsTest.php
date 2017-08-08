@@ -68,6 +68,6 @@ class FunctionsTest extends \PHPUnit_Framework_TestCase
 
     public function testPluralize()
     {
-        $this->assertEquals('10 сообщений', \morphos\Russian\pluralize('сообщение', 10));
+        $this->assertEquals('10 сообщений', \morphos\Russian\pluralize(10, 'сообщение'));
     }
 }

@@ -32,6 +32,6 @@ class TimeSpeller extends \morphos\TimeSpeller
             return $count.' лет';
         }
 
-        return pluralize(self::$units[$unit], $count);
+        return pluralize($count, self::$units[$unit]);
     }
 }

@@ -10,14 +10,9 @@
 * [Валюты](#Валюты)
 * [Временные интервалы](#Временные-интервалы)
 
-Для русского языка доступны следующие функции из пространства имён `morphos\Russian\`:
+Для русского языка доступны следующие классы и функции из пространства имён `morphos\Russian\`:
 
-* `inflectName($fullname, $case, $gender = AUTO)`
-* `pluralize($noun, $count = 2, $animateness = false)`
-* `verb($verb, $gender)`
-
-и следующие классы:
-
+**Классы**:
 - для склонение личных имён:
     - `FirstNamesInflection`
     - `LastNamesInflection`
@@ -33,6 +28,12 @@
 - для генерации текстом различных данных:
     - `MoneySpeller`
     - `TimeSpeller`
+
+**Функции:**
+* `inflectName($fullname, $case, $gender = AUTO)`
+* `pluralize($count, $noun, $animateness = false)`
+* `verb($verb, $gender)`
+
 
 ## Имена собственные
 
@@ -207,7 +208,7 @@ NounDeclension::getCases('линейка') => array(6) {
 
 - `string getCase($word, $case, $animateness = false)` - получает один из падежей слова во множественном числе.
 - `array getCases($word, $animateness = false)` - склоняет слово во множественном числе.
-- `string pluralize($word, $count, $animateness = false)` - возвращает правильную форму слова для сопряжения с числом.
+- `string pluralize($count, $word, $animateness = false)` - возвращает правильную форму слова для сопряжения с числом.
 
 _Пример_
 
@@ -229,7 +230,7 @@ NounPluralization::getCases('поле') => array(6) {
 
 $count = 10;
 
-echo pluralize('дом', $count, false); // result: 10 домов
+echo pluralize($count, 'дом''); // result: 10 домов
 ```
 
 ## Числительные

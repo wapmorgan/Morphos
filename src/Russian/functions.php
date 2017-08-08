@@ -104,7 +104,7 @@ function normalizeFullName($name)
  * @param bool $animateness
  * @return string
  */
-function pluralize($word, $count = 2, $animateness = false)
+function pluralize($count, $word, $animateness = false)
 {
     return $count.' '.NounPluralization::pluralize($word, $count, $animateness);
 }

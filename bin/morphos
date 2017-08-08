@@ -83,7 +83,6 @@ for ($i = 1; $i < $argc; $i++) {
     if ($i == 1 && in_array($argv[$i], ['ru', 'en'])) {
         $language = $argv[$i];
         continue;
-
     }
     $line->addLineForEmulation(trim($argv[$i]));
 }
@@ -128,7 +127,7 @@ while (true) {
         fwrite(STDOUT, 'Числительное количественное: '.dump($cardinal_numerals));
         fwrite(STDOUT, 'Числительное порядковое: '.dump($ordinal_numerals));
     } else if (substr_count($word, ' ') === 1 && (list($number, $noun) = explode(' ', $word)) && is_numeric($number)) {
-        fwrite(STDOUT, 'Число с существительным: '.dump(morphos\Russian\pluralize($noun, $number)));
+        fwrite(STDOUT, 'Число с существительным: '.dump(morphos\Russian\pluralize($number, $noun)));
     } else if (strpos($word, ' ') === false) {
         // только одно слово
         $first_char = S::slice($word, 0, 1);
