@@ -78,6 +78,26 @@ class LastNamesInflection extends \morphos\NamesInflection implements Cases
         if ($gender === null) {
             $gender = self::detectGender($name);
         }
+
+        // составная фамилия - разбить на части и склонять по отдельности
+        if (strpos($name, '-') !== false) {
+            $parts = explode('-', $name);
+            $cases = [];
+            foreach ($parts as $i => $part) {
+                $part_cases = static::getCases($part, $gender);
+                foreach ($part_cases as $case => $part_case) {
+                    if ($case == self::PREDLOJ && $i > 0)
+                        list(, $cases[$case][]) = explode(' ', $part_case);
+                    else
+                        $cases[$case][] = $part_case;
+                }
+            }
+
+            foreach ($cases as $i => $case)
+                $cases[$i] = implode('-', $case);
+            return $cases;
+        }
+
         if ($gender == self::MALE) {
             if (in_array(S::slice($name, -2), array('ов', 'ев', 'ин', 'ын'))) {
                 $prefix = S::name($name);
@@ -162,7 +182,7 @@ class LastNamesInflection extends \morphos\NamesInflection implements Cases
                 self::TVORIT => $prefix.'ой',
                 self::PREDLOJ => self::choosePrepositionByFirstLetter($prefix, 'об', 'о').' '.$prefix.'е'
             );
-        } elseif (self::isConsonant(S::slice($name, -1)) && $gender == self::MALE && S::slice($name, -2) != 'ых') {
+        } elseif (self::isConsonant(S::slice($name, -1)) && S::slice($name, -2) != 'ых') {
             $prefix = S::name($name);
             return array(
                 self::IMENIT => S::name($name),
