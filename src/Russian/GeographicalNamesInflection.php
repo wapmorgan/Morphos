@@ -71,6 +71,17 @@ class GeographicalNamesInflection extends \morphos\BaseInflection implements Cas
                     self::TVORIT => $prefix.'им',
                     self::PREDLOJ => self::choosePrepositionByFirstLetter($prefix, 'об', 'о').' '.$prefix.'ем',
                 );
+            } else if (S::slice($name, -2) == 'ый') {
+                // Грозный, Благодарный
+                $prefix = S::name(S::slice($name, 0, -2));
+                return array(
+                    self::IMENIT => $prefix.'ый',
+                    self::RODIT => $prefix.'ого',
+                    self::DAT => $prefix.'ому',
+                    self::VINIT => $prefix.'ый',
+                    self::TVORIT => $prefix.'ым',
+                    self::PREDLOJ => self::choosePrepositionByFirstLetter($prefix, 'об', 'о').' '.$prefix.'ом',
+                );
             } elseif (S::slice($name, -1) == 'а') {
                 // Москва, Рига
                 $prefix = S::name(S::slice($name, 0, -1));
@@ -169,6 +180,28 @@ class GeographicalNamesInflection extends \morphos\BaseInflection implements Cas
                     self::VINIT => $prefix.'ь',
                     self::TVORIT => $prefix.'ью',
                     self::PREDLOJ => self::choosePrepositionByFirstLetter($prefix, 'об', 'о').' '.$prefix.'и',
+                );
+            } else if (S::slice($name, -2) == 'ые') {
+                // Набережные
+                $prefix = S::name(S::slice($name, 0, -1));
+                return array(
+                    self::IMENIT => $prefix.'е',
+                    self::RODIT => $prefix.'х',
+                    self::DAT => $prefix.'м',
+                    self::VINIT => $prefix.'е',
+                    self::TVORIT => $prefix.'ми',
+                    self::PREDLOJ => self::choosePrepositionByFirstLetter($prefix, 'об', 'о').' '.$prefix.'х',
+                );
+            } else if (S::slice($name, -2) == 'ны') {
+                // Челны
+                $prefix = S::name(S::slice($name, 0, -1));
+                return array(
+                    self::IMENIT => $prefix.'ы',
+                    self::RODIT => $prefix.'ов',
+                    self::DAT => $prefix.'ам',
+                    self::VINIT => $prefix.'ы',
+                    self::TVORIT => $prefix.'ами',
+                    self::PREDLOJ => self::choosePrepositionByFirstLetter($prefix, 'об', 'о').' '.$prefix.'ах',
                 );
             }
 
