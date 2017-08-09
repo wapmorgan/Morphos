@@ -19,6 +19,14 @@ class LastNamesInflection extends \morphos\NamesInflection implements Cases
         if ($gender === null) {
             $gender = self::detectGender($name);
         }
+        // составная фамилия - разбить на части и проверить по отдельности
+        if (strpos($name, '-') !== false) {
+            foreach (explode('-', $name) as $part) {
+                if (static::isMutable($part, $gender))
+                    return true;
+            }
+            return false;
+        }
 
         if (in_array(S::slice($name, -1), array('а', 'я'))) {
             return true;
