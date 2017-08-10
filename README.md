@@ -38,14 +38,14 @@ composer require wapmorgan/morphos
 ## Quick Start
 - Russian:
   ```php
-  // Decline russian names:
+  // Inflect russian names:
   morphos\Russian\inflectName('Иванов Петр', 'родительный') => 'Иванова Петра'
 
-  // Decline geographical names:
+  // Inflect geographical names:
   morphos\Russian\GeographicalNamesInflection::getCase('Москва', 'родительный') => 'Москвы'
 
   // Pluralize russian nouns:
-  morphos\Russian\pluralize('дом', 10) => '10 домов'
+  morphos\Russian\pluralize(10, 'дом') => '10 домов'
 
   // Generate russian cardinal numerals:
   morphos\Russian\CardinalNumeralGenerator::getCase(567, 'именительный') => 'пятьсот шестьдесят семь'
