@@ -10,10 +10,13 @@ trait CurrenciesHelper
         switch ($currency) {
             case Currency::DOLLAR:
             case '$':
+            case 'usd':
+            case 'dollar':
                 return Currency::DOLLAR;
 
             case Currency::EURO:
             case '€':
+            case 'euro':
                 return Currency::EURO;
 
             case Currency::YEN:
@@ -49,6 +52,7 @@ trait CurrenciesHelper
 
             case Currency::RUBLE:
             case '₽':
+            case 'ruble':
                 return Currency::RUBLE;
 
             case Currency::RUPEE:
