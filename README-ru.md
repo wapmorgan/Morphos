@@ -52,6 +52,8 @@ inflectName($name, $case = null, $gender = null): string|array
 
 _Пример_
 ```php
+use function morphos\Russian\inflectName;
+
 inflectName('Базанов Иосиф Валерьянович', 'родительный') => 'Базанова Иосифа Валерьяновича'
 
 inflectName('Базанов Иосиф Валерьянович') => array(6) {
@@ -216,6 +218,7 @@ _Пример_
 
 ```php
 use morphos\Russian\NounPluralization;
+use function morphos\Russian\pluralize;
 
 $word = 'дом';
 echo 'Множественное число для '.$word.' - '.NounPluralization::getCase($word, 'именительный'); // дома
@@ -352,11 +355,13 @@ string verb($verb, $gender)
 _Пример_
 
 ```php
+use function morphos\Russian\verb;
+
 $name = 'Анастасия';
 $gender = morphos\Gender::FEMALE;
 
-$name.' '.morphos\Russian\verb('добавил', $gender) => 'Анастасия добавила'
-$name.' '.morphos\Russian\verb('поделился', $gender).' публикацией' => 'Анастасия поделилась публикацией'
+$name.' '.verb('добавил', $gender) => 'Анастасия добавила'
+$name.' '.verb('поделился', $gender).' публикацией' => 'Анастасия поделилась публикацией'
 ```
 
 ## Временные интервалы
