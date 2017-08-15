@@ -242,9 +242,9 @@ echo pluralize($count, 'дом''); // result: 10 домов
 
 `$gender` может быть `morphos\Gender::MALE` (или просто `"m"`) или `morphos\Gender::FEMALE` (или просто `"f"`) or `morphos\Gender::NEUTER` (или просто `"n"`).
 
-### Количественные числительные (`CardinalNumeralGenerator`)
+### Количественные числительные
 
-Генерация количественных числительных:
+Генерация количественных числительных (`CardinalNumeralGenerator`):
 
 ```php
 use morphos\Gender;
@@ -267,9 +267,9 @@ CardinalNumeralGenerator::getCases($number) => array(6) {
 }
 ```
 
-### Порядковые числительные (`OrdinalNumeralGenerator`)
+### Порядковые числительные
 
-Генерация порядковых числительных:
+Генерация порядковых числительных (`OrdinalNumeralGenerator`):
 
 ```php
 use morphos\Gender;
