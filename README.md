@@ -60,7 +60,7 @@ composer require wapmorgan/morphos
 - English
   ```php
   // Pluralize english nouns:
-  morphos\English\pluralize('house') => 'houses'
+  morphos\English\pluralize(10, 'house') => '10 houses'
 
   // Generate english cardinal numerals:
   morphos\English\CardinalNumeralGenerator::generate(567) => 'five hundred sixty-seven'
