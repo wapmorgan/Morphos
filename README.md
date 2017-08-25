@@ -16,7 +16,7 @@ Tests & Quality: [![Build Status](https://travis-ci.org/wapmorgan/Morphos.svg)](
 - [✓] Declension/Pluralization of nouns and adjectives (Russian, English)
 - [✓] Generation numerals of numbers (количественные и порядковые) (Russian, English)
 - [✓] Spelling out amounts of money (Russian)
-- [✓] Spelling out time units and intervals (Russian)
+- [✓] Spelling out time units and intervals (Russian, English)
 
 ## Table of contents
 
