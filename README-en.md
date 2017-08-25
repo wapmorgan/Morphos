@@ -69,6 +69,7 @@ use morphos\English\OrdinalNumeralGenerator;
 $number = 4351;
 
 OrdinalNumeralGenerator::generate($number) => 'four thousand, three hundred fifty-first'
+// short form of ordinal numeral
 OrdinalNumeralGenerator::generate($number, true) => '4351st'
 ```
 
