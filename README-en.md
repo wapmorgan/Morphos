@@ -28,13 +28,15 @@ morphos\
 Pluralization a word in English is possible with `NounPluralization` class:
 
 ```php
+use function morphos\English\pluralize;
 use morphos\English\NounPluralization;
 
 echo '10 '.NounPluralization::pluralize('foot') => '10 feet'
 // or if you don't know count of objects
 
+// or you can use shortcut
 $n = 1;
-echo $n.' '.NounPluralization::pluralize('foot', $n) => '1 foot'
+echo pluralize($n, 'foot') => '1 foot'
 ```
 
 ## Numerals

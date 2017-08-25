@@ -1,7 +1,7 @@
 <?php
 namespace morphos\English;
 
-function pluralize($word, $count = 2)
+function pluralize($count, $word)
 {
-    return NounPluralization::pluralize($word, $count);
+    return $count.' '.NounPluralization::pluralize($word, $count);
 }
