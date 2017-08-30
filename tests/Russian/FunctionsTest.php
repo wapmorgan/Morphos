@@ -46,7 +46,7 @@ class FunctionsTest extends \PHPUnit_Framework_TestCase
      */
     public function testVerb($verb, $gender, $correctVerb)
     {
-        $this->assertEquals($correctVerb, \morphos\Russian\verb($verb, $gender));
+        $this->assertEquals($correctVerb, \morphos\Russian\RussianLanguage::verb($verb, $gender));
     }
 
     public function verbsProvider()

@@ -108,19 +108,3 @@ function pluralize($count, $word, $animateness = false)
 {
     return $count.' '.NounPluralization::pluralize($word, $count, $animateness);
 }
-
-/**
- * @param string $verb Verb to modify if gender is female
- * @param string $gender If not `m`, verb will be modified
- * @return string Correct verb
- */
-function verb($verb, $gender)
-{
-    // возвратный глагол
-    if (S::slice($verb, -2) == 'ся') {
-        return ($gender == 'm' ? $verb : mb_substr($verb, 0, -2).'ась');
-    }
-
-    // обычный глагол
-    return ($gender == 'm' ? $verb : $verb.'а');
-}

@@ -1,6 +1,7 @@
 <?php
 namespace morphos\Russian;
 
+use morphos\Gender;
 use morphos\S;
 
 trait RussianLanguage
@@ -124,4 +125,64 @@ trait RussianLanguage
             return $after_hard;
         }
     }
+
+	/**
+	 * @param string $verb Verb to modify if gender is female
+	 * @param string $gender If not `m`, verb will be modified
+	 * @return string Correct verb
+	 */
+	public static function verb($verb, $gender)
+	{
+		$verb = S::lower($verb);
+		// возвратный глагол
+		if (S::slice($verb, -2) == 'ся') {
+			return ($gender == Gender::MALE ? $verb : mb_substr($verb, 0, -2).'ась');
+		}
+
+		// обычный глагол
+		return ($gender == Gender::MALE ? $verb : $verb.'а');
+	}
+
+	/**
+	 * Add 'в' or 'во' prepositional before the word
+	 * @param string $word
+	 * @return string
+	 */
+	public static function in($word)
+	{
+		$normalized = trim(S::lower($word));
+		if (in_array(S::slice($normalized, 0, 1), ['в', 'ф']))
+			return 'во '.$word;
+		return 'в '.$word;
+	}
+
+	/**
+	 * Add 'с' or 'со' prepositional before the word
+	 * @param string $word
+	 * @return string
+	 */
+	public static function with($word)
+	{
+		$normalized = trim(S::lower($word));
+		if (in_array(S::slice($normalized, 0, 1), ['c', 'з', 'ш', 'ж']) && static::isConsonant(S::slice($normalized, 1, 2)) || S::slice($normalized, 0, 1) == 'щ')
+			return 'со '.$word;
+		return 'с '.$word;
+	}
+
+	/**
+	 * Add 'о' or 'об' or 'обо' prepositional before the word
+	 * @param string $word
+	 * @return string
+	 */
+	public static function about($word)
+	{
+		$normalized = trim(S::lower($word));
+		if (static::isVowel(S::slice($normalized, 0, 1)) && !in_array(S::slice($normalized, 0, 1), ['е', 'ё', 'ю', 'я']))
+			return 'об '.$word;
+
+		if (in_array(S::slice($normalized, 0, 3), ['все', 'всё', 'всю', 'что', 'мне']))
+			return 'обо '.$word;
+
+		return 'о '.$word;
+	}
 }
