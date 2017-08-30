@@ -135,7 +135,7 @@ class NounPluralization extends \morphos\NounPluralization implements Cases
 
         if ($last == 'ч' || in_array(S::slice($word, -2), array('чь', 'сь', 'ть', 'нь')) || (self::isVowel($last) && in_array(S::slice($word, -2, -1), array('ч', 'к')))) { // before ч, чь, сь, ч+vowel, к+vowel
             $forms[Cases::IMENIT] = $prefix.'и';
-        } elseif ($last == 'н' || $last == 'ц') {
+        } elseif (in_array($last, ['н', 'ц', 'р', 'т'])) {
             $forms[Cases::IMENIT] = $prefix.'ы';
         } else {
             $forms[Cases::IMENIT] = self::chooseVowelAfterConsonant($last, $soft_last, $prefix.'я', $prefix.'а');
