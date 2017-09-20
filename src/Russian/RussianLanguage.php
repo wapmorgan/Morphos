@@ -6,6 +6,9 @@ use morphos\S;
 
 trait RussianLanguage
 {
+	/**
+	 * @var array Все гласные
+	 */
     public static $vowels = array(
         'а',
         'е',
@@ -19,6 +22,9 @@ trait RussianLanguage
         'я',
     );
 
+    /**
+     * @var array Все согласные
+     */
     public static $consonants = array(
         'б',
         'в',
@@ -43,6 +49,9 @@ trait RussianLanguage
         'щ',
     );
 
+    /**
+     * @var array Пары согласных
+     */
     public static $pairs = array(
         'б' => 'п',
         'в' => 'ф',
@@ -52,29 +61,50 @@ trait RussianLanguage
         'з' => 'с',
     );
 
-    public static $deafConsonants = ['х', 'ч', 'щ'];
-    public static $sonorousConsonants = ['л', 'м', 'н', 'р'];
+    /**
+     * @var array Звонкие согласные
+     */
+    public static $sonorousConsonants = ['б', 'в', 'г', 'д', 'з', 'ж', 'л', 'м', 'н', 'р'];
+    /**
+     * @var array Глухие согласные
+     */
+    public static $deafConsonants = ['п', 'ф', 'к', 'т', 'с', 'ш', 'х', 'ч', 'щ'];
 
+    /**
+     * Проверка гласной
+     */
 	public static function isVowel($char)
 	{
 		return in_array($char, self::$vowels);
 	}
 
+	/**
+	 * Проверка согласной
+	 */
 	public static function isConsonant($char)
 	{
 		return in_array($char, self::$consonants);
 	}
 
-	public static function isDeafConsonant($char)
-	{
-		return in_array($char, self::$deafConsonants);
-	}
-
+	/**
+	 * Проверка звонкости согласной
+	 */
 	public static function isSonorousConsonant($char)
 	{
 		return in_array($char, self::$sonorousConsonants);
 	}
 
+	/**
+	 * Проверка глухости согласной
+	 */
+	public static function isDeafConsonant($char)
+	{
+		return in_array($char, self::$deafConsonants);
+	}
+
+	/**
+	 * Щипящая ли согласная
+	 */
     public static function isHissingConsonant($consonant)
     {
         return in_array(S::lower($consonant), array('ж', 'ш', 'ч', 'щ'));
@@ -85,17 +115,26 @@ trait RussianLanguage
         return in_array(S::lower($consonant), array('г', 'к', 'х'));
     }
 
+    /**
+     * Подсчет слогов
+     */
     public static function countSyllables($string)
     {
         return S::chars_count($string, self::$vowels);
     }
 
+    /**
+     * Проверка парности согласной
+     */
     public static function isPaired($consonant)
     {
         $consonant = S::lower($consonant);
         return array_key_exists($consonant, self::$pairs) || (array_search($consonant, self::$pairs) !== false);
     }
 
+    /**
+     * Проверка мягкости последней согласной
+     */
     public static function checkLastConsonantSoftness($word)
     {
         if (($substring = S::last_position_for_one_of_chars(S::lower($word), self::$consonants)) !== false) {
@@ -108,6 +147,9 @@ trait RussianLanguage
         return false;
     }
 
+    /**
+     * Выбор предлога по первой букве
+     */
     public static function choosePrepositionByFirstLetter($word, $prepositionWithVowel, $preposition)
     {
         if (in_array(S::upper(S::slice($word, 0, 1)), array('А', 'О', 'И', 'У', 'Э'))) {
@@ -117,6 +159,9 @@ trait RussianLanguage
         }
     }
 
+    /**
+     * Выбор окончания в зависимости от мягкости
+     */
     public static function chooseVowelAfterConsonant($last, $soft_last, $after_soft, $after_hard)
     {
         if ((RussianLanguage::isHissingConsonant($last) && !in_array($last, array('ж', 'ч'))) || /*self::isVelarConsonant($last) ||*/ $soft_last) {
@@ -184,5 +229,24 @@ trait RussianLanguage
 			return 'обо '.$word;
 
 		return 'о '.$word;
+	}
+
+	/**
+	 * Выбирает первое или второе окончание в зависимости от звонкости/глухости в конце слова.
+	 * @param string $word Слово (или префикс), на основе звонкости которого нужно выбрать окончание
+	 * @param string $ifSonorous Окончание, если слово оканчивается на звонкую согласную
+	 * @param string $ifDead Окончание, если слово оканчивается на глухую согласную
+	 * @return string Первое или второе окончание
+	 */
+	public static function chooseEndingBySonority($word, $ifSononous, $ifDeaf)
+	{
+		$last = S::slice($word, -1);
+		var_dump($last);
+		if (self::isSonorousConsonant($last))
+			return $ifSononous;
+		if (self::isDeafConsonant($last))
+			return $ifDeaf;
+
+		throw new \Exception('Not implemented');
 	}
 }

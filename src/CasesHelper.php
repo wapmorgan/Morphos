@@ -40,4 +40,17 @@ trait CasesHelper
                 throw new Exception('Invalid case: '.$case);
         }
     }
+
+    public static function getAllCases()
+    {
+        return [
+            Cases::NOMINATIVE,
+            Cases::GENITIVE,
+            Cases::GENETIVE,
+            Cases::DATIVE,
+            Cases::ACCUSATIVE,
+            Cases::ABLATIVE,
+            Cases::PREPOSITIONAL,
+        ];
+    }
 }

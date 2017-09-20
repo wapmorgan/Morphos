@@ -20,12 +20,25 @@ class GeographicalNamesInflection extends \morphos\BaseInflection implements Cas
     public static function isMutable($name)
     {
         $name = S::lower($name);
+
         // // ends with 'ы' or 'и': plural form
         // if (in_array(S::slice($name, -1), array('и', 'ы')))
         //     return false;
+
         if (in_array($name, self::$abbreviations)) {
             return false;
         }
+
+        // N край
+        if (S::slice($name, -5) == ' край') {
+            return static::isMutable(S::slice($name, 0, -5));
+        }
+
+        // город N
+        if (S::slice($name, 0, 6) == 'город ') {
+            return true;
+        }
+
         // ends with 'е' or 'о', but not with 'ово/ёво/ево/ино/ыно'
         if (in_array(S::slice($name, -1), array('е', 'о')) && !in_array(S::slice($name, -3, -1), array('ов', 'ёв', 'ев', 'ин', 'ын'))) {
             return false;
@@ -36,6 +49,20 @@ class GeographicalNamesInflection extends \morphos\BaseInflection implements Cas
     public static function getCases($name)
     {
         $name = S::lower($name);
+
+        // N край
+        if (S::slice($name, -5) == ' край') {
+            return self::composeCasesFromWords([static::getCases(S::slice($name, 0, -5)), NounDeclension::getCases('край')]);
+
+        }
+
+        // город N
+        if (S::slice($name, 0, 6) == 'город ') {
+            return self::composeCasesFromWords([
+                NounDeclension::getCases('город'),
+                array_combine(self::getAllCases(), array_fill(0, 6, S::slice($name, -6)))
+            ]);
+        }
 
         // check for name of two words
         if (strpos($name, ' ') !== false) {
@@ -69,7 +96,7 @@ class GeographicalNamesInflection extends \morphos\BaseInflection implements Cas
                     self::DAT => $prefix.(self::isVelarConsonant(S::slice($name, -3, -2)) ? 'ому' : 'ему'),
                     self::VINIT => $prefix.'ий',
                     self::TVORIT => $prefix.'им',
-                    self::PREDLOJ => self::choosePrepositionByFirstLetter($prefix, 'об', 'о').' '.$prefix.'ем',
+                    self::PREDLOJ => self::choosePrepositionByFirstLetter($prefix, 'об', 'о').' '.$prefix.(self::chooseEndingBySonority($prefix, 'ем', 'ом')),
                 );
             } else if (S::slice($name, -2) == 'ый') {
                 // Грозный, Благодарный
