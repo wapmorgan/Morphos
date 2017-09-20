@@ -66,7 +66,7 @@ class CardinalNumeralGenerator extends NumeralGenerator implements Cases
                 self::DAT => 'одному',
                 self::VINIT => 'один',
                 self::TVORIT => 'одним',
-                self::PREDLOJ => 'об одном',
+                self::PREDLOJ => 'одном',
             ),
             self::FEMALE => array(
                 self::IMENIT => 'одна',
@@ -74,7 +74,7 @@ class CardinalNumeralGenerator extends NumeralGenerator implements Cases
                 self::DAT => 'одной',
                 self::VINIT => 'одну',
                 self::TVORIT => 'одной',
-                self::PREDLOJ => 'об одной',
+                self::PREDLOJ => 'одной',
             ),
             self::NEUTER => array(
                 self::IMENIT => 'одно',
@@ -82,7 +82,7 @@ class CardinalNumeralGenerator extends NumeralGenerator implements Cases
                 self::DAT => 'одному',
                 self::VINIT => 'одно',
                 self::TVORIT => 'одним',
-                self::PREDLOJ => 'об одном',
+                self::PREDLOJ => 'одном',
             ),
         ),
         'два' => array(
@@ -92,7 +92,7 @@ class CardinalNumeralGenerator extends NumeralGenerator implements Cases
                 self::DAT => 'двум',
                 self::VINIT => 'два',
                 self::TVORIT => 'двумя',
-                self::PREDLOJ => 'о двух',
+                self::PREDLOJ => 'двух',
             ),
             self::FEMALE => array(
                 self::IMENIT => 'две',
@@ -100,7 +100,7 @@ class CardinalNumeralGenerator extends NumeralGenerator implements Cases
                 self::DAT => 'двум',
                 self::VINIT => 'две',
                 self::TVORIT => 'двумя',
-                self::PREDLOJ => 'о двух',
+                self::PREDLOJ => 'двух',
             ),
             self::NEUTER => array(
                 self::IMENIT => 'два',
@@ -108,7 +108,7 @@ class CardinalNumeralGenerator extends NumeralGenerator implements Cases
                 self::DAT => 'двум',
                 self::VINIT => 'два',
                 self::TVORIT => 'двумя',
-                self::PREDLOJ => 'о двух',
+                self::PREDLOJ => 'двух',
             ),
         ),
         'три' => array(
@@ -117,7 +117,7 @@ class CardinalNumeralGenerator extends NumeralGenerator implements Cases
             self::DAT => 'трем',
             self::VINIT => 'три',
             self::TVORIT => 'тремя',
-            self::PREDLOJ => 'о трех',
+            self::PREDLOJ => 'трех',
         ),
         'четыре' => array(
             self::IMENIT => 'четыре',
@@ -125,7 +125,7 @@ class CardinalNumeralGenerator extends NumeralGenerator implements Cases
             self::DAT => 'четырем',
             self::VINIT => 'четыре',
             self::TVORIT => 'четырьмя',
-            self::PREDLOJ => 'о четырех',
+            self::PREDLOJ => 'четырех',
         ),
         'двести' => array(
             self::IMENIT => 'двести',
@@ -133,7 +133,7 @@ class CardinalNumeralGenerator extends NumeralGenerator implements Cases
             self::DAT => 'двумстам',
             self::VINIT => 'двести',
             self::TVORIT => 'двумястами',
-            self::PREDLOJ => 'о двухстах',
+            self::PREDLOJ => 'двухстах',
         ),
         'восемьсот' => array(
             self::IMENIT => 'восемьсот',
@@ -141,7 +141,7 @@ class CardinalNumeralGenerator extends NumeralGenerator implements Cases
             self::DAT => 'восьмистам',
             self::VINIT => 'восемьсот',
             self::TVORIT => 'восьмистами',
-            self::PREDLOJ => 'о восьмистах',
+            self::PREDLOJ => 'восьмистах',
         ),
         'тысяча' => array(
             self::IMENIT => 'тысяча',
@@ -149,7 +149,7 @@ class CardinalNumeralGenerator extends NumeralGenerator implements Cases
             self::DAT => 'тысячам',
             self::VINIT => 'тысяч',
             self::TVORIT => 'тысячей',
-            self::PREDLOJ => 'о тысячах',
+            self::PREDLOJ => 'тысячах',
         ),
     );
 
@@ -172,7 +172,7 @@ class CardinalNumeralGenerator extends NumeralGenerator implements Cases
                     self::DAT => $prefix.'и',
                     self::VINIT => $word,
                     self::TVORIT => $prefix.'ью',
-                    self::PREDLOJ => self::choosePrepositionByFirstLetter($prefix, 'об', 'о').' '.$prefix.'и',
+                    self::PREDLOJ => $prefix.'и',
                 );
             } elseif (in_array($number, array(40, 90, 100))) {
                 $prefix = $number == 40 ? $word : S::slice($word, 0, -1);
@@ -182,7 +182,7 @@ class CardinalNumeralGenerator extends NumeralGenerator implements Cases
                     self::DAT => $prefix.'а',
                     self::VINIT => $word,
                     self::TVORIT => $prefix.'а',
-                    self::PREDLOJ => self::choosePrepositionByFirstLetter($prefix, 'об', 'о').' '.$prefix.'а',
+                    self::PREDLOJ => $prefix.'а',
                 );
             } elseif (($number >= 50 && $number <= 80)) {
                 $prefix = S::slice($word, 0, -6);
@@ -192,7 +192,7 @@ class CardinalNumeralGenerator extends NumeralGenerator implements Cases
                     self::DAT => $prefix.'идесяти',
                     self::VINIT => $prefix.'ьдесят',
                     self::TVORIT => $prefix.'ьюдесятью',
-                    self::PREDLOJ => self::choosePrepositionByFirstLetter($word, 'об', 'о').' '.$prefix.'идесяти',
+                    self::PREDLOJ => $prefix.'идесяти',
                 );
             } elseif (in_array($number, array(300, 400))) {
                 $prefix = S::slice($word, 0, -4);
@@ -202,7 +202,7 @@ class CardinalNumeralGenerator extends NumeralGenerator implements Cases
                     self::DAT => $prefix.'емстам',
                     self::VINIT => $word,
                     self::TVORIT => $prefix.($number == 300 ? 'е' : 'ь').'мястами',
-                    self::PREDLOJ => self::choosePrepositionByFirstLetter($word, 'об', 'о').' '.$prefix.'ехстах',
+                    self::PREDLOJ => $prefix.'ехстах',
                 );
             } elseif ($number >= 500 && $number <= 900) {
                 $prefix = S::slice($word, 0, -4);
@@ -212,7 +212,7 @@ class CardinalNumeralGenerator extends NumeralGenerator implements Cases
                     self::DAT => $prefix.'истам',
                     self::VINIT => $word,
                     self::TVORIT => $prefix.'ьюстами',
-                    self::PREDLOJ => self::choosePrepositionByFirstLetter($word, 'об', 'о').' '.$prefix.'истах',
+                    self::PREDLOJ => $prefix.'истах',
                 );
             } elseif (isset(self::$exponents[$number])) {
                 return NounDeclension::getCases($word, false);
@@ -224,7 +224,7 @@ class CardinalNumeralGenerator extends NumeralGenerator implements Cases
                 self::DAT => 'нолю',
                 self::VINIT => 'ноль',
                 self::TVORIT => 'нолём',
-                self::PREDLOJ => 'о ноле',
+                self::PREDLOJ => 'ноле',
             );
         }
         // compound numeral
@@ -270,9 +270,6 @@ class CardinalNumeralGenerator extends NumeralGenerator implements Cases
             foreach (array(self::IMENIT, self::RODIT, self::DAT, self::VINIT, self::TVORIT, self::PREDLOJ) as $case) {
                 $result[$case] = array();
                 foreach ($parts as $partN => $part) {
-                    if ($case == self::PREDLOJ && $partN > 0) {
-                        list(, $part[$case]) = explode(' ', $part[$case], 2);
-                    }
                     $result[$case][] = $part[$case];
                 }
                 $result[$case] = implode(' ', $result[$case]);

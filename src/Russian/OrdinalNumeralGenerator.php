@@ -110,7 +110,7 @@ class OrdinalNumeralGenerator extends NumeralGenerator implements Cases
                     self::DAT => $prefix.($gender == self::FEMALE ? 'ьей' : 'ьему'),
                     self::VINIT => $prefix.($gender == self::FEMALE ? 'ью' : 'ьего'),
                     self::TVORIT => $prefix.($gender == self::FEMALE ? 'ьей' : 'ьим'),
-                    self::PREDLOJ => self::choosePrepositionByFirstLetter($prefix, 'об', 'о').' '.$prefix.($gender == self::FEMALE ? 'ьей' : 'ьем'),
+                    self::PREDLOJ => $prefix.($gender == self::FEMALE ? 'ьей' : 'ьем'),
                 );
             } else {
                 switch ($gender) {
@@ -122,7 +122,7 @@ class OrdinalNumeralGenerator extends NumeralGenerator implements Cases
                             self::DAT => $prefix.'ому',
                             self::VINIT => $word,
                             self::TVORIT => $prefix.'ым',
-                            self::PREDLOJ => self::choosePrepositionByFirstLetter($prefix, 'об', 'о').' '.$prefix.'ом',
+                            self::PREDLOJ => $prefix.'ом',
                         );
 
                     case self::FEMALE:
@@ -133,7 +133,7 @@ class OrdinalNumeralGenerator extends NumeralGenerator implements Cases
                             self::DAT => $prefix.'ой',
                             self::VINIT => $prefix.'ую',
                             self::TVORIT => $prefix.'ой',
-                            self::PREDLOJ => self::choosePrepositionByFirstLetter($prefix, 'об', 'о').' '.$prefix.'ой',
+                            self::PREDLOJ => $prefix.'ой',
                         );
 
                     case self::NEUTER:
@@ -144,7 +144,7 @@ class OrdinalNumeralGenerator extends NumeralGenerator implements Cases
                             self::DAT => $prefix.'ому',
                             self::VINIT => $prefix.'ое',
                             self::TVORIT => $prefix.'ым',
-                            self::PREDLOJ => self::choosePrepositionByFirstLetter($prefix, 'об', 'о').' '.$prefix.'ом',
+                            self::PREDLOJ => $prefix.'ом',
                         );
                 }
             }
@@ -169,12 +169,7 @@ class OrdinalNumeralGenerator extends NumeralGenerator implements Cases
                     }
                     $ordinal_part = self::getCases($word_number, $gender);
                     foreach ($ordinal_part as $case => $ordinal_word) {
-                        if ($case == self::PREDLOJ) {
-                            list(, $ordinal_part[$case]) = explode(' ', $ordinal_part[$case]);
-                            $ordinal_part[$case] = self::choosePrepositionByFirstLetter($ordinal_prefix, 'об', 'о').' '.$ordinal_prefix.$ordinal_part[$case];
-                        } else {
-                            $ordinal_part[$case] = $ordinal_prefix.$ordinal_part[$case];
-                        }
+                        $ordinal_part[$case] = $ordinal_prefix.$ordinal_part[$case];
                     }
 
                     break;
@@ -217,12 +212,7 @@ class OrdinalNumeralGenerator extends NumeralGenerator implements Cases
 
                 // make one array with cases and delete 'o/об' prepositional from all parts except the last one
                 foreach (array(self::IMENIT, self::RODIT, self::DAT, self::VINIT, self::TVORIT, self::PREDLOJ) as $case) {
-                    if ($case == self::PREDLOJ) {
-                        list(, $ordinal_part[$case]) = explode(' ', $ordinal_part[$case]);
-                        $result[$case] = self::choosePrepositionByFirstLetter($cardinal_part, 'об', 'о').' '.$cardinal_part.' '.$ordinal_part[$case];
-                    } else {
-                        $result[$case] = $cardinal_part.' '.$ordinal_part[$case];
-                    }
+                    $result[$case] = $cardinal_part.' '.$ordinal_part[$case];
                 }
             } else {
                 $result = $ordinal_part;

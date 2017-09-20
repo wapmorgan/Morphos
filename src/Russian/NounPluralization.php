@@ -98,7 +98,7 @@ class NounPluralization extends \morphos\NounPluralization implements Cases
                 self::DAT => $word,
                 self::VINIT => $word,
                 self::TVORIT => $word,
-                self::PREDLOJ => self::choosePrepositionByFirstLetter($word, 'об', 'о').' '.$word,
+                self::PREDLOJ => $word,
             );
         }
 
@@ -189,7 +189,7 @@ class NounPluralization extends \morphos\NounPluralization implements Cases
 
         // PREDLOJ
         $forms[Cases::PREDLOJ] = self::chooseVowelAfterConsonant($last, $soft_last && S::slice($word, -2, -1) != 'ч', $prefix.'ях', $prefix.'ах');
-        $forms[Cases::PREDLOJ] = self::choosePrepositionByFirstLetter($forms[Cases::PREDLOJ], 'об', 'о').' '.$forms[Cases::PREDLOJ];
+        $forms[Cases::PREDLOJ] = $forms[Cases::PREDLOJ];
         return $forms;
     }
 
@@ -206,7 +206,7 @@ class NounPluralization extends \morphos\NounPluralization implements Cases
             Cases::DAT => $prefix.$vowel.'м',
             Cases::VINIT => $prefix.$vowel.($animateness ? 'х' : 'е'),
             Cases::TVORIT => $prefix.$vowel.'ми',
-            Cases::PREDLOJ => self::choosePrepositionByFirstLetter($prefix, 'об', 'о').' '.$prefix.$vowel.'х',
+            Cases::PREDLOJ => $prefix.$vowel.'х',
         );
     }
 }

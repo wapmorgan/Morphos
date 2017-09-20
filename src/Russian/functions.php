@@ -36,37 +36,19 @@ function inflectName($fullname, $case = null, $gender = null)
             $name[1] = FirstNamesInflection::getCases($name[1], $gender);
             $name[2] = MiddleNamesInflection::getCases($name[2], $gender);
         }
-        foreach (array(Cases::IMENIT, Cases::RODIT, Cases::DAT, Cases::VINIT, Cases::TVORIT, Cases::PREDLOJ) as $case) {
-            foreach ($name as $partNum => $namePart) {
-                if ($case == Cases::PREDLOJ && $partNum > 0) {
-                    list(, $namePart[$case]) = explode(' ', $namePart[$case]);
-                }
-                $result[$case][] = $namePart[$case];
-            }
-            $result[$case] = implode(' ', $result[$case]);
-        }
-        return $result;
+        return CasesHelper::composeCasesFromWords($name);
     } else {
         $case = CasesHelper::canonizeCase($case);
         if (count($name) == 2) {
             $name[0] = LastNamesInflection::getCase($name[0], $case, $gender);
             $name[1] = FirstNamesInflection::getCase($name[1], $case, $gender);
-            if ($case == Cases::PREDLOJ) {
-                list(, $name[1]) = explode(' ', $name[1]);
-            }
         } elseif (count($name) == 3) {
             $name[0] = LastNamesInflection::getCase($name[0], $case, $gender);
             $name[1] = FirstNamesInflection::getCase($name[1], $case, $gender);
-            if ($case == Cases::PREDLOJ) {
-                list(, $name[1]) = explode(' ', $name[1]);
-            }
             $name[2] = MiddleNamesInflection::getCase($name[2], $case, $gender);
-            if ($case == Cases::PREDLOJ) {
-                list(, $name[2]) = explode(' ', $name[2]);
-            }
         }
+    	return implode(' ', $name);
     }
-    return implode(' ', $name);
 }
 
 /**

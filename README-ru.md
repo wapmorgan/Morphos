@@ -63,7 +63,7 @@ inflectName('Базанов Иосиф Валерьянович') => array(6) {
   'dative' => 'Базанову Иосифу Валерьяновичу',
   'accusative' => 'Базанова Иосифа Валерьяновича',
   'ablative' => 'Базановым Иосифом Валерьяновичем',
-  'prepositional' => 'о Базанове Иосифе Валерьяновиче'
+  'prepositional' => 'Базанове Иосифе Валерьяновиче'
 }
 ```
 
@@ -111,7 +111,7 @@ FirstNamesInflection::getCases($user_name) => array(6) {
     "dative" => "Ивану",
     "accusative" => "Ивана",
     "ablative" => "Иваном",
-    "prepositional" => "об Иване"
+    "prepositional" => "Иване"
 }
 ```
 
@@ -129,7 +129,7 @@ MiddleNamesInflection::getCases($user_name) => array(6) {
     "dative" => "Сергеевичу",
     "accusative" => "Сергеевича",
     "ablative" => "Сергеевичем",
-    "prepositional" => "о Сергеевиче"
+    "prepositional" => "Сергеевиче"
 }
 ```
 
@@ -149,7 +149,7 @@ LastNamesInflection::getCases($user_last_name) => array(6) {
     "dative" => "Иванову",
     "accusative" => "Иванова",
     "ablative" => "Ивановым",
-    "prepositional" => "об Иванове"
+    "prepositional" => "Иванове"
 }
 ```
 
@@ -160,6 +160,12 @@ LastNamesInflection::getCases($user_last_name) => array(6) {
 - `boolean isMutable($name)` - проверяет, что имя склоняемо.
 - `string getCase($name, $case)` - склоняет имя и возвращает результат.`$case` - это одна из констант `morphos\Cases` или `morphos\Russian\Cases`.
 - `array getCases($word)` - склоняет имя во всех падежах и возвращает результат в виде массива.
+
+Что склоняется:
+- название города с приставкой или без - `Москва`, `город Санкт-Петербург`
+- название области: `Ростовская область`
+- название края: `Краснодарский край`
+- страны: `Россия`, `Франция`, `Украина`
 
 _Пример_
 
@@ -174,7 +180,7 @@ GeographicalNamesInflection::getCases('Саратов') => array(6) {
     "dative" => "Саратову",
     "accusative" => "Саратов",
     "ablative" => "Саратовом",
-    "prepositional" => "о Саратове"
+    "prepositional" => "Саратове"
 }
 ```
 
@@ -203,7 +209,7 @@ NounDeclension::getCases('линейка') => array(6) {
     "dative" => "линейке",
     "accusative" => "линейку",
     "ablative" => "линейкой",
-    "prepositional" => "о линейке"
+    "prepositional" => "линейке"
 }
 ```
 
@@ -231,7 +237,7 @@ NounPluralization::getCases('поле') => array(6) {
     "dative" => "полям",
     "accusative" => "поля",
     "ablative" => "полями",
-    "prepositional" => "о полях"
+    "prepositional" => "полях"
 }
 
 $count = 10;
@@ -269,7 +275,7 @@ CardinalNumeralGenerator::getCases($number) => array(6) {
     "dative" => "четырем тысячам тремстам пятидесяти одному",
     "accusative" => "четыре тысячи триста пятьдесят один",
     "ablative" => "четырьмя тысячами тремястами пятьюдесятью одним",
-    "prepositional" => "о четырех тысячах трехстах пятидесяти одном"
+    "prepositional" => "четырех тысячах трехстах пятидесяти одном"
 }
 ```
 
@@ -294,7 +300,7 @@ OrdinalNumeralGenerator::getCases($number) => array(6) {
     "dative" => "шестьдесят семь тысяч девятьсот сорок пятому",
     "accusative" => "шестьдесят семь тысяч девятьсот сорок пятый",
     "ablative" => "шестьдесят семь тысяч девятьсот сорок пятым",
-    "prepositional" => "о шестьдесят семь тысяч девятьсот сорок пятом"
+    "prepositional" => "шестьдесят семь тысяч девятьсот сорок пятом"
 }
 ```
 
@@ -372,8 +378,21 @@ TimeSpeller::spellInterval(new DateInterval('P5YT2M'), TimeSpeller::DIRECTION | 
 * `about($word)` - добавляет предлог `о`, `об` или `обо` в зависимости от того, с каких букв начинается слово.
 * `verb($verb, $gender)` - изменяет окончание глагола в прошедшем времени в зависимости от рода.
 
+### Предлоги
+
+Чтобы добавить предлог `о` или `об` в зависимости от того, с чего начинается следующее слово, используйте метод `about()`:
+```php
+use morphos\Russian\FirstNamesInflection;
+use morphos\Russian\RussianLanguage;
+
+RussianLanguage::about('Иване') => 'об Иване'
+// или комбинируйте с другими функциями склонения
+$name = 'Андрей';
+RussianLanguage::about(FirstNamesInflection::getCase($name, 'п')) => 'об Андрее'
+```
+
 ### Окончание глаголов
-    
+
 Глаголы в прошедшем времени в русском языке имеют признак рода. Чтобы упростить подбор правильной формы глаголы используйте функцию:
 
 ```php

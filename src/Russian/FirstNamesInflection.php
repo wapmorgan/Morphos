@@ -18,7 +18,7 @@ class FirstNamesInflection extends \morphos\NamesInflection implements Cases
             self::DAT => 'Льву',
             self::VINIT => 'Льва',
             self::TVORIT => 'Львом',
-            self::PREDLOJ => 'о Льве',
+            self::PREDLOJ => 'Льве',
         ),
         'павел' => array(
             self::IMENIT => 'Павел',
@@ -26,7 +26,7 @@ class FirstNamesInflection extends \morphos\NamesInflection implements Cases
             self::DAT => 'Павлу',
             self::VINIT => 'Павла',
             self::TVORIT => 'Павлом',
-            self::PREDLOJ => 'о Павле',
+            self::PREDLOJ => 'Павле',
         )
     );
 
@@ -446,7 +446,7 @@ class FirstNamesInflection extends \morphos\NamesInflection implements Cases
                 self::DAT => $prefix.'и',
                 self::VINIT => $prefix.'ю',
                 self::TVORIT => $prefix.'ей',
-                self::PREDLOJ => self::choosePrepositionByFirstLetter($prefix, 'об', 'о').' '.$prefix.'и',
+                self::PREDLOJ => $prefix.'и',
             );
         } elseif (S::slice($name, -1) == 'я') {
             $prefix = S::name(S::slice($name, 0, -1));
@@ -456,7 +456,7 @@ class FirstNamesInflection extends \morphos\NamesInflection implements Cases
                 self::DAT => $prefix.'е',
                 self::VINIT => $prefix.'ю',
                 self::TVORIT => $prefix.'ей',
-                self::PREDLOJ => self::choosePrepositionByFirstLetter($prefix, 'об', 'о').' '.$prefix.'е',
+                self::PREDLOJ => $prefix.'е',
             );
         }
 
@@ -474,7 +474,7 @@ class FirstNamesInflection extends \morphos\NamesInflection implements Cases
         }
 
         $name = S::name($name);
-        return array_fill_keys(array(self::IMENIT, self::RODIT, self::DAT, self::VINIT, self::TVORIT), $name) + array(self::PREDLOJ => self::choosePrepositionByFirstLetter($name, 'об', 'о').' '.$name);
+        return array_fill_keys(array(self::IMENIT, self::RODIT, self::DAT, self::VINIT, self::TVORIT, self::PREDLOJ), $name);
     }
 
     protected static function getCasesMan($name)
@@ -493,7 +493,7 @@ class FirstNamesInflection extends \morphos\NamesInflection implements Cases
                 self::DAT => $prefix.'у',
                 self::VINIT => $prefix.'а',
                 self::TVORIT => RussianLanguage::isHissingConsonant(S::slice($name, -1)) || S::slice($name, -1) == 'ц' ? $prefix.'ем' : $prefix.'ом',
-                self::PREDLOJ => self::choosePrepositionByFirstLetter($prefix, 'об', 'о').' '.$prefix.'е',
+                self::PREDLOJ => $prefix.'е',
             );
         } elseif (S::slice($name, -1) == 'ь' && self::isConsonant(S::slice($name, -2, -1))) { // soft consonant
             $prefix = S::name(S::slice($name, 0, -1));
@@ -503,7 +503,7 @@ class FirstNamesInflection extends \morphos\NamesInflection implements Cases
                 self::DAT => $prefix.'ю',
                 self::VINIT => $prefix.'я',
                 self::TVORIT => $prefix.'ем',
-                self::PREDLOJ => self::choosePrepositionByFirstLetter($prefix, 'об', 'о').' '.$prefix.'е',
+                self::PREDLOJ => $prefix.'е',
             );
         } elseif (in_array(S::slice($name, -2), array('ай', 'ей', 'ой', 'уй', 'яй', 'юй', 'ий'))) {
             $prefix = S::name(S::slice($name, 0, -1));
@@ -514,7 +514,7 @@ class FirstNamesInflection extends \morphos\NamesInflection implements Cases
                 self::DAT => $prefix.'ю',
                 self::VINIT => $prefix.'я',
                 self::TVORIT => $prefix.'ем',
-                self::PREDLOJ => self::choosePrepositionByFirstLetter($prefix, 'об', 'о').' '.$prefix.$postfix,
+                self::PREDLOJ => $prefix.$postfix,
             );
         } elseif (S::slice($name, -1) == 'а' && self::isConsonant($before = S::slice($name, -2, -1)) && !in_array($before, array(/*'г', 'к', 'х', */'ц'))) {
             $prefix = S::name(S::slice($name, 0, -1));
@@ -525,7 +525,7 @@ class FirstNamesInflection extends \morphos\NamesInflection implements Cases
                 self::DAT => $prefix.'е',
                 self::VINIT => $prefix.'у',
                 self::TVORIT => $prefix.'ой',
-                self::PREDLOJ => self::choosePrepositionByFirstLetter($prefix, 'об', 'о').' '.$prefix.'е',
+                self::PREDLOJ => $prefix.'е',
             );
         } elseif (S::slice($name, -2) == 'ло' || S::slice($name, -2) == 'ко') {
             $prefix = S::name(S::slice($name, 0, -1));
@@ -536,7 +536,7 @@ class FirstNamesInflection extends \morphos\NamesInflection implements Cases
                 self::DAT => $prefix.'е',
                 self::VINIT => $prefix.'у',
                 self::TVORIT => $prefix.'ой',
-                self::PREDLOJ => self::choosePrepositionByFirstLetter($prefix, 'об', 'о').' '.$prefix.'е',
+                self::PREDLOJ => $prefix.'е',
             );
         }
 
@@ -555,7 +555,7 @@ class FirstNamesInflection extends \morphos\NamesInflection implements Cases
                     self::DAT => $prefix.'е',
                     self::VINIT => $prefix.'у',
                     self::TVORIT => $prefix.'ой',
-                    self::PREDLOJ => self::choosePrepositionByFirstLetter($prefix, 'об', 'о').' '.$prefix.'е',
+                    self::PREDLOJ => $prefix.'е',
                 );
             } else {
                 return array(
@@ -564,7 +564,7 @@ class FirstNamesInflection extends \morphos\NamesInflection implements Cases
                     self::DAT => $prefix.'е',
                     self::VINIT => $prefix.'у',
                     self::TVORIT => $prefix.'ей',
-                    self::PREDLOJ => self::choosePrepositionByFirstLetter($prefix, 'об', 'о').' '.$prefix.'е',
+                    self::PREDLOJ => $prefix.'е',
                 );
             }
         } elseif (S::slice($name, -1) == 'ь' && self::isConsonant(S::slice($name, -2, -1))) {
@@ -575,7 +575,7 @@ class FirstNamesInflection extends \morphos\NamesInflection implements Cases
                 self::DAT => $prefix.'и',
                 self::VINIT => $prefix.'ь',
                 self::TVORIT => $prefix.'ью',
-                self::PREDLOJ => self::choosePrepositionByFirstLetter($prefix, 'об', 'о').' '.$prefix.'и',
+                self::PREDLOJ => $prefix.'и',
             );
         } elseif (RussianLanguage::isHissingConsonant(S::slice($name, -1))) {
             $prefix = S::name($name);
@@ -585,7 +585,7 @@ class FirstNamesInflection extends \morphos\NamesInflection implements Cases
                 self::DAT => $prefix.'и',
                 self::VINIT => $prefix,
                 self::TVORIT => $prefix.'ью',
-                self::PREDLOJ => self::choosePrepositionByFirstLetter($prefix, 'об', 'о').' '.$prefix.'и',
+                self::PREDLOJ => $prefix.'и',
             );
         }
         return null;

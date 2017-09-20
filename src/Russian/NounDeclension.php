@@ -30,8 +30,8 @@ class NounDeclension extends \morphos\BaseInflection implements Cases, Gender
         'имя',
         'племя',
         'семя',
-        'путь' => array('путь', 'пути', 'пути', 'путь', 'путем', 'о пути'),
-        'дитя' => array('дитя', 'дитяти', 'дитяти', 'дитя', 'дитятей', 'о дитяти')
+        'путь' => array('путь', 'пути', 'пути', 'путь', 'путем', 'пути'),
+        'дитя' => array('дитя', 'дитяти', 'дитяти', 'дитя', 'дитятей', 'дитяти')
     );
 
     protected static $masculineWithSoft = array(
@@ -127,7 +127,7 @@ class NounDeclension extends \morphos\BaseInflection implements Cases, Gender
                 self::DAT => $word,
                 self::VINIT => $word,
                 self::TVORIT => $word,
-                self::PREDLOJ => self::choosePrepositionByFirstLetter($word, 'об', 'о').' '.$word,
+                self::PREDLOJ => $word,
             );
         } elseif (isset(self::$abnormalExceptions[$word])) {
             return array_combine(array(self::IMENIT, self::RODIT, self::DAT, self::VINIT, self::TVORIT, self::PREDLOJ), self::$abnormalExceptions[$word]);
@@ -139,7 +139,7 @@ class NounDeclension extends \morphos\BaseInflection implements Cases, Gender
                 self::DAT => $prefix.'ени',
                 self::VINIT => $word,
                 self::TVORIT => $prefix.'енем',
-                self::PREDLOJ => self::choosePrepositionByFirstLetter($prefix, 'об', 'о').' '.$prefix.'ени',
+                self::PREDLOJ => $prefix.'ени',
             );
         }
 
@@ -185,7 +185,7 @@ class NounDeclension extends \morphos\BaseInflection implements Cases, Gender
         // 	$forms[Cases::TVORIT] = $prefix.'ой'; # http://morpher.ru/Russian/Spelling.aspx#sibilant
 
         // PREDLOJ the same as DAT
-        $forms[Cases::PREDLOJ] = self::choosePrepositionByFirstLetter($forms[Cases::DAT], 'об', 'о').' '.$forms[Cases::DAT];
+        $forms[Cases::PREDLOJ] = $forms[Cases::DAT];
         return $forms;
     }
 
@@ -229,7 +229,7 @@ class NounDeclension extends \morphos\BaseInflection implements Cases, Gender
 
         // PREDLOJ
         $forms[Cases::PREDLOJ] = self::getPredCaseOf12Declensions($word, $last, $prefix);
-        $forms[Cases::PREDLOJ] = self::choosePrepositionByFirstLetter($forms[Cases::PREDLOJ], 'об', 'о').' '.$forms[Cases::PREDLOJ];
+        $forms[Cases::PREDLOJ] = $forms[Cases::PREDLOJ];
 
         return $forms;
     }
@@ -244,7 +244,7 @@ class NounDeclension extends \morphos\BaseInflection implements Cases, Gender
             Cases::DAT => $prefix.'и',
             Cases::VINIT => $word,
             Cases::TVORIT => $prefix.'ью',
-            Cases::PREDLOJ => self::choosePrepositionByFirstLetter($prefix, 'об', 'о').' '.$prefix.'и',
+            Cases::PREDLOJ => $prefix.'и',
         );
     }
 
@@ -265,7 +265,7 @@ class NounDeclension extends \morphos\BaseInflection implements Cases, Gender
                     Cases::DAT => $prefix.'ому',
                     Cases::VINIT => $word,
                     Cases::TVORIT => $prefix.'ым',
-                    Cases::PREDLOJ => self::choosePrepositionByFirstLetter($prefix, 'об', 'о').' '.$prefix.'ом',
+                    Cases::PREDLOJ => $prefix.'ом',
                 );
 
             case 'ий':
@@ -275,7 +275,7 @@ class NounDeclension extends \morphos\BaseInflection implements Cases, Gender
                     Cases::DAT => $prefix.'ему',
                     Cases::VINIT => $prefix.'его',
                     Cases::TVORIT => $prefix.'им',
-                    Cases::PREDLOJ => self::choosePrepositionByFirstLetter($prefix, 'об', 'о').' '.$prefix.'ем',
+                    Cases::PREDLOJ => $prefix.'ем',
                 );
 
             // Neuter adjectives
@@ -288,7 +288,7 @@ class NounDeclension extends \morphos\BaseInflection implements Cases, Gender
                     Cases::DAT => $prefix.'му',
                     Cases::VINIT => $word,
                     Cases::TVORIT => S::slice($word, 0, -2).(S::slice($word, -2, -1) == 'о' ? 'ы' : 'и').'м',
-                    Cases::PREDLOJ => self::choosePrepositionByFirstLetter($prefix, 'об', 'о').' '.$prefix.'м',
+                    Cases::PREDLOJ => $prefix.'м',
                 );
 
             // Female adjectives
@@ -300,7 +300,7 @@ class NounDeclension extends \morphos\BaseInflection implements Cases, Gender
                     Cases::DAT => $prefix.$ending,
                     Cases::VINIT => $prefix.'ую',
                     Cases::TVORIT => $prefix.$ending,
-                    Cases::PREDLOJ => self::choosePrepositionByFirstLetter($prefix, 'об', 'о').' '.$prefix.$ending,
+                    Cases::PREDLOJ => $prefix.$ending,
                 );
         }
     }

@@ -51,7 +51,7 @@ class MiddleNamesInflection extends \morphos\NamesInflection implements Cases
                 Cases::DAT => $name.'у',
                 Cases::VINIT => $name.'а',
                 Cases::TVORIT => $name.'ем',
-                Cases::PREDLOJ => self::choosePrepositionByFirstLetter($name, 'об', 'о').' '.$name.'е',
+                Cases::PREDLOJ => $name.'е',
             );
         } elseif (S::slice($name, -2) == 'на') {
             $prefix = S::name(S::slice($name, 0, -1));
@@ -61,7 +61,7 @@ class MiddleNamesInflection extends \morphos\NamesInflection implements Cases
                 Cases::DAT => $prefix.'е',
                 Cases::VINIT => $prefix.'у',
                 Cases::TVORIT => $prefix.'ой',
-                Cases::PREDLOJ => self::choosePrepositionByFirstLetter($prefix, 'об', 'о').' '.$prefix.'е',
+                Cases::PREDLOJ => $prefix.'е',
             );
         }
 

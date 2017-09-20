@@ -34,6 +34,11 @@ class GeographicalNamesInflection extends \morphos\BaseInflection implements Cas
             return static::isMutable(S::slice($name, 0, -5));
         }
 
+        // N область
+        if (S::slice($name, -8) == ' область') {
+            return true;
+        }
+
         // город N
         if (S::slice($name, 0, 6) == 'город ') {
             return true;
@@ -53,37 +58,30 @@ class GeographicalNamesInflection extends \morphos\BaseInflection implements Cas
         // N край
         if (S::slice($name, -5) == ' край') {
             return self::composeCasesFromWords([static::getCases(S::slice($name, 0, -5)), NounDeclension::getCases('край')]);
+        }
 
+        // N область
+        if (S::slice($name, -8) == ' область') {
+            return self::composeCasesFromWords([static::getCases(S::slice($name, 0, -8)), NounDeclension::getCases('область')]);
         }
 
         // город N
         if (S::slice($name, 0, 6) == 'город ') {
             return self::composeCasesFromWords([
                 NounDeclension::getCases('город'),
-                array_combine(self::getAllCases(), array_fill(0, 6, S::slice($name, -6)))
+                array_fill_keys(self::getAllCases(), S::name(S::slice($name, -6)))
             ]);
         }
 
-        // check for name of two words
+        // check for name of few words
         if (strpos($name, ' ') !== false) {
             $parts = explode(' ', $name);
             $cases = array();
             $result = array();
             foreach ($parts as $i => $part) {
                 $result[$i] = static::getCases($part);
-                if ($i > 0) {
-                    $result[$i][self::PREDLOJ] = substr(strstr($result[$i][self::PREDLOJ], ' '), 1);
-                }
             }
-
-            $cases = array();
-            foreach (array(self::IMENIT, self::RODIT, self::DAT, self::VINIT, self::TVORIT, self::PREDLOJ) as $case) {
-                foreach ($parts as $i => $part) {
-                    $cases[$case][] = $result[$i][$case];
-                }
-                $cases[$case] = implode(' ', $cases[$case]);
-            }
-            return $cases;
+            return self::composeCasesFromWords($result);
         }
 
         if (!in_array($name, self::$abbreviations)) {
@@ -96,7 +94,18 @@ class GeographicalNamesInflection extends \morphos\BaseInflection implements Cas
                     self::DAT => $prefix.(self::isVelarConsonant(S::slice($name, -3, -2)) ? 'ому' : 'ему'),
                     self::VINIT => $prefix.'ий',
                     self::TVORIT => $prefix.'им',
-                    self::PREDLOJ => self::choosePrepositionByFirstLetter($prefix, 'об', 'о').' '.$prefix.(self::chooseEndingBySonority($prefix, 'ем', 'ом')),
+                    self::PREDLOJ => $prefix.(self::chooseEndingBySonority($prefix, 'ем', 'ом')),
+                );
+            } else if (S::slice($name, -2) == 'ая') {
+                // Ростовская
+                $prefix = S::name(S::slice($name, 0, -2));
+                return array(
+                    self::IMENIT => $prefix.'ая',
+                    self::RODIT => $prefix.'ой',
+                    self::DAT => $prefix.'ой',
+                    self::VINIT => $prefix.'ую',
+                    self::TVORIT => $prefix.'ой',
+                    self::PREDLOJ => $prefix.'ой',
                 );
             } else if (S::slice($name, -2) == 'ый') {
                 // Грозный, Благодарный
@@ -107,7 +116,7 @@ class GeographicalNamesInflection extends \morphos\BaseInflection implements Cas
                     self::DAT => $prefix.'ому',
                     self::VINIT => $prefix.'ый',
                     self::TVORIT => $prefix.'ым',
-                    self::PREDLOJ => self::choosePrepositionByFirstLetter($prefix, 'об', 'о').' '.$prefix.'ом',
+                    self::PREDLOJ => $prefix.'ом',
                 );
             } elseif (S::slice($name, -1) == 'а') {
                 // Москва, Рига
@@ -118,7 +127,7 @@ class GeographicalNamesInflection extends \morphos\BaseInflection implements Cas
                     self::DAT => $prefix.'е',
                     self::VINIT => $prefix.'у',
                     self::TVORIT => $prefix.'ой',
-                    self::PREDLOJ => self::choosePrepositionByFirstLetter($prefix, 'об', 'о').' '.$prefix.'е',
+                    self::PREDLOJ => $prefix.'е',
                 );
             } elseif (S::slice($name, -1) == 'я') {
                 // Азия
@@ -129,7 +138,7 @@ class GeographicalNamesInflection extends \morphos\BaseInflection implements Cas
                     self::DAT => $prefix.'и',
                     self::VINIT => $prefix.'ю',
                     self::TVORIT => $prefix.'ей',
-                    self::PREDLOJ => self::choosePrepositionByFirstLetter($prefix, 'об', 'о').' '.$prefix.'и',
+                    self::PREDLOJ => $prefix.'и',
                 );
             } elseif (S::slice($name, -1) == 'й') {
                 // Ишимбай
@@ -140,7 +149,7 @@ class GeographicalNamesInflection extends \morphos\BaseInflection implements Cas
                     self::DAT => $prefix.'ю',
                     self::VINIT => $prefix.'й',
                     self::TVORIT => $prefix.'ем',
-                    self::PREDLOJ => self::choosePrepositionByFirstLetter($prefix, 'об', 'о').' '.$prefix.'е',
+                    self::PREDLOJ => $prefix.'е',
                 );
             } elseif (self::isConsonant(S::slice($name, -1)) && S::slice($name, -2) != 'ов') {
                 // Париж, Валаам, Киев
@@ -151,7 +160,7 @@ class GeographicalNamesInflection extends \morphos\BaseInflection implements Cas
                     self::DAT => $prefix.'у',
                     self::VINIT => $prefix,
                     self::TVORIT => $prefix.(self::isVelarConsonant(S::slice($name, -2, -1)) ? 'ем' : 'ом'),
-                    self::PREDLOJ => self::choosePrepositionByFirstLetter($prefix, 'об', 'о').' '.$prefix.'е',
+                    self::PREDLOJ => $prefix.'е',
                 );
             } elseif (S::slice($name, -2) == 'ль') {
                 // Ставрополь, Ярославль
@@ -162,7 +171,7 @@ class GeographicalNamesInflection extends \morphos\BaseInflection implements Cas
                     self::DAT => $prefix.'ю',
                     self::VINIT => $prefix.'ь',
                     self::TVORIT => $prefix.'ем',
-                    self::PREDLOJ => self::choosePrepositionByFirstLetter($prefix, 'об', 'о').' '.$prefix.'е',
+                    self::PREDLOJ => $prefix.'е',
                 );
             } elseif (S::slice($name, -2) == 'рь') {
                 // Тверь
@@ -173,7 +182,7 @@ class GeographicalNamesInflection extends \morphos\BaseInflection implements Cas
                     self::DAT => $prefix.'и',
                     self::VINIT => $prefix.'ь',
                     self::TVORIT => $prefix.'ью',
-                    self::PREDLOJ => self::choosePrepositionByFirstLetter($prefix, 'об', 'о').' '.$prefix.'и',
+                    self::PREDLOJ => $prefix.'и',
                 );
             } elseif (S::slice($name, -2) == 'ки') {
                 // Березники, Ессентуки
@@ -184,7 +193,7 @@ class GeographicalNamesInflection extends \morphos\BaseInflection implements Cas
                     self::DAT => $prefix.'ам',
                     self::VINIT => $prefix.'и',
                     self::TVORIT => $prefix.'ами',
-                    self::PREDLOJ => self::choosePrepositionByFirstLetter($prefix, 'об', 'о').' '.$prefix.'ах',
+                    self::PREDLOJ => $prefix.'ах',
                 );
             } elseif (S::slice($name, -2) == 'мь') {
                 // Пермь, Кемь
@@ -195,7 +204,7 @@ class GeographicalNamesInflection extends \morphos\BaseInflection implements Cas
                     self::DAT => $prefix.'и',
                     self::VINIT => $prefix.'ь',
                     self::TVORIT => $prefix.'ью',
-                    self::PREDLOJ => self::choosePrepositionByFirstLetter($prefix, 'об', 'о').' '.$prefix.'и',
+                    self::PREDLOJ => $prefix.'и',
                 );
             } elseif (S::slice($name, -2) == 'нь') {
                 // Рязань, Назрань
@@ -206,7 +215,7 @@ class GeographicalNamesInflection extends \morphos\BaseInflection implements Cas
                     self::DAT => $prefix.'и',
                     self::VINIT => $prefix.'ь',
                     self::TVORIT => $prefix.'ью',
-                    self::PREDLOJ => self::choosePrepositionByFirstLetter($prefix, 'об', 'о').' '.$prefix.'и',
+                    self::PREDLOJ => $prefix.'и',
                 );
             } else if (S::slice($name, -2) == 'ые') {
                 // Набережные
@@ -217,7 +226,7 @@ class GeographicalNamesInflection extends \morphos\BaseInflection implements Cas
                     self::DAT => $prefix.'м',
                     self::VINIT => $prefix.'е',
                     self::TVORIT => $prefix.'ми',
-                    self::PREDLOJ => self::choosePrepositionByFirstLetter($prefix, 'об', 'о').' '.$prefix.'х',
+                    self::PREDLOJ => $prefix.'х',
                 );
             } else if (S::slice($name, -2) == 'ны') {
                 // Челны
@@ -228,7 +237,7 @@ class GeographicalNamesInflection extends \morphos\BaseInflection implements Cas
                     self::DAT => $prefix.'ам',
                     self::VINIT => $prefix.'ы',
                     self::TVORIT => $prefix.'ами',
-                    self::PREDLOJ => self::choosePrepositionByFirstLetter($prefix, 'об', 'о').' '.$prefix.'ах',
+                    self::PREDLOJ => $prefix.'ах',
                 );
             }
 
@@ -248,14 +257,14 @@ class GeographicalNamesInflection extends \morphos\BaseInflection implements Cas
                     self::DAT => $prefix.'у',
                     self::VINIT => S::name($name),
                     self::TVORIT => $prefix.'ым',
-                    self::PREDLOJ => self::choosePrepositionByFirstLetter($prefix, 'об', 'о').' '.$prefix.'е',
+                    self::PREDLOJ => $prefix.'е',
                 );
             }
         }
 
         // if no rules matches or name is immutable
         $name = in_array($name, self::$abbreviations) ? S::upper($name) : S::name($name);
-        return array_fill_keys(array(self::IMENIT, self::RODIT, self::DAT, self::VINIT, self::TVORIT), $name) + array(self::PREDLOJ => self::choosePrepositionByFirstLetter($name, 'об', 'о').' '.$name);
+        return array_fill_keys(array(self::IMENIT, self::RODIT, self::DAT, self::VINIT, self::TVORIT, self::PREDLOJ), $name);
     }
 
     public static function getCase($name, $case)
