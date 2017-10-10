@@ -9,7 +9,7 @@ use morphos\Russian\NounPluralization;
 use morphos\Russian\OrdinalNumeralGenerator;
 
 function safe_string($string) {
-	return preg_replace('~[^А-Яа-яЁё ]~u', null, trim($string));
+	return preg_replace('~[^А-Яа-яЁё -]~u', null, trim($string));
 }
 
 foreach (array('name', 'noun', 'geographical-name') as $field) {

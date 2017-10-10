@@ -483,9 +483,13 @@ class FirstNamesInflection extends \morphos\NamesInflection implements Cases
         if (isset(self::$exceptions[$name])) {
             return self::$exceptions[$name];
         } elseif (in_array(S::slice($name, -1), array_diff(self::$consonants, array('й', /*'Ч', 'Щ'*/)))) { // hard consonant
-			if (in_array(S::slice($name, -2), ['ек', 'ёк'])) // Витек, Санек
-				$prefix = S::name(S::slice($name, 0, -2)).'ьк';
-			else
+			if (in_array(S::slice($name, -2), ['ек', 'ёк'])) { // Витек, Санек
+                // case for foreign names like Салмонбек
+                if (self::isConsonant(S::slice($name, -4, -3)))
+                    $prefix = S::name(S::slice($name, 0, -2)).'ек';
+                else
+				    $prefix = S::name(S::slice($name, 0, -2)).'ьк';
+			} else
 				$prefix = S::name($name);
             return array(
                 self::IMENIT => S::name($name),
