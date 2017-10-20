@@ -97,6 +97,17 @@ class LastNamesInflection extends \morphos\NamesInflection implements Cases
 
             return self::composeCasesFromWords($parts, '-');
         }
+        if (!static::isMutable($name, $gender)) {
+            $prefix = S::name($name);
+            return array(
+                self::IMENIT    => $prefix,
+                self::RODIT     => $prefix,
+                self::DAT       => $prefix,
+                self::VINIT     => $prefix,
+                self::TVORIT    => $prefix,
+                self::PREDLOJ   => $prefix
+            );
+        }
 
         if ($gender == self::MALE) {
             if (in_array(S::slice($name, -2), array('ов', 'ев', 'ин', 'ын'))) {
@@ -210,8 +221,12 @@ class LastNamesInflection extends \morphos\NamesInflection implements Cases
 
     public static function getCase($name, $case, $gender = null)
     {
-        $case = self::canonizeCase($case);
-        $forms = self::getCases($name, $gender);
-        return $forms[$case];
+        if (!static::isMutable($name, $gender)) {
+            return $name;
+        } else {
+            $case = self::canonizeCase($case);
+            $forms = self::getCases($name, $gender);
+            return $forms[$case];
+        }
     }
 }

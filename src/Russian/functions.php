@@ -1,37 +1,38 @@
 <?php
 namespace morphos\Russian;
 
+use morphos\Gender;
 use morphos\S;
 
 /**
  * Inflects the name to all cases / one case.
- * @param string      $fullname Name in format: "L F" o "L M F", where L - last name, M - middl name, F - first name
+ * @param string      $fullName Name in format: "L F" o "L M F", where L - last name, M - middl name, F - first name
  * @param null|string $case     Case to inflect to. If null, result will contain inflection to all cases.
  *                              Should be one of {@link morphos\Cases} or {@link morphos\Russian\Cases} constants.
- * @param null|tring  $gender   Gender of name owner. If null, auto detection will be used.
+ * @param null|string $gender   Gender of name owner. If null, auto detection will be used.
  *                              Should be one of {@link morphos\Gender} constants.
  * @return string|array         Returns string containing the inflection of name to a case, if `$case` is not null.
  *                              Returns an array will inflection to all cases.
  */
-function inflectName($fullname, $case = null, $gender = null)
+function inflectName($fullName, $case = null, $gender = null)
 {
-    if (in_array($case, array('m', 'f'))) {
+    if (in_array($case, [Gender::MALE, Gender::FEMALE], true)) {
         $gender = $case;
         $case = null;
     }
-    if ($gender === null) $gender = detectGender($fullname);
-    $fullname = normalizeFullName($fullname);
+    if ($gender === null) $gender = detectGender($fullName);
+    $fullName = normalizeFullName($fullName);
 
-    $name = explode(' ', $fullname);
-    if (count($name) < 2 || count($name) > 3) {
+    $name = explode(' ', $fullName);
+    $nameCount = count($name);
+    if (!in_array($nameCount, [2, 3], true)) {
         return false;
     }
     if ($case === null) {
-        $result = array();
-        if (count($name) == 2) {
+        if ($nameCount === 2) {
             $name[0] = LastNamesInflection::getCases($name[0], $gender);
             $name[1] = FirstNamesInflection::getCases($name[1], $gender);
-        } elseif (count($name) == 3) {
+        } elseif ($nameCount === 3) {
             $name[0] = LastNamesInflection::getCases($name[0], $gender);
             $name[1] = FirstNamesInflection::getCases($name[1], $gender);
             $name[2] = MiddleNamesInflection::getCases($name[2], $gender);
@@ -39,10 +40,10 @@ function inflectName($fullname, $case = null, $gender = null)
         return CasesHelper::composeCasesFromWords($name);
     } else {
         $case = CasesHelper::canonizeCase($case);
-        if (count($name) == 2) {
+        if ($nameCount === 2) {
             $name[0] = LastNamesInflection::getCase($name[0], $case, $gender);
             $name[1] = FirstNamesInflection::getCase($name[1], $case, $gender);
-        } elseif (count($name) == 3) {
+        } elseif ($nameCount === 3) {
             $name[0] = LastNamesInflection::getCase($name[0], $case, $gender);
             $name[1] = FirstNamesInflection::getCase($name[1], $case, $gender);
             $name[2] = MiddleNamesInflection::getCase($name[2], $case, $gender);
@@ -53,20 +54,28 @@ function inflectName($fullname, $case = null, $gender = null)
 
 /**
  * Guesses the gender of name owner.
- * @param string $fullname
+ * @param string $fullName
  * @return null|string     Null if not detected. One of {@link morphos\Gender} constants.
  */
-function detectGender($fullname)
+function detectGender($fullName)
 {
-    static $first, $middle, $last;
-    $name = explode(' ', S::lower($fullname));
-    if (count($name) < 2 || count($name) > 3) {
+    $gender = null;
+    $name = explode(' ', S::lower($fullName));
+    $nameCount = count($name);
+    if (!in_array($nameCount, [2, 3], true)) {
         return false;
     }
+    if ($nameCount === 3) {
+        $gender = detectGender(implode(' ', [$name[1], $name[2]]));
+    }
 
-    return (isset($name[2]) ? MiddleNamesInflection::detectGender($name[2]) : null) ?:
-        LastNamesInflection::detectGender($name[0]) ?:
-        FirstNamesInflection::detectGender($name[1]);
+    if (!$gender) {
+        $gender = (isset($name[2]) ? MiddleNamesInflection::detectGender($name[2]) : null) ?:
+            LastNamesInflection::detectGender($name[0]) ?:
+                FirstNamesInflection::detectGender($name[1]);
+    }
+
+    return $gender;
 }
 
 /**
