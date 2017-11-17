@@ -17,6 +17,11 @@ class GeographicalNamesInflection extends \morphos\BaseInflection implements Cas
         'юар',
     );
 
+    /**
+     * Проверяет, склоняемо ли название
+     * @param string $name Название
+     * @return bool
+     */
     public static function isMutable($name)
     {
         $name = S::lower($name);
@@ -51,6 +56,11 @@ class GeographicalNamesInflection extends \morphos\BaseInflection implements Cas
         return true;
     }
 
+    /**
+     * Получение всех форм названия
+     * @param string $name
+     * @return array
+     */
     public static function getCases($name)
     {
         $name = S::lower($name);
@@ -73,15 +83,39 @@ class GeographicalNamesInflection extends \morphos\BaseInflection implements Cas
             ]);
         }
 
-        // check for name of few words
+        // Сложное название города из нескольких слов через пробел.
+        // Нижний Новгород, Набережные Челны
         if (strpos($name, ' ') !== false) {
             $parts = explode(' ', $name);
-            $cases = array();
             $result = array();
             foreach ($parts as $i => $part) {
                 $result[$i] = static::getCases($part);
             }
             return self::composeCasesFromWords($result);
+        }
+
+        // Сложное название города из нескольких слов через тире.
+        // Ростов-на-Дону, Переславль-Залесский
+        if (strpos($name, '-') !== false) {
+            // грязный хак, но подобных случаев как с Ростовом-на-Дону нету
+            if ($name == 'ростов-на-дону') {
+                return [
+                    self::IMENIT => 'Ростов-на-Дону',
+                    self::RODIT => 'Ростова-на-Дону',
+                    self::DAT => 'Ростову-на-Дону',
+                    self::VINIT => 'Ростов-на-Дону',
+                    self::TVORIT => 'Ростовом-на-Дону',
+                    self::PREDLOJ => 'Ростове-на-Дону'
+                ];
+            } else {
+                $parts = explode('-', $name);
+                $result = array(
+                    array_fill_keys([self::IMENIT, self::RODIT, self::DAT, self::VINIT, self::TVORIT, self::PREDLOJ], S::name($parts[0])),
+                );
+                for ($i = 1, $total_parts = count($parts); $i < $total_parts; $i++)
+                    $result[] = static::getCases($parts[$i]); // вторая часть, склоняемая
+            }
+            return self::composeCasesFromWords($result, '-');
         }
 
         if (!in_array($name, self::$abbreviations)) {
@@ -267,6 +301,13 @@ class GeographicalNamesInflection extends \morphos\BaseInflection implements Cas
         return array_fill_keys(array(self::IMENIT, self::RODIT, self::DAT, self::VINIT, self::TVORIT, self::PREDLOJ), $name);
     }
 
+    /**
+     * Получение одной формы (падежа) названия.
+     * @param string $name Название
+     * @param integer $case Падеж. Одна из констант \morphos\Russian\Cases или \morphos\Cases.
+     * @see \morphos\Russian\Cases
+     * @return mixed
+     */
     public static function getCase($name, $case)
     {
         $case = self::canonizeCase($case);
