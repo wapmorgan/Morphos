@@ -22,6 +22,10 @@ class GeographicalNamesInflection extends \morphos\BaseInflection implements Cas
         '-на-'
     );
 
+    protected static $ovAbnormalExceptions = [
+        'осташков',
+    ];
+
     /**
      * Проверяет, склоняемо ли название
      * @param string $name Название
@@ -88,6 +92,7 @@ class GeographicalNamesInflection extends \morphos\BaseInflection implements Cas
             ]);
         }
 
+        // Сложное название через пробел или через '-на-'
         foreach (self::$delimiters as $delimiter) {
             if (strpos($name, $delimiter) !== false) {
                 $parts = explode($delimiter, $name);
@@ -100,7 +105,7 @@ class GeographicalNamesInflection extends \morphos\BaseInflection implements Cas
         }
 
         // Сложное название города из нескольких слов через тире.
-        // Ростов-на-Дону, Переславль-Залесский
+        // Ростов-на-Дону, Переславль-Залесский и т.д.
         if (strpos($name, '-') !== false) {
             $parts = explode('-', $name);
             $result = array(
@@ -179,7 +184,7 @@ class GeographicalNamesInflection extends \morphos\BaseInflection implements Cas
                     self::TVORIT => $prefix.'ем',
                     self::PREDLOJ => $prefix.'е',
                 );
-            } elseif (self::isConsonant(S::slice($name, -1)) && S::slice($name, -2) != 'ов') {
+            } elseif (self::isConsonant(S::slice($name, -1)) && !in_array($name, self::$ovAbnormalExceptions)) {
                 // Париж, Валаам, Киев
                 $prefix = S::name($name);
                 return array(
