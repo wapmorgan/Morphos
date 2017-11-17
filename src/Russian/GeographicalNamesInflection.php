@@ -17,6 +17,11 @@ class GeographicalNamesInflection extends \morphos\BaseInflection implements Cas
         'юар',
     );
 
+    protected static $delimiters = array(
+        ' ',
+        '-на-'
+    );
+
     /**
      * Проверяет, склоняемо ли название
      * @param string $name Название
@@ -83,37 +88,26 @@ class GeographicalNamesInflection extends \morphos\BaseInflection implements Cas
             ]);
         }
 
-        // Сложное название города из нескольких слов через пробел.
-        // Нижний Новгород, Набережные Челны
-        if (strpos($name, ' ') !== false) {
-            $parts = explode(' ', $name);
-            $result = array();
-            foreach ($parts as $i => $part) {
-                $result[$i] = static::getCases($part);
+        foreach (self::$delimiters as $delimiter) {
+            if (strpos($name, $delimiter) !== false) {
+                $parts = explode($delimiter, $name);
+                $result = array();
+                foreach ($parts as $i => $part) {
+                    $result[$i] = static::getCases($part);
+                }
+                return self::composeCasesFromWords($result, $delimiter);
             }
-            return self::composeCasesFromWords($result);
         }
 
         // Сложное название города из нескольких слов через тире.
         // Ростов-на-Дону, Переславль-Залесский
         if (strpos($name, '-') !== false) {
-            // грязный хак, но подобных случаев как с Ростовом-на-Дону нету
-            if ($name == 'ростов-на-дону') {
-                return [
-                    self::IMENIT => 'Ростов-на-Дону',
-                    self::RODIT => 'Ростова-на-Дону',
-                    self::DAT => 'Ростову-на-Дону',
-                    self::VINIT => 'Ростов-на-Дону',
-                    self::TVORIT => 'Ростовом-на-Дону',
-                    self::PREDLOJ => 'Ростове-на-Дону'
-                ];
-            } else {
-                $parts = explode('-', $name);
-                $result = array(
-                    array_fill_keys([self::IMENIT, self::RODIT, self::DAT, self::VINIT, self::TVORIT, self::PREDLOJ], S::name($parts[0])),
-                );
-                for ($i = 1, $total_parts = count($parts); $i < $total_parts; $i++)
-                    $result[] = static::getCases($parts[$i]); // вторая часть, склоняемая
+            $parts = explode('-', $name);
+            $result = array(
+                array_fill_keys([self::IMENIT, self::RODIT, self::DAT, self::VINIT, self::TVORIT, self::PREDLOJ], S::name($parts[0])),
+            );
+            for ($i = 1, $total_parts = count($parts); $i < $total_parts; $i++) {
+                $result[] = static::getCases($parts[$i]); // вторая часть, склоняемая
             }
             return self::composeCasesFromWords($result, '-');
         }
