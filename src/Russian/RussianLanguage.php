@@ -234,16 +234,16 @@ trait RussianLanguage
     /**
      * Выбирает первое или второе окончание в зависимости от звонкости/глухости в конце слова.
      * @param string $word Слово (или префикс), на основе звонкости которого нужно выбрать окончание
-     * @param string $ifSononous Окончание, если слово оканчивается на звонкую согласную
+     * @param string $ifSonorous Окончание, если слово оканчивается на звонкую согласную
      * @param string $ifDeaf Окончание, если слово оканчивается на глухую согласную
      * @return string Первое или второе окончание
      * @throws \Exception
      */
-    public static function chooseEndingBySonority($word, $ifSononous, $ifDeaf)
+    public static function chooseEndingBySonority($word, $ifSonorous, $ifDeaf)
     {
         $last = S::slice($word, -1);
         if (self::isSonorousConsonant($last))
-            return $ifSononous;
+            return $ifSonorous;
         if (self::isDeafConsonant($last))
             return $ifDeaf;
 
