@@ -7,6 +7,10 @@ trait CasesHelper
 {
     use \morphos\CasesHelper;
 
+    /**
+     * @param $case
+     * @return string
+     */
     public static function canonizeCase($case)
     {
         $case = S::lower($case);

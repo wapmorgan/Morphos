@@ -69,6 +69,12 @@ class NounDeclension extends \morphos\BaseInflection implements Cases, Gender
         'пенни',
     );
 
+    /**
+     * Проверка, изменяемое ли слово.
+     * @param $word
+     * @param bool $animateness Признак одушевленности
+     * @return bool
+     */
     public static function isMutable($word, $animateness = false)
     {
         $word = S::lower($word);
@@ -78,6 +84,11 @@ class NounDeclension extends \morphos\BaseInflection implements Cases, Gender
         return true;
     }
 
+    /**
+     * Определение рода существительного.
+     * @param $word
+     * @return string
+     */
     public static function detectGender($word)
     {
     	$word = S::lower($word);
@@ -93,6 +104,11 @@ class NounDeclension extends \morphos\BaseInflection implements Cases, Gender
 		return self::MALE;
     }
 
+    /**
+     * Определение склонения (по школьной программе) существительного.
+     * @param $word
+     * @return int
+     */
     public static function getDeclension($word)
     {
         $word = S::lower($word);
@@ -110,12 +126,18 @@ class NounDeclension extends \morphos\BaseInflection implements Cases, Gender
         }
     }
 
+    /**
+     * Получение слова во всех 6 падежах.
+     * @param $word
+     * @param bool $animateness
+     * @return array
+     */
     public static function getCases($word, $animateness = false)
     {
         $word = S::lower($word);
 
         // Адъективное склонение (Сущ, образованные от прилагательных и причастий) - прохожий, существительное
-        if (in_array(S::slice($word, -2), array('ой', 'ий', 'ый', 'ая', 'ое', 'ее')) && $word != 'гений') {
+        if (self::isAdjectiveNoun($word)) {
             return self::declinateAdjective($word, $animateness);
         }
 
@@ -153,6 +175,11 @@ class NounDeclension extends \morphos\BaseInflection implements Cases, Gender
         }
     }
 
+    /**
+     * Получение всех форм слова первого склонения.
+     * @param $word
+     * @return array
+     */
     public static function declinateFirstDeclension($word)
     {
         $word = S::lower($word);
@@ -189,6 +216,12 @@ class NounDeclension extends \morphos\BaseInflection implements Cases, Gender
         return $forms;
     }
 
+    /**
+     * Получение всех форм слова второго склонения.
+     * @param $word
+     * @param bool $animateness
+     * @return array
+     */
     public static function declinateSecondDeclension($word, $animateness = false)
     {
         $word = S::lower($word);
@@ -229,11 +262,15 @@ class NounDeclension extends \morphos\BaseInflection implements Cases, Gender
 
         // PREDLOJ
         $forms[Cases::PREDLOJ] = self::getPredCaseOf12Declensions($word, $last, $prefix);
-        $forms[Cases::PREDLOJ] = $forms[Cases::PREDLOJ];
 
         return $forms;
     }
 
+    /**
+     * Получение всех форм слова третьего склонения.
+     * @param $word
+     * @return array
+     */
     public static function declinateThirdDeclension($word)
     {
         $word = S::lower($word);
@@ -249,7 +286,11 @@ class NounDeclension extends \morphos\BaseInflection implements Cases, Gender
     }
 
     /**
+     * Склонение существительных, образованных от прилагательных и причастий.
      * Rules are from http://rusgram.narod.ru/1216-1231.html
+     * @param $word
+     * @param $animateness
+     * @return array
      */
     public static function declinateAdjective($word, $animateness)
     {
@@ -305,6 +346,13 @@ class NounDeclension extends \morphos\BaseInflection implements Cases, Gender
         }
     }
 
+    /**
+     * Получение одной формы слова (падежа).
+     * @param string $word Слово
+     * @param integer $case Падеж
+     * @param bool $animateness Признак одушевленности
+     * @return string
+     */
     public static function getCase($word, $case, $animateness = false)
     {
         $case = self::canonizeCase($case);
@@ -312,6 +360,11 @@ class NounDeclension extends \morphos\BaseInflection implements Cases, Gender
         return $forms[$case];
     }
 
+    /**
+     * @param $word
+     * @param $last
+     * @return bool|string
+     */
     public static function getPrefixOfSecondDeclension($word, $last)
     {
         // слова с бегающей гласной в корне
@@ -329,6 +382,11 @@ class NounDeclension extends \morphos\BaseInflection implements Cases, Gender
         return $prefix;
     }
 
+    /**
+     * @param array $forms
+     * @param $animate
+     * @return mixed
+     */
     public static function getVinitCaseByAnimateness(array $forms, $animate)
     {
         if ($animate) {
@@ -338,6 +396,12 @@ class NounDeclension extends \morphos\BaseInflection implements Cases, Gender
         }
     }
 
+    /**
+     * @param $word
+     * @param $last
+     * @param $prefix
+     * @return string
+     */
     public static function getPredCaseOf12Declensions($word, $last, $prefix)
     {
         if (in_array(S::slice($word, -2), array('ий', 'ие'))) {

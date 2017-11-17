@@ -234,9 +234,10 @@ trait RussianLanguage
     /**
      * Выбирает первое или второе окончание в зависимости от звонкости/глухости в конце слова.
      * @param string $word Слово (или префикс), на основе звонкости которого нужно выбрать окончание
-     * @param string $ifSonorous Окончание, если слово оканчивается на звонкую согласную
-     * @param string $ifDead Окончание, если слово оканчивается на глухую согласную
+     * @param string $ifSononous Окончание, если слово оканчивается на звонкую согласную
+     * @param string $ifDeaf Окончание, если слово оканчивается на глухую согласную
      * @return string Первое или второе окончание
+     * @throws \Exception
      */
     public static function chooseEndingBySonority($word, $ifSononous, $ifDeaf)
     {
@@ -247,5 +248,16 @@ trait RussianLanguage
             return $ifDeaf;
 
         throw new \Exception('Not implemented');
+    }
+
+    /**
+     * Проверяет, является ли существительно адъективным существительным
+     * @param string $noun Существительное
+     * @return bool
+     */
+    public static function isAdjectiveNoun($noun)
+    {
+        return in_array(S::slice($noun, -2), ['ой', 'ий', 'ый', 'ая', 'ое', 'ее'])
+            && $noun != 'гений';
     }
 }

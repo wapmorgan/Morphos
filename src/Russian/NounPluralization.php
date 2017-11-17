@@ -53,8 +53,29 @@ class NounPluralization extends \morphos\NounPluralization implements Cases
         return self::$runawayVowelsNormalized;
     }
 
+    /**
+     * Склонение существительного для сочетания с числом (кол-вом предметов).
+     * @param int $count Количество предметов
+     * @param string $word Название предмета
+     * @param bool $animateness Признак одушевленности
+     * @return string
+     */
     public static function pluralize($word, $count = 2, $animateness = false)
     {
+        // меняем местами аргументы, если они переданы в старом формате
+        if (is_string($count) && is_numeric($word)) {
+            list($count, $word) = [$word, $count];
+        }
+
+        // для адъективных существительных правила склонения проще:
+        // только две формы
+        if (self::isAdjectiveNoun($word)) {
+            if (self::getNumeralForm($count) == self::ONE)
+                return $word;
+            else
+                return NounPluralization::getCase($word, self::RODIT, $animateness);
+        }
+
         switch (self::getNumeralForm($count)) {
             case self::ONE:
                 return $word;
@@ -65,6 +86,10 @@ class NounPluralization extends \morphos\NounPluralization implements Cases
         }
     }
 
+    /**
+     * @param $count
+     * @return int
+     */
     public static function getNumeralForm($count)
     {
         if ($count > 100) {
@@ -80,6 +105,12 @@ class NounPluralization extends \morphos\NounPluralization implements Cases
         }
     }
 
+    /**
+     * @param $word
+     * @param $case
+     * @param bool $animateness
+     * @return mixed
+     */
     public static function getCase($word, $case, $animateness = false)
     {
         $case = self::canonizeCase($case);
@@ -87,6 +118,11 @@ class NounPluralization extends \morphos\NounPluralization implements Cases
         return $forms[$case];
     }
 
+    /**
+     * @param $word
+     * @param bool $animateness
+     * @return array
+     */
     public static function getCases($word, $animateness = false)
     {
         $word = S::lower($word);
@@ -103,7 +139,7 @@ class NounPluralization extends \morphos\NounPluralization implements Cases
         }
 
         // Адъективное склонение (Сущ, образованные от прилагательных и причастий) - прохожий, существительное
-        if (in_array(S::slice($word, -2), array('ой', 'ий', 'ый', 'ая', 'ое', 'ее')) && $word != 'гений') {
+        if (self::isAdjectiveNoun($word)) {
             return self::declinateAdjective($word, $animateness);
         }
 
@@ -111,6 +147,12 @@ class NounPluralization extends \morphos\NounPluralization implements Cases
         return self::declinateSubstative($word, $animateness);
     }
 
+    /**
+     * Склонение обычных существительных.
+     * @param $word
+     * @param $animateness
+     * @return array
+     */
     protected static function declinateSubstative($word, $animateness)
     {
         $prefix = S::slice($word, 0, -1);
@@ -189,12 +231,15 @@ class NounPluralization extends \morphos\NounPluralization implements Cases
 
         // PREDLOJ
         $forms[Cases::PREDLOJ] = self::chooseVowelAfterConsonant($last, $soft_last && S::slice($word, -2, -1) != 'ч', $prefix.'ях', $prefix.'ах');
-        $forms[Cases::PREDLOJ] = $forms[Cases::PREDLOJ];
         return $forms;
     }
 
     /**
+     * Склонение существительных, образованных от прилагательных и причастий.
      * Rules are from http://rusgram.narod.ru/1216-1231.html
+     * @param $word
+     * @param $animateness
+     * @return array
      */
     protected static function declinateAdjective($word, $animateness)
     {

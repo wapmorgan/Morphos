@@ -5,6 +5,11 @@ use Exception;
 
 trait CasesHelper
 {
+    /**
+     * @param $case
+     * @return string
+     * @throws Exception If passed case is invalid.
+     */
     public static function canonizeCase($case)
     {
         $case = S::lower($case);

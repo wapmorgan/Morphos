@@ -49,6 +49,10 @@ class NounPluralizationTest extends \PHPUnit_Framework_TestCase
             array('день', 'дня', 'дней'),
             array('ночь', 'ночи', 'ночей'),
             array('ядро', 'ядра', 'ядер'),
+
+            // адъективное склонение
+            array('ванная', 'ванных', 'ванных'),
+            array('прохожий', 'прохожих', 'прохожих'),
         );
     }
 
