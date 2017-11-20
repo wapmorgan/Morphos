@@ -37,37 +37,38 @@ composer require wapmorgan/morphos
 - Adapter for Yii2 (_as part of extension_): [wapmorgan/yii2-inflection](https://github.com/wapmorgan/yii2-inflection)
 
 ## Quick Start
-- Russian:
-  ```php
-  // Inflect russian names:
-  morphos\Russian\inflectName('Иванов Петр', 'родительный') => 'Иванова Петра'
 
-  // Inflect geographical names:
-  morphos\Russian\GeographicalNamesInflection::getCase('Москва', 'родительный') => 'Москвы'
+#### Russian
+```php
+// Inflect russian names:
+morphos\Russian\inflectName('Иванов Петр', 'родительный') => 'Иванова Петра'
 
-  // Pluralize russian nouns:
-  morphos\Russian\pluralize(10, 'дом') => '10 домов'
+// Inflect geographical names:
+morphos\Russian\GeographicalNamesInflection::getCase('Москва', 'родительный') => 'Москвы'
 
-  // Generate russian cardinal numerals:
-  morphos\Russian\CardinalNumeralGenerator::getCase(567, 'именительный') => 'пятьсот шестьдесят семь'
+// Pluralize russian nouns:
+morphos\Russian\pluralize(10, 'дом') => '10 домов'
 
-  // Generate russian ordinal numerals:
-  morphos\Russian\OrdinalNumeralGenerator::getCase(961, 'именительный') => 'девятьсот шестьдесят первый'
+// Generate russian cardinal numerals:
+morphos\Russian\CardinalNumeralGenerator::getCase(567, 'именительный') => 'пятьсот шестьдесят семь'
 
-  // other functions described in README-ru.md
-  ```
+// Generate russian ordinal numerals:
+morphos\Russian\OrdinalNumeralGenerator::getCase(961, 'именительный') => 'девятьсот шестьдесят первый'
 
-- English
-  ```php
-  // Pluralize english nouns:
-  morphos\English\pluralize(10, 'house') => '10 houses'
+// other functions described in README-ru.md
+```
 
-  // Generate english cardinal numerals:
-  morphos\English\CardinalNumeralGenerator::generate(567) => 'five hundred sixty-seven'
+#### English
+```php
+// Pluralize english nouns:
+morphos\English\pluralize(10, 'house') => '10 houses'
 
-  // Generate english ordinal numerals:
-  morphos\English\OrdinalNumeralGenerator::generate(961) => 'nine hundred sixty-first'
-  ```
+// Generate english cardinal numerals:
+morphos\English\CardinalNumeralGenerator::generate(567) => 'five hundred sixty-seven'
+
+// Generate english ordinal numerals:
+morphos\English\OrdinalNumeralGenerator::generate(961) => 'nine hundred sixty-first'
+```
 
 # Library documentation
 
