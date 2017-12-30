@@ -32,9 +32,9 @@ Tests & Quality: [![Build Status](https://travis-ci.org/wapmorgan/Morphos.svg)](
 composer require wapmorgan/morphos
 ```
 
-- Adapter for Laravel (Blade): [wapmorgan/morphos-blade](https://github.com/wapmorgan/Morphos-Blade)
-- Adapter for Symfony (Twig): [wapmorgan/morphos-twig](https://github.com/wapmorgan/Morphos-Twig)
-- Adapter for Yii2 (_as part of extension_): [wapmorgan/yii2-inflection](https://github.com/wapmorgan/yii2-inflection)
+- Adapter for Blade: [wapmorgan/morphos-blade](https://github.com/wapmorgan/Morphos-Blade)
+- Adapter for Twig: [wapmorgan/morphos-twig](https://github.com/wapmorgan/Morphos-Twig)
+- Adapter for Yii2: [wapmorgan/yii2-inflection](https://github.com/wapmorgan/yii2-inflection)
 
 ## Quick Start
 
