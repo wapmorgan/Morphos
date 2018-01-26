@@ -26,6 +26,8 @@ class GeographicalNamesInflection extends \morphos\BaseInflection implements Cas
         'осташков',
     ];
 
+
+
     /**
      * Проверяет, склоняемо ли название
      * @param string $name Название
@@ -55,6 +57,11 @@ class GeographicalNamesInflection extends \morphos\BaseInflection implements Cas
 
         // город N
         if (S::slice($name, 0, 6) == 'город ') {
+            return true;
+        }
+
+        // село N
+        if (S::slice($name, 0, 5) == 'село ') {
             return true;
         }
 
@@ -88,7 +95,15 @@ class GeographicalNamesInflection extends \morphos\BaseInflection implements Cas
         if (S::slice($name, 0, 6) == 'город ') {
             return self::composeCasesFromWords([
                 NounDeclension::getCases('город'),
-                array_fill_keys(self::getAllCases(), S::name(S::slice($name, -6)))
+                array_fill_keys(self::getAllCases(), S::name(S::slice($name, 6)))
+            ]);
+        }
+
+        // село N
+        if (S::slice($name, 0, 5) == 'село ') {
+            return self::composeCasesFromWords([
+                NounDeclension::getCases('село'),
+                array_fill_keys(self::getAllCases(), S::name(S::slice($name, 5)))
             ]);
         }
 
@@ -222,7 +237,7 @@ class GeographicalNamesInflection extends \morphos\BaseInflection implements Cas
                 $prefix = S::name(S::slice($name, 0, -1));
                 return array(
                     self::IMENIT => $prefix.'и',
-                    self::RODIT => $prefix.'ов',
+                    self::RODIT => $name == 'луки' ? $prefix : $prefix.'ов',
                     self::DAT => $prefix.'ам',
                     self::VINIT => $prefix.'и',
                     self::TVORIT => $prefix.'ами',
@@ -271,6 +286,16 @@ class GeographicalNamesInflection extends \morphos\BaseInflection implements Cas
                     self::VINIT => $prefix.'ы',
                     self::TVORIT => $prefix.'ами',
                     self::PREDLOJ => $prefix.'ах',
+                );
+            } else if ($name == 'великие') {
+                $prefix = 'Велики';
+                return array(
+                    self::IMENIT => $prefix.'е',
+                    self::RODIT => $prefix.'х',
+                    self::DAT => $prefix.'м',
+                    self::VINIT => $prefix.'е',
+                    self::TVORIT => $prefix.'ми',
+                    self::PREDLOJ => $prefix.'х',
                 );
             }
 
