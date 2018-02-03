@@ -13,10 +13,14 @@ use morphos\S;
  *                                Should be one of [[morphos\Gender]] constants.
  * @return string                 Returns string containing the inflection of name to a case.
  */
-function inflectName($fullName, $case, $gender = null)
+function inflectName($fullName, $case = null, $gender = null)
 {
+    if ($case === null) {
+        return getNameCases($fullName);
+    }
+
     if (in_array($case, [Gender::MALE, Gender::FEMALE], true)) {
-        return getNameCases($fullName, $gender);
+        return getNameCases($fullName, $case);
     }
 
     $fullName = normalizeFullName($fullName);
