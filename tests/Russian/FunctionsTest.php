@@ -11,9 +11,9 @@ use morphos\Russian\CardinalNumeralGenerator;
 class FunctionsTest extends \PHPUnit_Framework_TestCase
 {
 	/**
-	 * @dataProvider namesProvider()
+	 * @dataProvider fullNamesProvider()
 	 */
-	public function testInflectName($name, $gender, $name2, $name3, $name4, $name5, $name6)
+	public function testGetNameCases($name, $gender, $name2, $name3, $name4, $name5, $name6)
 	{
 		$this->assertEquals([
 			Cases::IMENIT => $name,
@@ -22,10 +22,10 @@ class FunctionsTest extends \PHPUnit_Framework_TestCase
 			Cases::VINIT => $name4,
 			Cases::TVORIT => $name5,
 			Cases::PREDLOJ => $name6
-		], \morphos\Russian\inflectName($name, null, $gender));
+		], \morphos\Russian\getNameCases($name, $gender));
 	}
 
-	public function namesProvider()
+	public function fullNamesProvider()
 	{
 		return
 			[
@@ -41,6 +41,30 @@ class FunctionsTest extends \PHPUnit_Framework_TestCase
                 ['Тосунян Анна Георгиевна', Gender::FEMALE, 'Тосунян Анны Георгиевны', 'Тосунян Анне Георгиевне', 'Тосунян Анну Георгиевну', 'Тосунян Анной Георгиевной', 'Тосунян Анне Георгиевне'],
             ];
 	}
+
+    /**
+     * @dataProvider inflectNameProvider()
+     */
+    public function testInflectName($name, $case, $gender, $expected)
+    {
+        $this->assertEquals($expected, \morphos\Russian\inflectName($name, $case, $gender));
+    }
+
+    public function inflectNameProvider()
+    {
+        return
+            [
+                ['Янаев Осип Андреевич', Cases::GENITIVE, Gender::MALE, 'Янаева Осипа Андреевича'],
+                ['Молодыха Лариса Трофимовна', Cases::DATIVE, Gender::FEMALE, 'Молодыхе Ларисе Трофимовне'],
+                ['Вергун Илья Захарович', Cases::ACCUSATIVE, Gender::MALE, 'Вергуна Илью Захаровича'],
+                ['Горюнова Таисия Романовна', Cases::ABLATIVE, Gender::FEMALE, 'Горюновой Таисией Романовной'],
+                ['Путинцева Антонина Карповна', Cases::PREPOSITIONAL, Gender::FEMALE, 'Путинцевой Антонине Карповне'],
+
+                // name parts
+                ['Ганс', Cases::GENITIVE, Gender::MALE, 'Ганса'],
+                ['Милн Алан', Cases::GENITIVE, Gender::MALE, 'Милна Алана'],
+            ];
+    }
 
     /**
      * @dataProvider verbsProvider()
