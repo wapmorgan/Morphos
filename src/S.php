@@ -9,7 +9,7 @@ class S
     /**
      * Sets encoding for using in morphos/* functions.
      */
-    public static function set_encoding($encoding)
+    public static function setEncoding($encoding)
     {
         if (function_exists('mb_internal_encoding')) {
             mb_internal_encoding($encoding);
@@ -93,7 +93,7 @@ class S
     /**
      * multiple substr_count().
      */
-    public static function chars_count($string, array $chars)
+    public static function countChars($string, array $chars)
     {
         if (function_exists('mb_split')) {
             return count(mb_split('('.implode('|', $chars).')', $string)) - 1;
@@ -102,7 +102,7 @@ class S
         }
     }
 
-    public static function last_position_for_one_of_chars($string, array $chars)
+    public static function findLastPositionForOneOfChars($string, array $chars)
     {
         if (function_exists('mb_strrpos')) {
             $last_position = false;

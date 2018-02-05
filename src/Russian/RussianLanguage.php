@@ -120,7 +120,7 @@ trait RussianLanguage
      */
     public static function countSyllables($string)
     {
-        return S::chars_count($string, self::$vowels);
+        return S::countChars($string, self::$vowels);
     }
 
     /**
@@ -137,7 +137,7 @@ trait RussianLanguage
      */
     public static function checkLastConsonantSoftness($word)
     {
-        if (($substring = S::last_position_for_one_of_chars(S::lower($word), self::$consonants)) !== false) {
+        if (($substring = S::findLastPositionForOneOfChars(S::lower($word), self::$consonants)) !== false) {
             if (in_array(S::slice($substring, 0, 1), ['й', 'ч', 'щ'])) { // always soft consonants
                 return true;
             } elseif (S::length($substring) > 1 && in_array(S::slice($substring, 1, 2), ['е', 'ё', 'и', 'ю', 'я', 'ь'])) { // consonants are soft if they are trailed with these vowels

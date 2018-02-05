@@ -1,2 +1,2 @@
 <?php
-morphos\S::set_encoding('utf-8');
+morphos\S::setEncoding('utf-8');
