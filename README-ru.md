@@ -45,7 +45,7 @@
 Чтобы просклонять все части имени можно использовать следующую функцию:
 
 ```php
-inflectName($name, $case, $gender = null): string
+string inflectName($name, $case, $gender = null)
 ```
 
 Аргументы:
@@ -67,7 +67,7 @@ inflectName('Иосиф', 'творительный') => 'Иосифом'
 Чтобы получить сразу все склонения для имени используйте другую функцию:
 
 ```php
-getNameCases($name, $gender = null): array
+array getNameCases($name, $gender = null)
 ```
 
 Аргументы:
@@ -93,7 +93,7 @@ getNameCases('Базанов Иосиф Валерьянович') => array(6) {
 Если есть необходимость определить пол по имени, воспользуйтесь функцией:
 
 ```php
-detectGender($fullname): string|null
+string|null detectGender($fullname)
 ```
 Если удалось определить пол, будет возвращена одна из констант класса `morphos\Gender`, `null` в ином случае.
 
