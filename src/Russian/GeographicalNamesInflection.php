@@ -19,14 +19,17 @@ class GeographicalNamesInflection extends \morphos\BaseInflection implements Cas
 
     protected static $delimiters = array(
         ' ',
-        '-на-'
+        '-на-',
+        '-',
     );
 
     protected static $ovAbnormalExceptions = [
         'осташков',
     ];
 
-
+    protected static $immutableParts = [
+        'санкт',
+    ];
 
     /**
      * Проверяет, склоняемо ли название
@@ -41,7 +44,7 @@ class GeographicalNamesInflection extends \morphos\BaseInflection implements Cas
         // if (in_array(S::slice($name, -1), array('и', 'ы')))
         //     return false;
 
-        if (in_array($name, self::$abbreviations)) {
+        if (in_array($name, self::$abbreviations) || in_array($name, self::$immutableParts)) {
             return false;
         }
 
@@ -81,6 +84,10 @@ class GeographicalNamesInflection extends \morphos\BaseInflection implements Cas
     {
         $name = S::lower($name);
 
+        if (in_array($name, self::$immutableParts)) {
+            return array_fill_keys([self::IMENIT, self::RODIT, self::DAT, self::VINIT, self::TVORIT, self::PREDLOJ], S::name($name));
+        }
+
         // N край
         if (S::slice($name, -5) == ' край') {
             return self::composeCasesFromWords([static::getCases(S::slice($name, 0, -5)), NounDeclension::getCases('край')]);
@@ -117,19 +124,6 @@ class GeographicalNamesInflection extends \morphos\BaseInflection implements Cas
                 }
                 return self::composeCasesFromWords($result, $delimiter);
             }
-        }
-
-        // Сложное название города из нескольких слов через тире.
-        // Ростов-на-Дону, Переславль-Залесский и т.д.
-        if (strpos($name, '-') !== false) {
-            $parts = explode('-', $name);
-            $result = array(
-                array_fill_keys([self::IMENIT, self::RODIT, self::DAT, self::VINIT, self::TVORIT, self::PREDLOJ], S::name($parts[0])),
-            );
-            for ($i = 1, $total_parts = count($parts); $i < $total_parts; $i++) {
-                $result[] = static::getCases($parts[$i]); // вторая часть, склоняемая
-            }
-            return self::composeCasesFromWords($result, '-');
         }
 
         if (!in_array($name, self::$abbreviations)) {
