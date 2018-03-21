@@ -42,11 +42,12 @@ Morphos distributed with a string helper supporting multibyte encodings. Class i
 
 It has following static methods:
 
-- `set_encoding($enc)` - Sets encoding for using in all functions.
-- `length($string)` - Calculates count of characters in string.
-- `slice($string, $start, $end = null)` - Slices string like "[:]" in python.
-- `lower($string)` - Lower case.
-- `upper($string)` - Upper case.
-- `name($string)` - Name case. (ex: Thomas Lewis)
-- `chars_count($string, array $chars)` - Count of few chars.
-- `last_position_for_one_of_chars($string, array $chars)` - Finds last position for one of chars.
+- `S::setEncoding($enc)` - Sets encoding for using in all functions. By default, utf-8 is used.
+- `S::length($string)` - Calculates count of characters in string.
+- `S::slice($string, $start, $end = null)` - Slices string like "[:]" in python.
+- `S::lower($string)` - Convert to lower case.
+- `S::upper($string)` - Convert to upper case.
+- `S::name($string)` - Convert to name case. (ex: Thomas Lewis)
+- `S::countChars($string, array $chars)` - Count of any of chars.
+- `S::findLastPositionForOneOfChars($string, array $chars)` - Finds last position for one of chars.
+- `S::indexOf($string, $substring, $caseSensetive = false, $startOffset = 0)` - Finds first position of substring in a string.
