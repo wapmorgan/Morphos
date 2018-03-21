@@ -11,6 +11,7 @@ Tests & Quality: [![Build Status](https://travis-ci.org/wapmorgan/Morphos.svg)](
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/wapmorgan/Morphos/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/wapmorgan/Morphos/?branch=master)
 
 ## Features
+
 - [✓] Inflection of Personal names (Фамилия, Имя, Отчество) (Russian)
 - [✓] Inflection of Geographical names (Страны/Города) (Russian)
 - [✓] Declension/Pluralization of nouns and adjectives (Russian, English)
@@ -22,7 +23,7 @@ Tests & Quality: [![Build Status](https://travis-ci.org/wapmorgan/Morphos.svg)](
 
 1. Installation
 2. Quick start
-3. Library documentation
+3. Documentation
 4. Contributing
 
 ## Installation
@@ -31,6 +32,8 @@ Tests & Quality: [![Build Status](https://travis-ci.org/wapmorgan/Morphos.svg)](
 ```
 composer require wapmorgan/morphos
 ```
+
+### Adapters
 
 - Adapter for Blade: [wapmorgan/morphos-blade](https://github.com/wapmorgan/Morphos-Blade)
 - Adapter for Twig: [wapmorgan/morphos-twig](https://github.com/wapmorgan/Morphos-Twig)
@@ -70,7 +73,7 @@ morphos\English\CardinalNumeralGenerator::generate(567) => 'five hundred sixty-s
 morphos\English\OrdinalNumeralGenerator::generate(961) => 'nine hundred sixty-first'
 ```
 
-# Library documentation
+# Documentation
 
 - [Русская морфология](README-ru.md) в файле README-ru.md
 - [English morphology](README-en.md) in file README-en.md
