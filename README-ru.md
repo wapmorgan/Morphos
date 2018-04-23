@@ -4,9 +4,7 @@
 * [Имена собственные](#Имена-собственные)
 * [Географические названия](#Географические-названия) (названия городов, улиц, стран)
 * [Существительные](#Существительные) (генерация множественного числа)
-  * [Склонение в единственном числе](#Склонение-в-единственном-числе)
-  * [Склонение во множественном числе](#Склонение-во-множественном-числе)
-  
+
 Трансформация в текст:
 * [Числа](#Числа)
   * [Количественные числительные](#Количественные-числительные)
@@ -18,7 +16,8 @@
 * [Предлоги и окончания](#Предлоги-и-окончания)
 
 Internals:
-* [Склонение отдельных частей имени]
+* [Склонение отдельных частей имени](#Склонение-отдельных-частей-имени)
+* [Склонение существительных](#Склонение-существительных)
 
 
 ## Краткий обзор
@@ -141,64 +140,26 @@ GeographicalNamesInflection::getCases('Саратов') => array(6) {
 
 ## Существительные
 
-### Склонение в единственном числе
-
-Функциональность по склонению имени существительных (а также существительных, перешедших из прилагательных/причастий) определена в классе `NounDeclension`:
-
-- `boolean isMutable($word, bool $animateness = false)` - проверяет, изменяемо ли слово.
-- `string getCase($word, $case, $animateness = false)` - склоняет слово в определённый падеж.
-- `array getCases($word, $animateness = false)` - склоняет слово во всех падежах.
-- `string detectGender($word)` - пытается определить пол существительного.
-
-_Пример._
+Для склонения существительных, используемых с количеством предметов/чего-либо предназначена функция `pluralize`:
 
 ```php
-use morphos\Russian\NounDeclension;
-// Following code will return original word if it's immutable:
-NounDeclension::getCase('поле', 'родительный') => 'поля'
-
-// Get all forms of a word at once:
-NounDeclension::getCases('линейка') => array(6) {
-    "nominative" => "линейка",
-    "genitive" => "линейки",
-    "dative" => "линейке",
-    "accusative" => "линейку",
-    "ablative" => "линейкой",
-    "prepositional" => "линейке"
-}
+pluralize($count, $noun, $animateness = false)
 ```
 
-### Склонение во множественном числе
-
-Обеспечивается классом `NounPluralization`, который имеет похожие методы:
-
-- `string getCase($word, $case, $animateness = false)` - получает один из падежей слова во множественном числе.
-- `array getCases($word, $animateness = false)` - склоняет слово во множественном числе.
-- `string pluralize($count, $word, $animateness = false)` - возвращает правильную форму слова для сопряжения с числом.
+Аргументы:
+- `$count` - количество предметов.
+- `$noun` - существительное.
+- `bool $animateness` - флаг, указывающий на одушевленность существительного. Если получаемая форма неверная, попробуйте указать `true`.
 
 _Пример._
 
 ```php
-use morphos\Russian\NounPluralization;
 use function morphos\Russian\pluralize;
 
-$word = 'дом';
-echo 'Множественное число для '.$word.' - '.NounPluralization::getCase($word, 'именительный'); // дома
-
-// Pluralize word and get all forms:
-NounPluralization::getCases('поле') => array(6) {
-    "nominative" => "поля",
-    "genitive" => "полей",
-    "dative" => "полям",
-    "accusative" => "поля",
-    "ablative" => "полями",
-    "prepositional" => "полях"
-}
-
-$count = 10;
-
-echo pluralize($count, 'дом''); // result: 10 домов
+echo pluralize(10, 'машина'); // => 10 машин
 ```
+
+Более подробное склонение существительных (по падежам и числам) описано в разделе [Internals](#Склонение-существительных).
 
 # Трансформация в текст
 
@@ -449,5 +410,61 @@ LastNamesInflection::getCases($user_last_name) => array(6) {
     "accusative" => "Иванова",
     "ablative" => "Ивановым",
     "prepositional" => "Иванове"
+}
+```
+
+## Склонение существительных
+
+### Склонение в единственном числе
+
+Функциональность по склонению имени существительных (а также существительных, перешедших из прилагательных/причастий) определена в классе `NounDeclension`:
+
+- `boolean isMutable($word, bool $animateness = false)` - проверяет, изменяемо ли слово.
+- `string getCase($word, $case, $animateness = false)` - склоняет слово в определённый падеж.
+- `array getCases($word, $animateness = false)` - склоняет слово во всех падежах.
+- `string detectGender($word)` - пытается определить пол существительного.
+
+_Пример._
+
+```php
+use morphos\Russian\NounDeclension;
+// Following code will return original word if it's immutable:
+NounDeclension::getCase('поле', 'родительный') => 'поля'
+
+// Get all forms of a word at once:
+NounDeclension::getCases('линейка') => array(6) {
+    "nominative" => "линейка",
+    "genitive" => "линейки",
+    "dative" => "линейке",
+    "accusative" => "линейку",
+    "ablative" => "линейкой",
+    "prepositional" => "линейке"
+}
+```
+
+### Склонение во множественном числе
+
+Обеспечивается классом `NounPluralization`, который имеет похожие методы:
+
+- `string getCase($word, $case, $animateness = false)` - получает один из падежей слова во множественном числе.
+- `array getCases($word, $animateness = false)` - склоняет слово во множественном числе.
+- `string pluralize($count, $word, $animateness = false)` - возвращает правильную форму существительного для сопряжения с числом.
+
+_Пример._
+
+```php
+use morphos\Russian\NounPluralization;
+
+$word = 'дом';
+echo 'Множественное число для '.$word.' - '.NounPluralization::getCase($word, 'именительный'); // дома
+
+// Pluralize word and get all forms:
+NounPluralization::getCases('поле') => array(6) {
+    "nominative" => "поля",
+    "genitive" => "полей",
+    "dative" => "полям",
+    "accusative" => "поля",
+    "ablative" => "полями",
+    "prepositional" => "полях"
 }
 ```
