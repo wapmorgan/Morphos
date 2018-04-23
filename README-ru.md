@@ -2,15 +2,13 @@
 
 Склонение частей речи:
 * [Имена собственные](#Имена-собственные)
-  * [Общие функции](#Общие-функции)
-  * [Склонение отдельных частей имени](#Склонение-отдельных-частей-имени)
-* [Географические названия](#Географические-названия)
-* [Существительные](#Существительные)
+* [Географические названия](#Географические-названия) (названия городов, улиц, стран)
+* [Существительные](#Существительные) (генерация множественного числа)
   * [Склонение в единственном числе](#Склонение-в-единственном-числе)
   * [Склонение во множественном числе](#Склонение-во-множественном-числе)
   
 Трансформация в текст:
-* [Числительные](#Числительные)
+* [Числа](#Числа)
   * [Количественные числительные](#Количественные-числительные)
   * [Порядковые числительные](#Порядковые-числительные)
 * [Валюты](#Валюты)
@@ -18,6 +16,9 @@
 
 Дополнительно:
 * [Предлоги и окончания](#Предлоги-и-окончания)
+
+Internals:
+* [Склонение отдельных частей имени]
 
 
 ## Краткий обзор
@@ -43,26 +44,25 @@
     - `RussianLanguage`
 
 **Функции:**
-* `inflectName($fullname, $case, $gender = null)` - возвращает имя в определенном падеже.
-* `getNameCases($fullname, $gender = null)` - возвращает массив со всеми склонениями имени.
+* `inflectName($fullname, $case, $gender = null): string` - возвращает имя в определенном падеже.
+* `getNameCases($fullname, $gender = null): array` - возвращает массив со всеми склонениями имени.
 * `detectGender($fullname)` - определяет пол владельца имени.
-* `pluralize($count, $noun, $animateness = false)` - подбирает форму существительного, согласуемую с количеством предметов.
+* `pluralize($count, $noun, $animateness = false): string` - ставит существительное в форму, согласуемую с количеством предметов, возвращает число предметов и существительное.
 
 # Склонение частей речи
 
 ## Имена собственные
 
-### Общие функции
 Чтобы просклонять все части имени можно использовать следующую функцию:
 
 ```php
-string inflectName($name, $case, $gender = null)
+string inflectName($fullname, $case, $gender = null)
 ```
 
 Аргументы:
-- `$name` - имя в формате `Имя`, `Фамилия Имя` или `Фамилия Имя Отчество`.
+- `$fullname` - имя в формате `Имя`, `Фамилия Имя` или `Фамилия Имя Отчество`.
 - `$case` - нужный падеж. Одна из констант `morphos\Russian\Cases` ИЛИ строка (`родительный`, `дательный`, `винительный`, `творительный` или `предложный`).
-- `$gender` - пол владельца имени. одна из констант `Gender` (`morphos\Gender::MALE` или `morphos\Gender::FEMALE`) ИЛИ строка (`m` для мужского имени,  `f` для женского имени) ИЛИ `null` для автоматического определения.
+- `$gender` - пол владельца имени. одна из констант `Gender` (`morphos\Gender::MALE` или `morphos\Gender::FEMALE`) ИЛИ строка (`m` для мужского имени,  `f` для женского имени). Если не указывать, будет прозведена попытка автоматического определения.
 
 **Важно отметить, что определение пола по отчеству и фамилии почти всегда даёт правильный результат, но определение только лишь по имени может дать неверный результат, особенно если имя не русское.** Так что если вы хотите просклонять только имя, то лучше будет указать пол при склонении.
 
@@ -78,11 +78,11 @@ inflectName('Иосиф', 'творительный') => 'Иосифом'
 Чтобы получить сразу все склонения для имени используйте другую функцию:
 
 ```php
-array getNameCases($name, $gender = null)
+array getNameCases($fullname, $gender = null)
 ```
 
 Аргументы:
-- `$name` - имя в формате `Имя`, `Фамилия Имя` или `Фамилия Имя Отчество`.
+- `$fullname` - имя в формате `Имя`, `Фамилия Имя` или `Фамилия Имя Отчество`.
 - `$gender` - пол владельца. Одна из констант `Gender` (`morphos\Gender::MALE` или `morphos\Gender::FEMALE`) ИЛИ строка (`m` для мужского имени,  `"f"` для женского имени) ИЛИ `null` для автоматического определения.
 
 Возвращает массив, где ключи - константы класса `Cases`, а значения - имя в определенном падеже.
@@ -107,80 +107,6 @@ getNameCases('Базанов Иосиф Валерьянович') => array(6) {
 string|null detectGender($fullname)
 ```
 Если удалось определить пол, будет возвращена одна из констант класса `morphos\Gender`, `null` в ином случае.
-
-### Склонение отдельных частей имени
-Для склонения отдельных частей имени есть три класса:
-
-- `FirstNamesInflection` - класс для склонения имён.
-- `MiddleNamesInflection` - класс для склонения отчеств.
-- `LastNamesInflection` - класс для склонения фамилий.
-
-Все классы похожи друг на друга и имеют следующие методы:
-
-- `boolean isMutable($word, $gender = null)` - проверяет, что часть имени склоняема.
-- `string getCase($word, $case, $gender = null)` - склоняет часть имени и возвращает результат. `$case` - это одна из констант `morphos\Cases` или `morphos\Russian\Cases`.
-- `array getCases($word, $gender = null)` - склоняет имя во всех падежах и возвращает результат в виде массива.
-- `string detectGender($word)` - пытается определить пол по части имени.
-
-_Примеры._
-
-**FirstNamesInflection**
-
-```php
-use morphos\Russian\FirstNamesInflection;
-// Возьмем имя Иван
-$user_name = 'Иван';
-
-FirstNamesInflection::getCase($user_name, 'родительный') => 'Ивана'
-
-// получаем имя во всех падежах
-FirstNamesInflection::getCases($user_name) => array(6) {
-    "nominative" => "Иван",
-    "genitive" => "Ивана",
-    "dative" => "Ивану",
-    "accusative" => "Ивана",
-    "ablative" => "Иваном",
-    "prepositional" => "Иване"
-}
-```
-
-**MiddleNamesInflection**
-
-```php
-use morphos\Russian\MiddleNamesInflection;
-$user_name = 'Сергеевич';
-
-MiddleNamesInflection::getCase($user_name, 'родительный') => 'Сергеевича'
-
-MiddleNamesInflection::getCases($user_name) => array(6) {
-    "nominative" => "Сергеевич",
-    "genitive" => "Сергеевича",
-    "dative" => "Сергеевичу",
-    "accusative" => "Сергеевича",
-    "ablative" => "Сергеевичем",
-    "prepositional" => "Сергеевиче"
-}
-```
-
-**LastNamesInflection**
-
-```php
-use morphos\Russian\LastNamesInflection;
-$user_last_name = 'Иванов';
-
-$dative_last_name = LastNamesInflection::getCase($user_last_name, 'дательный'); // Иванову
-
-echo 'Мы хотим подарить товарищу '.$dative_last_name.' небольшой презент.';
-
-LastNamesInflection::getCases($user_last_name) => array(6) {
-    "nominative" => "Иванов",
-    "genitive" => "Иванова",
-    "dative" => "Иванову",
-    "accusative" => "Иванова",
-    "ablative" => "Ивановым",
-    "prepositional" => "Иванове"
-}
-```
 
 ## Географические названия
 
@@ -424,7 +350,7 @@ $name = 'Андрей';
 RussianLanguage::about(FirstNamesInflection::getCase($name, 'п')) => 'об Андрее'
 ```
 
-### Окончание глаголов
+### Окончания глаголов
 
 Глаголы в прошедшем времени в русском языке имеют признак рода. Чтобы упростить подбор правильной формы глаголы используйте функцию:
 
@@ -446,4 +372,82 @@ $gender = morphos\Gender::FEMALE;
 
 $name.' '.RussianLanguage::verb('добавил', $gender) => 'Анастасия добавила'
 $name.' '.RussianLanguage::verb('поделился', $gender).' публикацией' => 'Анастасия поделилась публикацией'
+```
+
+# Internals
+
+Данная глава описывает ранее перечисленные функции и/или возможности более подробно.
+
+## Склонение отдельных частей имени
+Для склонения отдельных частей имени есть три класса:
+
+- `FirstNamesInflection` - класс для склонения имён.
+- `MiddleNamesInflection` - класс для склонения отчеств.
+- `LastNamesInflection` - класс для склонения фамилий.
+
+Все классы похожи друг на друга и имеют следующие методы:
+
+- `boolean isMutable($word, $gender = null)` - проверяет, что часть имени склоняема.
+- `string getCase($word, $case, $gender = null)` - склоняет часть имени и возвращает результат. `$case` - это одна из констант `morphos\Cases` или `morphos\Russian\Cases`.
+- `array getCases($word, $gender = null)` - склоняет имя во всех падежах и возвращает результат в виде массива.
+- `string detectGender($word)` - пытается определить пол по части имени.
+
+_Примеры._
+
+**FirstNamesInflection**
+
+```php
+use morphos\Russian\FirstNamesInflection;
+// Возьмем имя Иван
+$user_name = 'Иван';
+
+FirstNamesInflection::getCase($user_name, 'родительный') => 'Ивана'
+
+// получаем имя во всех падежах
+FirstNamesInflection::getCases($user_name) => array(6) {
+    "nominative" => "Иван",
+    "genitive" => "Ивана",
+    "dative" => "Ивану",
+    "accusative" => "Ивана",
+    "ablative" => "Иваном",
+    "prepositional" => "Иване"
+}
+```
+
+**MiddleNamesInflection**
+
+```php
+use morphos\Russian\MiddleNamesInflection;
+$user_name = 'Сергеевич';
+
+MiddleNamesInflection::getCase($user_name, 'родительный') => 'Сергеевича'
+
+MiddleNamesInflection::getCases($user_name) => array(6) {
+    "nominative" => "Сергеевич",
+    "genitive" => "Сергеевича",
+    "dative" => "Сергеевичу",
+    "accusative" => "Сергеевича",
+    "ablative" => "Сергеевичем",
+    "prepositional" => "Сергеевиче"
+}
+```
+
+**LastNamesInflection**
+
+```php
+use morphos\Russian\LastNamesInflection;
+$user_last_name = 'Иванов';
+
+$dative_last_name = LastNamesInflection::getCase($user_last_name, 'дательный'); // Иванову
+
+echo 'Мы хотим подарить товарищу '.$dative_last_name.' небольшой презент.';
+
+LastNamesInflection::getCases($user_last_name) => array(6) {
+    "nominative" => "Иванов",
+    "genitive" => "Иванова",
+    "dative" => "Иванову",
+    "accusative" => "Иванова",
+    "ablative" => "Ивановым",
+    "prepositional" => "Иванове"
+}
 ```
