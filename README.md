@@ -9,6 +9,7 @@ A morphological solution for Russian and English language written completely in 
 
 Tests & Quality: [![Build Status](https://travis-ci.org/wapmorgan/Morphos.svg)](https://travis-ci.org/wapmorgan/Morphos)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/wapmorgan/Morphos/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/wapmorgan/Morphos/?branch=master)
+[![Code Coverage](https://scrutinizer-ci.com/g/wapmorgan/Morphos/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/wapmorgan/Morphos/?branch=master)
 
 ## Features
 
