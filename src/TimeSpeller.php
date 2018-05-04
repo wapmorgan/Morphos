@@ -24,9 +24,10 @@ abstract class TimeSpeller
 
     public static function spellUnit($count, $unit) {}
 
-    public static function spellInterval(DateInterval $interval, $options = 0)
+    public static function spellInterval(DateInterval $interval, $options = 0, $limit = 0)
     {
         $parts = [];
+        $k = 0;
         foreach ([
             'y' => self::YEAR,
             'm' => self::MONTH,
@@ -36,7 +37,11 @@ abstract class TimeSpeller
             's' => self::SECOND
         ] as $interval_field => $unit) {
             if ($interval->{$interval_field} > 0) {
+                if($limit > 0 && $k >= $limit) {
+                    break;
+                }
                 $parts[] = static::spellUnit($interval->{$interval_field}, $unit);
+                $k++;
             }
         }
 
