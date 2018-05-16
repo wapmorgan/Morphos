@@ -280,10 +280,14 @@ TimeSpeller::spellInterval(new DateInterval('P5YT2M')) => '5 лет 2 часа'
 - `TimeSpeller::DIRECTION` - добавляет "назад" для положительных интвералов и "через" для отрицательных.
 - `TimeSpeller::SEPARATE` - добавляет запятые между составными интервала и союз перед последней частью.
 
+Третьим аргументом можно ограничиьб количество фраз, которые будут сгенерированы.
+
 ```php
 TimeSpeller::spellInterval(new DateInterval('P5YT2M'), TimeSpeller::DIRECTION) => '5 лет 2 часа назад'
 TimeSpeller::spellInterval(new DateInterval('P5YT2M'), TimeSpeller::SEPARATE) => '5 лет и 2 часа'
 TimeSpeller::spellInterval(new DateInterval('P5YT2M'), TimeSpeller::DIRECTION | TimeSpeller::SEPARATE) => '5 лет и 2 часа назад'
+TimeSpeller::spellInterval(new DateInterval('P5YT2M'), TimeSpeller::DIRECTION) => '5 лет 2 часа назад'
+TimeSpeller::spellInterval(new DateInterval('P5Y1DT10H2M'), TimeSpeller::SEPARATE, 2) => '5 лет и 1 день'
 ```
 
 # Дополнительно
