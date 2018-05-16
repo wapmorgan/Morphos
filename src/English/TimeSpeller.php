@@ -14,6 +14,11 @@ class TimeSpeller extends \morphos\TimeSpeller
         self::SECOND => 'second',
     ];
 
+    /**
+     * @param $count
+     * @param $unit
+     * @return string
+     */
     public static function spellUnit($count, $unit)
     {
         if (!isset(self::$units[$unit])) {

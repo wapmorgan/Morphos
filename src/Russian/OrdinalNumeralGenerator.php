@@ -12,7 +12,7 @@ class OrdinalNumeralGenerator extends NumeralGenerator implements Cases
 {
     use RussianLanguage, CasesHelper;
 
-    protected static $words = array(
+    protected static $words = [
         1 => 'первый',
         2 => 'второй',
         3 => 'третий',
@@ -49,16 +49,16 @@ class OrdinalNumeralGenerator extends NumeralGenerator implements Cases
         700 => 'семисотый',
         800 => 'восемисотый',
         900 => 'девятисотый',
-    );
+    ];
 
-    protected static $exponents = array(
+    protected static $exponents = [
         1000 => 'тысячный',
         1000000 => 'миллионный',
         1000000000 => 'миллиардный',
         1000000000000 => 'триллионный',
-    );
+    ];
 
-    protected static $multipliers = array(
+    protected static $multipliers = [
         2 => 'двух',
         3 => 'трех',
         4 => 'четырех',
@@ -94,8 +94,13 @@ class OrdinalNumeralGenerator extends NumeralGenerator implements Cases
         700 => 'семиста',
         800 => 'восемиста',
         900 => 'девятиста',
-    );
+    ];
 
+    /**
+     * @param $number
+     * @param string $gender
+     * @return array
+     */
     public static function getCases($number, $gender = self::MALE)
     {
         // simple numeral
@@ -104,48 +109,48 @@ class OrdinalNumeralGenerator extends NumeralGenerator implements Cases
             // special rules for 3
             if ($number == 3) {
                 $prefix = S::slice($word, 0, -2);
-                return array(
+                return [
                     self::IMENIT => $prefix.($gender == self::MALE ? 'ий' : ($gender == self::FEMALE ? 'ья' : 'ье')),
                     self::RODIT => $prefix.($gender == self::FEMALE ? 'ьей' : 'ьего'),
                     self::DAT => $prefix.($gender == self::FEMALE ? 'ьей' : 'ьему'),
                     self::VINIT => $prefix.($gender == self::FEMALE ? 'ью' : 'ьего'),
                     self::TVORIT => $prefix.($gender == self::FEMALE ? 'ьей' : 'ьим'),
                     self::PREDLOJ => $prefix.($gender == self::FEMALE ? 'ьей' : 'ьем'),
-                );
+                ];
             } else {
                 switch ($gender) {
                     case self::MALE:
                         $prefix = S::slice($word, 0, $number == 40 ? -1 : -2);
-                        return array(
+                        return [
                             self::IMENIT => $word,
                             self::RODIT => $prefix.'ого',
                             self::DAT => $prefix.'ому',
                             self::VINIT => $word,
                             self::TVORIT => $prefix.'ым',
                             self::PREDLOJ => $prefix.'ом',
-                        );
+                        ];
 
                     case self::FEMALE:
                         $prefix = S::slice($word, 0, $number == 40 ? -1 : -2);
-                        return array(
+                        return [
                             self::IMENIT => $prefix.'ая',
                             self::RODIT => $prefix.'ой',
                             self::DAT => $prefix.'ой',
                             self::VINIT => $prefix.'ую',
                             self::TVORIT => $prefix.'ой',
                             self::PREDLOJ => $prefix.'ой',
-                        );
+                        ];
 
                     case self::NEUTER:
                         $prefix = S::slice($word, 0, $number == 40 ? -1 : -2);
-                        return array(
+                        return [
                             self::IMENIT => $prefix.'ое',
                             self::RODIT => $prefix.'ого',
                             self::DAT => $prefix.'ому',
                             self::VINIT => $prefix.'ое',
                             self::TVORIT => $prefix.'ым',
                             self::PREDLOJ => $prefix.'ом',
-                        );
+                        ];
                 }
             }
         }
@@ -153,8 +158,7 @@ class OrdinalNumeralGenerator extends NumeralGenerator implements Cases
         else {
             $ordinal_part = null;
             $ordinal_prefix = null;
-            $cardinal_part = array();
-            $result = array();
+            $result = [];
 
             // test for exponents. If smaller summand of number is an exponent, declinate it
             foreach (array_reverse(self::$exponents, true) as $word_number => $word) {
@@ -211,7 +215,7 @@ class OrdinalNumeralGenerator extends NumeralGenerator implements Cases
                 $cardinal_part = CardinalNumeralGenerator::getCase($number, self::IMENIT, $gender);
 
                 // make one array with cases and delete 'o/об' prepositional from all parts except the last one
-                foreach (array(self::IMENIT, self::RODIT, self::DAT, self::VINIT, self::TVORIT, self::PREDLOJ) as $case) {
+                foreach ([self::IMENIT, self::RODIT, self::DAT, self::VINIT, self::TVORIT, self::PREDLOJ] as $case) {
                     $result[$case] = $cardinal_part.' '.$ordinal_part[$case];
                 }
             } else {
@@ -222,6 +226,13 @@ class OrdinalNumeralGenerator extends NumeralGenerator implements Cases
         }
     }
 
+    /**
+     * @param $number
+     * @param $case
+     * @param string $gender
+     * @return mixed
+     * @throws \Exception
+     */
     public static function getCase($number, $case, $gender = self::MALE)
     {
         $case = self::canonizeCase($case);

@@ -8,6 +8,8 @@ class S
 {
     /**
      * Sets encoding for using in morphos/* functions.
+     * @param string $encoding
+     * @return bool
      */
     public static function setEncoding($encoding)
     {
@@ -21,7 +23,9 @@ class S
     }
 
     /**
-     * Calcules count of characters in string.
+     * Calculates count of characters in string.
+     * @param $string
+     * @return bool|int
      */
     public static function length($string)
     {
@@ -36,6 +40,10 @@ class S
 
     /**
      * Slices string like python.
+     * @param string $string
+     * @param int $start
+     * @param int|null $end
+     * @return bool|string
      */
     public static function slice($string, $start, $end = null)
     {
@@ -54,6 +62,8 @@ class S
 
     /**
      * Lower case.
+     * @param $string
+     * @return bool|string
      */
     public static function lower($string)
     {
@@ -66,6 +76,8 @@ class S
 
     /**
      * Upper case.
+     * @param $string
+     * @return bool|string
      */
     public static function upper($string)
     {
@@ -78,6 +90,8 @@ class S
 
     /**
      * Name case. (ex: Thomas, Lewis)
+     * @param $string
+     * @return bool|string
      */
     public static function name($string)
     {
@@ -92,6 +106,9 @@ class S
 
     /**
      * multiple substr_count().
+     * @param $string
+     * @param array $chars
+     * @return bool|int
      */
     public static function countChars($string, array $chars)
     {
@@ -102,6 +119,11 @@ class S
         }
     }
 
+    /**
+     * @param $string
+     * @param array $chars
+     * @return bool|int
+     */
     public static function findLastPositionForOneOfChars($string, array $chars)
     {
         if (function_exists('mb_strrpos')) {
@@ -122,6 +144,13 @@ class S
         }
     }
 
+    /**
+     * @param $string
+     * @param $substring
+     * @param bool $caseSensetive
+     * @param int $startOffset
+     * @return string|false
+     */
     public static function indexOf($string, $substring, $caseSensetive = false, $startOffset = 0)
     {
         if (function_exists('mb_stripos')) {

@@ -26,6 +26,13 @@ class MoneySpeller extends \morphos\MoneySpeller
         self::HRYVNIA => ['гривна', Gender::FEMALE, 'копейка', Gender::FEMALE],
     ];
 
+    /**
+     * @param $value
+     * @param $currency
+     * @param string $format
+     * @return string
+     * @throws \Exception
+     */
     public static function spell($value, $currency, $format = self::NORMAL_FORMAT)
     {
         $currency = self::canonizeCurrency($currency);

@@ -6,12 +6,13 @@ use morphos\S;
 
 /**
  * Inflects the name in one case.
- * @param string        $fullName Name in "F", "L F" or "L M F" format, where L - last name, M - middle name, F - first name
- * @param string        $case     Case to inflect to.
+ * @param string $fullName        Name in "F", "L F" or "L M F" format, where L - last name, M - middle name, F - first name
+ * @param string $case            Case to inflect to.
  *                                Should be one of [[morphos\Cases]] or [[morphos\Russian\Cases]] constants.
- * @param null|string   $gender   Gender of name owner. If null, auto detection will be used.
+ * @param null|string $gender     Gender of name owner. If null, auto detection will be used.
  *                                Should be one of [[morphos\Gender]] constants.
- * @return string                 Returns string containing the inflection of name to a case.
+ * @return string|false           Returns string containing the inflection of name to a case.
+ * @throws \Exception
  */
 function inflectName($fullName, $case = null, $gender = null)
 {
@@ -57,7 +58,7 @@ function inflectName($fullName, $case = null, $gender = null)
  * @param string      $fullName Name in "F", "L F" or "L M F" format, where L - last name, M - middle name, F - first name
  * @param null|string $gender   Gender of name owner. If null, auto detection will be used.
  *                              Should be one of [[morphos\Gender]] constants.
- * @return array                Returns an array with name inflected to all cases.
+ * @return array|false          Returns an array with name inflected to all cases.
  */
 function getNameCases($fullName, $gender = null)
 {

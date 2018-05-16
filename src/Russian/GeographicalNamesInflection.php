@@ -10,18 +10,18 @@ class GeographicalNamesInflection extends \morphos\BaseInflection implements Cas
 {
     use RussianLanguage, CasesHelper;
 
-    protected static $abbreviations = array(
+    protected static $abbreviations = [
         'сша',
         'оаэ',
         'ссср',
         'юар',
-    );
+    ];
 
-    protected static $delimiters = array(
+    protected static $delimiters = [
         ' ',
         '-на-',
         '-',
-    );
+    ];
 
     protected static $ovAbnormalExceptions = [
         'осташков',
@@ -68,8 +68,18 @@ class GeographicalNamesInflection extends \morphos\BaseInflection implements Cas
             return true;
         }
 
+        // хутор N
+        if (S::slice($name, 0, 6) == 'хутор ') {
+            return true;
+        }
+
+        // пгт N
+        if (S::slice($name, 0, 4) == 'пгт ') {
+            return false;
+        }
+
         // ends with 'е' or 'о', but not with 'ово/ёво/ево/ино/ыно'
-        if (in_array(S::slice($name, -1), array('е', 'о')) && !in_array(S::slice($name, -3, -1), array('ов', 'ёв', 'ев', 'ин', 'ын'))) {
+        if (in_array(S::slice($name, -1), ['е', 'о']) && !in_array(S::slice($name, -3, -1), ['ов', 'ёв', 'ев', 'ин', 'ын'])) {
             return false;
         }
         return true;
@@ -79,6 +89,7 @@ class GeographicalNamesInflection extends \morphos\BaseInflection implements Cas
      * Получение всех форм названия
      * @param string $name
      * @return array
+     * @throws \Exception
      */
     public static function getCases($name)
     {
@@ -114,11 +125,26 @@ class GeographicalNamesInflection extends \morphos\BaseInflection implements Cas
             ]);
         }
 
-        // Сложное название через пробел или через '-на-'
+        // хутор N
+        if (S::slice($name, 0, 6) == 'хутор ') {
+            return self::composeCasesFromWords([
+                NounDeclension::getCases('хутор'),
+                array_fill_keys(self::getAllCases(), S::name(S::slice($name, 6)))
+            ]);
+        }
+
+        // пгт N
+        if (S::slice($name, 0, 4) == 'пгт ') {
+            return self::composeCasesFromWords([
+                array_fill_keys([self::IMENIT, self::RODIT, self::DAT, self::VINIT, self::TVORIT, self::PREDLOJ], 'пгт '.S::name(S::slice($name, 4)))
+            ]);
+        }
+
+        // Сложное название через пробел, '-' или '-на-'
         foreach (self::$delimiters as $delimiter) {
             if (strpos($name, $delimiter) !== false) {
                 $parts = explode($delimiter, $name);
-                $result = array();
+                $result = [];
                 foreach ($parts as $i => $part) {
                     $result[$i] = static::getCases($part);
                 }
@@ -130,171 +156,171 @@ class GeographicalNamesInflection extends \morphos\BaseInflection implements Cas
             if (S::slice($name, -2) == 'ий') {
                 // Нижний, Русский
                 $prefix = S::name(S::slice($name, 0, -2));
-                return array(
+                return [
                     self::IMENIT => $prefix.'ий',
                     self::RODIT => $prefix.(self::isVelarConsonant(S::slice($name, -3, -2)) ? 'ого' : 'его'),
                     self::DAT => $prefix.(self::isVelarConsonant(S::slice($name, -3, -2)) ? 'ому' : 'ему'),
                     self::VINIT => $prefix.'ий',
                     self::TVORIT => $prefix.'им',
                     self::PREDLOJ => $prefix.(self::chooseEndingBySonority($prefix, 'ем', 'ом')),
-                );
+                ];
             } else if (S::slice($name, -2) == 'ая') {
                 // Ростовская
                 $prefix = S::name(S::slice($name, 0, -2));
-                return array(
+                return [
                     self::IMENIT => $prefix.'ая',
                     self::RODIT => $prefix.'ой',
                     self::DAT => $prefix.'ой',
                     self::VINIT => $prefix.'ую',
                     self::TVORIT => $prefix.'ой',
                     self::PREDLOJ => $prefix.'ой',
-                );
+                ];
             } else if (S::slice($name, -2) == 'ый') {
                 // Грозный, Благодарный
                 $prefix = S::name(S::slice($name, 0, -2));
-                return array(
+                return [
                     self::IMENIT => $prefix.'ый',
                     self::RODIT => $prefix.'ого',
                     self::DAT => $prefix.'ому',
                     self::VINIT => $prefix.'ый',
                     self::TVORIT => $prefix.'ым',
                     self::PREDLOJ => $prefix.'ом',
-                );
+                ];
             } elseif (S::slice($name, -1) == 'а') {
                 // Москва, Рига
                 $prefix = S::name(S::slice($name, 0, -1));
-                return array(
+                return [
                     self::IMENIT => $prefix.'а',
                     self::RODIT => $prefix.(self::isVelarConsonant(S::slice($name, -2, -1)) ? 'и' : 'ы'),
                     self::DAT => $prefix.'е',
                     self::VINIT => $prefix.'у',
                     self::TVORIT => $prefix.'ой',
                     self::PREDLOJ => $prefix.'е',
-                );
+                ];
             } elseif (S::slice($name, -1) == 'я') {
                 // Азия
                 $prefix = S::name(S::slice($name, 0, -1));
-                return array(
+                return [
                     self::IMENIT => S::name($name),
                     self::RODIT => $prefix.'и',
                     self::DAT => $prefix.'и',
                     self::VINIT => $prefix.'ю',
                     self::TVORIT => $prefix.'ей',
                     self::PREDLOJ => $prefix.'и',
-                );
+                ];
             } elseif (S::slice($name, -1) == 'й') {
                 // Ишимбай
                 $prefix = S::name(S::slice($name, 0, -1));
-                return array(
+                return [
                     self::IMENIT => $prefix.'й',
                     self::RODIT => $prefix.'я',
                     self::DAT => $prefix.'ю',
                     self::VINIT => $prefix.'й',
                     self::TVORIT => $prefix.'ем',
                     self::PREDLOJ => $prefix.'е',
-                );
+                ];
             } elseif (self::isConsonant(S::slice($name, -1)) && !in_array($name, self::$ovAbnormalExceptions)) {
                 // Париж, Валаам, Киев
                 $prefix = S::name($name);
-                return array(
+                return [
                     self::IMENIT => $prefix,
                     self::RODIT => $prefix.'а',
                     self::DAT => $prefix.'у',
                     self::VINIT => $prefix,
                     self::TVORIT => $prefix.(self::isVelarConsonant(S::slice($name, -2, -1)) ? 'ем' : 'ом'),
                     self::PREDLOJ => $prefix.'е',
-                );
+                ];
             } elseif (S::slice($name, -2) == 'ль') {
                 // Ставрополь, Ярославль
                 $prefix = S::name(S::slice($name, 0, -1));
-                return array(
+                return [
                     self::IMENIT => $prefix.'ь',
                     self::RODIT => $prefix.'я',
                     self::DAT => $prefix.'ю',
                     self::VINIT => $prefix.'ь',
                     self::TVORIT => $prefix.'ем',
                     self::PREDLOJ => $prefix.'е',
-                );
+                ];
             } elseif (S::slice($name, -2) == 'рь') {
                 // Тверь
                 $prefix = S::name(S::slice($name, 0, -1));
-                return array(
+                return [
                     self::IMENIT => $prefix.'ь',
                     self::RODIT => $prefix.'и',
                     self::DAT => $prefix.'и',
                     self::VINIT => $prefix.'ь',
                     self::TVORIT => $prefix.'ью',
                     self::PREDLOJ => $prefix.'и',
-                );
+                ];
             } elseif (S::slice($name, -2) == 'ки') {
                 // Березники, Ессентуки
                 $prefix = S::name(S::slice($name, 0, -1));
-                return array(
+                return [
                     self::IMENIT => $prefix.'и',
                     self::RODIT => $name == 'луки' ? $prefix : $prefix.'ов',
                     self::DAT => $prefix.'ам',
                     self::VINIT => $prefix.'и',
                     self::TVORIT => $prefix.'ами',
                     self::PREDLOJ => $prefix.'ах',
-                );
+                ];
             } elseif (S::slice($name, -2) == 'мь') {
                 // Пермь, Кемь
                 $prefix = S::name(S::slice($name, 0, -1));
-                return array(
+                return [
                     self::IMENIT => $prefix.'ь',
                     self::RODIT => $prefix.'и',
                     self::DAT => $prefix.'и',
                     self::VINIT => $prefix.'ь',
                     self::TVORIT => $prefix.'ью',
                     self::PREDLOJ => $prefix.'и',
-                );
+                ];
             } elseif (S::slice($name, -2) == 'нь') {
                 // Рязань, Назрань
                 $prefix = S::name(S::slice($name, 0, -1));
-                return array(
+                return [
                     self::IMENIT => $prefix.'ь',
                     self::RODIT => $prefix.'и',
                     self::DAT => $prefix.'и',
                     self::VINIT => $prefix.'ь',
                     self::TVORIT => $prefix.'ью',
                     self::PREDLOJ => $prefix.'и',
-                );
+                ];
             } else if (S::slice($name, -2) == 'ые') {
                 // Набережные
                 $prefix = S::name(S::slice($name, 0, -1));
-                return array(
+                return [
                     self::IMENIT => $prefix.'е',
                     self::RODIT => $prefix.'х',
                     self::DAT => $prefix.'м',
                     self::VINIT => $prefix.'е',
                     self::TVORIT => $prefix.'ми',
                     self::PREDLOJ => $prefix.'х',
-                );
+                ];
             } else if (S::slice($name, -2) == 'ны') {
                 // Челны
                 $prefix = S::name(S::slice($name, 0, -1));
-                return array(
+                return [
                     self::IMENIT => $prefix.'ы',
                     self::RODIT => $prefix.'ов',
                     self::DAT => $prefix.'ам',
                     self::VINIT => $prefix.'ы',
                     self::TVORIT => $prefix.'ами',
                     self::PREDLOJ => $prefix.'ах',
-                );
+                ];
             } else if ($name == 'великие') {
                 $prefix = 'Велики';
-                return array(
+                return [
                     self::IMENIT => $prefix.'е',
                     self::RODIT => $prefix.'х',
                     self::DAT => $prefix.'м',
                     self::VINIT => $prefix.'е',
                     self::TVORIT => $prefix.'ми',
                     self::PREDLOJ => $prefix.'х',
-                );
+                ];
             }
 
-            $suffixes = array('ов', 'ёв', 'ев', 'ин', 'ын');
-            if ((in_array(S::slice($name, -1), array('е', 'о')) && in_array(S::slice($name, -3, -1), $suffixes)) || in_array(S::slice($name, -2), $suffixes)) {
+            $suffixes = ['ов', 'ёв', 'ев', 'ин', 'ын'];
+            if ((in_array(S::slice($name, -1), ['е', 'о']) && in_array(S::slice($name, -3, -1), $suffixes)) || in_array(S::slice($name, -2), $suffixes)) {
                 // ово, ёво, ...
                 if (in_array(S::slice($name, -3, -1), $suffixes)) {
                     $prefix = S::name(S::slice($name, 0, -1));
@@ -303,28 +329,29 @@ class GeographicalNamesInflection extends \morphos\BaseInflection implements Cas
                 elseif (in_array(S::slice($name, -2), $suffixes)) {
                     $prefix = S::name($name);
                 }
-                return array(
+                return [
                     self::IMENIT => S::name($name),
                     self::RODIT => $prefix.'а',
                     self::DAT => $prefix.'у',
                     self::VINIT => S::name($name),
                     self::TVORIT => $prefix.'ым',
                     self::PREDLOJ => $prefix.'е',
-                );
+                ];
             }
         }
 
         // if no rules matches or name is immutable
         $name = in_array($name, self::$abbreviations) ? S::upper($name) : S::name($name);
-        return array_fill_keys(array(self::IMENIT, self::RODIT, self::DAT, self::VINIT, self::TVORIT, self::PREDLOJ), $name);
+        return array_fill_keys([self::IMENIT, self::RODIT, self::DAT, self::VINIT, self::TVORIT, self::PREDLOJ], $name);
     }
 
     /**
      * Получение одной формы (падежа) названия.
-     * @param string $name Название
+     * @param string $name  Название
      * @param integer $case Падеж. Одна из констант \morphos\Russian\Cases или \morphos\Cases.
      * @see \morphos\Russian\Cases
-     * @return mixed
+     * @return string
+     * @throws \Exception
      */
     public static function getCase($name, $case)
     {

@@ -5,7 +5,7 @@ use morphos\S;
 
 class NounPluralization extends \morphos\NounPluralization
 {
-    private static $exceptions = array(
+    private static $exceptions = [
         'chief' => 'chiefs',
         'basis' => 'bases',
         'crisis' => 'crises',
@@ -20,9 +20,9 @@ class NounPluralization extends \morphos\NounPluralization
         'ox' => 'oxen',
         'goose' => 'geese',
         'mouse' => 'mice'
-    );
+    ];
 
-    private static $without_paired_form = array(
+    private static $without_paired_form = [
         'knowledge',
         'progress',
         'advise',
@@ -31,10 +31,15 @@ class NounPluralization extends \morphos\NounPluralization
         'scissors',
         'spectacles',
         'trousers',
-    );
+    ];
 
-    public static $consonants = array('b', 'c', 'd', 'f', 'g', 'h', 'j', 'k', 'l', 'm', 'n', 'p', 'q', 'r', 's', 't', 'v', 'x', 'z', 'w');
+    public static $consonants = ['b', 'c', 'd', 'f', 'g', 'h', 'j', 'k', 'l', 'm', 'n', 'p', 'q', 'r', 's', 't', 'v', 'x', 'z', 'w'];
 
+    /**
+     * @param $word
+     * @param int $count
+     * @return string
+     */
     public static function pluralize($word, $count = 2)
     {
         if ($count == 1) {
@@ -48,7 +53,7 @@ class NounPluralization extends \morphos\NounPluralization
             return self::$exceptions[$word];
         }
 
-        if (in_array(S::slice($word, -1), array('s', 'x')) || in_array(S::slice($word, -2), array('sh', 'ch'))) {
+        if (in_array(S::slice($word, -1), ['s', 'x']) || in_array(S::slice($word, -2), array('sh', 'ch'))) {
             return $word.'es';
         } elseif (S::slice($word, -1) == 'o') {
             return $word.'es';

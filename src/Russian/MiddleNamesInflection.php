@@ -10,6 +10,10 @@ class MiddleNamesInflection extends \morphos\NamesInflection implements Cases
 {
     use RussianLanguage, CasesHelper;
 
+    /**
+     * @param $name
+     * @return null|string
+     */
     public static function detectGender($name)
     {
         $name = S::lower($name);
@@ -22,16 +26,28 @@ class MiddleNamesInflection extends \morphos\NamesInflection implements Cases
         return null;
     }
 
+    /**
+     * @param $name
+     * @param null $gender
+     * @return bool
+     */
     public static function isMutable($name, $gender = null)
     {
         $name = S::lower($name);
-        if (in_array(S::slice($name, -2), array('ич', 'на'))) {
+        if (in_array(S::slice($name, -2), ['ич', 'на'])) {
             return true;
         }
         // if foreign, try it as a name
         return FirstNamesInflection::isMutable($name, $gender);
     }
 
+    /**
+     * @param $name
+     * @param $case
+     * @param null $gender
+     * @return mixed
+     * @throws \Exception
+     */
     public static function getCase($name, $case, $gender = null)
     {
         $case = self::canonizeCase($case);
@@ -39,6 +55,11 @@ class MiddleNamesInflection extends \morphos\NamesInflection implements Cases
         return $forms[$case];
     }
 
+    /**
+     * @param $name
+     * @param null $gender
+     * @return array
+     */
     public static function getCases($name, $gender = null)
     {
         $name = S::lower($name);

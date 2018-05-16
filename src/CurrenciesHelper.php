@@ -5,6 +5,11 @@ use Exception;
 
 trait CurrenciesHelper
 {
+    /**
+     * @param $currency
+     * @return string
+     * @throws Exception
+     */
     public static function canonizeCurrency($currency)
     {
         switch ($currency) {

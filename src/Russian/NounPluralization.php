@@ -14,12 +14,12 @@ class NounPluralization extends \morphos\NounPluralization implements Cases
     const TWO_FOUR = 2;
     const FIVE_OTHER = 3;
 
-    protected static $neuterExceptions = array(
+    protected static $neuterExceptions = [
         'поле',
         'море',
-    );
+    ];
 
-    protected static $genitiveExceptions = array(
+    protected static $genitiveExceptions = [
         'письмо' => 'писем',
         'пятно' => 'пятен',
         'кресло' => 'кресел',
@@ -27,25 +27,28 @@ class NounPluralization extends \morphos\NounPluralization implements Cases
         'ядро' => 'ядер',
         'блюдце' => 'блюдец',
         'полотенце' => 'полотенец',
-    );
+    ];
 
-    protected static $immutableWords = array(
+    protected static $immutableWords = [
         'евро',
         'пенни',
-    );
+    ];
 
-    protected static $runawayVowelsExceptions = array(
+    protected static $runawayVowelsExceptions = [
         'писе*ц',
         'песе*ц',
         'глото*к',
-    );
+    ];
 
     protected static $runawayVowelsNormalized = false;
 
+    /**
+     * @return array|bool
+     */
     protected static function getRunAwayVowelsList()
     {
         if (self::$runawayVowelsNormalized === false) {
-            self::$runawayVowelsNormalized = array();
+            self::$runawayVowelsNormalized = [];
             foreach (self::$runawayVowelsExceptions as $word) {
                 self::$runawayVowelsNormalized[str_replace('*', null, $word)] = S::indexOf($word, '*') - 1;
             }
@@ -59,6 +62,7 @@ class NounPluralization extends \morphos\NounPluralization implements Cases
      * @param string $word Название предмета
      * @param bool $animateness Признак одушевленности
      * @return string
+     * @throws \Exception
      */
     public static function pluralize($word, $count = 2, $animateness = false)
     {
@@ -109,7 +113,8 @@ class NounPluralization extends \morphos\NounPluralization implements Cases
      * @param $word
      * @param $case
      * @param bool $animateness
-     * @return mixed
+     * @return string
+     * @throws \Exception
      */
     public static function getCase($word, $case, $animateness = false)
     {
@@ -128,14 +133,14 @@ class NounPluralization extends \morphos\NounPluralization implements Cases
         $word = S::lower($word);
 
         if (in_array($word, self::$immutableWords)) {
-            return array(
+            return [
                 self::IMENIT => $word,
                 self::RODIT => $word,
                 self::DAT => $word,
                 self::VINIT => $word,
                 self::TVORIT => $word,
                 self::PREDLOJ => $word,
-            );
+            ];
         }
 
         // Адъективное склонение (Сущ, образованные от прилагательных и причастий) - прохожий, существительное
@@ -173,9 +178,9 @@ class NounPluralization extends \morphos\NounPluralization implements Cases
             $soft_last = in_array(S::slice($word, -2), ['чь', 'сь', 'ть', 'нь']);
         }
 
-        $forms = array();
+        $forms = [];
 
-        if ($last == 'ч' || in_array(S::slice($word, -2), array('чь', 'сь', 'ть', 'нь')) || (self::isVowel($last) && in_array(S::slice($word, -2, -1), array('ч', 'к')))) { // before ч, чь, сь, ч+vowel, к+vowel
+        if ($last == 'ч' || in_array(S::slice($word, -2), ['чь', 'сь', 'ть', 'нь']) || (self::isVowel($last) && in_array(S::slice($word, -2, -1), ['ч', 'к']))) { // before ч, чь, сь, ч+vowel, к+vowel
             $forms[Cases::IMENIT] = $prefix.'и';
         } elseif (in_array($last, ['н', 'ц', 'р', 'т'])) {
             $forms[Cases::IMENIT] = $prefix.'ы';
@@ -186,7 +191,7 @@ class NounPluralization extends \morphos\NounPluralization implements Cases
         // RODIT
         if (isset(self::$genitiveExceptions[$word])) {
             $forms[Cases::RODIT] = self::$genitiveExceptions[$word];
-        } elseif (in_array($last, array('о', 'е'))) {
+        } elseif (in_array($last, ['о', 'е'])) {
             // exceptions
             if (in_array($word, self::$neuterExceptions)) {
                 $forms[Cases::RODIT] = $prefix.'ей';
@@ -203,11 +208,11 @@ class NounPluralization extends \morphos\NounPluralization implements Cases
             } else {
                 $forms[Cases::RODIT] = S::slice($word, 0, -2).'ек';
             }
-        } elseif (in_array($last, array('а'))) { // обида, ябеда
+        } elseif (in_array($last, ['а'])) { // обида, ябеда
             $forms[Cases::RODIT] = $prefix;
-        } elseif (in_array($last, array('я'))) { // молния
+        } elseif (in_array($last, ['я'])) { // молния
             $forms[Cases::RODIT] = $prefix.'й';
-        } elseif (RussianLanguage::isHissingConsonant($last) || ($soft_last && $last != 'й') || in_array(S::slice($word, -2), array('чь', 'сь', 'ть', 'нь'))) {
+        } elseif (RussianLanguage::isHissingConsonant($last) || ($soft_last && $last != 'й') || in_array(S::slice($word, -2), ['чь', 'сь', 'ть', 'нь'])) {
             $forms[Cases::RODIT] = $prefix.'ей';
         } elseif ($last == 'й' || S::slice($word, -2) == 'яц') { // месяц
             $forms[Cases::RODIT] = $prefix.'ев';
@@ -223,7 +228,7 @@ class NounPluralization extends \morphos\NounPluralization implements Cases
 
         // TVORIT
         // my personal rule
-        if ($last == 'ь' && $declension == NounDeclension::THIRD_DECLENSION && !in_array(S::slice($word, -2), array('чь', 'сь', 'ть', 'нь'))) {
+        if ($last == 'ь' && $declension == NounDeclension::THIRD_DECLENSION && !in_array(S::slice($word, -2), ['чь', 'сь', 'ть', 'нь'])) {
             $forms[Cases::TVORIT] = $prefix.'ми';
         } else {
             $forms[Cases::TVORIT] = self::chooseVowelAfterConsonant($last, $soft_last && S::slice($word, -2, -1) != 'ч', $prefix.'ями', $prefix.'ами');
@@ -245,13 +250,13 @@ class NounPluralization extends \morphos\NounPluralization implements Cases
     {
         $prefix = S::slice($word, 0, -2);
         $vowel = self::isHissingConsonant(S::slice($prefix, -1)) ? 'и' : 'ы';
-        return array(
+        return [
             Cases::IMENIT => $prefix.$vowel.'е',
             Cases::RODIT => $prefix.$vowel.'х',
             Cases::DAT => $prefix.$vowel.'м',
             Cases::VINIT => $prefix.$vowel.($animateness ? 'х' : 'е'),
             Cases::TVORIT => $prefix.$vowel.'ми',
             Cases::PREDLOJ => $prefix.$vowel.'х',
-        );
+        ];
     }
 }

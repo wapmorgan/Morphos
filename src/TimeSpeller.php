@@ -22,8 +22,20 @@ abstract class TimeSpeller
     const DIRECTION = 1;
     const SEPARATE = 2;
 
+    /**
+     * @abstract
+     * @param $count
+     * @param $unit
+     * @return string
+     */
     public static function spellUnit($count, $unit) {}
 
+    /**
+     * @param DateInterval $interval
+     * @param int $options
+     * @param int $limit
+     * @return string
+     */
     public static function spellInterval(DateInterval $interval, $options = 0, $limit = 0)
     {
         $parts = [];

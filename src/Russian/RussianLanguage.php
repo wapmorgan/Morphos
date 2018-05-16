@@ -9,7 +9,7 @@ trait RussianLanguage
     /**
      * @var array Все гласные
      */
-    public static $vowels = array(
+    public static $vowels = [
         'а',
         'е',
         'ё',
@@ -20,12 +20,12 @@ trait RussianLanguage
         'э',
         'ю',
         'я',
-    );
+    ];
 
     /**
      * @var array Все согласные
      */
-    public static $consonants = array(
+    public static $consonants = [
         'б',
         'в',
         'г',
@@ -47,19 +47,19 @@ trait RussianLanguage
         'ч',
         'ш',
         'щ',
-    );
+    ];
 
     /**
      * @var array Пары согласных
      */
-    public static $pairs = array(
+    public static $pairs = [
         'б' => 'п',
         'в' => 'ф',
         'г' => 'к',
         'д' => 'т',
         'ж' => 'ш',
         'з' => 'с',
-    );
+    ];
 
     /**
      * @var array Звонкие согласные
@@ -107,12 +107,12 @@ trait RussianLanguage
      */
     public static function isHissingConsonant($consonant)
     {
-        return in_array(S::lower($consonant), array('ж', 'ш', 'ч', 'щ'));
+        return in_array(S::lower($consonant), ['ж', 'ш', 'ч', 'щ']);
     }
 
     protected static function isVelarConsonant($consonant)
     {
-        return in_array(S::lower($consonant), array('г', 'к', 'х'));
+        return in_array(S::lower($consonant), ['г', 'к', 'х']);
     }
 
     /**
@@ -152,7 +152,7 @@ trait RussianLanguage
      */
     public static function choosePrepositionByFirstLetter($word, $prepositionWithVowel, $preposition)
     {
-        if (in_array(S::upper(S::slice($word, 0, 1)), array('А', 'О', 'И', 'У', 'Э'))) {
+        if (in_array(S::upper(S::slice($word, 0, 1)), ['А', 'О', 'И', 'У', 'Э'])) {
             return $prepositionWithVowel;
         } else {
             return $preposition;
@@ -164,7 +164,7 @@ trait RussianLanguage
      */
     public static function chooseVowelAfterConsonant($last, $soft_last, $after_soft, $after_hard)
     {
-        if ((RussianLanguage::isHissingConsonant($last) && !in_array($last, array('ж', 'ч'))) || /*self::isVelarConsonant($last) ||*/ $soft_last) {
+        if ((RussianLanguage::isHissingConsonant($last) && !in_array($last, ['ж', 'ч'])) || /*self::isVelarConsonant($last) ||*/ $soft_last) {
             return $after_soft;
         } else {
             return $after_hard;

@@ -5,7 +5,7 @@ use morphos\NumeralGenerator;
 
 class OrdinalNumeralGenerator extends NumeralGenerator
 {
-    protected static $words = array(
+    protected static $words = [
         1 => 'first',
         2 => 'second',
         3 => 'third',
@@ -13,7 +13,7 @@ class OrdinalNumeralGenerator extends NumeralGenerator
         8 => 'eighth',
         9 => 'ninth',
         12 => 'twelfth',
-    );
+    ];
 
     public static function getCases($number)
     {
@@ -22,6 +22,11 @@ class OrdinalNumeralGenerator extends NumeralGenerator
     {
     }
 
+    /**
+     * @param $number
+     * @param bool $short
+     * @return string
+     */
     public static function generate($number, $short = false)
     {
         // simple numeral
@@ -40,8 +45,8 @@ class OrdinalNumeralGenerator extends NumeralGenerator
         }
         // compound numeral
         else {
-            $parts = array();
-            $words = array();
+            $parts = [];
+            $words = [];
 
             $original_number = $number;
 

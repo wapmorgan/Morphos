@@ -21,6 +21,11 @@ class TimeSpeller extends \morphos\TimeSpeller
 
     const JUST_NOW = 'только что';
 
+    /**
+     * @param $count
+     * @param $unit
+     * @return string
+     */
     public static function spellUnit($count, $unit)
     {
         if (!isset(self::$units[$unit])) {

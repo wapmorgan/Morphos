@@ -5,7 +5,7 @@ use morphos\NumeralGenerator;
 
 class CardinalNumeralGenerator extends NumeralGenerator
 {
-    public static $words = array(
+    public static $words = [
         1 => 'one',
         2 => 'two',
         3 => 'three',
@@ -33,23 +33,28 @@ class CardinalNumeralGenerator extends NumeralGenerator
         70 => 'seventy',
         80 => 'eighty',
         90 => 'ninety',
-    );
+    ];
 
-    public static $exponents = array(
+    public static $exponents = [
         '100' => 'hundred',
         '1000' => 'thousand',
         '1000000' => 'million',
         '1000000000' => 'billion',
         '1000000000000' => 'trillion',
-    );
+    ];
 
     public static function getCases($number)
     {
     }
+
     public static function getCase($number, $case)
     {
     }
 
+    /**
+     * @param $number
+     * @return mixed|string
+     */
     public static function generate($number)
     {
         // simple numeral
@@ -58,8 +63,8 @@ class CardinalNumeralGenerator extends NumeralGenerator
         }
         // compound numeral
         else {
-            $parts = array();
-            $words = array();
+            $parts = [];
+            $words = [];
 
             foreach (array_reverse(self::$exponents, true) as $word_number => $word) {
                 if ($number >= $word_number) {

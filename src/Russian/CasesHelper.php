@@ -10,6 +10,7 @@ trait CasesHelper
     /**
      * @param $case
      * @return string
+     * @throws \Exception
      */
     public static function canonizeCase($case)
     {

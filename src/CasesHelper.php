@@ -46,6 +46,9 @@ trait CasesHelper
         }
     }
 
+    /**
+     * @return array
+     */
     public static function getAllCases()
     {
         return [
