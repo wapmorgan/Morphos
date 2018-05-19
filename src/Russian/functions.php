@@ -100,7 +100,7 @@ function detectGender($fullName)
     $gender = null;
     $name = explode(' ', S::lower($fullName));
     $nameCount = count($name);
-    if (!in_array($nameCount, [2, 3], true)) {
+    if (!in_array($nameCount, [1, 2, 3], true)) {
         return false;
     }
     if ($nameCount === 3) {
@@ -108,9 +108,15 @@ function detectGender($fullName)
     }
 
     if (!$gender) {
-        $gender = (isset($name[2]) ? MiddleNamesInflection::detectGender($name[2]) : null) ?:
-            LastNamesInflection::detectGender($name[0]) ?:
-                FirstNamesInflection::detectGender($name[1]);
+        if ($nameCount === 1)
+            $gender = FirstNamesInflection::detectGender($name[0]);
+        else if ($nameCount === 2)
+            $gender = LastNamesInflection::detectGender($name[0])
+                ?: FirstNamesInflection::detectGender($name[1]);
+        else if ($nameCount === 3)
+            $gender = MiddleNamesInflection::detectGender($name[2])
+                ?: LastNamesInflection::detectGender($name[0])
+                    ?: FirstNamesInflection::detectGender($name[1]);
     }
 
     return $gender;
