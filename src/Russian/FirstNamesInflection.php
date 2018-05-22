@@ -6,6 +6,7 @@ use morphos\S;
 /**
  * Rules are from: http://www.imena.org/decl_mn.html
  * and http://www.imena.org/decl_fn.html
+ * and http://rus.omgpu.ru/2016/04/18/%D1%81%D0%BA%D0%BB%D0%BE%D0%BD%D0%B5%D0%BD%D0%B8%D0%B5-%D0%BB%D0%B8%D1%87%D0%BD%D1%8B%D1%85-%D0%B8%D0%BC%D1%91%D0%BD/
  */
 class FirstNamesInflection extends \morphos\NamesInflection implements Cases
 {
@@ -352,6 +353,10 @@ class FirstNamesInflection extends \morphos\NamesInflection implements Cases
         'ярослава',
     ];
 
+    protected static $immutableNames = [
+        'николя',
+    ];
+
     /**
      * Checks if name is mutable
      * @param string $name
@@ -463,7 +468,7 @@ class FirstNamesInflection extends \morphos\NamesInflection implements Cases
                 self::TVORIT => $prefix.'ей',
                 self::PREDLOJ => $prefix.'и',
             ];
-        } elseif (S::slice($name, -1) == 'я') {
+        } elseif (S::slice($name, -1) == 'я' && !in_array($name, self::$immutableNames, true)) {
             $prefix = S::name(S::slice($name, 0, -1));
             return [
                 self::IMENIT => $prefix.'я',
@@ -475,16 +480,18 @@ class FirstNamesInflection extends \morphos\NamesInflection implements Cases
             ];
         }
 
-        if ($gender === null) {
-            $gender = self::detectGender($name);
-        }
-        if ($gender == self::MALE) {
-            if (($result = self::getCasesMan($name)) !== null) {
-                return $result;
+        if (!in_array($name, self::$immutableNames, true)) {
+            if ($gender === null) {
+                $gender = self::detectGender($name);
             }
-        } elseif ($gender == self::FEMALE) {
-            if (($result = self::getCasesWoman($name)) !== null) {
-                return $result;
+            if ($gender === self::MALE || $name === 'саша') {
+                if (($result = self::getCasesMan($name)) !== null) {
+                    return $result;
+                }
+            } elseif ($gender === self::FEMALE) {
+                if (($result = self::getCasesWoman($name)) !== null) {
+                    return $result;
+                }
             }
         }
 
@@ -508,8 +515,12 @@ class FirstNamesInflection extends \morphos\NamesInflection implements Cases
                     $prefix = S::name(S::slice($name, 0, -2)).'ек';
                 else
 				    $prefix = S::name(S::slice($name, 0, -2)).'ьк';
-			} else
-				$prefix = S::name($name);
+			} else {
+                if ($name === 'пётр')
+                    $prefix = S::name(str_replace('ё', 'е', $name));
+                else
+				    $prefix = S::name($name);
+            }
             return [
                 self::IMENIT => S::name($name),
                 self::RODIT => $prefix.'а',
@@ -547,7 +558,7 @@ class FirstNamesInflection extends \morphos\NamesInflection implements Cases
                 self::RODIT => $prefix.$postfix,
                 self::DAT => $prefix.'е',
                 self::VINIT => $prefix.'у',
-                self::TVORIT => $prefix.'ой',
+                self::TVORIT => $prefix.($before === 'ш' ? 'е' : 'о').'й',
                 self::PREDLOJ => $prefix.'е',
             ];
         } elseif (S::slice($name, -2) == 'ло' || S::slice($name, -2) == 'ко') {
