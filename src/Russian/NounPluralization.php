@@ -59,8 +59,8 @@ class NounPluralization extends \morphos\NounPluralization implements Cases
 
     /**
      * Склонение существительного для сочетания с числом (кол-вом предметов).
-     * @param int $count Количество предметов
-     * @param string $word Название предмета
+     * @param int|string $count Количество предметов
+     * @param string|int $word Название предмета
      * @param bool $animateness Признак одушевленности
      * @return string
      * @throws \Exception
@@ -101,6 +101,7 @@ class NounPluralization extends \morphos\NounPluralization implements Cases
             $count %= 100;
         }
         $ending = $count % 10;
+
         if (($count > 20 && $ending == 1) || $count == 1) {
             return self::ONE;
         } elseif (($count > 20 && in_array($ending, range(2, 4))) || in_array($count, range(2, 4))) {
@@ -133,7 +134,7 @@ class NounPluralization extends \morphos\NounPluralization implements Cases
     {
         $word = S::lower($word);
 
-        if (in_array($word, self::$immutableWords)) {
+        if (in_array($word, self::$immutableWords, true)) {
             return [
                 self::IMENIT => $word,
                 self::RODIT => $word,
