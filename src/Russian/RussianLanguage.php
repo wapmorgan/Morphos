@@ -107,7 +107,7 @@ trait RussianLanguage
      */
     public static function isHissingConsonant($consonant)
     {
-        return in_array(S::lower($consonant), ['ж', 'ш', 'ч', 'щ']);
+        return in_array(S::lower($consonant), ['ж', 'ш', 'ч', 'щ'], true);
     }
 
     /**
@@ -115,7 +115,7 @@ trait RussianLanguage
      */
     protected static function isVelarConsonant($consonant)
     {
-        return in_array(S::lower($consonant), ['г', 'к', 'х']);
+        return in_array(S::lower($consonant), ['г', 'к', 'х'], true);
     }
 
     /**
@@ -141,9 +141,9 @@ trait RussianLanguage
     public static function checkLastConsonantSoftness($word)
     {
         if (($substring = S::findLastPositionForOneOfChars(S::lower($word), self::$consonants)) !== false) {
-            if (in_array(S::slice($substring, 0, 1), ['й', 'ч', 'щ'])) { // always soft consonants
+            if (in_array(S::slice($substring, 0, 1), ['й', 'ч', 'щ'], true)) { // always soft consonants
                 return true;
-            } elseif (S::length($substring) > 1 && in_array(S::slice($substring, 1, 2), ['е', 'ё', 'и', 'ю', 'я', 'ь'])) { // consonants are soft if they are trailed with these vowels
+            } elseif (S::length($substring) > 1 && in_array(S::slice($substring, 1, 2), ['е', 'ё', 'и', 'ю', 'я', 'ь'], true)) { // consonants are soft if they are trailed with these vowels
                 return true;
             }
         }
@@ -155,7 +155,7 @@ trait RussianLanguage
      */
     public static function choosePrepositionByFirstLetter($word, $prepositionWithVowel, $preposition)
     {
-        if (in_array(S::upper(S::slice($word, 0, 1)), ['А', 'О', 'И', 'У', 'Э'])) {
+        if (in_array(S::lower(S::slice($word, 0, 1)), ['а', 'о', 'и', 'у', 'э'], true)) {
             return $prepositionWithVowel;
         } else {
             return $preposition;
@@ -167,7 +167,7 @@ trait RussianLanguage
      */
     public static function chooseVowelAfterConsonant($last, $soft_last, $after_soft, $after_hard)
     {
-        if ((RussianLanguage::isHissingConsonant($last) && !in_array($last, ['ж', 'ч'])) || /*self::isVelarConsonant($last) ||*/ $soft_last) {
+        if ((RussianLanguage::isHissingConsonant($last) && !in_array($last, ['ж', 'ч'], true)) || /*self::isVelarConsonant($last) ||*/ $soft_last) {
             return $after_soft;
         } else {
             return $after_hard;
@@ -199,7 +199,7 @@ trait RussianLanguage
     public static function in($word)
     {
         $normalized = trim(S::lower($word));
-        if (in_array(S::slice($normalized, 0, 1), ['в', 'ф']))
+        if (in_array(S::slice($normalized, 0, 1), ['в', 'ф'], true))
             return 'во '.$word;
         return 'в '.$word;
     }
@@ -212,7 +212,7 @@ trait RussianLanguage
     public static function with($word)
     {
         $normalized = trim(S::lower($word));
-        if (in_array(S::slice($normalized, 0, 1), ['c', 'з', 'ш', 'ж']) && static::isConsonant(S::slice($normalized, 1, 2)) || S::slice($normalized, 0, 1) == 'щ')
+        if (in_array(S::slice($normalized, 0, 1), ['c', 'з', 'ш', 'ж'], true) && static::isConsonant(S::slice($normalized, 1, 2)) || S::slice($normalized, 0, 1) == 'щ')
             return 'со '.$word;
         return 'с '.$word;
     }
@@ -225,10 +225,10 @@ trait RussianLanguage
     public static function about($word)
     {
         $normalized = trim(S::lower($word));
-        if (static::isVowel(S::slice($normalized, 0, 1)) && !in_array(S::slice($normalized, 0, 1), ['е', 'ё', 'ю', 'я']))
+        if (static::isVowel(S::slice($normalized, 0, 1)) && !in_array(S::slice($normalized, 0, 1), ['е', 'ё', 'ю', 'я'], true))
             return 'об '.$word;
 
-        if (in_array(S::slice($normalized, 0, 3), ['все', 'всё', 'всю', 'что', 'мне']))
+        if (in_array(S::slice($normalized, 0, 3), ['все', 'всё', 'всю', 'что', 'мне'], true))
             return 'обо '.$word;
 
         return 'о '.$word;
