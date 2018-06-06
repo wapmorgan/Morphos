@@ -31,11 +31,13 @@ class S
     {
         if (function_exists('mb_strlen')) {
             return mb_strlen($string);
-        } elseif (function_exists('iconv_strlen')) {
-            return iconv_strlen($string);
-        } else {
-            return false;
         }
+
+        if (function_exists('iconv_strlen')) {
+            return iconv_strlen($string);
+        }
+
+        return false;
     }
 
     /**
@@ -53,11 +55,13 @@ class S
 
         if (function_exists('mb_substr')) {
             return $end === null ? mb_substr($string, $start) : mb_substr($string, $start, $end);
-        } elseif (function_exists('iconv_substr')) {
-            return $end === null ? iconv_substr($string, $start) : iconv_substr($string, $start, $end);
-        } else {
-            return false;
         }
+
+        if (function_exists('iconv_substr')) {
+            return $end === null ? iconv_substr($string, $start) : iconv_substr($string, $start, $end);
+        }
+
+        return false;
     }
 
     /**
@@ -69,9 +73,9 @@ class S
     {
         if (function_exists('mb_strtolower')) {
             return mb_strtolower($string);
-        } else {
-            return false;
         }
+
+        return false;
     }
 
     /**
@@ -83,9 +87,9 @@ class S
     {
         if (function_exists('mb_strtoupper')) {
             return mb_strtoupper($string);
-        } else {
-            return false;
         }
+
+        return false;
     }
 
     /**
@@ -99,9 +103,9 @@ class S
             return implode('-', array_map(function ($word) {
                 return self::upper(self::slice($word, 0, 1)).self::lower(self::slice($word, 1));
             }, explode('-', $string)));
-        } else {
-            return false;
         }
+
+        return false;
     }
 
     /**
@@ -114,9 +118,9 @@ class S
     {
         if (function_exists('mb_split')) {
             return count(mb_split('('.implode('|', $chars).')', $string)) - 1;
-        } else {
-            return false;
         }
+
+        return false;
     }
 
     /**
@@ -139,9 +143,9 @@ class S
                 return mb_substr($string, $last_position);
             }
             return false;
-        } else {
-            return false;
         }
+
+        return false;
     }
 
     /**
@@ -155,8 +159,8 @@ class S
     {
         if (function_exists('mb_stripos')) {
             return $caseSensetive ? mb_strpos($string, $substring, $startOffset) : mb_stripos($string, $substring, $startOffset);
-        } else {
-            return false;
         }
+
+        return false;
     }
 }
