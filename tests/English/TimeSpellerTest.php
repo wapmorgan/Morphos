@@ -43,10 +43,19 @@ class TimeSpellerTest extends \PHPUnit_Framework_TestCase
     {
         return
         [
+            [1, TimeSpeller::YEAR, '1 year'],
             [5, TimeSpeller::YEAR, '5 years'],
             [5, TimeSpeller::MONTH, '5 months'],
             [5, TimeSpeller::HOUR, '5 hours'],
             [5, TimeSpeller::SECOND, '5 seconds'],
         ];
+    }
+
+    /**
+     * @expectedException InvalidArgumentException
+     */
+    public function testSpellUnitInvalid()
+    {
+        TimeSpeller::spellUnit(1, 'Invalid-Unit');
     }
 }

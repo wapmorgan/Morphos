@@ -27,6 +27,7 @@ class NounPluralization extends \morphos\NounPluralization implements Cases
         'ядро' => 'ядер',
         'блюдце' => 'блюдец',
         'полотенце' => 'полотенец',
+        'гривна' => 'гривен',
     ];
 
     protected static $immutableWords = [

@@ -1,14 +1,14 @@
 <?php
 namespace morphos;
 
-use Exception;
+use InvalidArgumentException;
 
 trait CasesHelper
 {
     /**
      * @param $case
      * @return string
-     * @throws Exception If passed case is invalid.
+     * @throws InvalidArgumentException If passed case is invalid.
      */
     public static function canonizeCase($case)
     {
@@ -20,6 +20,7 @@ trait CasesHelper
                 return Cases::NOMINATIVE;
 
             case Cases::GENITIVE:
+            case Cases::GENETIVE:
             case 'genetivus':
             case 'g':
                 return Cases::GENITIVE;
@@ -34,6 +35,7 @@ trait CasesHelper
 
             case Cases::ABLATIVE:
             case 'ablativus':
+            case 'a':
                 return Cases::ABLATIVE;
 
             case Cases::PREPOSITIONAL:
@@ -42,7 +44,7 @@ trait CasesHelper
                 return Cases::PREPOSITIONAL;
 
             default:
-                throw new Exception('Invalid case: '.$case);
+                throw new InvalidArgumentException('Invalid case: '.$case);
         }
     }
 

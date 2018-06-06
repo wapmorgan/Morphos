@@ -1,14 +1,14 @@
 <?php
 namespace morphos;
 
-use Exception;
+use InvalidArgumentException;
 
 trait CurrenciesHelper
 {
     /**
      * @param $currency
      * @return string
-     * @throws Exception
+     * @throws InvalidArgumentException
      */
     public static function canonizeCurrency($currency)
     {
@@ -77,7 +77,7 @@ trait CurrenciesHelper
                 return Currency::HRYVNIA;
 
             default:
-                throw new Exception('Invalid currency: '.$currency);
+                throw new InvalidArgumentException('Invalid currency: '.$currency);
         }
     }
 }

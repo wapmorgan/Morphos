@@ -53,6 +53,7 @@ class NounDeclension extends \morphos\BaseInflection implements Cases, Gender
         'медведь',
         'рубль',
         'дождь',
+        'юань',
     ];
 
     protected static $masculineWithSoftAndRunAwayVowels = [
@@ -67,6 +68,8 @@ class NounDeclension extends \morphos\BaseInflection implements Cases, Gender
     protected static $immutableWords = [
         'евро',
         'пенни',
+        'песо',
+        'сентаво',
     ];
 
     /**

@@ -18,10 +18,12 @@ class OrdinalNumeralTest extends \PHPUnit_Framework_TestCase
 
     public function numbersProvider()
     {
-        return array(
-            array(132, 'one hundred thirty-second', '132nd'),
-            array(2595410, 'two million, five hundred ninety-five thousand, four hundred tenth', '2595410th'),
-            array(2021123132, 'two billion, twenty-one million, one hundred twenty-three thousand, one hundred thirty-second', '2021123132nd'),
-        );
+        return [
+            [2, 'second', '2nd'],
+            [30, 'thirtieth', '30th'],
+            [132, 'one hundred thirty-second', '132nd'],
+            [2595410, 'two million, five hundred ninety-five thousand, four hundred tenth', '2595410th'],
+            [2021123132, 'two billion, twenty-one million, one hundred twenty-three thousand, one hundred thirty-second', '2021123132nd'],
+        ];
     }
 }

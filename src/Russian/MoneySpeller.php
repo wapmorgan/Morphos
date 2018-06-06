@@ -31,7 +31,7 @@ class MoneySpeller extends \morphos\MoneySpeller
      * @param $currency
      * @param string $format
      * @return string
-     * @throws \Exception
+     * @throws \InvalidArgumentException
      */
     public static function spell($value, $currency, $format = self::NORMAL_FORMAT)
     {
@@ -42,7 +42,10 @@ class MoneySpeller extends \morphos\MoneySpeller
 
         switch ($format) {
             case self::SHORT_FORMAT:
-                return $integer.' '.NounPluralization::pluralize(static::$labels[$currency][0], $integer).' '.$fractional.' '.NounPluralization::pluralize(static::$labels[$currency][2], $fractional);
+                return $integer.' '.NounPluralization::pluralize(static::$labels[$currency][0], $integer)
+                    .($fractional > 0
+                        ? ' '.$fractional.' '.NounPluralization::pluralize(static::$labels[$currency][2], $fractional)
+                        : null);
 
             case self::NORMAL_FORMAT:
             case self::CLARIFICATION_FORMAT:

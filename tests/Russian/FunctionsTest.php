@@ -23,6 +23,16 @@ class FunctionsTest extends \PHPUnit_Framework_TestCase
 			Cases::TVORIT => $name5,
 			Cases::PREDLOJ => $name6
 		], \morphos\Russian\getNameCases($name, $gender));
+
+        // old-style call to inflectName()
+        $this->assertEquals([
+            Cases::IMENIT => $name,
+            Cases::RODIT => $name2,
+            Cases::DAT => $name3,
+            Cases::VINIT => $name4,
+            Cases::TVORIT => $name5,
+            Cases::PREDLOJ => $name6
+        ], \morphos\Russian\inflectName($name, $gender));
 	}
 
 	public function fullNamesProvider()
@@ -34,6 +44,9 @@ class FunctionsTest extends \PHPUnit_Framework_TestCase
 				['Вергун Илья Захарович', Gender::MALE, 'Вергуна Ильи Захаровича', 'Вергуну Илье Захаровичу', 'Вергуна Илью Захаровича', 'Вергуном Ильей Захаровичем', 'Вергуне Илье Захаровиче'],
                 ['Горюнова Таисия Романовна', Gender::FEMALE, 'Горюновой Таисии Романовны', 'Горюновой Таисии Романовне', 'Горюнову Таисию Романовну', 'Горюновой Таисией Романовной', 'Горюновой Таисии Романовне'],
                 ['Путинцева Антонина Карповна', Gender::FEMALE, 'Путинцевой Антонины Карповны', 'Путинцевой Антонине Карповне', 'Путинцеву Антонину Карповну', 'Путинцевой Антониной Карповной', 'Путинцевой Антонине Карповне'],
+
+                ['Янаев Осип', Gender::MALE, 'Янаева Осипа', 'Янаеву Осипу', 'Янаева Осипа', 'Янаевым Осипом', 'Янаеве Осипе'],
+                ['Осип', Gender::MALE, 'Осипа', 'Осипу', 'Осипа', 'Осипом', 'Осипе'],
 
                 // foreign names
                 ['Андерсен Ганс Христиан', Gender::MALE, 'Андерсена Ганса Христиана', 'Андерсену Гансу Христиану', 'Андерсена Ганса Христиана', 'Андерсеном Гансом Христианом', 'Андерсене Гансе Христиане'],
@@ -87,13 +100,30 @@ class FunctionsTest extends \PHPUnit_Framework_TestCase
 
     public function testDetectGender()
     {
+        $this->assertEquals(Gender::MALE, \morphos\Russian\detectGender('Иванов Петр Андреевич'));
         $this->assertEquals(Gender::MALE, \morphos\Russian\detectGender('Иванов Петр'));
+        $this->assertEquals(Gender::MALE, \morphos\Russian\detectGender('Петр'));
+
+        $this->assertEquals(Gender::FEMALE, \morphos\Russian\detectGender('Мирова Анастасия Карповна'));
         $this->assertEquals(Gender::FEMALE, \morphos\Russian\detectGender('Мирова Анастасия'));
+        $this->assertEquals(Gender::FEMALE, \morphos\Russian\detectGender('Анастасия'));
     }
 
     public function testPluralize()
     {
         $this->assertEquals('10 сообщений', \morphos\Russian\pluralize(10, 'сообщение'));
         $this->assertEquals('10 ванных', \morphos\Russian\pluralize(10, 'ванная'));
+
+        // old-style call to pluralize()
+        $this->assertEquals('10 сообщений', \morphos\Russian\pluralize('сообщение', 10));
+    }
+
+    /**
+     */
+    public function testNameInvalid()
+    {
+        $this->assertFalse(\morphos\Russian\inflectName('Вергун Илья Захарович Захарович', Cases::GENITIVE));
+        $this->assertFalse(\morphos\Russian\getNameCases('Вергун Илья Захарович Захарович'));
+        $this->assertNull(\morphos\Russian\detectGender('Вергун Илья Захарович Захарович'));
     }
 }
