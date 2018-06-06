@@ -16,19 +16,15 @@ use morphos\S;
  */
 function inflectName($fullName, $case = null, $gender = null)
 {
-    if ($case === null) {
-        return getNameCases($fullName);
-    }
-
-    if (in_array($case, [Gender::MALE, Gender::FEMALE], true)) {
-        return getNameCases($fullName, $case);
+    if (in_array($case, [Gender::MALE, Gender::FEMALE, null], true)) {
+        return $case === null ? getNameCases($fullName) : getNameCases($fullName, $case);
     }
 
     $fullName = normalizeFullName($fullName);
+    $case = CasesHelper::canonizeCase($case);
     if ($gender === null) $gender = detectGender($fullName);
 
     $name = explode(' ', $fullName);
-    $case = CasesHelper::canonizeCase($case);
 
     switch (count($name)) {
         case 1:
@@ -92,7 +88,7 @@ function getNameCases($fullName, $gender = null)
 
 /**
  * Guesses the gender of name owner.
- * @param string $fullName
+ * @param string $fullName Name in "F", "L F" or "L M F" format, where L - last name, M - middle name, F - first name
  * @return null|string     Null if not detected. One of [[morphos\Gender]] constants.
  */
 function detectGender($fullName)
@@ -100,26 +96,19 @@ function detectGender($fullName)
     $gender = null;
     $name = explode(' ', S::lower($fullName));
     $nameCount = count($name);
-    if (!in_array($nameCount, [1, 2, 3], true)) {
-        return false;
-    }
-    if ($nameCount === 3) {
-        $gender = detectGender(implode(' ', [$name[1], $name[2]]));
+    if ($nameCount > 3) {
+        return null;
     }
 
-    if (!$gender) {
-        if ($nameCount === 1)
-            $gender = FirstNamesInflection::detectGender($name[0]);
-        else if ($nameCount === 2)
-            $gender = LastNamesInflection::detectGender($name[0])
-                ?: FirstNamesInflection::detectGender($name[1]);
-        else if ($nameCount === 3)
-            $gender = MiddleNamesInflection::detectGender($name[2])
-                ?: LastNamesInflection::detectGender($name[0])
-                    ?: FirstNamesInflection::detectGender($name[1]);
-    }
-
-    return $gender;
+    if ($nameCount === 1)
+        return FirstNamesInflection::detectGender($name[0]);
+    else if ($nameCount === 2)
+        return LastNamesInflection::detectGender($name[0])
+            ?: FirstNamesInflection::detectGender($name[1]);
+    else
+        return MiddleNamesInflection::detectGender($name[2])
+            ?: (LastNamesInflection::detectGender($name[0])
+                ?: FirstNamesInflection::detectGender($name[1]));
 }
 
 /**
@@ -138,7 +127,7 @@ function normalizeFullName($name)
  * @param int $count Количество предметов
  * @param string $word Название предмета
  * @param bool $animateness Признак одушевленности
- * @return string Строка в формате "ЧИСЛО [СУЩ в правильно форме]"
+ * @return string Строка в формате "ЧИСЛО [СУЩ в правильной форме]"
  */
 function pluralize($count, $word, $animateness = false)
 {

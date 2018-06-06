@@ -4,8 +4,7 @@ namespace morphos\Russian;
 use morphos\S;
 
 /**
- * Rules are from: http://www.imena.org/decl_mn.html
- * and http://www.imena.org/decl_fn.html
+ * Rules are from: http://www.imena.org/decl_mn.html / http://www.imena.org/decl_fn.html
  * and http://rus.omgpu.ru/2016/04/18/%D1%81%D0%BA%D0%BB%D0%BE%D0%BD%D0%B5%D0%BD%D0%B8%D0%B5-%D0%BB%D0%B8%D1%87%D0%BD%D1%8B%D1%85-%D0%B8%D0%BC%D1%91%D0%BD/
  */
 class FirstNamesInflection extends \morphos\NamesInflection implements Cases
@@ -365,11 +364,16 @@ class FirstNamesInflection extends \morphos\NamesInflection implements Cases
      */
     public static function isMutable($name, $gender = null)
     {
-        //var_dump(S::upper(S::slice($name, -1)));
         $name = S::lower($name);
+
+        if (in_array($name, self::$immutableNames, true)) {
+            return false;
+        }
+
         if ($gender === null) {
             $gender = self::detectGender($name);
         }
+
         // man rules
         if ($gender === self::MALE) {
             // soft consonant
@@ -379,11 +383,20 @@ class FirstNamesInflection extends \morphos\NamesInflection implements Cases
                 return true;
             } elseif (S::slice($name, -1) == 'й') {
                 return true;
+            } else if (in_array(S::slice($name, -2), ['ло', 'ко'], true)) {
+                return true;
+            }
+        } else if ($gender === self::FEMALE) {
+            // soft consonant
+            if (S::lower(S::slice($name, -1)) == 'ь' && self::isConsonant(S::slice($name, -2, -1))) {
+                return true;
+            } else if (self::isHissingConsonant(S::slice($name, -1))) {
+                return true;
             }
         }
 
         // common rules
-        if ((in_array(S::slice($name, -1), ['а', 'я']) && !self::isVowel(S::slice($name, -2, -1))) || in_array(S::slice($name, -2), ['ия', 'ья', 'ея'])) {
+        if ((in_array(S::slice($name, -1), ['а', 'я']) && !self::isVowel(S::slice($name, -2, -1))) || in_array(S::slice($name, -2), ['ия', 'ья', 'ея', 'оя'])) {
             return true;
         }
 
@@ -457,40 +470,42 @@ class FirstNamesInflection extends \morphos\NamesInflection implements Cases
     {
         $name = S::lower($name);
 
-        // common rules for ия and я
-        if (S::slice($name, -2) == 'ия') {
-            $prefix = S::name(S::slice($name, 0, -1));
-            return [
-                self::IMENIT => $prefix.'я',
-                self::RODIT => $prefix.'и',
-                self::DAT => $prefix.'и',
-                self::VINIT => $prefix.'ю',
-                self::TVORIT => $prefix.'ей',
-                self::PREDLOJ => $prefix.'и',
-            ];
-        } elseif (S::slice($name, -1) == 'я' && !in_array($name, self::$immutableNames, true)) {
-            $prefix = S::name(S::slice($name, 0, -1));
-            return [
-                self::IMENIT => $prefix.'я',
-                self::RODIT => $prefix.'и',
-                self::DAT => $prefix.'е',
-                self::VINIT => $prefix.'ю',
-                self::TVORIT => $prefix.'ей',
-                self::PREDLOJ => $prefix.'е',
-            ];
-        }
-
-        if (!in_array($name, self::$immutableNames, true)) {
-            if ($gender === null) {
-                $gender = self::detectGender($name);
+        if (self::isMutable($name, $gender)) {
+            // common rules for ия and я
+            if (S::slice($name, -2) == 'ия') {
+                $prefix = S::name(S::slice($name, 0, -1));
+                return [
+                    self::IMENIT => $prefix.'я',
+                    self::RODIT => $prefix.'и',
+                    self::DAT => $prefix.'и',
+                    self::VINIT => $prefix.'ю',
+                    self::TVORIT => $prefix.'ей',
+                    self::PREDLOJ => $prefix.'и',
+                ];
+            } elseif (S::slice($name, -1) == 'я') {
+                $prefix = S::name(S::slice($name, 0, -1));
+                return [
+                    self::IMENIT => $prefix.'я',
+                    self::RODIT => $prefix.'и',
+                    self::DAT => $prefix.'е',
+                    self::VINIT => $prefix.'ю',
+                    self::TVORIT => $prefix.'ей',
+                    self::PREDLOJ => $prefix.'е',
+                ];
             }
-            if ($gender === self::MALE || $name === 'саша') {
-                if (($result = self::getCasesMan($name)) !== null) {
-                    return $result;
+
+            if (!in_array($name, self::$immutableNames, true)) {
+                if ($gender === null) {
+                    $gender = self::detectGender($name);
                 }
-            } elseif ($gender === self::FEMALE) {
-                if (($result = self::getCasesWoman($name)) !== null) {
-                    return $result;
+                if ($gender === self::MALE || $name === 'саша') {
+                    if (($result = self::getCasesMan($name)) !== null) {
+                        return $result;
+                    }
+                } elseif ($gender === self::FEMALE) {
+                    if (($result = self::getCasesWoman($name)) !== null) {
+                        return $result;
+                    }
                 }
             }
         }

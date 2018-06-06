@@ -110,6 +110,9 @@ trait RussianLanguage
         return in_array(S::lower($consonant), ['ж', 'ш', 'ч', 'щ']);
     }
 
+    /**
+     *
+     */
     protected static function isVelarConsonant($consonant)
     {
         return in_array(S::lower($consonant), ['г', 'к', 'х']);

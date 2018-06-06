@@ -37,7 +37,8 @@ class MiddleNamesInflection extends \morphos\NamesInflection implements Cases
         if (in_array(S::slice($name, -2), ['ич', 'на'])) {
             return true;
         }
-        // if foreign, try it as a name
+
+        // it's foreign middle name, inflect it as a first name
         return FirstNamesInflection::isMutable($name, $gender);
     }
 
@@ -86,7 +87,7 @@ class MiddleNamesInflection extends \morphos\NamesInflection implements Cases
             );
         }
 
-        // inflect other middle names as first names (foreign)
+        // inflect other middle names (foreign) as first names
         return FirstNamesInflection::getCases($name, $gender);
     }
 }

@@ -111,122 +111,113 @@ class LastNamesInflection extends \morphos\NamesInflection implements Cases
 
             return self::composeCasesFromWords($parts, '-');
         }
-        if (!static::isMutable($name, $gender)) {
-            $prefix = S::name($name);
-            return [
-                self::IMENIT    => $prefix,
-                self::RODIT     => $prefix,
-                self::DAT       => $prefix,
-                self::VINIT     => $prefix,
-                self::TVORIT    => $prefix,
-                self::PREDLOJ   => $prefix
-            ];
-        }
 
-        if ($gender == self::MALE) {
-            if (in_array(S::slice($name, -2), ['ов', 'ев', 'ин', 'ын'])) {
-                $prefix = S::name($name);
-                return [
-                    self::IMENIT => $prefix,
-                    self::RODIT => $prefix.'а',
-                    self::DAT => $prefix.'у',
-                    self::VINIT => $prefix.'а',
-                    self::TVORIT => $prefix.'ым',
-                    self::PREDLOJ => $prefix.'е'
-                ];
-            } elseif (in_array(S::slice($name, -4), ['ский', 'ской', 'цкий', 'цкой'])) {
-                $prefix = S::name(S::slice($name, 0, -2));
-                return [
-                    self::IMENIT => S::name($name),
-                    self::RODIT => $prefix.'ого',
-                    self::DAT => $prefix.'ому',
-                    self::VINIT => $prefix.'ого',
-                    self::TVORIT => $prefix.'им',
-                    self::PREDLOJ => $prefix.'ом'
-                ];
-            // Верхний / Убогий / Толстой
-            // Верхнего / Убогого / Толстого
-            // Верхнему / Убогому / Толстому
-            // Верхним / Убогим / Толстым
-            // О Верхнем / Об Убогом / О Толстом
-            } else if (in_array(S::slice($name, -2), ['ой', 'ый', 'ий'])) {
-                $prefix = S::name(S::slice($name, 0, -2));
-                return [
-                    self::IMENIT => S::name($name),
-                    self::RODIT => $prefix.'ого',
-                    self::DAT => $prefix.'ому',
-                    self::VINIT => $prefix.'ого',
-                    self::TVORIT => $prefix.'ым',
-                    self::PREDLOJ => $prefix.'ом'
-                ];
+        if (static::isMutable($name, $gender)) {
+            if ($gender == self::MALE) {
+                if (in_array(S::slice($name, -2), ['ов', 'ев', 'ин', 'ын'])) {
+                    $prefix = S::name($name);
+                    return [
+                        self::IMENIT => $prefix,
+                        self::RODIT => $prefix.'а',
+                        self::DAT => $prefix.'у',
+                        self::VINIT => $prefix.'а',
+                        self::TVORIT => $prefix.'ым',
+                        self::PREDLOJ => $prefix.'е'
+                    ];
+                } elseif (in_array(S::slice($name, -4), ['ский', 'ской', 'цкий', 'цкой'])) {
+                    $prefix = S::name(S::slice($name, 0, -2));
+                    return [
+                        self::IMENIT => S::name($name),
+                        self::RODIT => $prefix.'ого',
+                        self::DAT => $prefix.'ому',
+                        self::VINIT => $prefix.'ого',
+                        self::TVORIT => $prefix.'им',
+                        self::PREDLOJ => $prefix.'ом'
+                    ];
+                // Верхний / Убогий / Толстой
+                // Верхнего / Убогого / Толстого
+                // Верхнему / Убогому / Толстому
+                // Верхним / Убогим / Толстым
+                // О Верхнем / Об Убогом / О Толстом
+                } else if (in_array(S::slice($name, -2), ['ой', 'ый', 'ий'])) {
+                    $prefix = S::name(S::slice($name, 0, -2));
+                    return [
+                        self::IMENIT => S::name($name),
+                        self::RODIT => $prefix.'ого',
+                        self::DAT => $prefix.'ому',
+                        self::VINIT => $prefix.'ого',
+                        self::TVORIT => $prefix.'ым',
+                        self::PREDLOJ => $prefix.'ом'
+                    ];
+                }
+
+            } else {
+                if (in_array(S::slice($name, -3), ['ова', 'ева', 'ина', 'ына'])) {
+                    $prefix = S::name(S::slice($name, 0, -1));
+                    return [
+                        self::IMENIT => S::name($name),
+                        self::RODIT => $prefix.'ой',
+                        self::DAT => $prefix.'ой',
+                        self::VINIT => $prefix.'у',
+                        self::TVORIT => $prefix.'ой',
+                        self::PREDLOJ => $prefix.'ой'
+                    ];
+                }
+
+                if (in_array(S::slice($name, -2), ['ая'])) {
+                    $prefix = S::name(S::slice($name, 0, -2));
+                    return [
+                        self::IMENIT => S::name($name),
+                        self::RODIT => $prefix.'ой',
+                        self::DAT => $prefix.'ой',
+                        self::VINIT => $prefix.'ую',
+                        self::TVORIT => $prefix.'ой',
+                        self::PREDLOJ => $prefix.'ой'
+                    ];
+                }
             }
 
-        } else {
-            if (in_array(S::slice($name, -3), ['ова', 'ева', 'ина', 'ына'])) {
+            if (S::slice($name, -1) == 'я') {
                 $prefix = S::name(S::slice($name, 0, -1));
                 return [
                     self::IMENIT => S::name($name),
-                    self::RODIT => $prefix.'ой',
-                    self::DAT => $prefix.'ой',
-                    self::VINIT => $prefix.'у',
-                    self::TVORIT => $prefix.'ой',
-                    self::PREDLOJ => $prefix.'ой'
+                    self::RODIT => $prefix.'и',
+                    self::DAT => $prefix.'е',
+                    self::VINIT => $prefix.'ю',
+                    self::TVORIT => $prefix.'ей',
+                    self::PREDLOJ => $prefix.'е'
                 ];
-            }
-
-            if (in_array(S::slice($name, -2), ['ая'])) {
-                $prefix = S::name(S::slice($name, 0, -2));
+            } elseif (S::slice($name, -1) == 'а') {
+                $prefix = S::name(S::slice($name, 0, -1));
                 return [
                     self::IMENIT => S::name($name),
-                    self::RODIT => $prefix.'ой',
-                    self::DAT => $prefix.'ой',
-                    self::VINIT => $prefix.'ую',
+                    self::RODIT => $prefix.(self::isDeafConsonant(S::slice($name, -2, -1)) ? 'и' : 'ы'),
+                    self::DAT => $prefix.'е',
+                    self::VINIT => $prefix.'у',
                     self::TVORIT => $prefix.'ой',
-                    self::PREDLOJ => $prefix.'ой'
+                    self::PREDLOJ => $prefix.'е'
+                ];
+            } elseif (self::isConsonant(S::slice($name, -1)) && S::slice($name, -2) != 'ых') {
+                $prefix = S::name($name);
+                return [
+                    self::IMENIT => S::name($name),
+                    self::RODIT => $prefix.'а',
+                    self::DAT => $prefix.'у',
+                    self::VINIT => $prefix.'а',
+                    self::TVORIT => $prefix.'ом',
+                    self::PREDLOJ => $prefix.'е'
+                ];
+            } elseif (S::slice($name, -1) == 'ь' && $gender == self::MALE) {
+                $prefix = S::name(S::slice($name, 0, -1));
+                return [
+                    self::IMENIT => S::name($name),
+                    self::RODIT => $prefix.'я',
+                    self::DAT => $prefix.'ю',
+                    self::VINIT => $prefix.'я',
+                    self::TVORIT => $prefix.'ем',
+                    self::PREDLOJ => $prefix.'е'
                 ];
             }
-        }
-
-        if (S::slice($name, -1) == 'я') {
-            $prefix = S::name(S::slice($name, 0, -1));
-            return [
-                self::IMENIT => S::name($name),
-                self::RODIT => $prefix.'и',
-                self::DAT => $prefix.'е',
-                self::VINIT => $prefix.'ю',
-                self::TVORIT => $prefix.'ей',
-                self::PREDLOJ => $prefix.'е'
-            ];
-        } elseif (S::slice($name, -1) == 'а') {
-            $prefix = S::name(S::slice($name, 0, -1));
-            return [
-                self::IMENIT => S::name($name),
-                self::RODIT => $prefix.(self::isDeafConsonant(S::slice($name, -2, -1)) ? 'и' : 'ы'),
-                self::DAT => $prefix.'е',
-                self::VINIT => $prefix.'у',
-                self::TVORIT => $prefix.'ой',
-                self::PREDLOJ => $prefix.'е'
-            ];
-        } elseif (self::isConsonant(S::slice($name, -1)) && S::slice($name, -2) != 'ых') {
-            $prefix = S::name($name);
-            return [
-                self::IMENIT => S::name($name),
-                self::RODIT => $prefix.'а',
-                self::DAT => $prefix.'у',
-                self::VINIT => $prefix.'а',
-                self::TVORIT => $prefix.'ом',
-                self::PREDLOJ => $prefix.'е'
-            ];
-        } elseif (S::slice($name, -1) == 'ь' && $gender == self::MALE) {
-            $prefix = S::name(S::slice($name, 0, -1));
-            return [
-                self::IMENIT => S::name($name),
-                self::RODIT => $prefix.'я',
-                self::DAT => $prefix.'ю',
-                self::VINIT => $prefix.'я',
-                self::TVORIT => $prefix.'ем',
-                self::PREDLOJ => $prefix.'е'
-            ];
         }
 
         $name = S::name($name);
