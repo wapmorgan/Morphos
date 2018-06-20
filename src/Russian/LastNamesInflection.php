@@ -33,22 +33,22 @@ class LastNamesInflection extends \morphos\NamesInflection implements Cases
             return false;
         }
 
-        if (in_array(S::slice($name, -1), ['а', 'я'])) {
+        if (in_array(S::slice($name, -1), ['а', 'я'], true)) {
             return true;
         }
 
         if ($gender == self::MALE) {
             // Несклоняемые фамилии (Фоминых, Седых / Стецко, Писаренко)
-            if (in_array(S::slice($name, -2), ['ых', 'ко']))
+            if (in_array(S::slice($name, -2), ['ых', 'ко'], true))
                 return false;
 
             // Несклоняемые, образованные из родительного падежа личного или прозвищного имени главы семьи
             // суффиксы: ово, аго
-            if (in_array(S::slice($name, -3), ['ово', 'аго']))
+            if (in_array(S::slice($name, -3), ['ово', 'аго'], true))
                 return false;
 
             // Типичные суффикс мужских фамилий
-            if (in_array(S::slice($name, -2), ['ов', 'ев', 'ин', 'ын', 'ий', 'ой'])) {
+            if (in_array(S::slice($name, -2), ['ов', 'ев', 'ин', 'ын', 'ий', 'ой'], true)) {
                 return true;
             }
 
@@ -64,7 +64,7 @@ class LastNamesInflection extends \morphos\NamesInflection implements Cases
 
         } else {
             // Типичные суффиксы женских фамилий
-            if (in_array(S::slice($name, -2), ['ва', 'на', 'ая'])) {
+            if (in_array(S::slice($name, -2), ['ва', 'на', 'ая'], true)) {
                 return true;
             }
         }
@@ -79,10 +79,10 @@ class LastNamesInflection extends \morphos\NamesInflection implements Cases
     public static function detectGender($name)
     {
         $name = S::lower($name);
-        if (in_array(S::slice($name, -2), self::$menPostfixes)) {
+        if (in_array(S::slice($name, -2), self::$menPostfixes, true)) {
             return self::MALE;
         }
-        if (in_array(S::slice($name, -2), self::$womenPostfixes)) {
+        if (in_array(S::slice($name, -2), self::$womenPostfixes, true)) {
             return self::FEMALE;
         }
 
@@ -114,7 +114,7 @@ class LastNamesInflection extends \morphos\NamesInflection implements Cases
 
         if (static::isMutable($name, $gender)) {
             if ($gender == self::MALE) {
-                if (in_array(S::slice($name, -2), ['ов', 'ев', 'ин', 'ын'])) {
+                if (in_array(S::slice($name, -2), ['ов', 'ев', 'ин', 'ын'], true)) {
                     $prefix = S::name($name);
                     return [
                         self::IMENIT => $prefix,
@@ -124,7 +124,7 @@ class LastNamesInflection extends \morphos\NamesInflection implements Cases
                         self::TVORIT => $prefix.'ым',
                         self::PREDLOJ => $prefix.'е'
                     ];
-                } elseif (in_array(S::slice($name, -4), ['ский', 'ской', 'цкий', 'цкой'])) {
+                } elseif (in_array(S::slice($name, -4), ['ский', 'ской', 'цкий', 'цкой'], true)) {
                     $prefix = S::name(S::slice($name, 0, -2));
                     return [
                         self::IMENIT => S::name($name),
@@ -139,7 +139,7 @@ class LastNamesInflection extends \morphos\NamesInflection implements Cases
                 // Верхнему / Убогому / Толстому
                 // Верхним / Убогим / Толстым
                 // О Верхнем / Об Убогом / О Толстом
-                } else if (in_array(S::slice($name, -2), ['ой', 'ый', 'ий'])) {
+                } else if (in_array(S::slice($name, -2), ['ой', 'ый', 'ий'], true)) {
                     $prefix = S::name(S::slice($name, 0, -2));
                     return [
                         self::IMENIT => S::name($name),
@@ -152,7 +152,7 @@ class LastNamesInflection extends \morphos\NamesInflection implements Cases
                 }
 
             } else {
-                if (in_array(S::slice($name, -3), ['ова', 'ева', 'ина', 'ына'])) {
+                if (in_array(S::slice($name, -3), ['ова', 'ева', 'ина', 'ына'], true)) {
                     $prefix = S::name(S::slice($name, 0, -1));
                     return [
                         self::IMENIT => S::name($name),
@@ -164,7 +164,7 @@ class LastNamesInflection extends \morphos\NamesInflection implements Cases
                     ];
                 }
 
-                if (in_array(S::slice($name, -2), ['ая'])) {
+                if (in_array(S::slice($name, -2), ['ая'], true)) {
                     $prefix = S::name(S::slice($name, 0, -2));
                     return [
                         self::IMENIT => S::name($name),

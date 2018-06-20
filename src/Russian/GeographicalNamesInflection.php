@@ -44,7 +44,7 @@ class GeographicalNamesInflection extends \morphos\BaseInflection implements Cas
         // if (in_array(S::slice($name, -1), array('и', 'ы')))
         //     return false;
 
-        if (in_array($name, self::$abbreviations) || in_array($name, self::$immutableParts)) {
+        if (in_array($name, self::$abbreviations, true) || in_array($name, self::$immutableParts, true)) {
             return false;
         }
 
@@ -79,7 +79,7 @@ class GeographicalNamesInflection extends \morphos\BaseInflection implements Cas
         }
 
         // ends with 'е' or 'о', but not with 'ово/ёво/ево/ино/ыно'
-        if (in_array(S::slice($name, -1), ['е', 'о']) && !in_array(S::slice($name, -3, -1), ['ов', 'ёв', 'ев', 'ин', 'ын'])) {
+        if (in_array(S::slice($name, -1), ['е', 'о'], true) && !in_array(S::slice($name, -3, -1), ['ов', 'ёв', 'ев', 'ин', 'ын'], true)) {
             return false;
         }
         return true;
@@ -95,7 +95,7 @@ class GeographicalNamesInflection extends \morphos\BaseInflection implements Cas
     {
         $name = S::lower($name);
 
-        if (in_array($name, self::$immutableParts)) {
+        if (in_array($name, self::$immutableParts, true)) {
             return array_fill_keys([self::IMENIT, self::RODIT, self::DAT, self::VINIT, self::TVORIT, self::PREDLOJ], S::name($name));
         }
 
@@ -152,7 +152,7 @@ class GeographicalNamesInflection extends \morphos\BaseInflection implements Cas
             }
         }
 
-        if (!in_array($name, self::$abbreviations)) {
+        if (!in_array($name, self::$abbreviations, true)) {
             switch (S::slice($name, -2)) {
                 // Нижний, Русский
                 case 'ий':
@@ -354,13 +354,13 @@ class GeographicalNamesInflection extends \morphos\BaseInflection implements Cas
 
             // ов, ово, ёв, ёво, ев, ево, ...
             $suffixes = ['ов', 'ёв', 'ев', 'ин', 'ын'];
-            if ((in_array(S::slice($name, -1), ['е', 'о']) && in_array(S::slice($name, -3, -1), $suffixes)) || in_array(S::slice($name, -2), $suffixes)) {
+            if ((in_array(S::slice($name, -1), ['е', 'о'], true) && in_array(S::slice($name, -3, -1), $suffixes, true)) || in_array(S::slice($name, -2), $suffixes, true)) {
                 // ово, ёво, ...
-                if (in_array(S::slice($name, -3, -1), $suffixes)) {
+                if (in_array(S::slice($name, -3, -1), $suffixes, true)) {
                     $prefix = S::name(S::slice($name, 0, -1));
                 }
                 // ов, её, ...
-                elseif (in_array(S::slice($name, -2), $suffixes)) {
+                elseif (in_array(S::slice($name, -2), $suffixes, true)) {
                     $prefix = S::name($name);
                 }
                 return [
@@ -375,7 +375,7 @@ class GeographicalNamesInflection extends \morphos\BaseInflection implements Cas
         }
 
         // if no rules matches or name is immutable
-        $name = in_array($name, self::$abbreviations) ? S::upper($name) : S::name($name);
+        $name = in_array($name, self::$abbreviations, true) ? S::upper($name) : S::name($name);
         return array_fill_keys([self::IMENIT, self::RODIT, self::DAT, self::VINIT, self::TVORIT, self::PREDLOJ], $name);
     }
 

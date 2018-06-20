@@ -75,7 +75,7 @@ trait RussianLanguage
      */
     public static function isVowel($char)
     {
-        return in_array($char, self::$vowels);
+        return in_array($char, self::$vowels, true);
     }
 
     /**
@@ -83,7 +83,7 @@ trait RussianLanguage
      */
     public static function isConsonant($char)
     {
-        return in_array($char, self::$consonants);
+        return in_array($char, self::$consonants, true);
     }
 
     /**
@@ -91,7 +91,7 @@ trait RussianLanguage
      */
     public static function isSonorousConsonant($char)
     {
-        return in_array($char, self::$sonorousConsonants);
+        return in_array($char, self::$sonorousConsonants, true);
     }
 
     /**
@@ -99,7 +99,7 @@ trait RussianLanguage
      */
     public static function isDeafConsonant($char)
     {
-        return in_array($char, self::$deafConsonants);
+        return in_array($char, self::$deafConsonants, true);
     }
 
     /**

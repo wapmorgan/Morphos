@@ -157,6 +157,7 @@ class CardinalNumeralGenerator extends NumeralGenerator implements Cases
      * @param $number
      * @param string $gender
      * @return array
+     * @throws \Exception
      */
     public static function getCases($number, $gender = self::MALE)
     {
@@ -246,6 +247,7 @@ class CardinalNumeralGenerator extends NumeralGenerator implements Cases
                         case NounPluralization::ONE:
                             $parts[] = NounDeclension::getCases($word, false);
                             break;
+
                         case NounPluralization::TWO_FOUR:
                             $part = NounPluralization::getCases($word);
                             if ($word_number != 1000) { // get dative case of word for 1000000, 1000000000 and 1000000000000
@@ -253,6 +255,7 @@ class CardinalNumeralGenerator extends NumeralGenerator implements Cases
                             }
                             $parts[] = $part;
                             break;
+
                         case NounPluralization::FIVE_OTHER:
                             $part = NounPluralization::getCases($word);
                             $part[Cases::IMENIT] = $part[Cases::VINIT] = $part[Cases::RODIT];

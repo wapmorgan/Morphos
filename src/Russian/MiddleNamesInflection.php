@@ -34,7 +34,7 @@ class MiddleNamesInflection extends \morphos\NamesInflection implements Cases
     public static function isMutable($name, $gender = null)
     {
         $name = S::lower($name);
-        if (in_array(S::slice($name, -2), ['ич', 'на'])) {
+        if (in_array(S::slice($name, -2), ['ич', 'на'], true)) {
             return true;
         }
 

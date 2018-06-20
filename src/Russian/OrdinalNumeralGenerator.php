@@ -52,10 +52,10 @@ class OrdinalNumeralGenerator extends NumeralGenerator implements Cases
     ];
 
     protected static $exponents = [
-        1000 => 'тысячный',
-        1000000 => 'миллионный',
-        1000000000 => 'миллиардный',
-        1000000000000 => 'триллионный',
+        '1000' => 'тысячный',
+        '1000000' => 'миллионный',
+        '1000000000' => 'миллиардный',
+        '1000000000000' => 'триллионный',
     ];
 
     protected static $multipliers = [
