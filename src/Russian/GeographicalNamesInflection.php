@@ -99,45 +99,25 @@ class GeographicalNamesInflection extends \morphos\BaseInflection implements Cas
             return array_fill_keys([self::IMENIT, self::RODIT, self::DAT, self::VINIT, self::TVORIT, self::PREDLOJ], S::name($name));
         }
 
-        // N край
-        if (S::slice($name, -5) == ' край') {
-            return self::composeCasesFromWords([static::getCases(S::slice($name, 0, -5)), NounDeclension::getCases('край')]);
-        }
+        if (strpos($name, ' ') !== false) {
+            $first_part = S::slice($name, 0, S::findFirstPosition($name, ' '));
+            // город N, село N, хутор N, пгт N
+            if (in_array($first_part, ['город', 'село', 'хутор', 'пгт'], true)) {
+                if ($first_part !== 'пгт')
+                    return self::composeCasesFromWords([
+                        NounDeclension::getCases($first_part),
+                        array_fill_keys(self::getAllCases(), S::name(S::slice($name, S::length($first_part) + 1)))
+                    ]);
+                else
+                    return array_fill_keys([self::IMENIT, self::RODIT, self::DAT, self::VINIT, self::TVORIT, self::PREDLOJ], 'пгт '.S::name(S::slice($name, 4)));
+            }
 
-        // N область
-        if (S::slice($name, -8) == ' область') {
-            return self::composeCasesFromWords([static::getCases(S::slice($name, 0, -8)), NounDeclension::getCases('область')]);
-        }
-
-        // город N
-        if (S::slice($name, 0, 6) == 'город ') {
-            return self::composeCasesFromWords([
-                NounDeclension::getCases('город'),
-                array_fill_keys(self::getAllCases(), S::name(S::slice($name, 6)))
-            ]);
-        }
-
-        // село N
-        if (S::slice($name, 0, 5) == 'село ') {
-            return self::composeCasesFromWords([
-                NounDeclension::getCases('село'),
-                array_fill_keys(self::getAllCases(), S::name(S::slice($name, 5)))
-            ]);
-        }
-
-        // хутор N
-        if (S::slice($name, 0, 6) == 'хутор ') {
-            return self::composeCasesFromWords([
-                NounDeclension::getCases('хутор'),
-                array_fill_keys(self::getAllCases(), S::name(S::slice($name, 6)))
-            ]);
-        }
-
-        // пгт N
-        if (S::slice($name, 0, 4) == 'пгт ') {
-            return self::composeCasesFromWords([
-                array_fill_keys([self::IMENIT, self::RODIT, self::DAT, self::VINIT, self::TVORIT, self::PREDLOJ], 'пгт '.S::name(S::slice($name, 4)))
-            ]);
+            $last_part = S::slice($name,
+                S::findLastPosition($name, ' ') + 1);
+            // N область, N край
+            if (in_array($last_part, ['край', 'область'], true)) {
+                return self::composeCasesFromWords([static::getCases(S::slice($name, 0, S::findLastPosition($name, ' '))), NounDeclension::getCases($last_part)]);
+            }
         }
 
         // Сложное название через пробел, '-' или '-на-'

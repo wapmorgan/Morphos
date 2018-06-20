@@ -27,11 +27,12 @@ class MoneySpeller extends \morphos\MoneySpeller
     ];
 
     /**
-     * @param $value
-     * @param $currency
+     * @param float|integer $value
+     * @param string $currency
      * @param string $format
      * @return string
      * @throws \InvalidArgumentException
+     * @throws \Exception
      */
     public static function spell($value, $currency, $format = self::NORMAL_FORMAT)
     {

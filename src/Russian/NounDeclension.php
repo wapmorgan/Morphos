@@ -31,7 +31,7 @@ class NounDeclension extends \morphos\BaseInflection implements Cases, Gender
         'племя',
         'семя',
         'путь' => ['путь', 'пути', 'пути', 'путь', 'путем', 'пути'],
-        'дитя' => ['дитя', 'дитяти', 'дитяти', 'дитя', 'дитятей', 'дитяти']
+        'дитя' => ['дитя', 'дитяти', 'дитяти', 'дитя', 'дитятей', 'дитяти'],
     ];
 
     protected static $masculineWithSoft = [

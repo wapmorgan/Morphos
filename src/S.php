@@ -124,6 +124,34 @@ class S
     }
 
     /**
+     * @param string $string
+     * @param string $char
+     * @return bool|string
+     */
+    public static function findFirstPosition($string, $char)
+    {
+        if (function_exists('mb_strpos')) {
+            return mb_strpos($string, $char, 0);
+        }
+
+        return strpos($string, $char);
+    }
+
+    /**
+     * @param string $string
+     * @param string $char
+     * @return bool|string
+     */
+    public static function findLastPosition($string, $char)
+    {
+        if (function_exists('mb_strrpos')) {
+            return mb_strrpos($string, $char, 0);
+        }
+
+        return strrpos($string, $char);
+    }
+
+    /**
      * @param $string
      * @param array $chars
      * @return bool|string
