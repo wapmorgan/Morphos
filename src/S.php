@@ -126,7 +126,7 @@ class S
     /**
      * @param $string
      * @param array $chars
-     * @return bool|int
+     * @return bool|string
      */
     public static function findLastPositionForOneOfChars($string, array $chars)
     {

@@ -151,6 +151,16 @@ trait RussianLanguage
     }
 
     /**
+     * Проверяет, что гласная образует два звука в словах
+     * @param $vowel
+     * @return bool
+     */
+    public static function isBinaryVowel($vowel)
+    {
+        return in_array(S::lower($vowel), ['е', 'ё', 'ю', 'я'], true);
+    }
+
+    /**
      * Выбор предлога по первой букве
      */
     public static function choosePrepositionByFirstLetter($word, $prepositionWithVowel, $preposition)

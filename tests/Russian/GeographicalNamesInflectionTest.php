@@ -10,6 +10,7 @@ class GeographicalNamesInflectionTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @dataProvider wordsProvider
+     * @throws \Exception
      */
     public function testInflection($word, $case2, $case3, $case4, $case5, $case6)
     {
@@ -45,6 +46,8 @@ class GeographicalNamesInflectionTest extends \PHPUnit_Framework_TestCase
             ['Благодарный', 'Благодарного', 'Благодарному', 'Благодарный', 'Благодарным', 'Благодарном'],
             ['Псков', 'Пскова', 'Пскову', 'Псков', 'Псковом', 'Пскове'],
             ['Киров', 'Кирова', 'Кирову', 'Киров', 'Кировом', 'Кирове'],
+            ['Керчь', 'Керчи', 'Керчи', 'Керчь', 'Керчью', 'Керчи'],
+            ['Анадырь', 'Анадыря', 'Анадырю', 'Анадырь', 'Анадырем', 'Анадыре'],
 
             // сложные названия
             ['Санкт-Петербург', 'Санкт-Петербурга', 'Санкт-Петербургу', 'Санкт-Петербург', 'Санкт-Петербургом', 'Санкт-Петербурге'],

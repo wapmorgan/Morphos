@@ -25,7 +25,7 @@ install:
       # disable xdebug for performance reasons when code coverage is not needed. note: xdebug on hhvm is disabled by default
       phpenv config-rm xdebug.ini || echo "xdebug is not installed"
     fi
-    
+
   - travis_retry composer self-update
   - export PATH="$HOME/.composer/vendor/bin:$PATH"
   - travis_retry composer install $DEFAULT_COMPOSER_FLAGS
@@ -35,7 +35,7 @@ install:
     fi
 
 script:
-- vendor/bin/phpunit --verbose $PHPUNIT_FLAGS ./tests/
+- vendor/bin/phpunit $PHPUNIT_FLAGS
 
 after_script:
   - |
