@@ -32,11 +32,6 @@ class TimeSpeller extends \morphos\TimeSpeller
             throw new InvalidArgumentException('Unknown time unit: '.$unit);
         }
 
-        // special case for YEAR >= 5
-        if ($unit == self::YEAR && NounPluralization::getNumeralForm($count) == NounPluralization::FIVE_OTHER) {
-            return $count.' лет';
-        }
-
         return pluralize($count, self::$units[$unit]);
     }
 }

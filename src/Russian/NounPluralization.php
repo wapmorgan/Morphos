@@ -28,6 +28,7 @@ class NounPluralization extends \morphos\NounPluralization implements Cases
         'блюдце' => 'блюдец',
         'полотенце' => 'полотенец',
         'гривна' => 'гривен',
+        'год' => 'лет',
     ];
 
     protected static $immutableWords = [
@@ -87,6 +88,11 @@ class NounPluralization extends \morphos\NounPluralization implements Cases
             case self::TWO_FOUR:
                 return NounDeclension::getCase($word, self::RODIT, $animateness);
             case self::FIVE_OTHER:
+                // special case for YEAR >= 5
+                if ($word === 'год') {
+                    return 'лет';
+                }
+
                 return NounPluralization::getCase($word, self::RODIT, $animateness);
         }
     }

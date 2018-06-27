@@ -128,6 +128,7 @@ function normalizeFullName($name)
  * @param string $word Название предмета
  * @param bool $animateness Признак одушевленности
  * @return string Строка в формате "ЧИСЛО [СУЩ в правильной форме]"
+ * @throws \Exception
  */
 function pluralize($count, $word, $animateness = false)
 {
