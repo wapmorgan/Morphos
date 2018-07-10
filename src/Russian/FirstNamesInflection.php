@@ -172,7 +172,7 @@ class FirstNamesInflection extends \morphos\NamesInflection implements Cases
             $woman += 0.5;
         }
 
-        return $man == $woman ? null
+        return $man === $woman ? null
             : ($man > $woman ? self::MALE : self::FEMALE);
     }
 
