@@ -271,6 +271,6 @@ trait RussianLanguage
     public static function isAdjectiveNoun($noun)
     {
         return in_array(S::slice($noun, -2), ['ой', 'ий', 'ый', 'ая', 'ое', 'ее'])
-            && $noun != 'гений';
+            && !in_array($noun, ['гений', 'комментарий']);
     }
 }
