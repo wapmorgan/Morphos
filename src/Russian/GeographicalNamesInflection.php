@@ -48,34 +48,19 @@ class GeographicalNamesInflection extends \morphos\BaseInflection implements Cas
             return false;
         }
 
-        // N край
-        if (S::slice($name, -5) == ' край') {
-            return static::isMutable(S::slice($name, 0, -5));
-        }
+        if (strpos($name, ' ') !== false) {
+            list($first_part, $last_part) = explode(' ', $name, 2);
 
-        // N область
-        if (S::slice($name, -8) == ' область') {
-            return true;
-        }
+            // город N, село N, хутор N, район N, поселок N, округ N, республика N
+            // N область, N край
+            if (in_array($first_part, ['город', 'село', 'хутор', 'район', 'поселок', 'округ', 'республика'], true)
+                || in_array($last_part, ['край', 'область'], true)) {
+                return true;
+            }
 
-        // город N
-        if (S::slice($name, 0, 6) == 'город ') {
-            return true;
-        }
-
-        // село N
-        if (S::slice($name, 0, 5) == 'село ') {
-            return true;
-        }
-
-        // хутор N
-        if (S::slice($name, 0, 6) == 'хутор ') {
-            return true;
-        }
-
-        // пгт N
-        if (S::slice($name, 0, 4) == 'пгт ') {
-            return false;
+            // пгт N
+            if ($first_part === 'пгт')
+                return false;
         }
 
         // ends with 'е' or 'о', but not with 'ово/ёво/ево/ино/ыно'
@@ -102,7 +87,7 @@ class GeographicalNamesInflection extends \morphos\BaseInflection implements Cas
         if (strpos($name, ' ') !== false) {
             $first_part = S::slice($name, 0, S::findFirstPosition($name, ' '));
             // город N, село N, хутор N, пгт N
-            if (in_array($first_part, ['город', 'село', 'хутор', 'пгт'], true)) {
+            if (in_array($first_part, ['город', 'село', 'хутор', 'пгт', 'район', 'поселок', 'округ', 'республика'], true)) {
                 if ($first_part !== 'пгт')
                     return self::composeCasesFromWords([
                         NounDeclension::getCases($first_part),
