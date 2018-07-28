@@ -49,7 +49,10 @@ class GeographicalNamesInflection extends \morphos\BaseInflection implements Cas
         }
 
         if (strpos($name, ' ') !== false) {
-            list($first_part, $last_part) = explode(' ', $name, 2);
+            // explode() is not applicable because Geographical unit may have few words
+            $first_part = S::slice($name, 0, S::findFirstPosition($name, ' '));
+            $last_part = S::slice($name,
+                S::findLastPosition($name, ' ') + 1);
 
             // город N, село N, хутор N, район N, поселок N, округ N, республика N
             // N область, N край
@@ -90,7 +93,9 @@ class GeographicalNamesInflection extends \morphos\BaseInflection implements Cas
             if (in_array($first_part, ['город', 'село', 'хутор', 'пгт', 'район', 'поселок', 'округ', 'республика'], true)) {
                 if ($first_part !== 'пгт')
                     return self::composeCasesFromWords([
-                        NounDeclension::getCases($first_part),
+                        $first_part !== 'республика'
+                            ? NounDeclension::getCases($first_part)
+                            : array_map(['\\morphos\\S', 'name'], NounDeclension::getCases($first_part)),
                         array_fill_keys(self::getAllCases(), S::name(S::slice($name, S::length($first_part) + 1)))
                     ]);
                 else
