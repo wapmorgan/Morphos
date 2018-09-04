@@ -148,6 +148,30 @@ class GeographicalNamesInflection extends \morphos\BaseInflection implements Cas
                         self::PREDLOJ => $prefix . 'ой',
                     ];
 
+                // Россошь
+                case 'шь':
+                    $prefix = S::name(S::slice($name, 0, -1));
+                    return [
+                        self::IMENIT => $prefix.'ь',
+                        self::RODIT => $prefix.'и',
+                        self::DAT => $prefix.'и',
+                        self::VINIT => $prefix.'ь',
+                        self::TVORIT => $prefix.'ью',
+                        self::PREDLOJ => $prefix.'и',
+                    ];
+
+                // Орёл
+                case 'ел':
+                    $prefix = S::name(S::slice($name, 0, -2));
+                    return [
+                        self::IMENIT => $prefix.'ёл',
+                        self::RODIT => $prefix.'ла',
+                        self::DAT => $prefix.'лу',
+                        self::VINIT => $prefix.'ла',
+                        self::TVORIT => $prefix.'лом',
+                        self::PREDLOJ => $prefix.'ле',
+                    ];
+
                 // Грозный, Благодарный
                 case 'ый':
                     $prefix = S::name(S::slice($name, 0, -2));
@@ -160,7 +184,7 @@ class GeographicalNamesInflection extends \morphos\BaseInflection implements Cas
                         self::PREDLOJ => $prefix . 'ом',
                     ];
 
-                // Ставрополь, Ярославль
+                // Ставрополь, Ярославль, Электросталь
                 case 'ль':
                     $prefix = S::name(S::slice($name, 0, -1));
                     return [
@@ -169,7 +193,7 @@ class GeographicalNamesInflection extends \morphos\BaseInflection implements Cas
                         self::DAT => $prefix . 'ю',
                         self::VINIT => $prefix . 'ь',
                         self::TVORIT => $prefix . 'ем',
-                        self::PREDLOJ => $prefix . 'е',
+                        self::PREDLOJ => $prefix.(S::name(S::slice($name == 'электросталь', -1)) ? 'и' : 'е'),
                     ];
 
                 // Тверь, Анадырь
@@ -272,8 +296,31 @@ class GeographicalNamesInflection extends \morphos\BaseInflection implements Cas
 
 
             switch (S::slice($name, -1)) {
-                // Азия
+                case 'р':
+                    // Бор
+                    $prefix = S::name(S::slice($name, 0, -1));
+                    return [
+                        self::IMENIT => $prefix.'р',
+                        self::RODIT => $prefix.'ра',
+                        self::DAT => $prefix.'ру',
+                        self::VINIT => $prefix.'р',
+                        self::TVORIT => $prefix.'ром',
+                        self::PREDLOJ => $prefix.'ру',
+                    ];
+                case 'ы':
+                    // Чебоксары, Шахты
+                    $prefix = S::name(S::slice($name, 0, -1));
+                    return [
+                        self::IMENIT => $prefix.'ы',
+                        self::RODIT => $prefix.(self::isVelarConsonant(S::slice($name, -1, -1)) == ' '),
+                        self::DAT => $prefix.'ам',
+                        self::VINIT => $prefix.'ы',
+                        self::TVORIT => $prefix.'ами',
+                        self::PREDLOJ => $prefix.'ах',
+                    ];
+
                 case 'я':
+                    // Азия
                     $prefix = S::name(S::slice($name, 0, -1));
                     return [
                         self::IMENIT => S::name($name),
@@ -328,6 +375,9 @@ class GeographicalNamesInflection extends \morphos\BaseInflection implements Cas
                 // ово, ёво, ...
                 if (in_array(S::slice($name, -3, -1), $suffixes, true)) {
                     $prefix = S::name(S::slice($name, 0, -1));
+                    return [
+                        self::PREDLOJ => $prefix.'о',
+                    ];
                 }
                 // ов, её, ...
                 elseif (in_array(S::slice($name, -2), $suffixes, true)) {
