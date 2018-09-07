@@ -42,20 +42,16 @@ class NounPluralization extends \morphos\NounPluralization implements Cases
         'глото*к',
     ];
 
-    protected static $runawayVowelsNormalized = false;
-
     /**
      * @return array|bool
      */
     protected static function getRunAwayVowelsList()
     {
-        if (self::$runawayVowelsNormalized === false) {
-            self::$runawayVowelsNormalized = [];
-            foreach (self::$runawayVowelsExceptions as $word) {
-                self::$runawayVowelsNormalized[str_replace('*', null, $word)] = S::indexOf($word, '*') - 1;
-            }
+        $runawayVowelsNormalized = [];
+        foreach (self::$runawayVowelsExceptions as $word) {
+            $runawayVowelsNormalized[str_replace('*', null, $word)] = S::indexOf($word, '*') - 1;
         }
-        return self::$runawayVowelsNormalized;
+        return $runawayVowelsNormalized;
     }
 
     /**
