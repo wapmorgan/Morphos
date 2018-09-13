@@ -226,8 +226,8 @@ _Пример._
 ```php
 use morphos\Russian\MoneySpeller;
 
-MoneySpeller::spell(123.45, 'RUB') => 'сто двадцать три рубля сорок пять копеек'
-MoneySpeller::spell(123.45, 'RUB', MoneySpeller::CLARIFICATION_FORMAT) => '123 (сто двадцать три) рубля 45 (сорок пять) копеек'
+MoneySpeller::spell(123.45, MoneySpeller::RUBLE) => 'сто двадцать три рубля сорок пять копеек'
+MoneySpeller::spell(123.45, MoneySpeller::RUBLE, MoneySpeller::CLARIFICATION_FORMAT) => '123 (сто двадцать три) рубля 45 (сорок пять) копеек'
 ```
 
 Все доступные форматы вывода:
@@ -239,27 +239,27 @@ MoneySpeller::spell(123.45, 'RUB', MoneySpeller::CLARIFICATION_FORMAT) => '123 (
 | `MoneySpeller::DUPLICATION_FORMAT`   | Сумма и валюта записываются словами. Сумма дублируется цифрами в скобках | один (1) рубль пятьдесят (50) копеек |
 | `MoneySpeller::CLARIFICATION_FORMAT` | Сумма записывается словами и цифрами (в скобках), валюта - словами.      | 1 (один) рубль 50 (пятьдесят) копеек |
 
-При указании валюты используйте знак валюты или трехзначный код валюты.
+При указании валюты используйте знак валюты (например, ₽) или трехзначный код валюты (`\morphos\Currency::RUBLE`).
 
 Доступные валюты:
 
-| Знак | Валюта |
-|------|--------|
-| $    | доллар |
-| €    | евро   |
-| ¥    | иена   |
-| £    | фунт   |
-| Fr   | франк  |
-| 元   | юань   |
-| Kr   | крона  |
-| MXN  | песо   |
-| ₩    | вон    |
-| ₺    | лира   |
-| ₽    | рубль  |
-| ₹    | рупия  |
-| R$   | реал   |
-| R    | рэнд   |
-| ₴    | гривна |
+| Знак | Идентификатор                | Валюта |
+|------|------------------------------|--------|
+| $    | `\morphos\Currency::DOLLAR`  | доллар |
+| €    | `\morphos\Currency::EURO`    | евро   |
+| ¥    | `\morphos\Currency::YEN`     | иена   |
+| £    | `\morphos\Currency::POUND`   | фунт   |
+| Fr   | `\morphos\Currency::FRANC`   | франк  |
+| 元   | `\morphos\Currency::YUAN`    | юань   |
+| Kr   | `\morphos\Currency::KRONA`   | крона  |
+| MXN  | `\morphos\Currency::PESO`    | песо   |
+| ₩    | `\morphos\Currency::WON`     | вон    |
+| ₺    | `\morphos\Currency::LIRA`    | лира   |
+| ₽    | `\morphos\Currency::RUBLE`   | рубль  |
+| ₹    | `\morphos\Currency::RUPEE`   | рупия  |
+| R$   | `\morphos\Currency::REAL`    | реал   |
+| R    | `\morphos\Currency::RAND`    | рэнд   |
+| ₴    | `\morphos\Currency::HRYVNIA` | гривна |
 
 ## Временные интервалы
 
