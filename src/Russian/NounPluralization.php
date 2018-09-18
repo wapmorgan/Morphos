@@ -187,7 +187,7 @@ class NounPluralization extends \morphos\NounPluralization implements Cases
 
         $forms = [];
 
-        if ($last == 'ч' || in_array(S::slice($word, -2), ['чь', 'сь', 'ть', 'нь'], true)
+        if (in_array($last, ['ч', 'г'], false) || in_array(S::slice($word, -2), ['чь', 'сь', 'ть', 'нь'], true)
             || (self::isVowel($last) && in_array(S::slice($word, -2, -1), ['ч', 'к'], true))) { // before ч, чь, сь, ч+vowel, к+vowel
             $forms[Cases::IMENIT] = $prefix.'и';
         } elseif (in_array($last, ['н', 'ц', 'р', 'т'], true)) {

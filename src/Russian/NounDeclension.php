@@ -66,15 +66,28 @@ class NounDeclension extends \morphos\BaseInflection implements Cases, Gender
     ];
 
     protected static $immutableWords = [
-        'евро',
-        'пенни',
-        'песо',
-        'сентаво',
+        // валюты
+        'евро', 'пенни', 'песо', 'сентаво',
+
+        // на а
+        'боа', 'бра', 'фейхоа', 'амплуа', 'буржуа',
+        // на о
+        'манго', 'какао', 'кино', 'трюмо', 'пальто', 'бюро', 'танго', 'вето', 'бунгало', 'сабо', 'авокадо', 'депо',
+        // на у
+        'зебу', 'кенгуру', 'рагу', 'какаду', 'шоу',
+        // на е
+        'шимпанзе', 'конферансье', 'атташе', 'колье', 'резюме', 'пенсне', 'кашне', 'протеже', 'коммюнике', 'драже', 'суфле', 'пюре', 'купе', 'фойе', 'шоссе',
+        // на и
+        'такси', 'жалюзи', 'шасси', 'алиби', 'киви', 'иваси', 'регби', 'конфетти', 'колибри', 'жюри', 'пенальти', 'рефери', 'кольраби',
+        // на э
+        'каноэ', 'алоэ',
+        // на ю
+        'меню', 'парвеню', 'авеню', 'дежавю', 'инженю', 'барбекю', 'интервью',
     ];
 
     /**
      * Проверка, изменяемое ли слово.
-     * @param $word
+     * @param string $word Слово для проверки
      * @param bool $animateness Признак одушевленности
      * @return bool
      */
@@ -89,7 +102,7 @@ class NounDeclension extends \morphos\BaseInflection implements Cases, Gender
 
     /**
      * Определение рода существительного.
-     * @param $word
+     * @param string $word
      * @return string
      */
     public static function detectGender($word)
@@ -133,8 +146,8 @@ class NounDeclension extends \morphos\BaseInflection implements Cases, Gender
 
     /**
      * Получение слова во всех 6 падежах.
-     * @param $word
-     * @param bool $animateness
+     * @param string $word
+     * @param bool $animateness Признак одушевлённости
      * @return array
      */
     public static function getCases($word, $animateness = false)
