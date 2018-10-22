@@ -218,11 +218,16 @@ trait RussianLanguage
         $verb = S::lower($verb);
         // возвратный глагол
         if (S::slice($verb, -2) == 'ся') {
-            return ($gender == Gender::MALE ? $verb : mb_substr($verb, 0, -2).'ась');
+
+            return ($gender == Gender::MALE
+                ? $verb
+                : S::slice($verb, 0, -2).(S::slice($verb, -3, -2) === 'л' ? null : 'л').'ась');
         }
 
         // обычный глагол
-        return ($gender == Gender::MALE ? $verb : $verb.'а');
+        return ($gender == Gender::MALE
+            ? $verb
+            : $verb.(S::slice($verb, -1) === 'л' ? null : 'л').'а');
     }
 
     /**

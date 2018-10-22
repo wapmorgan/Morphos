@@ -27,6 +27,8 @@ class RussianLanguageTest extends \PHPUnit_Framework_TestCase
             ['попал', Gender::FEMALE, 'попала'],
             ['попался', Gender::MALE, 'попался'],
             ['попался', Gender::FEMALE, 'попалась'],
+            ['внес', Gender::FEMALE, 'внесла'],
+            ['внесся', Gender::FEMALE, 'внеслась'],
         ];
     }
 
