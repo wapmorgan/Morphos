@@ -208,7 +208,7 @@ class NounPluralization extends \morphos\NounPluralization implements Cases
             } else {
                 $forms[Cases::RODIT] = $prefix;
             }
-        } elseif (S::slice($word, -2) == 'ка') { // words ending with -ка: чашка, вилка, ложка, тарелка, копейка, батарейка
+        } elseif (S::slice($word, -2) == 'ка' && S::slice($word, -3, -2) !== 'и') { // words ending with -ка: чашка, вилка, ложка, тарелка, копейка, батарейка
             if (S::slice($word, -3, -2) == 'л') {
                 $forms[Cases::RODIT] = S::slice($word, 0, -2).'ок';
             } elseif (S::slice($word, -3, -2) == 'й') {
