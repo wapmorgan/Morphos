@@ -29,6 +29,6 @@
 		}
 	},
 	"require-dev": {
-		"phpunit/phpunit": "^5.0"
+		"phpunit/phpunit": "~4.8"
 	}
 }
