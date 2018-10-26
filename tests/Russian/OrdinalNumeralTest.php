@@ -1,8 +1,6 @@
 <?php
 namespace morphos\test\Russian;
 
-require __DIR__.'/../../vendor/autoload.php';
-
 use morphos\NumeralGenerator;
 use morphos\Russian\Cases;
 use morphos\Russian\OrdinalNumeralGenerator;

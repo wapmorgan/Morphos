@@ -1,8 +1,6 @@
 <?php
 namespace morphos\test\Russian;
 
-require __DIR__.'/../../vendor/autoload.php';
-
 use DateInterval;
 use morphos\Russian\TimeSpeller;
 

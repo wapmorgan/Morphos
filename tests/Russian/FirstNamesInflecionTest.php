@@ -1,8 +1,6 @@
 <?php
 namespace morhos\test\Russian;
 
-require __DIR__.'/../../vendor/autoload.php';
-
 use morphos\Gender;
 use morphos\NamesInflection;
 use morphos\Russian\Cases;

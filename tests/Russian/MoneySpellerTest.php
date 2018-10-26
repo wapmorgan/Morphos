@@ -1,7 +1,6 @@
 <?php
 namespace morphos\test\Russian;
 
-require __DIR__.'/../../vendor/autoload.php';
 
 use morphos\Gender;
 use morphos\Currency;
