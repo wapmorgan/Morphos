@@ -1,8 +1,6 @@
 <?php
 namespace morhos\test;
 
-require_once __DIR__.'/../vendor/autoload.php';
-
 use morphos\CasesHelper;
 use morphos\Cases;
 

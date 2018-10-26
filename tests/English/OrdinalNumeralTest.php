@@ -1,8 +1,6 @@
 <?php
 namespace morhos\test\English;
 
-require_once __DIR__.'/../../vendor/autoload.php';
-
 use morphos\English\OrdinalNumeralGenerator;
 
 class OrdinalNumeralTest extends \PHPUnit_Framework_TestCase

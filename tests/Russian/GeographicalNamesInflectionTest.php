@@ -1,8 +1,6 @@
 <?php
 namespace morhos\test\Russian;
 
-require_once __DIR__.'/../../vendor/autoload.php';
-
 use morphos\Russian\Cases;
 use morphos\Russian\GeographicalNamesInflection;
 

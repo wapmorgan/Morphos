@@ -1,8 +1,6 @@
 <?php
 namespace morphos\test\English;
 
-require __DIR__.'/../../vendor/autoload.php';
-
 use morphos\Gender;
 use morphos\NumeralGenerator;
 
