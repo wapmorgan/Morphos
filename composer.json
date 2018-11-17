@@ -21,8 +21,7 @@
 	"autoload": {
 		"files": [
 			"src/English/functions.php",
-			"src/Russian/functions.php",
-			"src/initialization.php"
+			"src/Russian/functions.php"
 		],
 		"psr-4": {
 			"morphos\\": "src/"
