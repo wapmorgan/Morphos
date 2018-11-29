@@ -35,25 +35,28 @@ class NounDeclension extends \morphos\BaseInflection implements Cases, Gender
     ];
 
     protected static $masculineWithSoft = [
-        'олень',
-        'конь',
         'ячмень',
         'путь',
-        'зверь',
         'шкворень',
         'пельмень',
-        'тюлень',
-        'выхухоль',
         'табель',
         'рояль',
         'шампунь',
-        'конь',
-        'лось',
         'гвоздь',
-        'медведь',
         'рубль',
         'дождь',
+        'зверь',
         'юань',
+        'олень',
+        'конь',
+        'конь',
+        'лось',
+        'тюлень',
+        'выхухоль',
+        'медведь',
+        'председатель',
+        'руководитель',
+        'заместитель',
     ];
 
     protected static $masculineWithSoftAndRunAwayVowels = [
@@ -123,9 +126,10 @@ class NounDeclension extends \morphos\BaseInflection implements Cases, Gender
     /**
      * Определение склонения (по школьной программе) существительного.
      * @param $word
+     * @param bool $animateness
      * @return int
      */
-    public static function getDeclension($word)
+    public static function getDeclension($word, $animateness = false)
     {
         $word = S::lower($word);
         $last = S::slice($word, -1);
