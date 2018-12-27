@@ -29,6 +29,8 @@ class GeographicalNamesInflection extends \morphos\BaseInflection implements Cas
 
     protected static $immutableParts = [
         'санкт',
+        'йошкар',
+        'улан',
     ];
 
     protected static $runawayVowelsExceptions = [
