@@ -36,7 +36,11 @@ class GeographicalNamesInflection extends \morphos\BaseInflection implements Cas
     protected static $runawayVowelsExceptions = [
         'торжо*к',
         'волоче*к',
-        'оре*л',
+        'орё*л',
+    ];
+
+    protected static $misspellings = [
+        'орел' => 'орёл',
     ];
 
     /**
@@ -103,6 +107,7 @@ class GeographicalNamesInflection extends \morphos\BaseInflection implements Cas
     {
         $name = S::lower($name);
 
+        // Проверка на неизменяемость и сложное название
         if (in_array($name, self::$immutableParts, true)) {
             return array_fill_keys([self::IMENIT, self::RODIT, self::DAT, self::VINIT, self::TVORIT, self::PREDLOJ], S::name($name));
         }
@@ -142,6 +147,12 @@ class GeographicalNamesInflection extends \morphos\BaseInflection implements Cas
             }
         }
 
+        // Исправление ошибок
+        if (array_key_exists($name, static::$misspellings)) {
+            $name = static::$misspellings[$name];
+        }
+
+        // Само склонение
         if (!in_array($name, self::$abbreviations, true)) {
             switch (S::slice($name, -2)) {
                 // Нижний, Русский
