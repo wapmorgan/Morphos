@@ -56,18 +56,26 @@ class NounPluralization extends \morphos\NounPluralization implements Cases
 
     /**
      * Склонение существительного для сочетания с числом (кол-вом предметов).
-     * @param int|string $count Количество предметов
-     * @param string|int $word Название предмета
-     * @param bool $animateness Признак одушевленности
+     *
+     * @param string|int $word        Название предмета
+     * @param int|string $count       Количество предметов
+     * @param bool       $animateness Признак одушевленности
+     * @param string     $case        Род существительного
+     *
      * @return string
      * @throws \Exception
      */
-    public static function pluralize($word, $count = 2, $animateness = false)
+    public static function pluralize($word, $count = 2, $animateness = false, $case = self::IMENIT)
     {
         // меняем местами аргументы, если они переданы в старом формате
         if (is_string($count) && is_numeric($word)) {
             list($count, $word) = [$word, $count];
         }
+
+        $case = self::canonizeCase($case);
+        // Именительный падеж превращается в родительный по правилам русского языка
+        if ($case === self::IMENIT)
+            $case = self::RODIT;
 
         // для адъективных существительных правила склонения проще:
         // только две формы
@@ -75,21 +83,16 @@ class NounPluralization extends \morphos\NounPluralization implements Cases
             if (self::getNumeralForm($count) == self::ONE)
                 return $word;
             else
-                return NounPluralization::getCase($word, self::RODIT, $animateness);
+                return NounPluralization::getCase($word, $case, $animateness);
         }
 
         switch (self::getNumeralForm($count)) {
             case self::ONE:
                 return $word;
             case self::TWO_FOUR:
-                return NounDeclension::getCase($word, self::RODIT, $animateness);
+                return NounDeclension::getCase($word, $case, $animateness);
             case self::FIVE_OTHER:
-                // special case for YEAR >= 5
-                if ($word === 'год') {
-                    return 'лет';
-                }
-
-                return NounPluralization::getCase($word, self::RODIT, $animateness);
+                return NounPluralization::getCase($word, $case, $animateness);
         }
     }
 

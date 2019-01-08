@@ -1,32 +1,40 @@
 <?php
 namespace morhos\test\Russian;
 
+use morphos\Russian\Cases;
 use morphos\Russian\NounPluralization;
 
 class NounPluralizationTest extends \PHPUnit_Framework_TestCase
 {
+
     /**
      * @dataProvider pluralizationWordsProvider
+     *
+     * @param $word
+     * @param $pluralized2
+     * @param $pluralized5
+     *
+     * @throws \Exception
      */
-    public function testPluralization($word, $pluralized2, $pluralized5)
+    public function testPluralization($word, $pluralized2, $pluralized5, $case = Cases::IMENIT)
     {
         // One
-        $this->assertEquals($word, NounPluralization::pluralize($word, 1));
-        $this->assertEquals($word, NounPluralization::pluralize($word, 101));
-        $this->assertEquals($word, NounPluralization::pluralize($word, 201));
-        $this->assertEquals($word, NounPluralization::pluralize($word, 1501));
+        $this->assertEquals($word, NounPluralization::pluralize($word, 1, false, $case));
+        $this->assertEquals($word, NounPluralization::pluralize($word, 101, false, $case));
+        $this->assertEquals($word, NounPluralization::pluralize($word, 201, false, $case));
+        $this->assertEquals($word, NounPluralization::pluralize($word, 1501, false, $case));
 
         // Two-Four
-        $this->assertEquals($pluralized2, NounPluralization::pluralize($word, 2));
-        $this->assertEquals($pluralized2, NounPluralization::pluralize($word, 23));
-        $this->assertEquals($pluralized2, NounPluralization::pluralize($word, 104));
-        $this->assertEquals($pluralized2, NounPluralization::pluralize($word, 1503));
+        $this->assertEquals($pluralized2, NounPluralization::pluralize($word, 2, false, $case));
+        $this->assertEquals($pluralized2, NounPluralization::pluralize($word, 23, false, $case));
+        $this->assertEquals($pluralized2, NounPluralization::pluralize($word, 104, false, $case));
+        $this->assertEquals($pluralized2, NounPluralization::pluralize($word, 1503, false, $case));
 
         // Five
-        $this->assertEquals($pluralized5, NounPluralization::pluralize($word, 5));
-        $this->assertEquals($pluralized5, NounPluralization::pluralize($word, 211));
-        $this->assertEquals($pluralized5, NounPluralization::pluralize($word, 520));
-        $this->assertEquals($pluralized5, NounPluralization::pluralize($word, 1513));
+        $this->assertEquals($pluralized5, NounPluralization::pluralize($word, 5, false, $case));
+        $this->assertEquals($pluralized5, NounPluralization::pluralize($word, 211, false, $case));
+        $this->assertEquals($pluralized5, NounPluralization::pluralize($word, 520, false, $case));
+        $this->assertEquals($pluralized5, NounPluralization::pluralize($word, 1513, false, $case));
     }
 
     public function pluralizationWordsProvider()
@@ -54,6 +62,10 @@ class NounPluralizationTest extends \PHPUnit_Framework_TestCase
             ['крона', 'кроны', 'крон'],
             ['юань', 'юаня', 'юаней'],
             ['гривна', 'гривны', 'гривен'],
+
+            // в ином падеже
+            ['год', 'годе', 'годах', 'предложный'],
+            ['товар', 'товару', 'товарам', 'дательный'],
 
             // адъективное склонение
             ['ванная', 'ванных', 'ванных'],
