@@ -16,25 +16,25 @@ class NounPluralizationTest extends \PHPUnit_Framework_TestCase
      *
      * @throws \Exception
      */
-    public function testPluralization($word, $pluralized2, $pluralized5, $case = Cases::IMENIT)
+    public function testPluralization($word, $pluralized2, $pluralized5)
     {
         // One
-        $this->assertEquals($word, NounPluralization::pluralize($word, 1, false, $case));
-        $this->assertEquals($word, NounPluralization::pluralize($word, 101, false, $case));
-        $this->assertEquals($word, NounPluralization::pluralize($word, 201, false, $case));
-        $this->assertEquals($word, NounPluralization::pluralize($word, 1501, false, $case));
+        $this->assertEquals($word, NounPluralization::pluralize($word, 1));
+        $this->assertEquals($word, NounPluralization::pluralize($word, 101));
+        $this->assertEquals($word, NounPluralization::pluralize($word, 201));
+        $this->assertEquals($word, NounPluralization::pluralize($word, 1501));
 
         // Two-Four
-        $this->assertEquals($pluralized2, NounPluralization::pluralize($word, 2, false, $case));
-        $this->assertEquals($pluralized2, NounPluralization::pluralize($word, 23, false, $case));
-        $this->assertEquals($pluralized2, NounPluralization::pluralize($word, 104, false, $case));
-        $this->assertEquals($pluralized2, NounPluralization::pluralize($word, 1503, false, $case));
+        $this->assertEquals($pluralized2, NounPluralization::pluralize($word, 2));
+        $this->assertEquals($pluralized2, NounPluralization::pluralize($word, 23));
+        $this->assertEquals($pluralized2, NounPluralization::pluralize($word, 104));
+        $this->assertEquals($pluralized2, NounPluralization::pluralize($word, 1503));
 
         // Five
-        $this->assertEquals($pluralized5, NounPluralization::pluralize($word, 5, false, $case));
-        $this->assertEquals($pluralized5, NounPluralization::pluralize($word, 211, false, $case));
-        $this->assertEquals($pluralized5, NounPluralization::pluralize($word, 520, false, $case));
-        $this->assertEquals($pluralized5, NounPluralization::pluralize($word, 1513, false, $case));
+        $this->assertEquals($pluralized5, NounPluralization::pluralize($word, 5));
+        $this->assertEquals($pluralized5, NounPluralization::pluralize($word, 211));
+        $this->assertEquals($pluralized5, NounPluralization::pluralize($word, 520));
+        $this->assertEquals($pluralized5, NounPluralization::pluralize($word, 1513));
     }
 
     public function pluralizationWordsProvider()
@@ -63,13 +63,42 @@ class NounPluralizationTest extends \PHPUnit_Framework_TestCase
             ['юань', 'юаня', 'юаней'],
             ['гривна', 'гривны', 'гривен'],
 
-            // в ином падеже
-            ['год', 'годе', 'годах', 'предложный'],
-            ['товар', 'товару', 'товарам', 'дательный'],
-
             // адъективное склонение
             ['ванная', 'ванных', 'ванных'],
             ['прохожий', 'прохожих', 'прохожих'],
+        ];
+    }
+
+    /**
+     * @dataProvider pluralizationWordsWithCaseProvider
+     *
+     * @param $word
+     * @param $pluralizedOne
+     * @param $pluralizedMany
+     *
+     * @param $case
+     *
+     * @throws \Exception
+     */
+    public function testPluralizationWithCase($word, $pluralizedOne, $pluralizedMany, $case)
+    {
+        // One
+        $this->assertEquals($pluralizedOne, NounPluralization::pluralize($word, 1, false, $case));
+        $this->assertEquals($pluralizedOne, NounPluralization::pluralize($word, 21, false, $case));
+        $this->assertEquals($pluralizedOne, NounPluralization::pluralize($word, 101, false, $case));
+
+        // Many
+        $this->assertEquals($pluralizedMany, NounPluralization::pluralize($word, 3, false, $case));
+        $this->assertEquals($pluralizedMany, NounPluralization::pluralize($word, 22, false, $case));
+        $this->assertEquals($pluralizedMany, NounPluralization::pluralize($word, 60, false, $case));
+    }
+
+    public function pluralizationWordsWithCaseProvider()
+    {
+        return [
+            // в ином падеже
+            ['год', 'годе', 'годах', 'предложный'],
+            ['товар', 'товару', 'товарам', 'дательный'],
         ];
     }
 

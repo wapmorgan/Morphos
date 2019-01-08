@@ -65,17 +65,15 @@ class NounPluralization extends \morphos\NounPluralization implements Cases
      * @return string
      * @throws \Exception
      */
-    public static function pluralize($word, $count = 2, $animateness = false, $case = self::IMENIT)
+    public static function pluralize($word, $count = 2, $animateness = false, $case = null)
     {
         // меняем местами аргументы, если они переданы в старом формате
         if (is_string($count) && is_numeric($word)) {
             list($count, $word) = [$word, $count];
         }
 
-        $case = self::canonizeCase($case);
-        // Именительный падеж превращается в родительный по правилам русского языка
-        if ($case === self::IMENIT)
-            $case = self::RODIT;
+        if ($case !== null)
+            $case = self::canonizeCase($case);
 
         // для адъективных существительных правила склонения проще:
         // только две формы
@@ -83,17 +81,27 @@ class NounPluralization extends \morphos\NounPluralization implements Cases
             if (self::getNumeralForm($count) == self::ONE)
                 return $word;
             else
-                return NounPluralization::getCase($word, $case, $animateness);
+                return NounPluralization::getCase($word,
+                    $case !== null
+                        ? $case
+                        : self::RODIT, $animateness);
         }
 
-        switch (self::getNumeralForm($count)) {
-            case self::ONE:
-                return $word;
-            case self::TWO_FOUR:
-                return NounDeclension::getCase($word, $case, $animateness);
-            case self::FIVE_OTHER:
-                return NounPluralization::getCase($word, $case, $animateness);
+        if ($case === null) {
+            switch (self::getNumeralForm($count)) {
+                case self::ONE:
+                    return $word;
+                case self::TWO_FOUR:
+                    return NounDeclension::getCase($word, self::RODIT, $animateness);
+                case self::FIVE_OTHER:
+                    return NounPluralization::getCase($word, self::RODIT, $animateness);
+            }
         }
+
+        if (self::getNumeralForm($count) == self::ONE)
+            return NounDeclension::getCase($word, $case, $animateness);
+        else
+            return NounPluralization::getCase($word, $case, $animateness);
     }
 
     /**

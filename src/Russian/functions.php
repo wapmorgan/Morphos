@@ -133,7 +133,7 @@ function normalizeFullName($name)
  * @return string Строка в формате "ЧИСЛО [СУЩ в правильной форме]"
  * @throws \Exception
  */
-function pluralize($count, $word, $animateness = false, $case = Cases::IMENIT)
+function pluralize($count, $word, $animateness = false, $case = null)
 {
     // меняем местами аргументы, если они переданы в старом формате
     if (is_string($count) && is_numeric($word)) {
