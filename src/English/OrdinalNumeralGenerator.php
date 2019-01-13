@@ -30,8 +30,8 @@ class OrdinalNumeralGenerator extends NumeralGenerator
     public static function generate($number, $short = false)
     {
         // simple numeral
-        if (isset(self::$words[$number])) {
-            return !$short ? self::$words[$number] : $number.substr(self::$words[$number], -2);
+        if (isset(static::$words[$number])) {
+            return !$short ? static::$words[$number] : $number.substr(static::$words[$number], -2);
         } elseif (isset(CardinalNumeralGenerator::$words[$number]) || isset(CardinalNumeralGenerator::$exponents[$number])) {
             if ($short) {
                 return $number.'th';
@@ -62,7 +62,7 @@ class OrdinalNumeralGenerator extends NumeralGenerator
                 if ($number >= $word_number) {
                     // if last part
                     if ($number % $word_number === 0) {
-                        $words[] = self::generate($word_number);
+                        $words[] = static::generate($word_number);
                     } else {
                         $words[] = CardinalNumeralGenerator::generate($word_number);
                     }

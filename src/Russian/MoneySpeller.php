@@ -36,29 +36,29 @@ class MoneySpeller extends \morphos\MoneySpeller
      */
     public static function spell($value, $currency, $format = self::NORMAL_FORMAT)
     {
-        $currency = self::canonizeCurrency($currency);
+        $currency = static::canonizeCurrency($currency);
 
         $integer = floor($value);
         $fractional = floor(($value * 100) % 100);
 
         switch ($format) {
-            case self::SHORT_FORMAT:
+            case static::SHORT_FORMAT:
                 return $integer.' '.NounPluralization::pluralize(static::$labels[$currency][0], $integer)
                     .($fractional > 0
                         ? ' '.$fractional.' '.NounPluralization::pluralize(static::$labels[$currency][2], $fractional)
                         : null);
 
-            case self::NORMAL_FORMAT:
-            case self::CLARIFICATION_FORMAT:
-            case self::DUPLICATION_FORMAT:
+            case static::NORMAL_FORMAT:
+            case static::CLARIFICATION_FORMAT:
+            case static::DUPLICATION_FORMAT:
 
                 $integer_speelled = CardinalNumeralGenerator::getCase($integer, Cases::IMENIT, static::$labels[$currency][1]);
                 $fractional_speelled = CardinalNumeralGenerator::getCase($fractional, Cases::IMENIT, static::$labels[$currency][3]);
 
-                if ($format == self::CLARIFICATION_FORMAT) {
+                if ($format == static::CLARIFICATION_FORMAT) {
                     return $integer.' ('.$integer_speelled.') '.NounPluralization::pluralize(static::$labels[$currency][0], $integer).' '.$fractional.' ('.$fractional_speelled.') '.NounPluralization::pluralize(static::$labels[$currency][2], $fractional);
                 } else {
-                    return $integer_speelled.($format == self::DUPLICATION_FORMAT ? ' ('.$integer.')' : null).' '.NounPluralization::pluralize(static::$labels[$currency][0], $integer).' '.$fractional_speelled.($format == self::DUPLICATION_FORMAT ? ' ('.$fractional.')' : null).' '.NounPluralization::pluralize(static::$labels[$currency][2], $fractional);
+                    return $integer_speelled.($format == static::DUPLICATION_FORMAT ? ' ('.$integer.')' : null).' '.NounPluralization::pluralize(static::$labels[$currency][0], $integer).' '.$fractional_speelled.($format == static::DUPLICATION_FORMAT ? ' ('.$fractional.')' : null).' '.NounPluralization::pluralize(static::$labels[$currency][2], $fractional);
                 }
         }
     }

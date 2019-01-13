@@ -24,14 +24,16 @@ class TimeSpeller extends \morphos\TimeSpeller
     /**
      * @param $count
      * @param $unit
+     *
      * @return string
+     * @throws \Exception
      */
     public static function spellUnit($count, $unit)
     {
-        if (!isset(self::$units[$unit])) {
+        if (!isset(static::$units[$unit])) {
             throw new InvalidArgumentException('Unknown time unit: '.$unit);
         }
 
-        return pluralize($count, self::$units[$unit]);
+        return pluralize($count, static::$units[$unit]);
     }
 }

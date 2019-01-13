@@ -58,25 +58,25 @@ class CardinalNumeralGenerator extends NumeralGenerator
     public static function generate($number)
     {
         // simple numeral
-        if (isset(self::$words[$number]) || isset(self::$exponents[$number])) {
-            return isset(self::$words[$number]) ? self::$words[$number] : self::$exponents[$number];
+        if (isset(static::$words[$number]) || isset(static::$exponents[$number])) {
+            return isset(static::$words[$number]) ? static::$words[$number] : static::$exponents[$number];
         }
         // compound numeral
         else {
             $parts = [];
             $words = [];
 
-            foreach (array_reverse(self::$exponents, true) as $word_number => $word) {
+            foreach (array_reverse(static::$exponents, true) as $word_number => $word) {
                 if ($number >= $word_number) {
                     $count = floor($number / $word_number);
                     $number = $number % ($count * $word_number);
-                    $parts[] = self::generate($count).' '.self::generate($word_number).($word_number != 100 && $number > 0 ? ',' : null);
+                    $parts[] = static::generate($count).' '.static::generate($word_number).($word_number != 100 && $number > 0 ? ',' : null);
                 }
             }
 
-            foreach (array_reverse(self::$words, true) as $word_number => $word) {
+            foreach (array_reverse(static::$words, true) as $word_number => $word) {
                 if ($number >= $word_number) {
-                    $words[] = self::generate($word_number);
+                    $words[] = static::generate($word_number);
                     $number %= $word_number;
                 }
             }

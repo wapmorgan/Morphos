@@ -77,7 +77,7 @@ trait RussianLanguage
      */
     public static function isVowel($char)
     {
-        return in_array($char, self::$vowels, true);
+        return in_array($char, static::$vowels, true);
     }
 
     /**
@@ -87,7 +87,7 @@ trait RussianLanguage
      */
     public static function isConsonant($char)
     {
-        return in_array($char, self::$consonants, true);
+        return in_array($char, static::$consonants, true);
     }
 
     /**
@@ -95,7 +95,7 @@ trait RussianLanguage
      */
     public static function isSonorousConsonant($char)
     {
-        return in_array($char, self::$sonorousConsonants, true);
+        return in_array($char, static::$sonorousConsonants, true);
     }
 
     /**
@@ -105,7 +105,7 @@ trait RussianLanguage
      */
     public static function isDeafConsonant($char)
     {
-        return in_array($char, self::$deafConsonants, true);
+        return in_array($char, static::$deafConsonants, true);
     }
 
     /**
@@ -135,7 +135,7 @@ trait RussianLanguage
      */
     public static function countSyllables($string)
     {
-        return S::countChars($string, self::$vowels);
+        return S::countChars($string, static::$vowels);
     }
 
     /**
@@ -147,7 +147,7 @@ trait RussianLanguage
     public static function isPaired($consonant)
     {
         $consonant = S::lower($consonant);
-        return array_key_exists($consonant, self::$pairs) || (array_search($consonant, self::$pairs) !== false);
+        return array_key_exists($consonant, static::$pairs) || (array_search($consonant, static::$pairs) !== false);
     }
 
     /**
@@ -157,7 +157,7 @@ trait RussianLanguage
      */
     public static function checkLastConsonantSoftness($word)
     {
-        if (($substring = S::findLastPositionForOneOfChars(S::lower($word), self::$consonants)) !== false) {
+        if (($substring = S::findLastPositionForOneOfChars(S::lower($word), static::$consonants)) !== false) {
             if (in_array(S::slice($substring, 0, 1), ['й', 'ч', 'щ'], true)) { // always soft consonants
                 return true;
             } elseif (S::length($substring) > 1 && in_array(S::slice($substring, 1, 2), ['е', 'ё', 'и', 'ю', 'я', 'ь'], true)) { // consonants are soft if they are trailed with these vowels
@@ -201,7 +201,7 @@ trait RussianLanguage
      */
     public static function chooseVowelAfterConsonant($last, $softLast, $afterSoft, $afterHard)
     {
-        if ((RussianLanguage::isHissingConsonant($last) && !in_array($last, ['ж', 'ч'], true)) || /*self::isVelarConsonant($last) ||*/ $softLast) {
+        if ((RussianLanguage::isHissingConsonant($last) && !in_array($last, ['ж', 'ч'], true)) || /*static::isVelarConsonant($last) ||*/ $softLast) {
             return $afterSoft;
         } else {
             return $afterHard;
@@ -284,9 +284,9 @@ trait RussianLanguage
     public static function chooseEndingBySonority($word, $ifSonorous, $ifDeaf)
     {
         $last = S::slice($word, -1);
-        if (self::isSonorousConsonant($last))
+        if (static::isSonorousConsonant($last))
             return $ifSonorous;
-        if (self::isDeafConsonant($last))
+        if (static::isDeafConsonant($last))
             return $ifDeaf;
 
         throw new \Exception('Not implemented');

@@ -114,7 +114,7 @@ class S
             return implode('-', array_map([__CLASS__, __FUNCTION__], explode('-', $string)));
         }
 
-        return self::upper(self::slice($string, 0, 1)).self::lower(self::slice($string, 1));
+        return static::upper(static::slice($string, 0, 1)).static::lower(static::slice($string, 1));
     }
 
     /**
