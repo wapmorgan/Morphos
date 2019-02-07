@@ -162,75 +162,75 @@ class CardinalNumeralGenerator extends NumeralGenerator implements Cases
     public static function getCases($number, $gender = self::MALE)
     {
         // simple numeral
-        if (isset(self::$words[$number]) || isset(self::$exponents[$number])) {
-            $word = isset(self::$words[$number]) ? self::$words[$number] : self::$exponents[$number];
-            if (isset(self::$precalculated[$word])) {
-                if (isset(self::$precalculated[$word][self::MALE])) {
-                    return self::$precalculated[$word][$gender];
+        if (isset(static::$words[$number]) || isset(static::$exponents[$number])) {
+            $word = isset(static::$words[$number]) ? static::$words[$number] : static::$exponents[$number];
+            if (isset(static::$precalculated[$word])) {
+                if (isset(static::$precalculated[$word][static::MALE])) {
+                    return static::$precalculated[$word][$gender];
                 } else {
-                    return self::$precalculated[$word];
+                    return static::$precalculated[$word];
                 }
             } elseif (($number >= 5 && $number <= 20) || $number == 30) {
                 $prefix = S::slice($word, 0, -1);
                 return [
-                    self::IMENIT => $word,
-                    self::RODIT => $prefix.'и',
-                    self::DAT => $prefix.'и',
-                    self::VINIT => $word,
-                    self::TVORIT => $prefix.'ью',
-                    self::PREDLOJ => $prefix.'и',
+                    static::IMENIT => $word,
+                    static::RODIT => $prefix.'и',
+                    static::DAT => $prefix.'и',
+                    static::VINIT => $word,
+                    static::TVORIT => $prefix.'ью',
+                    static::PREDLOJ => $prefix.'и',
                 ];
             } elseif (in_array($number, [40, 90, 100])) {
                 $prefix = $number == 40 ? $word : S::slice($word, 0, -1);
                 return [
-                    self::IMENIT => $word,
-                    self::RODIT => $prefix.'а',
-                    self::DAT => $prefix.'а',
-                    self::VINIT => $word,
-                    self::TVORIT => $prefix.'а',
-                    self::PREDLOJ => $prefix.'а',
+                    static::IMENIT => $word,
+                    static::RODIT => $prefix.'а',
+                    static::DAT => $prefix.'а',
+                    static::VINIT => $word,
+                    static::TVORIT => $prefix.'а',
+                    static::PREDLOJ => $prefix.'а',
                 ];
             } elseif (($number >= 50 && $number <= 80)) {
                 $prefix = S::slice($word, 0, -6);
                 return [
-                    self::IMENIT => $prefix.'ьдесят',
-                    self::RODIT => $prefix.'идесяти',
-                    self::DAT => $prefix.'идесяти',
-                    self::VINIT => $prefix.'ьдесят',
-                    self::TVORIT => $prefix.'ьюдесятью',
-                    self::PREDLOJ => $prefix.'идесяти',
+                    static::IMENIT => $prefix.'ьдесят',
+                    static::RODIT => $prefix.'идесяти',
+                    static::DAT => $prefix.'идесяти',
+                    static::VINIT => $prefix.'ьдесят',
+                    static::TVORIT => $prefix.'ьюдесятью',
+                    static::PREDLOJ => $prefix.'идесяти',
                 ];
             } elseif (in_array($number, [300, 400])) {
                 $prefix = S::slice($word, 0, -4);
                 return [
-                    self::IMENIT => $word,
-                    self::RODIT => $prefix.'ехсот',
-                    self::DAT => $prefix.'емстам',
-                    self::VINIT => $word,
-                    self::TVORIT => $prefix.($number == 300 ? 'е' : 'ь').'мястами',
-                    self::PREDLOJ => $prefix.'ехстах',
+                    static::IMENIT => $word,
+                    static::RODIT => $prefix.'ехсот',
+                    static::DAT => $prefix.'емстам',
+                    static::VINIT => $word,
+                    static::TVORIT => $prefix.($number == 300 ? 'е' : 'ь').'мястами',
+                    static::PREDLOJ => $prefix.'ехстах',
                 ];
             } elseif ($number >= 500 && $number <= 900) {
                 $prefix = S::slice($word, 0, -4);
                 return [
-                    self::IMENIT => $word,
-                    self::RODIT => $prefix.'исот',
-                    self::DAT => $prefix.'истам',
-                    self::VINIT => $word,
-                    self::TVORIT => $prefix.'ьюстами',
-                    self::PREDLOJ => $prefix.'истах',
+                    static::IMENIT => $word,
+                    static::RODIT => $prefix.'исот',
+                    static::DAT => $prefix.'истам',
+                    static::VINIT => $word,
+                    static::TVORIT => $prefix.'ьюстами',
+                    static::PREDLOJ => $prefix.'истах',
                 ];
-            } elseif (isset(self::$exponents[$number])) {
+            } elseif (isset(static::$exponents[$number])) {
                 return NounDeclension::getCases($word, false);
             }
         } elseif ($number == 0) {
             return [
-                self::IMENIT => 'ноль',
-                self::RODIT => 'ноля',
-                self::DAT => 'нолю',
-                self::VINIT => 'ноль',
-                self::TVORIT => 'нолём',
-                self::PREDLOJ => 'ноле',
+                static::IMENIT => 'ноль',
+                static::RODIT => 'ноля',
+                static::DAT => 'нолю',
+                static::VINIT => 'ноль',
+                static::TVORIT => 'нолём',
+                static::PREDLOJ => 'ноле',
             ];
         }
         // compound numeral
@@ -238,10 +238,10 @@ class CardinalNumeralGenerator extends NumeralGenerator implements Cases
             $parts = [];
             $result = [];
 
-            foreach (array_reverse(self::$exponents, true) as $word_number => $word) {
+            foreach (array_reverse(static::$exponents, true) as $word_number => $word) {
                 if ($number >= $word_number) {
                     $count = floor($number / $word_number);
-                    $parts[] = self::getCases($count, ($word_number == 1000 ? self::FEMALE : self::MALE));
+                    $parts[] = static::getCases($count, ($word_number == 1000 ? static::FEMALE : static::MALE));
 
                     switch (NounPluralization::getNumeralForm($count)) {
                         case NounPluralization::ONE:
@@ -267,15 +267,15 @@ class CardinalNumeralGenerator extends NumeralGenerator implements Cases
                 }
             }
 
-            foreach (array_reverse(self::$words, true) as $word_number => $word) {
+            foreach (array_reverse(static::$words, true) as $word_number => $word) {
                 if ($number >= $word_number) {
-                    $parts[] = self::getCases($word_number, $gender);
+                    $parts[] = static::getCases($word_number, $gender);
                     $number %= $word_number;
                 }
             }
 
             // make one array with cases and delete 'o/об' prepositional from all parts except the last one
-            foreach (array(self::IMENIT, self::RODIT, self::DAT, self::VINIT, self::TVORIT, self::PREDLOJ) as $case) {
+            foreach (array(static::IMENIT, static::RODIT, static::DAT, static::VINIT, static::TVORIT, static::PREDLOJ) as $case) {
                 $result[$case] = [];
                 foreach ($parts as $partN => $part) {
                     $result[$case][] = $part[$case];
@@ -288,15 +288,17 @@ class CardinalNumeralGenerator extends NumeralGenerator implements Cases
     }
 
     /**
-     * @param $number
-     * @param $case
+     * @param        $number
+     * @param        $case
      * @param string $gender
+     *
      * @return mixed|void
+     * @throws \Exception
      */
     public static function getCase($number, $case, $gender = self::MALE)
     {
-        $case = self::canonizeCase($case);
-        $forms = self::getCases($number, $gender);
+        $case = static::canonizeCase($case);
+        $forms = static::getCases($number, $gender);
         return $forms[$case];
     }
 }

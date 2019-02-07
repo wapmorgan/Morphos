@@ -47,17 +47,17 @@ class NounPluralization extends \morphos\NounPluralization
         }
 
         $word = S::lower($word);
-        if (in_array($word, self::$without_paired_form)) {
+        if (in_array($word, static::$without_paired_form)) {
             return $word;
-        } elseif (isset(self::$exceptions[$word])) {
-            return self::$exceptions[$word];
+        } elseif (isset(static::$exceptions[$word])) {
+            return static::$exceptions[$word];
         }
 
         if (in_array(S::slice($word, -1), ['s', 'x']) || in_array(S::slice($word, -2), array('sh', 'ch'))) {
             return $word.'es';
         } elseif (S::slice($word, -1) == 'o') {
             return $word.'es';
-        } elseif (S::slice($word, -1) == 'y' && in_array(S::slice($word, -2, -1), self::$consonants)) {
+        } elseif (S::slice($word, -1) == 'y' && in_array(S::slice($word, -2, -1), static::$consonants)) {
             return S::slice($word, 0, -1).'ies';
         } elseif (S::slice($word, -2) == 'fe' || S::slice($word, -1) == 'f') {
             if (S::slice($word, -1) == 'f') {

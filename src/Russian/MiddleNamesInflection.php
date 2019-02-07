@@ -18,9 +18,9 @@ class MiddleNamesInflection extends \morphos\NamesInflection implements Cases
     {
         $name = S::lower($name);
         if (S::slice($name, -2) == 'ич') {
-            return self::MALE;
+            return static::MALE;
         } elseif (S::slice($name, -2) == 'на') {
-            return self::FEMALE;
+            return static::FEMALE;
         }
 
         return null;
@@ -51,8 +51,8 @@ class MiddleNamesInflection extends \morphos\NamesInflection implements Cases
      */
     public static function getCase($name, $case, $gender = null)
     {
-        $case = self::canonizeCase($case);
-        $forms = self::getCases($name, $gender);
+        $case = static::canonizeCase($case);
+        $forms = static::getCases($name, $gender);
         return $forms[$case];
     }
 

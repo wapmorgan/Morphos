@@ -21,10 +21,10 @@ class TimeSpeller extends \morphos\TimeSpeller
      */
     public static function spellUnit($count, $unit)
     {
-        if (!isset(self::$units[$unit])) {
+        if (!isset(static::$units[$unit])) {
             throw new InvalidArgumentException('Unknown time unit: '.$unit);
         }
 
-        return $count.' '.NounPluralization::pluralize(self::$units[$unit], $count);
+        return $count.' '.NounPluralization::pluralize(static::$units[$unit], $count);
     }
 }

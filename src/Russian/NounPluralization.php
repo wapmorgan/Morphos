@@ -14,6 +14,10 @@ class NounPluralization extends \morphos\NounPluralization implements Cases
     const TWO_FOUR = 2;
     const FIVE_OTHER = 3;
 
+    protected static $abnormalExceptions = [
+        'человек' => ['люди', 'человек', 'людям', 'людей', 'людьми', 'людях'],
+    ];
+
     protected static $neuterExceptions = [
         'поле',
         'море',
@@ -48,7 +52,7 @@ class NounPluralization extends \morphos\NounPluralization implements Cases
     protected static function getRunAwayVowelsList()
     {
         $runawayVowelsNormalized = [];
-        foreach (self::$runawayVowelsExceptions as $word) {
+        foreach (static::$runawayVowelsExceptions as $word) {
             $runawayVowelsNormalized[str_replace('*', null, $word)] = S::indexOf($word, '*') - 1;
         }
         return $runawayVowelsNormalized;
@@ -56,41 +60,52 @@ class NounPluralization extends \morphos\NounPluralization implements Cases
 
     /**
      * Склонение существительного для сочетания с числом (кол-вом предметов).
-     * @param int|string $count Количество предметов
-     * @param string|int $word Название предмета
-     * @param bool $animateness Признак одушевленности
+     *
+     * @param string|int $word        Название предмета
+     * @param int|string $count       Количество предметов
+     * @param bool       $animateness Признак одушевленности
+     * @param string     $case        Род существительного
+     *
      * @return string
      * @throws \Exception
      */
-    public static function pluralize($word, $count = 2, $animateness = false)
+    public static function pluralize($word, $count = 2, $animateness = false, $case = null)
     {
         // меняем местами аргументы, если они переданы в старом формате
         if (is_string($count) && is_numeric($word)) {
             list($count, $word) = [$word, $count];
         }
 
+        if ($case !== null)
+            $case = static::canonizeCase($case);
+
         // для адъективных существительных правила склонения проще:
         // только две формы
-        if (self::isAdjectiveNoun($word)) {
-            if (self::getNumeralForm($count) == self::ONE)
+        if (static::isAdjectiveNoun($word)) {
+            if (static::getNumeralForm($count) == static::ONE)
                 return $word;
             else
-                return NounPluralization::getCase($word, self::RODIT, $animateness);
+                return NounPluralization::getCase($word,
+                    $case !== null
+                        ? $case
+                        : static::RODIT, $animateness);
         }
 
-        switch (self::getNumeralForm($count)) {
-            case self::ONE:
-                return $word;
-            case self::TWO_FOUR:
-                return NounDeclension::getCase($word, self::RODIT, $animateness);
-            case self::FIVE_OTHER:
-                // special case for YEAR >= 5
-                if ($word === 'год') {
-                    return 'лет';
-                }
-
-                return NounPluralization::getCase($word, self::RODIT, $animateness);
+        if ($case === null) {
+            switch (static::getNumeralForm($count)) {
+                case static::ONE:
+                    return $word;
+                case static::TWO_FOUR:
+                    return NounDeclension::getCase($word, static::RODIT, $animateness);
+                case static::FIVE_OTHER:
+                    return NounPluralization::getCase($word, static::RODIT, $animateness);
+            }
         }
+
+        if (static::getNumeralForm($count) == static::ONE)
+            return NounDeclension::getCase($word, $case, $animateness);
+        else
+            return NounPluralization::getCase($word, $case, $animateness);
     }
 
     /**
@@ -105,11 +120,11 @@ class NounPluralization extends \morphos\NounPluralization implements Cases
         $ending = $count % 10;
 
         if (($count > 20 && $ending == 1) || $count == 1) {
-            return self::ONE;
+            return static::ONE;
         } elseif (($count > 20 && in_array($ending, range(2, 4))) || in_array($count, range(2, 4))) {
-            return self::TWO_FOUR;
+            return static::TWO_FOUR;
         } else {
-            return self::FIVE_OTHER;
+            return static::FIVE_OTHER;
         }
     }
 
@@ -122,8 +137,8 @@ class NounPluralization extends \morphos\NounPluralization implements Cases
      */
     public static function getCase($word, $case, $animateness = false)
     {
-        $case = self::canonizeCase($case);
-        $forms = self::getCases($word, $animateness);
+        $case = static::canonizeCase($case);
+        $forms = static::getCases($word, $animateness);
         return $forms[$case];
     }
 
@@ -136,24 +151,31 @@ class NounPluralization extends \morphos\NounPluralization implements Cases
     {
         $word = S::lower($word);
 
-        if (in_array($word, self::$immutableWords, true)) {
+        if (in_array($word, static::$immutableWords, true)) {
             return [
-                self::IMENIT => $word,
-                self::RODIT => $word,
-                self::DAT => $word,
-                self::VINIT => $word,
-                self::TVORIT => $word,
-                self::PREDLOJ => $word,
+                static::IMENIT => $word,
+                static::RODIT => $word,
+                static::DAT => $word,
+                static::VINIT => $word,
+                static::TVORIT => $word,
+                static::PREDLOJ => $word,
             ];
         }
 
-        // Адъективное склонение (Сущ, образованные от прилагательных и причастий) - прохожий, существительное
-        if (self::isAdjectiveNoun($word)) {
-            return self::declinateAdjective($word, $animateness);
+        if (isset(static::$abnormalExceptions[$word])) {
+            return array_combine(
+                [static::IMENIT, static::RODIT, static::DAT, static::VINIT, static::TVORIT, static::PREDLOJ],
+                static::$abnormalExceptions[$word]);
+        }
+
+        // Адъективное склонение (Сущ, образованные от прилагательных и причастий)
+        // Пример: прохожий, существительное
+        if (static::isAdjectiveNoun($word)) {
+            return static::declinateAdjective($word, $animateness);
         }
 
         // Субстантивное склонение (существительные)
-        return self::declinateSubstative($word, $animateness);
+        return static::declinateSubstative($word, $animateness);
     }
 
     /**
@@ -176,11 +198,11 @@ class NounPluralization extends \morphos\NounPluralization implements Cases
         if (($declension = NounDeclension::getDeclension($word)) == NounDeclension::SECOND_DECLENSION) {
             $soft_last = $last == 'й' || (in_array($last, ['ь', 'е', 'ё', 'ю', 'я'], true)
                     && ((
-                        self::isConsonant(S::slice($word, -2, -1)) && !self::isHissingConsonant(S::slice($word, -2, -1)))
+                        static::isConsonant(S::slice($word, -2, -1)) && !static::isHissingConsonant(S::slice($word, -2, -1)))
                         || S::slice($word, -2, -1) == 'и'));
             $prefix = NounDeclension::getPrefixOfSecondDeclension($word, $last);
         } elseif ($declension == NounDeclension::FIRST_DECLENSION) {
-            $soft_last = self::checkLastConsonantSoftness($word);
+            $soft_last = static::checkLastConsonantSoftness($word);
         } else {
             $soft_last = in_array(S::slice($word, -2), ['чь', 'сь', 'ть', 'нь'], true);
         }
@@ -188,20 +210,20 @@ class NounPluralization extends \morphos\NounPluralization implements Cases
         $forms = [];
 
         if (in_array($last, ['ч', 'г'], false) || in_array(S::slice($word, -2), ['чь', 'сь', 'ть', 'нь'], true)
-            || (self::isVowel($last) && in_array(S::slice($word, -2, -1), ['ч', 'к'], true))) { // before ч, чь, сь, ч+vowel, к+vowel
+            || (static::isVowel($last) && in_array(S::slice($word, -2, -1), ['ч', 'к'], true))) { // before ч, чь, сь, ч+vowel, к+vowel
             $forms[Cases::IMENIT] = $prefix.'и';
         } elseif (in_array($last, ['н', 'ц', 'р', 'т'], true)) {
             $forms[Cases::IMENIT] = $prefix.'ы';
         } else {
-            $forms[Cases::IMENIT] = self::chooseVowelAfterConsonant($last, $soft_last, $prefix.'я', $prefix.'а');
+            $forms[Cases::IMENIT] = static::chooseVowelAfterConsonant($last, $soft_last, $prefix.'я', $prefix.'а');
         }
 
         // RODIT
-        if (isset(self::$genitiveExceptions[$word])) {
-            $forms[Cases::RODIT] = self::$genitiveExceptions[$word];
+        if (isset(static::$genitiveExceptions[$word])) {
+            $forms[Cases::RODIT] = static::$genitiveExceptions[$word];
         } elseif (in_array($last, ['о', 'е'], true)) {
             // exceptions
-            if (in_array($word, self::$neuterExceptions, true)) {
+            if (in_array($word, static::$neuterExceptions, true)) {
                 $forms[Cases::RODIT] = $prefix.'ей';
             } elseif (S::slice($word, -2, -1) == 'и') {
                 $forms[Cases::RODIT] = $prefix.'й';
@@ -224,12 +246,12 @@ class NounPluralization extends \morphos\NounPluralization implements Cases
             $forms[Cases::RODIT] = $prefix.'ей';
         } elseif ($last == 'й' || S::slice($word, -2) == 'яц') { // месяц
             $forms[Cases::RODIT] = $prefix.'ев';
-        } else { // (self::isConsonant($last) && !RussianLanguage::isHissingConsonant($last))
+        } else { // (static::isConsonant($last) && !RussianLanguage::isHissingConsonant($last))
             $forms[Cases::RODIT] = $prefix.'ов';
         }
 
         // DAT
-        $forms[Cases::DAT] = self::chooseVowelAfterConsonant($last, $soft_last && S::slice($word, -2, -1) != 'ч', $prefix.'ям', $prefix.'ам');
+        $forms[Cases::DAT] = static::chooseVowelAfterConsonant($last, $soft_last && S::slice($word, -2, -1) != 'ч', $prefix.'ям', $prefix.'ам');
 
         // VINIT
         $forms[Cases::VINIT] = NounDeclension::getVinitCaseByAnimateness($forms, $animateness);
@@ -239,11 +261,11 @@ class NounPluralization extends \morphos\NounPluralization implements Cases
         if ($last == 'ь' && $declension == NounDeclension::THIRD_DECLENSION && !in_array(S::slice($word, -2), ['чь', 'сь', 'ть', 'нь'], true)) {
             $forms[Cases::TVORIT] = $prefix.'ми';
         } else {
-            $forms[Cases::TVORIT] = self::chooseVowelAfterConsonant($last, $soft_last && S::slice($word, -2, -1) != 'ч', $prefix.'ями', $prefix.'ами');
+            $forms[Cases::TVORIT] = static::chooseVowelAfterConsonant($last, $soft_last && S::slice($word, -2, -1) != 'ч', $prefix.'ями', $prefix.'ами');
         }
 
         // PREDLOJ
-        $forms[Cases::PREDLOJ] = self::chooseVowelAfterConsonant($last, $soft_last && S::slice($word, -2, -1) != 'ч', $prefix.'ях', $prefix.'ах');
+        $forms[Cases::PREDLOJ] = static::chooseVowelAfterConsonant($last, $soft_last && S::slice($word, -2, -1) != 'ч', $prefix.'ях', $prefix.'ах');
         return $forms;
     }
 
@@ -257,7 +279,7 @@ class NounPluralization extends \morphos\NounPluralization implements Cases
     protected static function declinateAdjective($word, $animateness)
     {
         $prefix = S::slice($word, 0, -2);
-        $vowel = self::isHissingConsonant(S::slice($prefix, -1)) ? 'и' : 'ы';
+        $vowel = static::isHissingConsonant(S::slice($prefix, -1)) ? 'и' : 'ы';
         return [
             Cases::IMENIT => $prefix.$vowel.'е',
             Cases::RODIT => $prefix.$vowel.'х',

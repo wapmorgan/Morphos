@@ -124,17 +124,20 @@ function normalizeFullName($name)
 
 /**
  * Генерация строки с числом и существительным, в правильной форме для сочетания с числом (кол-вом предметов).
- * @param int $count Количество предметов
- * @param string $word Название предмета
- * @param bool $animateness Признак одушевленности
+ *
+ * @param int    $count       Количество предметов
+ * @param string $word        Название предмета
+ * @param bool   $animateness Признак одушевленности
+ * @param string $case        Род существительного (по умолчанию именительный)
+ *
  * @return string Строка в формате "ЧИСЛО [СУЩ в правильной форме]"
  * @throws \Exception
  */
-function pluralize($count, $word, $animateness = false)
+function pluralize($count, $word, $animateness = false, $case = null)
 {
     // меняем местами аргументы, если они переданы в старом формате
     if (is_string($count) && is_numeric($word)) {
         list($count, $word) = [$word, $count];
     }
-    return $count.' '.NounPluralization::pluralize($count, $word, $animateness);
+    return $count.' '.NounPluralization::pluralize($count, $word, $animateness, $case);
 }

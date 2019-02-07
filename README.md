@@ -1,7 +1,6 @@
 # Morphos
 A morphological solution for Russian and English language written completely in PHP.
 
-[![Composer package](http://composer.network/badge/wapmorgan/morphos)](https://packagist.org/packages/wapmorgan/morphos)
 [![Latest Stable Version](https://poser.pugx.org/wapmorgan/morphos/v/stable)](https://packagist.org/packages/wapmorgan/morphos)
 [![License](https://poser.pugx.org/wapmorgan/morphos/license)](https://packagist.org/packages/wapmorgan/morphos)
 [![Total Downloads](https://poser.pugx.org/wapmorgan/morphos/downloads)](https://packagist.org/packages/wapmorgan/morphos)

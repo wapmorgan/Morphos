@@ -1,12 +1,20 @@
 <?php
 namespace morhos\test\Russian;
 
+use morphos\Russian\Cases;
 use morphos\Russian\NounPluralization;
 
 class NounPluralizationTest extends \PHPUnit_Framework_TestCase
 {
+
     /**
      * @dataProvider pluralizationWordsProvider
+     *
+     * @param $word
+     * @param $pluralized2
+     * @param $pluralized5
+     *
+     * @throws \Exception
      */
     public function testPluralization($word, $pluralized2, $pluralized5)
     {
@@ -62,6 +70,39 @@ class NounPluralizationTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @dataProvider pluralizationWordsWithCaseProvider
+     *
+     * @param $word
+     * @param $pluralizedOne
+     * @param $pluralizedMany
+     *
+     * @param $case
+     *
+     * @throws \Exception
+     */
+    public function testPluralizationWithCase($word, $pluralizedOne, $pluralizedMany, $case)
+    {
+        // One
+        $this->assertEquals($pluralizedOne, NounPluralization::pluralize($word, 1, false, $case));
+        $this->assertEquals($pluralizedOne, NounPluralization::pluralize($word, 21, false, $case));
+        $this->assertEquals($pluralizedOne, NounPluralization::pluralize($word, 101, false, $case));
+
+        // Many
+        $this->assertEquals($pluralizedMany, NounPluralization::pluralize($word, 3, false, $case));
+        $this->assertEquals($pluralizedMany, NounPluralization::pluralize($word, 22, false, $case));
+        $this->assertEquals($pluralizedMany, NounPluralization::pluralize($word, 60, false, $case));
+    }
+
+    public function pluralizationWordsWithCaseProvider()
+    {
+        return [
+            // в ином падеже
+            ['год', 'годе', 'годах', 'предложный'],
+            ['товар', 'товару', 'товарам', 'дательный'],
+        ];
+    }
+
+    /**
      * @dataProvider pluralWordsProvider
      */
     public function testPluralInflection($word, $animateness, $inflected)
@@ -78,7 +119,6 @@ class NounPluralizationTest extends \PHPUnit_Framework_TestCase
             ['ночь', false, ['ночи', 'ночей', 'ночам', 'ночи', 'ночами', 'ночах']],
             ['кирпич', false, ['кирпичи', 'кирпичей', 'кирпичам', 'кирпичи', 'кирпичами', 'кирпичах']],
             ['гвоздь', false, ['гвоздя', 'гвоздей', 'гвоздям', 'гвоздя', 'гвоздями', 'гвоздях']],
-            ['гений', true, ['гения', 'гениев', 'гениям', 'гениев', 'гениями', 'гениях']],
             ['молния', false, ['молния', 'молний', 'молниям', 'молния', 'молниями', 'молниях']],
             ['тысяча', false, ['тысячи', 'тысяч', 'тысячам', 'тысячи', 'тысячами', 'тысячах']],
             ['сообщение', false, ['сообщения', 'сообщений', 'сообщениям', 'сообщения', 'сообщениями', 'сообщениях']],
@@ -86,18 +126,19 @@ class NounPluralizationTest extends \PHPUnit_Framework_TestCase
             ['прожектор', false, ['прожекторы', 'прожекторов', 'прожекторам', 'прожекторы', 'прожекторами', 'прожекторах']],
             ['пирсинг', false, ['пирсинги', 'пирсингов', 'пирсингам', 'пирсинги', 'пирсингами', 'пирсингах']],
             ['фабрика', false, ['фабрики', 'фабрик', 'фабрикам', 'фабрики', 'фабриками', 'фабриках']],
+            ['гений', true, ['гения', 'гениев', 'гениям', 'гениев', 'гениями', 'гениях']],
 
             ['копейка', false, ['копейки', 'копеек', 'копейкам', 'копейки', 'копейками', 'копейках']],
             ['батарейка', false, ['батарейки', 'батареек', 'батарейкам', 'батарейки', 'батарейками', 'батарейках']],
             ['письмо', false, ['письма', 'писем', 'письмам', 'письма', 'письмами', 'письмах']],
-            ['песец', true, ['песцы', 'песцов', 'песцам', 'песцов', 'песцами', 'песцах']],
             ['пятно', false, ['пятна', 'пятен', 'пятнам', 'пятна', 'пятнами', 'пятнах']],
             ['волчище', false, ['волчища', 'волчищ', 'волчищам', 'волчища', 'волчищами', 'волчищах']],
             ['год', false, ['года', 'лет', 'годам', 'года', 'годами', 'годах']],
             ['месяц', false, ['месяцы', 'месяцев', 'месяцам', 'месяцы', 'месяцами', 'месяцах']],
             ['новость', false, ['новости', 'новостей', 'новостям', 'новости', 'новостями', 'новостях']],
             ['тень', false, ['тени', 'теней', 'теням', 'тени', 'тенями', 'тенях']],
-
+            ['человек', true, ['люди', 'человек', 'людям', 'людей', 'людьми', 'людях']],
+            ['песец', true, ['песцы', 'песцов', 'песцам', 'песцов', 'песцами', 'песцах']],
             ['руководитель', true, ['руководителя', 'руководителей', 'руководителям', 'руководителей', 'руководителями', 'руководителях']],
 
             // Адъективное склонение

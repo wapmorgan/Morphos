@@ -81,37 +81,37 @@ class FirstNamesInflection extends \morphos\NamesInflection implements Cases
     {
         $name = S::lower($name);
 
-        if (in_array($name, self::$immutableNames, true)) {
+        if (in_array($name, static::$immutableNames, true)) {
             return false;
         }
 
         if ($gender === null) {
-            $gender = self::detectGender($name);
+            $gender = static::detectGender($name);
         }
 
         // man rules
-        if ($gender === self::MALE) {
+        if ($gender === static::MALE) {
             // soft consonant
-            if (S::lower(S::slice($name, -1)) == 'ь' && self::isConsonant(S::slice($name, -2, -1))) {
+            if (S::lower(S::slice($name, -1)) == 'ь' && static::isConsonant(S::slice($name, -2, -1))) {
                 return true;
-            } elseif (in_array(S::slice($name, -1), array_diff(self::$consonants, ['й', /*'Ч', 'Щ'*/]), true)) { // hard consonant
+            } elseif (in_array(S::slice($name, -1), array_diff(static::$consonants, ['й', /*'Ч', 'Щ'*/]), true)) { // hard consonant
                 return true;
             } elseif (S::slice($name, -1) == 'й') {
                 return true;
             } else if (in_array(S::slice($name, -2), ['ло', 'ко'], true)) {
                 return true;
             }
-        } else if ($gender === self::FEMALE) {
+        } else if ($gender === static::FEMALE) {
             // soft consonant
-            if (S::lower(S::slice($name, -1)) == 'ь' && self::isConsonant(S::slice($name, -2, -1))) {
+            if (S::lower(S::slice($name, -1)) == 'ь' && static::isConsonant(S::slice($name, -2, -1))) {
                 return true;
-            } else if (self::isHissingConsonant(S::slice($name, -1))) {
+            } else if (static::isHissingConsonant(S::slice($name, -1))) {
                 return true;
             }
         }
 
         // common rules
-        if ((in_array(S::slice($name, -1), ['а', 'я']) && !self::isVowel(S::slice($name, -2, -1))) || in_array(S::slice($name, -2), ['ия', 'ья', 'ея', 'оя'], true)) {
+        if ((in_array(S::slice($name, -1), ['а', 'я']) && !static::isVowel(S::slice($name, -2, -1))) || in_array(S::slice($name, -2), ['ия', 'ья', 'ея', 'оя'], true)) {
             return true;
         }
 
@@ -125,10 +125,10 @@ class FirstNamesInflection extends \morphos\NamesInflection implements Cases
     public static function detectGender($name)
     {
         $name = S::lower($name);
-        if (in_array($name, self::$menNames, true)) {
-            return self::MALE;
-        } elseif (in_array($name, self::$womenNames, true)) {
-            return self::FEMALE;
+        if (in_array($name, static::$menNames, true)) {
+            return static::MALE;
+        } elseif (in_array($name, static::$womenNames, true)) {
+            return static::FEMALE;
         }
 
         $man = $woman = 0;
@@ -144,7 +144,7 @@ class FirstNamesInflection extends \morphos\NamesInflection implements Cases
         if ($last1 == 'ь') {
             $man += 0.02;
         }
-        if (in_array($last1, self::$consonants, true)) {
+        if (in_array($last1, static::$consonants, true)) {
             $man += 0.01;
         }
         if (in_array($last2, ['он', 'ов', 'ав', 'ам', 'ол', 'ан', 'рд', 'мп'], true)) {
@@ -173,7 +173,7 @@ class FirstNamesInflection extends \morphos\NamesInflection implements Cases
         }
 
         return $man === $woman ? null
-            : ($man > $woman ? self::MALE : self::FEMALE);
+            : ($man > $woman ? static::MALE : static::FEMALE);
     }
 
     /**
@@ -185,40 +185,40 @@ class FirstNamesInflection extends \morphos\NamesInflection implements Cases
     {
         $name = S::lower($name);
 
-        if (self::isMutable($name, $gender)) {
+        if (static::isMutable($name, $gender)) {
             // common rules for ия and я
             if (S::slice($name, -2) == 'ия') {
                 $prefix = S::name(S::slice($name, 0, -1));
                 return [
-                    self::IMENIT => $prefix.'я',
-                    self::RODIT => $prefix.'и',
-                    self::DAT => $prefix.'и',
-                    self::VINIT => $prefix.'ю',
-                    self::TVORIT => $prefix.'ей',
-                    self::PREDLOJ => $prefix.'и',
+                    static::IMENIT => $prefix.'я',
+                    static::RODIT => $prefix.'и',
+                    static::DAT => $prefix.'и',
+                    static::VINIT => $prefix.'ю',
+                    static::TVORIT => $prefix.'ей',
+                    static::PREDLOJ => $prefix.'и',
                 ];
             } elseif (S::slice($name, -1) == 'я') {
                 $prefix = S::name(S::slice($name, 0, -1));
                 return [
-                    self::IMENIT => $prefix.'я',
-                    self::RODIT => $prefix.'и',
-                    self::DAT => $prefix.'е',
-                    self::VINIT => $prefix.'ю',
-                    self::TVORIT => $prefix.'ей',
-                    self::PREDLOJ => $prefix.'е',
+                    static::IMENIT => $prefix.'я',
+                    static::RODIT => $prefix.'и',
+                    static::DAT => $prefix.'е',
+                    static::VINIT => $prefix.'ю',
+                    static::TVORIT => $prefix.'ей',
+                    static::PREDLOJ => $prefix.'е',
                 ];
             }
 
-            if (!in_array($name, self::$immutableNames, true)) {
+            if (!in_array($name, static::$immutableNames, true)) {
                 if ($gender === null) {
-                    $gender = self::detectGender($name);
+                    $gender = static::detectGender($name);
                 }
-                if ($gender === self::MALE || $name === 'саша') {
-                    if (($result = self::getCasesMan($name)) !== null) {
+                if ($gender === static::MALE || $name === 'саша') {
+                    if (($result = static::getCasesMan($name)) !== null) {
                         return $result;
                     }
-                } elseif ($gender === self::FEMALE) {
-                    if (($result = self::getCasesWoman($name)) !== null) {
+                } elseif ($gender === static::FEMALE) {
+                    if (($result = static::getCasesWoman($name)) !== null) {
                         return $result;
                     }
                 }
@@ -226,7 +226,7 @@ class FirstNamesInflection extends \morphos\NamesInflection implements Cases
         }
 
         $name = S::name($name);
-        return array_fill_keys(array(self::IMENIT, self::RODIT, self::DAT, self::VINIT, self::TVORIT, self::PREDLOJ), $name);
+        return array_fill_keys(array(static::IMENIT, static::RODIT, static::DAT, static::VINIT, static::TVORIT, static::PREDLOJ), $name);
     }
 
     /**
@@ -236,12 +236,12 @@ class FirstNamesInflection extends \morphos\NamesInflection implements Cases
     protected static function getCasesMan($name)
     {
         // special cases for Лев, Павел
-        if (isset(self::$exceptions[$name])) {
-            return self::$exceptions[$name];
-        } elseif (in_array(S::slice($name, -1), array_diff(self::$consonants, ['й', /*'Ч', 'Щ'*/]), true)) { // hard consonant
+        if (isset(static::$exceptions[$name])) {
+            return static::$exceptions[$name];
+        } elseif (in_array(S::slice($name, -1), array_diff(static::$consonants, ['й', /*'Ч', 'Щ'*/]), true)) { // hard consonant
 			if (in_array(S::slice($name, -2), ['ек', 'ёк'], true)) { // Витек, Санек
                 // case for foreign names like Салмонбек
-                if (self::isConsonant(S::slice($name, -4, -3)))
+                if (static::isConsonant(S::slice($name, -4, -3)))
                     $prefix = S::name(S::slice($name, 0, -2)).'ек';
                 else
 				    $prefix = S::name(S::slice($name, 0, -2)).'ьк';
@@ -252,55 +252,55 @@ class FirstNamesInflection extends \morphos\NamesInflection implements Cases
 				    $prefix = S::name($name);
             }
             return [
-                self::IMENIT => S::name($name),
-                self::RODIT => $prefix.'а',
-                self::DAT => $prefix.'у',
-                self::VINIT => $prefix.'а',
-                self::TVORIT => RussianLanguage::isHissingConsonant(S::slice($name, -1)) || S::slice($name, -1) == 'ц' ? $prefix.'ем' : $prefix.'ом',
-                self::PREDLOJ => $prefix.'е',
+                static::IMENIT => S::name($name),
+                static::RODIT => $prefix.'а',
+                static::DAT => $prefix.'у',
+                static::VINIT => $prefix.'а',
+                static::TVORIT => RussianLanguage::isHissingConsonant(S::slice($name, -1)) || S::slice($name, -1) == 'ц' ? $prefix.'ем' : $prefix.'ом',
+                static::PREDLOJ => $prefix.'е',
             ];
-        } elseif (S::slice($name, -1) == 'ь' && self::isConsonant(S::slice($name, -2, -1))) { // soft consonant
+        } elseif (S::slice($name, -1) == 'ь' && static::isConsonant(S::slice($name, -2, -1))) { // soft consonant
             $prefix = S::name(S::slice($name, 0, -1));
             return [
-                self::IMENIT => $prefix.'ь',
-                self::RODIT => $prefix.'я',
-                self::DAT => $prefix.'ю',
-                self::VINIT => $prefix.'я',
-                self::TVORIT => $prefix.'ем',
-                self::PREDLOJ => $prefix.'е',
+                static::IMENIT => $prefix.'ь',
+                static::RODIT => $prefix.'я',
+                static::DAT => $prefix.'ю',
+                static::VINIT => $prefix.'я',
+                static::TVORIT => $prefix.'ем',
+                static::PREDLOJ => $prefix.'е',
             ];
         } elseif (in_array(S::slice($name, -2), ['ай', 'ей', 'ой', 'уй', 'яй', 'юй', 'ий'], true)) {
             $prefix = S::name(S::slice($name, 0, -1));
             $postfix = S::slice($name, -2) == 'ий' ? 'и' : 'е';
             return [
-                self::IMENIT => $prefix.'й',
-                self::RODIT => $prefix.'я',
-                self::DAT => $prefix.'ю',
-                self::VINIT => $prefix.'я',
-                self::TVORIT => $prefix.'ем',
-                self::PREDLOJ => $prefix.$postfix,
+                static::IMENIT => $prefix.'й',
+                static::RODIT => $prefix.'я',
+                static::DAT => $prefix.'ю',
+                static::VINIT => $prefix.'я',
+                static::TVORIT => $prefix.'ем',
+                static::PREDLOJ => $prefix.$postfix,
             ];
-        } elseif (S::slice($name, -1) == 'а' && self::isConsonant($before = S::slice($name, -2, -1)) && !in_array($before, [/*'г', 'к', 'х', */'ц'], true)) {
+        } elseif (S::slice($name, -1) == 'а' && static::isConsonant($before = S::slice($name, -2, -1)) && !in_array($before, [/*'г', 'к', 'х', */'ц'], true)) {
             $prefix = S::name(S::slice($name, 0, -1));
             $postfix = (RussianLanguage::isHissingConsonant($before) || in_array($before, ['г', 'к', 'х'], true)) ? 'и' : 'ы';
             return [
-                self::IMENIT => $prefix.'а',
-                self::RODIT => $prefix.$postfix,
-                self::DAT => $prefix.'е',
-                self::VINIT => $prefix.'у',
-                self::TVORIT => $prefix.($before === 'ш' ? 'е' : 'о').'й',
-                self::PREDLOJ => $prefix.'е',
+                static::IMENIT => $prefix.'а',
+                static::RODIT => $prefix.$postfix,
+                static::DAT => $prefix.'е',
+                static::VINIT => $prefix.'у',
+                static::TVORIT => $prefix.($before === 'ш' ? 'е' : 'о').'й',
+                static::PREDLOJ => $prefix.'е',
             ];
         } elseif (S::slice($name, -2) == 'ло' || S::slice($name, -2) == 'ко') {
             $prefix = S::name(S::slice($name, 0, -1));
             $postfix = S::slice($name, -2, -1) == 'к' ? 'и' : 'ы';
             return [
-                self::IMENIT => $prefix.'о',
-                self::RODIT =>  $prefix.$postfix,
-                self::DAT => $prefix.'е',
-                self::VINIT => $prefix.'у',
-                self::TVORIT => $prefix.'ой',
-                self::PREDLOJ => $prefix.'е',
+                static::IMENIT => $prefix.'о',
+                static::RODIT =>  $prefix.$postfix,
+                static::DAT => $prefix.'е',
+                static::VINIT => $prefix.'у',
+                static::TVORIT => $prefix.'ой',
+                static::PREDLOJ => $prefix.'е',
             ];
         }
 
@@ -313,47 +313,47 @@ class FirstNamesInflection extends \morphos\NamesInflection implements Cases
      */
     protected static function getCasesWoman($name)
     {
-        if (S::slice($name, -1) == 'а' && !self::isVowel($before = (S::slice($name, -2, -1)))) {
+        if (S::slice($name, -1) == 'а' && !static::isVowel($before = (S::slice($name, -2, -1)))) {
             $prefix = S::name(S::slice($name, 0, -1));
             if ($before != 'ц') {
                 $postfix = (RussianLanguage::isHissingConsonant($before) || in_array($before, ['г', 'к', 'х'], true)) ? 'и' : 'ы';
                 return [
-                    self::IMENIT => $prefix.'а',
-                    self::RODIT => $prefix.$postfix,
-                    self::DAT => $prefix.'е',
-                    self::VINIT => $prefix.'у',
-                    self::TVORIT => $prefix.'ой',
-                    self::PREDLOJ => $prefix.'е',
+                    static::IMENIT => $prefix.'а',
+                    static::RODIT => $prefix.$postfix,
+                    static::DAT => $prefix.'е',
+                    static::VINIT => $prefix.'у',
+                    static::TVORIT => $prefix.'ой',
+                    static::PREDLOJ => $prefix.'е',
                 ];
             } else {
                 return [
-                    self::IMENIT => $prefix.'а',
-                    self::RODIT => $prefix.'ы',
-                    self::DAT => $prefix.'е',
-                    self::VINIT => $prefix.'у',
-                    self::TVORIT => $prefix.'ей',
-                    self::PREDLOJ => $prefix.'е',
+                    static::IMENIT => $prefix.'а',
+                    static::RODIT => $prefix.'ы',
+                    static::DAT => $prefix.'е',
+                    static::VINIT => $prefix.'у',
+                    static::TVORIT => $prefix.'ей',
+                    static::PREDLOJ => $prefix.'е',
                 ];
             }
-        } elseif (S::slice($name, -1) == 'ь' && self::isConsonant(S::slice($name, -2, -1))) {
+        } elseif (S::slice($name, -1) == 'ь' && static::isConsonant(S::slice($name, -2, -1))) {
             $prefix = S::name(S::slice($name, 0, -1));
             return [
-                self::IMENIT => $prefix.'ь',
-                self::RODIT => $prefix.'и',
-                self::DAT => $prefix.'и',
-                self::VINIT => $prefix.'ь',
-                self::TVORIT => $prefix.'ью',
-                self::PREDLOJ => $prefix.'и',
+                static::IMENIT => $prefix.'ь',
+                static::RODIT => $prefix.'и',
+                static::DAT => $prefix.'и',
+                static::VINIT => $prefix.'ь',
+                static::TVORIT => $prefix.'ью',
+                static::PREDLOJ => $prefix.'и',
             ];
         } elseif (RussianLanguage::isHissingConsonant(S::slice($name, -1))) {
             $prefix = S::name($name);
             return [
-                self::IMENIT => $prefix,
-                self::RODIT => $prefix.'и',
-                self::DAT => $prefix.'и',
-                self::VINIT => $prefix,
-                self::TVORIT => $prefix.'ью',
-                self::PREDLOJ => $prefix.'и',
+                static::IMENIT => $prefix,
+                static::RODIT => $prefix.'и',
+                static::DAT => $prefix.'и',
+                static::VINIT => $prefix,
+                static::TVORIT => $prefix.'ью',
+                static::PREDLOJ => $prefix.'и',
             ];
         }
         return null;
@@ -368,8 +368,8 @@ class FirstNamesInflection extends \morphos\NamesInflection implements Cases
      */
     public static function getCase($name, $case, $gender = null)
     {
-        $case = self::canonizeCase($case);
-        $forms = self::getCases($name, $gender);
+        $case = static::canonizeCase($case);
+        $forms = static::getCases($name, $gender);
         return $forms[$case];
     }
 }

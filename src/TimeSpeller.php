@@ -41,12 +41,12 @@ abstract class TimeSpeller
         $parts = [];
         $k = 0;
         foreach ([
-            'y' => self::YEAR,
-            'm' => self::MONTH,
-            'd' => self::DAY,
-            'h' => self::HOUR,
-            'i' => self::MINUTE,
-            's' => self::SECOND
+            'y' => static::YEAR,
+            'm' => static::MONTH,
+            'd' => static::DAY,
+            'h' => static::HOUR,
+            'i' => static::MINUTE,
+            's' => static::SECOND
         ] as $interval_field => $unit) {
             if ($interval->{$interval_field} > 0) {
                 if($limit > 0 && $k >= $limit) {
@@ -61,14 +61,14 @@ abstract class TimeSpeller
             return static::JUST_NOW;
         }
 
-        if ($options & self::SEPARATE && count($parts) > 1) {
+        if ($options & static::SEPARATE && count($parts) > 1) {
             $last_part = array_pop($parts);
             $spelled = implode(', ', $parts).' '.static::AND_WORD.' '.$last_part;
         } else {
             $spelled = implode(' ', $parts);
         }
 
-        if ($options & self::DIRECTION) {
+        if ($options & static::DIRECTION) {
             if ($interval->invert) {
                 $spelled = static::IN.' '.$spelled;
             } else {

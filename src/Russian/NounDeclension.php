@@ -97,7 +97,7 @@ class NounDeclension extends \morphos\BaseInflection implements Cases, Gender
     public static function isMutable($word, $animateness = false)
     {
         $word = S::lower($word);
-        if (in_array(S::slice($word, -1), ['у', 'и', 'е', 'о', 'ю'], true) || in_array($word, self::$immutableWords, true)) {
+        if (in_array(S::slice($word, -1), ['у', 'и', 'е', 'о', 'ю'], true) || in_array($word, static::$immutableWords, true)) {
             return false;
         }
         return true;
@@ -114,13 +114,13 @@ class NounDeclension extends \morphos\BaseInflection implements Cases, Gender
     	$last = S::slice($word, -1);
 		// пытаемся угадать род объекта, хотя бы примерно, чтобы правильно склонять
 		if (S::slice($word, -2) == 'мя' || in_array($last, ['о', 'е', 'и', 'у'], true))
-			return self::NEUTER;
+			return static::NEUTER;
 
 		if (in_array($last, ['а', 'я'], true) ||
-			($last == 'ь' && !in_array($word, self::$masculineWithSoft, true) && !in_array($word, self::$masculineWithSoftAndRunAwayVowels, true)))
-			return self::FEMALE;
+			($last == 'ь' && !in_array($word, static::$masculineWithSoft, true) && !in_array($word, static::$masculineWithSoftAndRunAwayVowels, true)))
+			return static::FEMALE;
 
-		return self::MALE;
+		return static::MALE;
     }
 
     /**
@@ -133,15 +133,15 @@ class NounDeclension extends \morphos\BaseInflection implements Cases, Gender
     {
         $word = S::lower($word);
         $last = S::slice($word, -1);
-        if (isset(self::$abnormalExceptions[$word]) || in_array($word, self::$abnormalExceptions, true)) {
+        if (isset(static::$abnormalExceptions[$word]) || in_array($word, static::$abnormalExceptions, true)) {
             return 2;
         }
 
         if (in_array($last, ['а', 'я'], true) && S::slice($word, -2) != 'мя') {
             return 1;
-        } elseif (self::isConsonant($last) || in_array($last, ['о', 'е', 'ё'], true)
-            || ($last == 'ь' && self::isConsonant(S::slice($word, -2, -1)) && !self::isHissingConsonant(S::slice($word, -2, -1))
-                && (in_array($word, self::$masculineWithSoft, true)) || in_array($word, self::$masculineWithSoftAndRunAwayVowels, true))) {
+        } elseif (static::isConsonant($last) || in_array($last, ['о', 'е', 'ё'], true)
+            || ($last == 'ь' && static::isConsonant(S::slice($word, -2, -1)) && !static::isHissingConsonant(S::slice($word, -2, -1))
+                && (in_array($word, static::$masculineWithSoft, true)) || in_array($word, static::$masculineWithSoftAndRunAwayVowels, true))) {
             return 2;
         } else {
             return 3;
@@ -159,41 +159,41 @@ class NounDeclension extends \morphos\BaseInflection implements Cases, Gender
         $word = S::lower($word);
 
         // Адъективное склонение (Сущ, образованные от прилагательных и причастий) - прохожий, существительное
-        if (self::isAdjectiveNoun($word)) {
-            return self::declinateAdjective($word, $animateness);
+        if (static::isAdjectiveNoun($word)) {
+            return static::declinateAdjective($word, $animateness);
         }
 
         // Субстантивное склонение (существительные)
-        if (in_array($word, self::$immutableWords, true)) {
+        if (in_array($word, static::$immutableWords, true)) {
             return [
-                self::IMENIT => $word,
-                self::RODIT => $word,
-                self::DAT => $word,
-                self::VINIT => $word,
-                self::TVORIT => $word,
-                self::PREDLOJ => $word,
+                static::IMENIT => $word,
+                static::RODIT => $word,
+                static::DAT => $word,
+                static::VINIT => $word,
+                static::TVORIT => $word,
+                static::PREDLOJ => $word,
             ];
-        } elseif (isset(self::$abnormalExceptions[$word])) {
-            return array_combine([self::IMENIT, self::RODIT, self::DAT, self::VINIT, self::TVORIT, self::PREDLOJ], self::$abnormalExceptions[$word]);
-        } elseif (in_array($word, self::$abnormalExceptions, true)) {
+        } elseif (isset(static::$abnormalExceptions[$word])) {
+            return array_combine([static::IMENIT, static::RODIT, static::DAT, static::VINIT, static::TVORIT, static::PREDLOJ], static::$abnormalExceptions[$word]);
+        } elseif (in_array($word, static::$abnormalExceptions, true)) {
             $prefix = S::slice($word, 0, -1);
             return [
-                self::IMENIT => $word,
-                self::RODIT => $prefix.'ени',
-                self::DAT => $prefix.'ени',
-                self::VINIT => $word,
-                self::TVORIT => $prefix.'енем',
-                self::PREDLOJ => $prefix.'ени',
+                static::IMENIT => $word,
+                static::RODIT => $prefix.'ени',
+                static::DAT => $prefix.'ени',
+                static::VINIT => $word,
+                static::TVORIT => $prefix.'енем',
+                static::PREDLOJ => $prefix.'ени',
             ];
         }
 
-        switch (self::getDeclension($word)) {
-            case self::FIRST_DECLENSION:
-                return self::declinateFirstDeclension($word);
-            case self::SECOND_DECLENSION:
-                return self::declinateSecondDeclension($word, $animateness);
-            case self::THIRD_DECLENSION:
-                return self::declinateThirdDeclension($word);
+        switch (static::getDeclension($word)) {
+            case static::FIRST_DECLENSION:
+                return static::declinateFirstDeclension($word);
+            case static::SECOND_DECLENSION:
+                return static::declinateSecondDeclension($word, $animateness);
+            case static::THIRD_DECLENSION:
+                return static::declinateThirdDeclension($word);
         }
     }
 
@@ -207,28 +207,28 @@ class NounDeclension extends \morphos\BaseInflection implements Cases, Gender
         $word = S::lower($word);
         $prefix = S::slice($word, 0, -1);
         $last = S::slice($word, -1);
-        $soft_last = self::checkLastConsonantSoftness($word);
+        $soft_last = static::checkLastConsonantSoftness($word);
         $forms =  [
             Cases::IMENIT => $word,
         ];
 
         // RODIT
-        $forms[Cases::RODIT] = self::chooseVowelAfterConsonant($last, $soft_last || (in_array(S::slice($word, -2, -1), ['г', 'к', 'х'], true)), $prefix.'и', $prefix.'ы');
+        $forms[Cases::RODIT] = static::chooseVowelAfterConsonant($last, $soft_last || (in_array(S::slice($word, -2, -1), ['г', 'к', 'х'], true)), $prefix.'и', $prefix.'ы');
 
         // DAT
-        $forms[Cases::DAT] = self::getPredCaseOf12Declensions($word, $last, $prefix);
+        $forms[Cases::DAT] = static::getPredCaseOf12Declensions($word, $last, $prefix);
 
         // VINIT
-        $forms[Cases::VINIT] = self::chooseVowelAfterConsonant($last, $soft_last && S::slice($word, -2, -1) != 'ч', $prefix.'ю', $prefix.'у');
+        $forms[Cases::VINIT] = static::chooseVowelAfterConsonant($last, $soft_last && S::slice($word, -2, -1) != 'ч', $prefix.'ю', $prefix.'у');
 
         // TVORIT
         if ($last == 'ь') {
             $forms[Cases::TVORIT] = $prefix.'ой';
         } else {
-            $forms[Cases::TVORIT] = self::chooseVowelAfterConsonant($last, $soft_last, $prefix.'ей', $prefix.'ой');
+            $forms[Cases::TVORIT] = static::chooseVowelAfterConsonant($last, $soft_last, $prefix.'ей', $prefix.'ой');
         }
 
-        // 	if ($last == 'й' || (self::isConsonant($last) && !self::isHissingConsonant($last)) || self::checkLastConsonantSoftness($word))
+        // 	if ($last == 'й' || (static::isConsonant($last) && !static::isHissingConsonant($last)) || static::checkLastConsonantSoftness($word))
         // 	$forms[Cases::TVORIT] = $prefix.'ей';
         // else
         // 	$forms[Cases::TVORIT] = $prefix.'ой'; # http://morpher.ru/Russian/Spelling.aspx#sibilant
@@ -250,34 +250,34 @@ class NounDeclension extends \morphos\BaseInflection implements Cases, Gender
         $last = S::slice($word, -1);
         $soft_last = $last == 'й' || (in_array($last, ['ь', 'е', 'ё', 'ю', 'я'], true)
             && ((
-                self::isConsonant(S::slice($word, -2, -1)) && !self::isHissingConsonant(S::slice($word, -2, -1)))
+                static::isConsonant(S::slice($word, -2, -1)) && !static::isHissingConsonant(S::slice($word, -2, -1)))
                     || S::slice($word, -2, -1) == 'и'));
-        $prefix = self::getPrefixOfSecondDeclension($word, $last);
+        $prefix = static::getPrefixOfSecondDeclension($word, $last);
         $forms =  [
             Cases::IMENIT => $word,
         ];
 
         // RODIT
-        $forms[Cases::RODIT] = self::chooseVowelAfterConsonant($last, $soft_last, $prefix.'я', $prefix.'а');
+        $forms[Cases::RODIT] = static::chooseVowelAfterConsonant($last, $soft_last, $prefix.'я', $prefix.'а');
 
         // DAT
-        $forms[Cases::DAT] = self::chooseVowelAfterConsonant($last, $soft_last, $prefix.'ю', $prefix.'у');
+        $forms[Cases::DAT] = static::chooseVowelAfterConsonant($last, $soft_last, $prefix.'ю', $prefix.'у');
 
         // VINIT
         if (in_array($last, ['о', 'е', 'ё'], true)) {
             $forms[Cases::VINIT] = $word;
         } else {
-            $forms[Cases::VINIT] = self::getVinitCaseByAnimateness($forms, $animateness);
+            $forms[Cases::VINIT] = static::getVinitCaseByAnimateness($forms, $animateness);
         }
 
         // TVORIT
         // if ($last == 'ь')
         // 	$forms[Cases::TVORIT] = $prefix.'ом';
-        // else if ($last == 'й' || (self::isConsonant($last) && !self::isHissingConsonant($last)))
+        // else if ($last == 'й' || (static::isConsonant($last) && !static::isHissingConsonant($last)))
         // 	$forms[Cases::TVORIT] = $prefix.'ем';
         // else
         // 	$forms[Cases::TVORIT] = $prefix.'ом'; # http://morpher.ru/Russian/Spelling.aspx#sibilant
-        if (self::isHissingConsonant($last) || (in_array($last, ['ь', 'е', 'ё', 'ю', 'я'], true) && self::isHissingConsonant(S::slice($word, -2, -1))) || $last == 'ц') {
+        if (static::isHissingConsonant($last) || (in_array($last, ['ь', 'е', 'ё', 'ю', 'я'], true) && static::isHissingConsonant(S::slice($word, -2, -1))) || $last == 'ц') {
             $forms[Cases::TVORIT] = $prefix.'ем';
         } elseif (in_array($last, ['й'/*, 'ч', 'щ'*/], true) || $soft_last) {
             $forms[Cases::TVORIT] = $prefix.'ем';
@@ -286,7 +286,7 @@ class NounDeclension extends \morphos\BaseInflection implements Cases, Gender
         }
 
         // PREDLOJ
-        $forms[Cases::PREDLOJ] = self::getPredCaseOf12Declensions($word, $last, $prefix);
+        $forms[Cases::PREDLOJ] = static::getPredCaseOf12Declensions($word, $last, $prefix);
 
         return $forms;
     }
@@ -359,7 +359,7 @@ class NounDeclension extends \morphos\BaseInflection implements Cases, Gender
 
             // Female adjectives
             case 'ая':
-                $ending = self::isHissingConsonant(S::slice($prefix, -1)) ? 'ей' : 'ой';
+                $ending = static::isHissingConsonant(S::slice($prefix, -1)) ? 'ей' : 'ой';
                 return [
                     Cases::IMENIT => $word,
                     Cases::RODIT => $prefix.$ending,
@@ -381,8 +381,8 @@ class NounDeclension extends \morphos\BaseInflection implements Cases, Gender
      */
     public static function getCase($word, $case, $animateness = false)
     {
-        $case = self::canonizeCase($case);
-        $forms = self::getCases($word, $animateness);
+        $case = static::canonizeCase($case);
+        $forms = static::getCases($word, $animateness);
         return $forms[$case];
     }
 
@@ -394,7 +394,7 @@ class NounDeclension extends \morphos\BaseInflection implements Cases, Gender
     public static function getPrefixOfSecondDeclension($word, $last)
     {
         // слова с бегающей гласной в корне
-        if (in_array($word, self::$masculineWithSoftAndRunAwayVowels, true)) {
+        if (in_array($word, static::$masculineWithSoftAndRunAwayVowels, true)) {
             $prefix = S::slice($word, 0, -3).S::slice($word, -2, -1);
         } elseif (in_array($last, ['о', 'е', 'ё', 'ь', 'й'], true)) {
             $prefix = S::slice($word, 0, -1);
