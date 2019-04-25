@@ -2,9 +2,9 @@
 
 `Morphos` is open for additions and improvements.
 
-Addition a new language is simple: create the class inheriting one of basic classes and realize abstract methods from it.
+Addition a new language is simple: create the class inheriting one of basic classes and realize implement methods.
 
-Here is a list of basic abstract classes:
+Here is a list of basic abstract classes and their methods:
 
 #### `morphos\NamesInflection`
 Class for names inflection.
@@ -38,7 +38,7 @@ Class for spelling out date intervals and time units.
 * `public function spellInterval(DateInterval $interval)` - Spells date interval in natural language.
 
 ### String helper
-Morphos distributed with a string helper supporting multibyte encodings. Class is `morphos\S`.
+Morphos distributed with a string helper that supports multibyte encodings. Class is `morphos\S`.
 
 It has following static methods:
 
