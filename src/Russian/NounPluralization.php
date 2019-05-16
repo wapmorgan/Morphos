@@ -6,7 +6,7 @@ use morphos\S;
 /**
  * Rules are from http://morpher.ru/Russian/Noun.aspx
  */
-class NounPluralization extends \morphos\NounPluralization implements Cases
+class NounPluralization extends \morphos\BasePluralization implements Cases
 {
     use RussianLanguage, CasesHelper;
 

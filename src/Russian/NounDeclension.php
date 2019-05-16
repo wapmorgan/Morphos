@@ -1,13 +1,14 @@
 <?php
 namespace morphos\Russian;
 
+use morphos\BaseInflection;
 use morphos\Gender;
 use morphos\S;
 
 /**
  * Rules are from http://morpher.ru/Russian/Noun.aspx
  */
-class NounDeclension extends \morphos\BaseInflection implements Cases, Gender
+class NounDeclension extends BaseInflection implements Cases, Gender
 {
     use RussianLanguage, CasesHelper;
 
@@ -406,20 +407,6 @@ class NounDeclension extends \morphos\BaseInflection implements Cases, Gender
             $prefix = $word;
         }
         return $prefix;
-    }
-
-    /**
-     * @param array $forms
-     * @param $animate
-     * @return mixed
-     */
-    public static function getVinitCaseByAnimateness(array $forms, $animate)
-    {
-        if ($animate) {
-            return $forms[Cases::RODIT];
-        } else {
-            return $forms[Cases::IMENIT];
-        }
     }
 
     /**

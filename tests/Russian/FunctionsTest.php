@@ -112,6 +112,11 @@ class FunctionsTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('10 сообщений', \morphos\Russian\pluralize(10, 'сообщение'));
         $this->assertEquals('10 ванных', \morphos\Russian\pluralize(10, 'ванная'));
 
+        // complex pluralization
+        $this->assertEquals('10 новых непрочитанных сообщений', \morphos\Russian\pluralize(10, 'новое непрочитанное сообщение'));
+        $this->assertEquals('22 новых непрочитанных сообщения', \morphos\Russian\pluralize(22, 'новое непрочитанное сообщение'));
+        $this->assertEquals('21 небольшая лампа', \morphos\Russian\pluralize(21, 'небольшая лампа'));
+
         // old-style call to pluralize()
         $this->assertEquals('10 сообщений', \morphos\Russian\pluralize('сообщение', 10));
     }

@@ -126,7 +126,8 @@ function normalizeFullName($name)
  * Генерация строки с числом и существительным, в правильной форме для сочетания с числом (кол-вом предметов).
  *
  * @param int    $count       Количество предметов
- * @param string $word        Название предмета
+ * @param string $word        Название предмета. Может включать в себя несколько прилагательных перед существительным.
+ *                            Например: сообщение, новое сообщение, небольшая лампа.
  * @param bool   $animateness Признак одушевленности
  * @param string $case        Род существительного (по умолчанию именительный)
  *
@@ -139,5 +140,17 @@ function pluralize($count, $word, $animateness = false, $case = null)
     if (is_string($count) && is_numeric($word)) {
         list($count, $word) = [$word, $count];
     }
-    return $count.' '.NounPluralization::pluralize($count, $word, $animateness, $case);
+
+    if (strpos($word, ' ') !== false) {
+        $words = explode(' ', $word);
+        $noun = array_pop($words);
+
+        foreach ($words as $i => $word) {
+            $words[$i] = AdjectivePluralization::pluralize($word, $count, $animateness, $case);
+        }
+
+        return $count.' '.implode(' ', $words).' '.NounPluralization::pluralize($count, $noun, $animateness, $case);
+    }
+
+    return $count.' '.NounPluralization::pluralize($word, $count, $animateness, $case);
 }

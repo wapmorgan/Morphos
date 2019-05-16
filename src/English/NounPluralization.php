@@ -3,7 +3,7 @@ namespace morphos\English;
 
 use morphos\S;
 
-class NounPluralization extends \morphos\NounPluralization
+class NounPluralization extends \morphos\BasePluralization
 {
     private static $exceptions = [
         'chief' => 'chiefs',

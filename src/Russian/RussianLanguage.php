@@ -144,7 +144,7 @@ trait RussianLanguage
      * @param $consonant
      * @return bool
      */
-    public static function isPaired($consonant)
+    public static function isPairedConsonant($consonant)
     {
         $consonant = S::lower($consonant);
         return array_key_exists($consonant, static::$pairs) || (array_search($consonant, static::$pairs) !== false);
@@ -158,7 +158,28 @@ trait RussianLanguage
     public static function checkLastConsonantSoftness($word)
     {
         if (($substring = S::findLastPositionForOneOfChars(S::lower($word), static::$consonants)) !== false) {
-            if (in_array(S::slice($substring, 0, 1), ['й', 'ч', 'щ'], true)) { // always soft consonants
+            if (in_array(S::slice($substring, 0, 1), ['й', 'ч', 'щ', 'ш'], true)) { // always soft consonants
+                return true;
+            } elseif (S::length($substring) > 1 && in_array(S::slice($substring, 1, 2), ['е', 'ё', 'и', 'ю', 'я', 'ь'], true)) { // consonants are soft if they are trailed with these vowels
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Проверка мягкости последней согласной, за исключением Н
+     * @param $word
+     * @return bool
+     */
+    public static function checkBaseLastConsonantSoftness($word)
+    {
+        $consonants = static::$consonants;
+        unset($consonants[array_search('н', $consonants)]);
+        unset($consonants[array_search('й', $consonants)]);
+
+        if (($substring = S::findLastPositionForOneOfChars(S::lower($word), $consonants)) !== false) {
+            if (in_array(S::slice($substring, 0, 1), ['й', 'ч', 'щ', 'ш'], true)) { // always soft consonants
                 return true;
             } elseif (S::length($substring) > 1 && in_array(S::slice($substring, 1, 2), ['е', 'ё', 'и', 'ю', 'я', 'ь'], true)) { // consonants are soft if they are trailed with these vowels
                 return true;
@@ -179,6 +200,12 @@ trait RussianLanguage
 
     /**
      * Выбор предлога по первой букве
+     *
+     * @param string $word Слово
+     * @param string $prepositionWithVowel Предлог, если слово начинается с гласной
+     * @param string $preposition Предлог, если слово не начинается с гласной
+     *
+     * @return string
      */
     public static function choosePrepositionByFirstLetter($word, $prepositionWithVowel, $preposition)
     {
@@ -301,5 +328,19 @@ trait RussianLanguage
     {
         return in_array(S::slice($noun, -2), ['ой', 'ий', 'ый', 'ая', 'ое', 'ее'])
             && !in_array($noun, ['гений', 'комментарий']);
+    }
+
+    /**
+     * @param array $forms
+     * @param $animate
+     * @return mixed
+     */
+    public static function getVinitCaseByAnimateness(array $forms, $animate)
+    {
+        if ($animate) {
+            return $forms[Cases::RODIT];
+        } else {
+            return $forms[Cases::IMENIT];
+        }
     }
 }
