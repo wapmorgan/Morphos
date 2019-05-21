@@ -71,6 +71,19 @@ trait RussianLanguage
     public static $deafConsonants = ['п', 'ф', 'к', 'т', 'с', 'ш', 'х', 'ч', 'щ'];
 
     /**
+     * @var array Союзы
+     */
+    public static $unions = ['и', 'или'];
+
+    /**
+     * @return array
+     */
+    public static function getVowels()
+    {
+        return self::$vowels;
+    }
+
+    /**
      * Проверка гласной
      * @param $char
      * @return bool

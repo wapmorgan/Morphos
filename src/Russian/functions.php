@@ -146,7 +146,10 @@ function pluralize($count, $word, $animateness = false, $case = null)
         $noun = array_pop($words);
 
         foreach ($words as $i => $word) {
-            $words[$i] = AdjectivePluralization::pluralize($word, $count, $animateness, $case);
+            if (in_array($word, RussianLanguage::$unions, true))
+                $words[$i] = $word;
+            else
+                $words[$i] = AdjectivePluralization::pluralize($word, $count, $animateness, $case);
         }
 
         return $count.' '.implode(' ', $words).' '.NounPluralization::pluralize($count, $noun, $animateness, $case);
