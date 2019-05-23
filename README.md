@@ -50,7 +50,7 @@ morphos\Russian\inflectName('Иванов Петр', 'родительный') =
 // Inflect geographical names:
 morphos\Russian\GeographicalNamesInflection::getCase('Москва', 'родительный') => 'Москвы'
 
-// Pluralize russian nouns:
+// Pluralize russian nouns and adjectives:
 morphos\Russian\pluralize(10, 'новый дом') => '10 новых домов'
 
 // Generate russian cardinal numerals:
