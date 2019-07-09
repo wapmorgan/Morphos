@@ -1,5 +1,5 @@
 <?php
-namespace morhos\test;
+namespace morphos\test;
 
 use morphos\CasesHelper;
 use morphos\Cases;

@@ -35,11 +35,6 @@ class NounPluralization extends \morphos\BasePluralization implements Cases
         'год' => 'лет',
     ];
 
-    protected static $immutableWords = [
-        'евро',
-        'пенни',
-    ];
-
     protected static $runawayVowelsExceptions = [
         'писе*ц',
         'песе*ц',
@@ -151,7 +146,7 @@ class NounPluralization extends \morphos\BasePluralization implements Cases
     {
         $word = S::lower($word);
 
-        if (in_array($word, static::$immutableWords, true)) {
+        if (in_array($word, NounDeclension::$immutableWords, true)) {
             return [
                 static::IMENIT => $word,
                 static::RODIT => $word,
@@ -209,7 +204,8 @@ class NounPluralization extends \morphos\BasePluralization implements Cases
 
         $forms = [];
 
-        if (in_array($last, ['ч', 'г'], false) || in_array(S::slice($word, -2), ['чь', 'сь', 'ть', 'нь'], true)
+        if (in_array($last, ['ч', 'г'], true)
+            || in_array(S::slice($word, -2), ['чь', 'сь', 'ть', 'нь', 'рь'], true)
             || (static::isVowel($last) && in_array(S::slice($word, -2, -1), ['ч', 'к'], true))) { // before ч, чь, сь, ч+vowel, к+vowel
             $forms[Cases::IMENIT] = $prefix.'и';
         } elseif (in_array($last, ['н', 'ц', 'р', 'т'], true)) {

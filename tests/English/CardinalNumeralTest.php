@@ -1,5 +1,5 @@
 <?php
-namespace morhos\test\English;
+namespace morphos\test\English;
 
 use morphos\English\CardinalNumeralGenerator;
 

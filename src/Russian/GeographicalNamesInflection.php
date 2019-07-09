@@ -31,12 +31,19 @@ class GeographicalNamesInflection extends \morphos\BaseInflection implements Cas
         'санкт',
         'йошкар',
         'улан',
+        'ханты',
+        'буда',
     ];
 
     protected static $runawayVowelsExceptions = [
         'торжо*к',
         'волоче*к',
         'орё*л',
+        'египе*т',
+        'лунине*ц',
+        'городо*к',
+        'новогрудо*к',
+        'острове*ц',
     ];
 
     protected static $misspellings = [
@@ -91,7 +98,8 @@ class GeographicalNamesInflection extends \morphos\BaseInflection implements Cas
         }
 
         // ends with 'е' or 'о', but not with 'ово/ёво/ево/ино/ыно'
-        if (in_array(S::slice($name, -1), ['е', 'о'], true) && !in_array(S::slice($name, -3, -1), ['ов', 'ёв', 'ев', 'ин', 'ын'], true)) {
+        if (in_array(S::slice($name, -1), ['е', 'о'], true)
+            && !in_array(S::slice($name, -3, -1), ['ов', 'ёв', 'ев', 'ин', 'ын'], true)) {
             return false;
         }
         return true;
@@ -135,7 +143,7 @@ class GeographicalNamesInflection extends \morphos\BaseInflection implements Cas
             }
         }
 
-        // Сложное название через пробел, '-' или '-на-'
+        // Сложное название с разделителем
         foreach (static::$delimiters as $delimiter) {
             if (strpos($name, $delimiter) !== false) {
                 $parts = explode($delimiter, $name);
@@ -241,10 +249,18 @@ class GeographicalNamesInflection extends \morphos\BaseInflection implements Cas
 
                 // Березники, Ессентуки
                 case 'ки':
+                // Старые Дороги
+                case 'ги':
+                // Ушачи, Ивацевичи
+                case 'чи':
                     $prefix = S::name(S::slice($name, 0, -1));
                     return [
                         static::IMENIT => $prefix . 'и',
-                        static::RODIT => $name == 'луки' ? $prefix : $prefix . 'ов',
+                        static::RODIT => ($name === 'луки'
+                            ? $prefix
+                            : (S::slice($name, -2) === 'чи'
+                                ? $prefix . 'ей'
+                                : $prefix . 'ов')),
                         static::DAT => $prefix . 'ам',
                         static::VINIT => $prefix . 'и',
                         static::TVORIT => $prefix . 'ами',
@@ -289,6 +305,10 @@ class GeographicalNamesInflection extends \morphos\BaseInflection implements Cas
 
                 // Челны
                 case 'ны':
+                // Мосты
+                case 'ты':
+                // Столбцы
+                case 'цы':
                     $prefix = S::name(S::slice($name, 0, -1));
                     return [
                         static::IMENIT => $prefix . 'ы',
@@ -322,6 +342,31 @@ class GeographicalNamesInflection extends \morphos\BaseInflection implements Cas
                         static::TVORIT => $prefix.'ью',
                         static::PREDLOJ => $prefix.'и',
                     ];
+
+                //
+                case 'чи':
+                    $prefix = S::name(S::slice($name, 0, -1));
+                    return [
+                        static::IMENIT => $prefix.'и',
+                        static::RODIT => $prefix.'ей',
+                        static::DAT => $prefix.'ам',
+                        static::VINIT => $prefix.'и',
+                        static::TVORIT => $prefix.'ами',
+                        static::PREDLOJ => $prefix.'ах',
+                    ];
+
+                // Глубокое
+                case 'ое':
+                    $prefix = S::name(S::slice($name, 0, -2));
+                    return [
+                        static::IMENIT => $prefix.'ое',
+                        static::RODIT => $prefix.'ого',
+                        static::DAT => $prefix.'ому',
+                        static::VINIT => $prefix.'ое',
+                        static::TVORIT => $prefix.'им',
+                        static::PREDLOJ => $prefix.'ом',
+                    ];
+
             }
 
             switch (S::slice($name, -1)) {

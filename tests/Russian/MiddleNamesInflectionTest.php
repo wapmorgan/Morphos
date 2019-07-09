@@ -1,5 +1,5 @@
 <?php
-namespace morhos\test\Russian;
+namespace morphos\test\Russian;
 
 use morphos\Russian\Cases;
 use morphos\Russian\MiddleNamesInflection;

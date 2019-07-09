@@ -1,5 +1,5 @@
 <?php
-namespace morhos\test\Russian;
+namespace morphos\test\Russian;
 
 use morphos\Gender;
 use morphos\Russian\AdjectiveDeclension;

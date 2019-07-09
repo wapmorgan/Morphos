@@ -16,6 +16,26 @@ class NounDeclension extends BaseInflection implements Cases, Gender
     const SECOND_DECLENSION = 2;
     const THIRD_DECLENSION = 3;
 
+    public static $immutableWords = [
+        // валюты
+        'евро', 'пенни', 'песо', 'сентаво',
+
+        // на а
+        'боа', 'бра', 'фейхоа', 'амплуа', 'буржуа',
+        // на о
+        'манго', 'какао', 'кино', 'трюмо', 'пальто', 'бюро', 'танго', 'вето', 'бунгало', 'сабо', 'авокадо', 'депо',
+        // на у
+        'зебу', 'кенгуру', 'рагу', 'какаду', 'шоу',
+        // на е
+        'шимпанзе', 'конферансье', 'атташе', 'колье', 'резюме', 'пенсне', 'кашне', 'протеже', 'коммюнике', 'драже', 'суфле', 'пюре', 'купе', 'фойе', 'шоссе', 'крупье',
+        // на и
+        'такси', 'жалюзи', 'шасси', 'алиби', 'киви', 'иваси', 'регби', 'конфетти', 'колибри', 'жюри', 'пенальти', 'рефери', 'кольраби',
+        // на э
+        'каноэ', 'алоэ',
+        // на ю
+        'меню', 'парвеню', 'авеню', 'дежавю', 'инженю', 'барбекю', 'интервью',
+    ];
+
     /**
      * These words has 2 declension type.
      */
@@ -58,6 +78,14 @@ class NounDeclension extends BaseInflection implements Cases, Gender
         'председатель',
         'руководитель',
         'заместитель',
+        'библиотекарь',
+        'делопроизводитель',
+        'преподаватель',
+        'представитель',
+        'производитель',
+        'слесарь',
+        'строитель',
+        'учитель',
     ];
 
     protected static $masculineWithSoftAndRunAwayVowels = [
@@ -67,26 +95,6 @@ class NounDeclension extends BaseInflection implements Cases, Gender
         'камень',
         'корень',
         'трутень',
-    ];
-
-    protected static $immutableWords = [
-        // валюты
-        'евро', 'пенни', 'песо', 'сентаво',
-
-        // на а
-        'боа', 'бра', 'фейхоа', 'амплуа', 'буржуа',
-        // на о
-        'манго', 'какао', 'кино', 'трюмо', 'пальто', 'бюро', 'танго', 'вето', 'бунгало', 'сабо', 'авокадо', 'депо',
-        // на у
-        'зебу', 'кенгуру', 'рагу', 'какаду', 'шоу',
-        // на е
-        'шимпанзе', 'конферансье', 'атташе', 'колье', 'резюме', 'пенсне', 'кашне', 'протеже', 'коммюнике', 'драже', 'суфле', 'пюре', 'купе', 'фойе', 'шоссе',
-        // на и
-        'такси', 'жалюзи', 'шасси', 'алиби', 'киви', 'иваси', 'регби', 'конфетти', 'колибри', 'жюри', 'пенальти', 'рефери', 'кольраби',
-        // на э
-        'каноэ', 'алоэ',
-        // на ю
-        'меню', 'парвеню', 'авеню', 'дежавю', 'инженю', 'барбекю', 'интервью',
     ];
 
     /**
@@ -220,10 +228,10 @@ class NounDeclension extends BaseInflection implements Cases, Gender
         $forms[Cases::DAT] = static::getPredCaseOf12Declensions($word, $last, $prefix);
 
         // VINIT
-        $forms[Cases::VINIT] = static::chooseVowelAfterConsonant($last, $soft_last && S::slice($word, -2, -1) != 'ч', $prefix.'ю', $prefix.'у');
+        $forms[Cases::VINIT] = static::chooseVowelAfterConsonant($last, $soft_last && S::slice($word, -2, -1) !== 'ч', $prefix.'ю', $prefix.'у');
 
         // TVORIT
-        if ($last == 'ь') {
+        if ($last === 'ь') {
             $forms[Cases::TVORIT] = $prefix.'ой';
         } else {
             $forms[Cases::TVORIT] = static::chooseVowelAfterConsonant($last, $soft_last, $prefix.'ей', $prefix.'ой');
@@ -249,10 +257,10 @@ class NounDeclension extends BaseInflection implements Cases, Gender
     {
         $word = S::lower($word);
         $last = S::slice($word, -1);
-        $soft_last = $last == 'й' || (in_array($last, ['ь', 'е', 'ё', 'ю', 'я'], true)
+        $soft_last = $last === 'й' || (in_array($last, ['ь', 'е', 'ё', 'ю', 'я'], true)
             && ((
                 static::isConsonant(S::slice($word, -2, -1)) && !static::isHissingConsonant(S::slice($word, -2, -1)))
-                    || S::slice($word, -2, -1) == 'и'));
+                    || S::slice($word, -2, -1) === 'и'));
         $prefix = static::getPrefixOfSecondDeclension($word, $last);
         $forms =  [
             Cases::IMENIT => $word,
@@ -278,7 +286,9 @@ class NounDeclension extends BaseInflection implements Cases, Gender
         // 	$forms[Cases::TVORIT] = $prefix.'ем';
         // else
         // 	$forms[Cases::TVORIT] = $prefix.'ом'; # http://morpher.ru/Russian/Spelling.aspx#sibilant
-        if (static::isHissingConsonant($last) || (in_array($last, ['ь', 'е', 'ё', 'ю', 'я'], true) && static::isHissingConsonant(S::slice($word, -2, -1))) || $last == 'ц') {
+        if (static::isHissingConsonant($last)
+            || (in_array($last, ['ь', 'е', 'ё', 'ю', 'я'], true) && static::isHissingConsonant(S::slice($word, -2, -1)))
+            || ($last === 'ц' && S::slice($word, -2) !== 'ец')) {
             $forms[Cases::TVORIT] = $prefix.'ем';
         } elseif (in_array($last, ['й'/*, 'ч', 'щ'*/], true) || $soft_last) {
             $forms[Cases::TVORIT] = $prefix.'ем';
@@ -401,8 +411,12 @@ class NounDeclension extends BaseInflection implements Cases, Gender
             $prefix = S::slice($word, 0, -1);
         }
         // уменьшительные формы слов (котенок) и слова с суффиксом ок
-        elseif (S::slice($word, -2) == 'ок' && S::length($word) > 3) {
-            $prefix = S::slice($word, 0, -2).'к';
+        elseif (S::slice($word, -2) === 'ок' && S::length($word) > 3) {
+            $prefix = S::slice($word, 0, -2) . 'к';
+        }
+        // слова с суффиксом бец
+        elseif (S::slice($word, -3) === 'бец' && S::length($word) > 4) {
+            $prefix = S::slice($word, 0, -3).'бц';
         } else {
             $prefix = $word;
         }
