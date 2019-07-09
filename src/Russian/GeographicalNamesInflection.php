@@ -27,7 +27,11 @@ class GeographicalNamesInflection extends \morphos\BaseInflection implements Cas
         'осташков',
     ];
 
-    protected static $immutableParts = [
+
+    protected static $immutableNames = [
+        'алматы',
+
+        // части
         'санкт',
         'йошкар',
         'улан',
@@ -75,7 +79,7 @@ class GeographicalNamesInflection extends \morphos\BaseInflection implements Cas
         // if (in_array(S::slice($name, -1), array('и', 'ы')))
         //     return false;
 
-        if (in_array($name, static::$abbreviations, true) || in_array($name, static::$immutableParts, true)) {
+        if (in_array($name, static::$abbreviations, true) || in_array($name, static::$immutableNames, true)) {
             return false;
         }
 
@@ -116,7 +120,7 @@ class GeographicalNamesInflection extends \morphos\BaseInflection implements Cas
         $name = S::lower($name);
 
         // Проверка на неизменяемость и сложное название
-        if (in_array($name, static::$immutableParts, true)) {
+        if (in_array($name, static::$immutableNames, true)) {
             return array_fill_keys([static::IMENIT, static::RODIT, static::DAT, static::VINIT, static::TVORIT, static::PREDLOJ], S::name($name));
         }
 
