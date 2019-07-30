@@ -267,7 +267,27 @@ MoneySpeller::spell(123.45, MoneySpeller::RUBLE, MoneySpeller::CLARIFICATION_FOR
 
 ## Временные интервалы
 
-Класс `TimeSpeller` позволяет записать человеческим языком временной интервал, задаваемый объектом `DateInterval`.
+Класс `TimeSpeller` позволяет генерировать временной интервал.
+В классе есть методы для генерации:
+
+- `TimeSpeller::spellDifference($dateTime, $options = 0, $limit = 0
+)` - временной интервал между текущим временем и `$dateTime`. `$dateTime` может быть:
+    - объектом `DateTime`
+    - числом секунд с эпохи Unix (unix timestamp)
+    - строкой с датой & временем (которую может прочитать `strtotime()`)  
+- `TimeSpeller::spellInterval(DateInterval $dateTime, $options = 0, $limit = 0)` - $dateTime
+, задаваемый объектом `DateInterval`
+
+_Пример._
+
+```php
+use morphos\Russian\TimeSpeller;
+
+TimeSpeller::spellDifference('+4 hours') => '4 часа'
+TimeSpeller::spellDifference(time() + 14400) => '4 часа'
+TimeSpeller::spellDifference('-2 minutes') => '2 минуты'
+TimeSpeller::spellDifference(time() - 120) => '2 минуты'
+``` 
 
 _Пример._
 
@@ -277,14 +297,15 @@ use morphos\Russian\TimeSpeller;
 TimeSpeller::spellInterval(new DateInterval('P5YT2M')) => '5 лет 2 часа'
 ```
 
-Также можно передать вторым аргументом одну из следующих опций или их комбинацию (побитовое или `|`):
+Также можно передать вторым аргументом в оба метода одну из следующих опций или их комбинацию (побитовое или `|`):
 
 - `TimeSpeller::DIRECTION` - добавляет "назад" для положительных интвералов и "через" для отрицательных.
 - `TimeSpeller::SEPARATE` - добавляет запятые между составными интервала и союз перед последней частью.
 
-Третьим аргументом можно ограничить количество фраз, которые будут сгенерированы.
+Третьим аргументом можно ограничить количество частей, которые будут сгенерированы.
 
 ```php
+TimeSpeller::spellDifference(time() - 120, TimeSpeller::DIRECTION) => '2 минуты назад'
 TimeSpeller::spellInterval(new DateInterval('P5YT2M'), TimeSpeller::DIRECTION) => '5 лет 2 часа назад'
 TimeSpeller::spellInterval(new DateInterval('P5YT2M'), TimeSpeller::SEPARATE) => '5 лет и 2 часа'
 TimeSpeller::spellInterval(new DateInterval('P5YT2M'), TimeSpeller::DIRECTION | TimeSpeller::SEPARATE) => '5 лет и 2 часа назад'

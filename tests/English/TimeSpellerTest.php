@@ -2,12 +2,21 @@
 namespace morphos\test\English;
 
 use DateInterval;
+use DateTime;
+use InvalidArgumentException;
 use morphos\English\TimeSpeller;
 
 class TimeSpellerTest extends \PHPUnit_Framework_TestCase
 {
+
     /**
      * @dataProvider intervalsProvider()
+     *
+     * @param $interval
+     * @param $options
+     * @param $result
+     *
+     * @throws \Exception
      */
     public function testSpellInterval($interval, $options, $result)
     {
@@ -31,6 +40,10 @@ class TimeSpellerTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @dataProvider timeUnitsProvider()
+     *
+     * @param $value
+     * @param $unit
+     * @param $result
      */
     public function testSpellUnit($value, $unit, $result)
     {
@@ -46,6 +59,31 @@ class TimeSpellerTest extends \PHPUnit_Framework_TestCase
             [5, TimeSpeller::MONTH, '5 months'],
             [5, TimeSpeller::HOUR, '5 hours'],
             [5, TimeSpeller::SECOND, '5 seconds'],
+        ];
+    }
+
+    /**
+     * @dataProvider differencesProvides()
+     *
+     * @param $dateTime
+     * @param $limit
+     *
+     * @throws \Exception
+     */
+    public function testSpellDifference($dateTime, $limit)
+    {
+        $diff = (new DateTime())->diff(new DateTime(is_numeric($dateTime) ? '@'.$dateTime : $dateTime));
+        $this->assertEquals(TimeSpeller::spellInterval($diff, 0, $limit),
+            TimeSpeller::spellDifference($dateTime, 0, $limit));
+    }
+
+    public function differencesProvides()
+    {
+        return
+        [
+            ['+30 minutes 2 seconds', 1],
+            [time() + 3601, 1],
+            [time() + 86401, 1],
         ];
     }
 

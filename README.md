@@ -59,6 +59,9 @@ morphos\Russian\CardinalNumeralGenerator::getCase(567, 'именительный
 // Generate russian ordinal numerals:
 morphos\Russian\OrdinalNumeralGenerator::getCase(961, 'именительный') => 'девятьсот шестьдесят первый'
 
+// Generate russian time difference
+morphos\Russian\TimeSpeller::spellDifference(time() + 3601, morphos\TimeSpeller::DIRECTION) => 'через 1 час'
+
 // other functions described in README-ru.md
 ```
 
@@ -72,6 +75,9 @@ morphos\English\CardinalNumeralGenerator::generate(567) => 'five hundred sixty-s
 
 // Generate english ordinal numerals:
 morphos\English\OrdinalNumeralGenerator::generate(961) => 'nine hundred sixty-first'
+
+// Generate english time difference
+morphos\English\TimeSpeller::spellDifference(time() + 3601, morphos\TimeSpeller::DIRECTION) => 'in 1 hour'
 ```
 
 # Documentation

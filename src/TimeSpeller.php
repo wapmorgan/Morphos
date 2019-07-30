@@ -2,6 +2,8 @@
 namespace morphos;
 
 use DateInterval;
+use DateTime;
+use InvalidArgumentException;
 
 abstract class TimeSpeller
 {
@@ -77,5 +79,29 @@ abstract class TimeSpeller
         }
 
         return $spelled;
+    }
+
+    /**
+     * @param int|string|DateTime $dateTime Unix timestamp
+     *                                      or datetime in strtotime() format
+     *                                      or DateTime instance
+     *
+     * @param int                 $options
+     * @param int                 $limit
+     *
+     * @return string
+     * @throws \Exception
+     */
+    public static function spellDifference($dateTime, $options = 0, $limit = 0)
+    {
+        if (is_numeric($dateTime) || is_string($dateTime)) {
+            $dateTime = new DateTime(is_numeric($dateTime)
+                ? '@' . $dateTime
+                : $dateTime);
+        } else if(!($dateTime instanceof DateTime)) {
+            throw new InvalidArgumentException('dateTime argument should be unix timestamp (int) or date time (string) or DateTime instance');
+        }
+
+        return static::spellInterval($dateTime->diff(new DateTime()), $options, $limit);
     }
 }
