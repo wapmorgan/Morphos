@@ -241,7 +241,7 @@ trait RussianLanguage
      */
     public static function chooseVowelAfterConsonant($last, $softLast, $afterSoft, $afterHard)
     {
-        if ((RussianLanguage::isHissingConsonant($last) && !in_array($last, ['ж', 'ч'], true)) || /*static::isVelarConsonant($last) ||*/ $softLast) {
+        if ($last === 'щ' || /*static::isVelarConsonant($last) ||*/ $softLast) {
             return $afterSoft;
         } else {
             return $afterHard;

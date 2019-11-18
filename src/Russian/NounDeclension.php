@@ -257,10 +257,16 @@ class NounDeclension extends BaseInflection implements Cases, Gender
     {
         $word = S::lower($word);
         $last = S::slice($word, -1);
-        $soft_last = $last === 'й' || (in_array($last, ['ь', 'е', 'ё', 'ю', 'я'], true)
-            && ((
-                static::isConsonant(S::slice($word, -2, -1)) && !static::isHissingConsonant(S::slice($word, -2, -1)))
-                    || S::slice($word, -2, -1) === 'и'));
+        $soft_last = $last === 'й'
+            || (
+                in_array($last, ['ь', 'е', 'ё', 'ю', 'я'], true)
+                && (
+                        (
+                        static::isConsonant(S::slice($word, -2, -1))
+                        && !static::isHissingConsonant(S::slice($word, -2, -1))
+                        )
+                    || S::slice($word, -2, -1) === 'и')
+               );
         $prefix = static::getPrefixOfSecondDeclension($word, $last);
         $forms =  [
             Cases::IMENIT => $word,
@@ -286,7 +292,7 @@ class NounDeclension extends BaseInflection implements Cases, Gender
         // 	$forms[Cases::TVORIT] = $prefix.'ем';
         // else
         // 	$forms[Cases::TVORIT] = $prefix.'ом'; # http://morpher.ru/Russian/Spelling.aspx#sibilant
-        if (static::isHissingConsonant($last)
+        if ((static::isHissingConsonant($last) && $last !== 'ш')
             || (in_array($last, ['ь', 'е', 'ё', 'ю', 'я'], true) && static::isHissingConsonant(S::slice($word, -2, -1)))
             || ($last === 'ц' && S::slice($word, -2) !== 'ец')) {
             $forms[Cases::TVORIT] = $prefix.'ем';

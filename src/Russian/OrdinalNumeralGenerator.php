@@ -122,7 +122,7 @@ class OrdinalNumeralGenerator extends NumeralGenerator implements Cases
             } else {
                 switch ($gender) {
                     case static::MALE:
-                        $prefix = S::slice($word, 0, $number == 40 ? -1 : -2);
+                        $prefix = S::slice($word, 0, -2);
                         return [
                             static::IMENIT => $word,
                             static::RODIT => $prefix.'ого',
@@ -133,7 +133,7 @@ class OrdinalNumeralGenerator extends NumeralGenerator implements Cases
                         ];
 
                     case static::FEMALE:
-                        $prefix = S::slice($word, 0, $number == 40 ? -1 : -2);
+                        $prefix = S::slice($word, 0, -2);
                         return [
                             static::IMENIT => $prefix.'ая',
                             static::RODIT => $prefix.'ой',
@@ -144,7 +144,7 @@ class OrdinalNumeralGenerator extends NumeralGenerator implements Cases
                         ];
 
                     case static::NEUTER:
-                        $prefix = S::slice($word, 0, $number == 40 ? -1 : -2);
+                        $prefix = S::slice($word, 0, -2);
                         return [
                             static::IMENIT => $prefix.'ое',
                             static::RODIT => $prefix.'ого',
