@@ -3,7 +3,7 @@ namespace morphos;
 
 interface Currency
 {
-    const DOLLAR = 'USB';
+    const DOLLAR = 'USD';
     const EURO = 'EUR';
     const YEN = 'JPY';
     const POUND = 'GBP';
