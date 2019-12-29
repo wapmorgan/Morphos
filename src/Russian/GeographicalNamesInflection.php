@@ -193,6 +193,12 @@ class GeographicalNamesInflection extends \morphos\BaseInflection implements Cas
 
                 // Россошь
                 case 'шь':
+                // Пермь, Кемь
+                case 'мь':
+                // Рязань, Назрань
+                case 'нь':
+                // Керчь
+                case 'чь':
                     $prefix = S::name(S::slice($name, 0, -1));
                     return [
                         static::IMENIT => $prefix.'ь',
@@ -271,32 +277,10 @@ class GeographicalNamesInflection extends \morphos\BaseInflection implements Cas
                         static::PREDLOJ => $prefix . 'ах',
                     ];
 
-                // Пермь, Кемь
-                case 'мь':
-                    $prefix = S::name(S::slice($name, 0, -1));
-                    return [
-                        static::IMENIT => $prefix . 'ь',
-                        static::RODIT => $prefix . 'и',
-                        static::DAT => $prefix . 'и',
-                        static::VINIT => $prefix . 'ь',
-                        static::TVORIT => $prefix . 'ью',
-                        static::PREDLOJ => $prefix . 'и',
-                    ];
-
-                // Рязань, Назрань
-                case 'нь':
-                    $prefix = S::name(S::slice($name, 0, -1));
-                    return [
-                        static::IMENIT => $prefix . 'ь',
-                        static::RODIT => $prefix . 'и',
-                        static::DAT => $prefix . 'и',
-                        static::VINIT => $prefix . 'ь',
-                        static::TVORIT => $prefix . 'ью',
-                        static::PREDLOJ => $prefix . 'и',
-                    ];
-
                 // Набережные
                 case 'ые':
+                // Великие
+                case 'ие':
                     $prefix = S::name(S::slice($name, 0, -1));
                     return [
                         static::IMENIT => $prefix . 'е',
@@ -321,42 +305,6 @@ class GeographicalNamesInflection extends \morphos\BaseInflection implements Cas
                         static::VINIT => $prefix . 'ы',
                         static::TVORIT => $prefix . 'ами',
                         static::PREDLOJ => $prefix . 'ах',
-                    ];
-
-                // Великие
-                case 'ие':
-                    $prefix = S::name(S::slice($name, 0, -1));
-                    return [
-                        static::IMENIT => $prefix.'е',
-                        static::RODIT => $prefix.'х',
-                        static::DAT => $prefix.'м',
-                        static::VINIT => $prefix.'е',
-                        static::TVORIT => $prefix.'ми',
-                        static::PREDLOJ => $prefix.'х',
-                    ];
-
-                // Керчь
-                case 'чь':
-                    $prefix = S::name(S::slice($name, 0, -1));
-                    return [
-                        static::IMENIT => $prefix.'ь',
-                        static::RODIT => $prefix.'и',
-                        static::DAT => $prefix.'и',
-                        static::VINIT => $prefix.'ь',
-                        static::TVORIT => $prefix.'ью',
-                        static::PREDLOJ => $prefix.'и',
-                    ];
-
-                //
-                case 'чи':
-                    $prefix = S::name(S::slice($name, 0, -1));
-                    return [
-                        static::IMENIT => $prefix.'и',
-                        static::RODIT => $prefix.'ей',
-                        static::DAT => $prefix.'ам',
-                        static::VINIT => $prefix.'и',
-                        static::TVORIT => $prefix.'ами',
-                        static::PREDLOJ => $prefix.'ах',
                     ];
 
                 // Глубокое
@@ -453,7 +401,7 @@ class GeographicalNamesInflection extends \morphos\BaseInflection implements Cas
                     static::DAT => $prefix . 'у',
                     static::VINIT => S::name($name),
                     static::TVORIT => $prefix . (static::isVelarConsonant(S::slice($name, -2, -1)) ? 'ем' : 'ом'),
-                    static::PREDLOJ => $prefix . 'е',
+                    static::PREDLOJ => $prefix . ($name === 'крым' ? 'у' : 'е'),
                 ];
             }
 
@@ -468,6 +416,7 @@ class GeographicalNamesInflection extends \morphos\BaseInflection implements Cas
                 elseif (in_array(S::slice($name, -2), $suffixes, true)) {
                     $prefix = S::name($name);
                 }
+
                 return [
                     static::IMENIT => S::name($name),
                     static::RODIT => $prefix.'а',
