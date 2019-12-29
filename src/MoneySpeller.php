@@ -10,9 +10,16 @@ abstract class MoneySpeller implements Currency
 
     /**
      * @abstract
-     * @param float $value
+     *
+     * @param float  $value
      * @param string $currency
      * @param string $format
+     * @param null   $case
      */
-    public static function spell($value, $currency, $format = self::NORMAL_FORMAT) {}
+    public static function spell(
+        $value,
+        $currency,
+        $format = self::NORMAL_FORMAT,
+        $case = null
+    ) {}
 }

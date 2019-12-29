@@ -245,6 +245,14 @@ MoneySpeller::spell(123.45, MoneySpeller::RUBLE, MoneySpeller::CLARIFICATION_FOR
 
 При указании валюты используйте знак валюты (например, ₽) или трехзначный код валюты (`\morphos\Currency::RUBLE`).
 
+Также можно указать падеж для склонения четвёртым параметром:
+
+```php
+use morphos\Russian\MoneySpeller;
+
+MoneySpeller::spell(123.45, MoneySpeller::RUBLE, MoneySpeller::NORMAL_FORMAT, 'родительный') => 'ста двадцати трех рублей сорока пяти копеек'
+```
+
 Доступные валюты:
 
 | Знак | Идентификатор                | Валюта |

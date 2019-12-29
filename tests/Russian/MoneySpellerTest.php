@@ -1,19 +1,34 @@
 <?php
 namespace morphos\test\Russian;
 
-
-use morphos\Gender;
 use morphos\Currency;
+use morphos\Russian\Cases;
 use morphos\Russian\MoneySpeller;
 
 class MoneySpellerTest extends \PHPUnit_Framework_TestCase
 {
+
     /**
      * @dataProvider moneyAmountsProvider()
+     *
+     * @param      $value
+     * @param      $currency
+     * @param      $format
+     * @param      $result
+     *
+     * @param null $case
+     *
+     * @throws \Exception
      */
-    public function testSpell($value, $currency, $format, $result)
+    public function testSpell(
+        $value,
+        $currency,
+        $format,
+        $result,
+        $case = null
+    )
     {
-        $this->assertEquals($result, MoneySpeller::spell($value, $currency, $format));
+        $this->assertEquals($result, MoneySpeller::spell($value, $currency, $format, $case));
     }
 
     public function moneyAmountsProvider()
@@ -22,6 +37,7 @@ class MoneySpellerTest extends \PHPUnit_Framework_TestCase
         [
             [123.45, Currency::RUBLE, MoneySpeller::SHORT_FORMAT, '123 рубля 45 копеек'],
             [321.54, Currency::DOLLAR, MoneySpeller::NORMAL_FORMAT, 'триста двадцать один доллар пятьдесят четыре цента'],
+            [321.54, Currency::DOLLAR, MoneySpeller::NORMAL_FORMAT, 'трехсот двадцати одного доллара пятидесяти четырех центов', Cases::RODIT],
             [369.12, Currency::EURO, MoneySpeller::DUPLICATION_FORMAT, 'триста шестьдесят девять (369) евро двенадцать (12) центов'],
             [246.35, Currency::YEN, MoneySpeller::CLARIFICATION_FORMAT, '246 (двести сорок шесть) иен 35 (тридцать пять) сенов'],
             [123, Currency::POUND, MoneySpeller::SHORT_FORMAT, '123 фунта'],
@@ -37,6 +53,7 @@ class MoneySpellerTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @expectedException InvalidArgumentException
+     * @throws \Exception
      */
     public function testSpellInvalid()
     {
