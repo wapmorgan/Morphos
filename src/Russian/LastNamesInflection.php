@@ -36,6 +36,10 @@ class LastNamesInflection extends \morphos\NamesInflection implements Cases
         if (in_array(S::slice($name, -1), ['а', 'я'], true)) {
             return true;
         }
+        
+        // Несклоняемые фамилии независимо от пола (Токаревских)
+        if (in_array(S::slice($name, -2), ['их'], true))
+            return false;
 
         if ($gender == static::MALE) {
             // Несклоняемые фамилии (Фоминых, Седых / Стецко, Писаренко)
