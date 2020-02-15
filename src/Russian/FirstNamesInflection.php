@@ -168,7 +168,7 @@ class FirstNamesInflection extends \morphos\NamesInflection implements Cases
         if (in_array($last3, ['лия', 'ния', 'сия', 'дра', 'лла', 'кла', 'опа'], true)) {
             $woman += 0.5;
         }
-        if (in_array(S::slice($name, -4), ['льда', 'фира', 'нина', 'лита', 'алья'], true)) {
+        if (in_array(S::slice($name, -4), ['льда', 'фира', 'нина', 'лита', 'алья', 'аида'], true)) {
             $woman += 0.5;
         }
 
@@ -200,12 +200,12 @@ class FirstNamesInflection extends \morphos\NamesInflection implements Cases
             } elseif (S::slice($name, -1) == 'я') {
                 $prefix = S::name(S::slice($name, 0, -1));
                 return [
-                    static::IMENIT => $prefix.'я',
-                    static::RODIT => $prefix.'и',
-                    static::DAT => $prefix.'е',
-                    static::VINIT => $prefix.'ю',
-                    static::TVORIT => $prefix.'ей',
-                    static::PREDLOJ => $prefix.'е',
+                    static::IMENIT => $prefix . 'я',
+                    static::RODIT => $prefix . 'и',
+                    static::DAT => $prefix . 'е',
+                    static::VINIT => $prefix . 'ю',
+                    static::TVORIT => $prefix . 'ей',
+                    static::PREDLOJ => $prefix . 'е',
                 ];
             }
 
