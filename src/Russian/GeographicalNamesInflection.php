@@ -91,9 +91,9 @@ class GeographicalNamesInflection extends \morphos\BaseInflection implements Cas
                 S::findLastPosition($name, ' ') + 1);
 
             // город N, село N, хутор N, район N, поселок N, округ N, республика N
-            // N область, N край
+            // N область, N край, N район, N волость
             if (in_array($first_part, ['город', 'село', 'хутор', 'район', 'поселок', 'округ', 'республика'], true)
-                || in_array($last_part, ['край', 'область'], true)) {
+                || in_array($last_part, ['край', 'область', 'район', 'волость'], true)) {
                 return true;
             }
 
@@ -143,7 +143,7 @@ class GeographicalNamesInflection extends \morphos\BaseInflection implements Cas
             $last_part = S::slice($name,
                 S::findLastPosition($name, ' ') + 1);
             // N область, N край
-            if (in_array($last_part, ['край', 'область'], true)) {
+            if (in_array($last_part, ['край', 'область', 'район', 'волость'], true)) {
                 return static::composeCasesFromWords([static::getCases(S::slice($name, 0, S::findLastPosition($name, ' '))), NounDeclension::getCases($last_part)]);
             }
         }
