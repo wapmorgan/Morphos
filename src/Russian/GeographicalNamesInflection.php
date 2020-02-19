@@ -364,7 +364,7 @@ class GeographicalNamesInflection extends \morphos\BaseInflection implements Cas
                     $prefix = S::name(S::slice($name, 0, -1));
                     return [
                         static::IMENIT => $prefix.'а',
-                        static::RODIT => $prefix.(static::isVelarConsonant(S::slice($name, -2, -1)) ? 'и' : 'ы'),
+                        static::RODIT => $prefix.(static::isVelarConsonant(S::slice($name, -2, -1)) || static::isHissingConsonant(S::slice($name, -2, -1)) ? 'и' : 'ы'),
                         static::DAT => $prefix.'е',
                         static::VINIT => $prefix.'у',
                         static::TVORIT => $prefix.'ой',
