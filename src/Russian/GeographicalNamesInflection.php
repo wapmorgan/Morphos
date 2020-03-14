@@ -31,7 +31,8 @@ class GeographicalNamesInflection extends \morphos\BaseInflection implements Cas
     protected static $immutableNames = [
         'алматы',
         'сочи',
-
+        'гоа',
+        
         // части
         'санкт',
         'йошкар',
