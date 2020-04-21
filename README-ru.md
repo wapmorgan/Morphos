@@ -111,7 +111,7 @@ string|null detectGender($fullname)
 
 - `boolean isMutable($name)` - проверяет, что имя склоняемо.
 - `string getCase($name, $case)` - склоняет имя и возвращает результат.`$case` - это одна из констант `morphos\Cases` или `morphos\Russian\Cases`.
-- `array getCases($word)` - склоняет имя во всех падежах и возвращает результат в виде массива.
+- `array getCases($word)` - склоняет имя во всех падежах и возвращает результат в виде массива. В отличие от всех других склоняещих компонентов, `GeographicalNamesInflection` возвращает не 6, а 7 форм слова - с локативным падежом (вторым предложным). 
 
 Что склоняется:
 - Название населённого пункта, страны без приставки: `Москва`, `Россия`, `Франция`.
@@ -130,7 +130,8 @@ GeographicalNamesInflection::getCases('Саратов') => array(6) {
     "dative" => "Саратову",
     "accusative" => "Саратов",
     "ablative" => "Саратовом",
-    "prepositional" => "Саратове"
+    "prepositional" => "Саратове",
+    "locative" => "Саратове",
 }
 ```
 
