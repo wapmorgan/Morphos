@@ -123,29 +123,45 @@ class GeographicalNamesInflection extends \morphos\BaseInflection implements Cas
 
         // Проверка на неизменяемость и сложное название
         if (in_array($name, static::$immutableNames, true)) {
-            return array_fill_keys([static::IMENIT, static::RODIT, static::DAT, static::VINIT, static::TVORIT, static::PREDLOJ], S::name($name));
+            return array_fill_keys(
+                [static::IMENIT, static::RODIT, static::DAT, static::VINIT, static::TVORIT, static::PREDLOJ, static::LOCATIVE]
+                , S::name($name));
         }
 
         if (strpos($name, ' ') !== false) {
             $first_part = S::slice($name, 0, S::findFirstPosition($name, ' '));
             // город N, село N, хутор N, пгт N
             if (in_array($first_part, ['город', 'село', 'хутор', 'пгт', 'район', 'поселок', 'округ', 'республика'], true)) {
-                if ($first_part !== 'пгт')
-                    return static::composeCasesFromWords([
-                        $first_part !== 'республика'
-                            ? NounDeclension::getCases($first_part)
-                            : array_map(['\\morphos\\S', 'name'], NounDeclension::getCases($first_part)),
-                        array_fill_keys(static::getAllCases(), S::name(S::slice($name, S::length($first_part) + 1)))
-                    ]);
-                else
-                    return array_fill_keys([static::IMENIT, static::RODIT, static::DAT, static::VINIT, static::TVORIT, static::PREDLOJ], 'пгт '.S::name(S::slice($name, 4)));
+                if ($first_part === 'пгт')
+                    return array_fill_keys(
+                        [static::IMENIT, static::RODIT, static::DAT, static::VINIT, static::TVORIT, static::PREDLOJ, static::LOCATIVE],
+                        'пгт '.S::name(S::slice($name, 4)));
+
+                if ($first_part === 'республика') {
+                    $prefix = array_map(['\\morphos\\S', 'name'], NounDeclension::getCases($first_part));
+                } else {
+                    $prefix = NounDeclension::getCases($first_part);
+                }
+                $prefix[Cases::LOCATIVE] = $prefix[Cases::PREDLOJ];
+
+                return static::composeCasesFromWords([$prefix,
+                    array_fill_keys(
+                        array_merge(static::getAllCases(), [\morphos\Russian\Cases::LOCATIVE]),
+                        S::name(S::slice($name, S::length($first_part) + 1)))
+                ]);
             }
 
             $last_part = S::slice($name,
                 S::findLastPosition($name, ' ') + 1);
             // N область, N край
             if (in_array($last_part, ['край', 'область', 'район', 'волость'], true)) {
-                return static::composeCasesFromWords([static::getCases(S::slice($name, 0, S::findLastPosition($name, ' '))), NounDeclension::getCases($last_part)]);
+                $last_part_cases = NounDeclension::getCases($last_part);
+                $last_part_cases[Cases::LOCATIVE] = $last_part_cases[Cases::PREDLOJ];
+                return static::composeCasesFromWords(
+                    [
+                        static::getCases(S::slice($name, 0, S::findLastPosition($name, ' '))),
+                        $last_part_cases,
+                    ]);
             }
         }
 
@@ -179,6 +195,7 @@ class GeographicalNamesInflection extends \morphos\BaseInflection implements Cas
                         static::VINIT => $prefix.'ий',
                         static::TVORIT => $prefix.'им',
                         static::PREDLOJ => $prefix.(static::chooseEndingBySonority($prefix, 'ем', 'ом')),
+                        static::LOCATIVE => $prefix.(static::chooseEndingBySonority($prefix, 'ем', 'ом')),
                     ];
 
                 // Ростовская
@@ -191,6 +208,7 @@ class GeographicalNamesInflection extends \morphos\BaseInflection implements Cas
                         static::VINIT => $prefix.'ую',
                         static::TVORIT => $prefix.'ой',
                         static::PREDLOJ => $prefix.'ой',
+                        static::LOCATIVE => $prefix.'ой',
                     ];
 
                 // Россошь
@@ -209,6 +227,7 @@ class GeographicalNamesInflection extends \morphos\BaseInflection implements Cas
                         static::VINIT => $prefix.'ь',
                         static::TVORIT => $prefix.'ью',
                         static::PREDLOJ => $prefix.'и',
+                        static::LOCATIVE => $prefix.'и',
                     ];
 
                 // Грозный, Благодарный
@@ -221,6 +240,7 @@ class GeographicalNamesInflection extends \morphos\BaseInflection implements Cas
                         static::VINIT => $prefix.'ый',
                         static::TVORIT => $prefix.'ым',
                         static::PREDLOJ => $prefix.'ом',
+                        static::LOCATIVE => $prefix.'ом',
                     ];
 
                 // Ставрополь, Ярославль, Электросталь
@@ -235,6 +255,7 @@ class GeographicalNamesInflection extends \morphos\BaseInflection implements Cas
                             static::VINIT => $prefix.'ь',
                             static::TVORIT => $prefix.'ью',
                             static::PREDLOJ => $prefix.'и',
+                            static::LOCATIVE => $prefix.'и',
                         ];
 
                     return [
@@ -244,6 +265,7 @@ class GeographicalNamesInflection extends \morphos\BaseInflection implements Cas
                         static::VINIT => $prefix.'ь',
                         static::TVORIT => $prefix.'ем',
                         static::PREDLOJ => $prefix.'е',
+                        static::LOCATIVE => $prefix.'е',
                     ];
 
                 // Тверь, Анадырь
@@ -257,6 +279,7 @@ class GeographicalNamesInflection extends \morphos\BaseInflection implements Cas
                         static::VINIT => $prefix . 'ь',
                         static::TVORIT => $prefix . (static::isBinaryVowel($last_vowel) ? 'ью' : 'ем'),
                         static::PREDLOJ => $prefix . (static::isBinaryVowel($last_vowel) ? 'и' : 'е'),
+                        static::LOCATIVE => $prefix . (static::isBinaryVowel($last_vowel) ? 'и' : 'е'),
                     ];
 
                 // Березники, Ессентуки
@@ -277,6 +300,7 @@ class GeographicalNamesInflection extends \morphos\BaseInflection implements Cas
                         static::VINIT => $prefix . 'и',
                         static::TVORIT => $prefix . 'ами',
                         static::PREDLOJ => $prefix . 'ах',
+                        static::LOCATIVE => $prefix . 'ах',
                     ];
 
                 // Набережные
@@ -291,6 +315,7 @@ class GeographicalNamesInflection extends \morphos\BaseInflection implements Cas
                         static::VINIT => $prefix . 'е',
                         static::TVORIT => $prefix . 'ми',
                         static::PREDLOJ => $prefix . 'х',
+                        static::LOCATIVE => $prefix . 'х',
                     ];
 
                 // Челны
@@ -307,6 +332,7 @@ class GeographicalNamesInflection extends \morphos\BaseInflection implements Cas
                         static::VINIT => $prefix . 'ы',
                         static::TVORIT => $prefix . 'ами',
                         static::PREDLOJ => $prefix . 'ах',
+                        static::LOCATIVE => $prefix . 'ах',
                     ];
 
                 // Глубокое
@@ -319,6 +345,7 @@ class GeographicalNamesInflection extends \morphos\BaseInflection implements Cas
                         static::VINIT => $prefix.'ое',
                         static::TVORIT => $prefix.'им',
                         static::PREDLOJ => $prefix.'ом',
+                        static::LOCATIVE => $prefix.'ом',
                     ];
 
             }
@@ -334,6 +361,7 @@ class GeographicalNamesInflection extends \morphos\BaseInflection implements Cas
                         static::VINIT => $prefix.'р',
                         static::TVORIT => $prefix.'ром',
                         static::PREDLOJ => $prefix.'ре',
+                        static::LOCATIVE => $prefix.'ру',
                     ];
 
                 case 'ы':
@@ -346,6 +374,7 @@ class GeographicalNamesInflection extends \morphos\BaseInflection implements Cas
                         static::VINIT => $prefix.'ы',
                         static::TVORIT => $prefix.'ами',
                         static::PREDLOJ => $prefix.'ах',
+                        static::LOCATIVE => $prefix.'ах',
                     ];
 
                 case 'я':
@@ -358,6 +387,7 @@ class GeographicalNamesInflection extends \morphos\BaseInflection implements Cas
                         static::VINIT => $prefix.'ю',
                         static::TVORIT => $prefix.'ей',
                         static::PREDLOJ => $prefix.'и',
+                        static::LOCATIVE => $prefix.'и',
                     ];
 
                 case 'а':
@@ -370,6 +400,7 @@ class GeographicalNamesInflection extends \morphos\BaseInflection implements Cas
                         static::VINIT => $prefix.'у',
                         static::TVORIT => $prefix.'ой',
                         static::PREDLOJ => $prefix.'е',
+                        static::LOCATIVE => $prefix.'е',
                     ];
 
                 case 'й':
@@ -382,6 +413,7 @@ class GeographicalNamesInflection extends \morphos\BaseInflection implements Cas
                         static::VINIT => $prefix . 'й',
                         static::TVORIT => $prefix . 'ем',
                         static::PREDLOJ => $prefix . 'е',
+                        static::LOCATIVE => $prefix . 'е',
                     ];
             }
 
@@ -403,7 +435,8 @@ class GeographicalNamesInflection extends \morphos\BaseInflection implements Cas
                     static::DAT => $prefix . 'у',
                     static::VINIT => S::name($name),
                     static::TVORIT => $prefix . (static::isVelarConsonant(S::slice($name, -2, -1)) ? 'ем' : 'ом'),
-                    static::PREDLOJ => $prefix . ($name === 'крым' ? 'у' : 'е'),
+                    static::PREDLOJ => $prefix . 'е',
+                    static::LOCATIVE => $prefix.($name === 'крым' ? 'у' : 'е'),
                 ];
             }
 
@@ -426,13 +459,16 @@ class GeographicalNamesInflection extends \morphos\BaseInflection implements Cas
                     static::VINIT => S::name($name),
                     static::TVORIT => $prefix.'ым',
                     static::PREDLOJ => $prefix.'е',
+                    static::LOCATIVE => $prefix.'е',
                 ];
             }
         }
 
         // if no rules matches or name is immutable
         $name = in_array($name, static::$abbreviations, true) ? S::upper($name) : S::name($name);
-        return array_fill_keys([static::IMENIT, static::RODIT, static::DAT, static::VINIT, static::TVORIT, static::PREDLOJ], $name);
+        return array_fill_keys(
+            [static::IMENIT, static::RODIT, static::DAT, static::VINIT, static::TVORIT, static::PREDLOJ, static::LOCATIVE],
+        $name);
     }
 
     /**

@@ -52,6 +52,9 @@ trait CasesHelper
             case 'п':
                 return Cases::PREDLOJ;
 
+            case Cases::LOCATIVE:
+                return Cases::LOCATIVE;
+
             default:
                 return \morphos\CasesHelper::canonizeCase($case);
         }

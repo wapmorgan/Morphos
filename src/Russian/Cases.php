@@ -16,4 +16,5 @@ interface Cases extends \morphos\Cases
     const VINIT = self::ACCUSATIVE;
     const TVORIT = self::ABLATIVE;
     const PREDLOJ = self::PREPOSITIONAL;
+    const LOCATIVE = 'locative';
 }
