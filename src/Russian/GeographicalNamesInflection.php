@@ -32,7 +32,7 @@ class GeographicalNamesInflection extends \morphos\BaseInflection implements Cas
         'алматы',
         'сочи',
         'гоа',
-        
+
         // части
         'санкт',
         'йошкар',
@@ -211,12 +211,27 @@ class GeographicalNamesInflection extends \morphos\BaseInflection implements Cas
                         static::LOCATIVE => $prefix.'ой',
                     ];
 
+                // Нижняя, Верхняя, Средняя
+                case 'яя':
+                    $prefix = S::name(S::slice($name, 0, -2));
+                    return [
+                        static::IMENIT => $prefix.'яя',
+                        static::RODIT => $prefix.'ей',
+                        static::DAT => $prefix.'ей',
+                        static::VINIT => $prefix.'юю',
+                        static::TVORIT => $prefix.'ей',
+                        static::PREDLOJ => $prefix.'ей',
+                        static::LOCATIVE => $prefix.'ей',
+                    ];
+
                 // Россошь
                 case 'шь':
                 // Пермь, Кемь
                 case 'мь':
                 // Рязань, Назрань
                 case 'нь':
+                // Сысерть
+                case 'ть':
                 // Керчь
                 case 'чь':
                     $prefix = S::name(S::slice($name, 0, -1));
