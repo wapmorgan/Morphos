@@ -41,6 +41,7 @@ class GeographicalNamesInflection extends \morphos\BaseInflection implements Cas
         'улан',
         'ханты',
         'буда',
+        'рублёво',
     ];
 
     protected static $runawayVowelsExceptions = [
@@ -56,6 +57,7 @@ class GeographicalNamesInflection extends \morphos\BaseInflection implements Cas
 
     protected static $misspellings = [
         'орел' => 'орёл',
+        'рублево' => 'рублёво',
     ];
 
     /**
