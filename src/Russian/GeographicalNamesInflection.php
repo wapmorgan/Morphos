@@ -32,6 +32,8 @@ class GeographicalNamesInflection extends \morphos\BaseInflection implements Cas
         'алматы',
         'сочи',
         'гоа',
+        'кемерово',
+        'назарово',
 
         // части
         'санкт',
