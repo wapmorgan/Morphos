@@ -20,6 +20,10 @@ class GeographicalNamesInflection extends \morphos\BaseInflection implements Cas
     protected static $delimiters = [
         ' ',
         '-на-',
+        '-де-',
+        '-сюр-',
+        '-ан-',
+        '-ла-',
         '-',
     ];
 
@@ -42,6 +46,15 @@ class GeographicalNamesInflection extends \morphos\BaseInflection implements Cas
         'ханты',
         'буда',
         'рублёво',
+        'гран',
+        'гранд',
+        'вильфранш',
+        'льорет',
+        'андорра',
+        'экс',
+        'эс',
+        'сен',
+        'ла',
     ];
 
     protected static $runawayVowelsExceptions = [
