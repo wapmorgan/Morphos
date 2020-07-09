@@ -45,7 +45,10 @@ class MoneySpeller extends \morphos\MoneySpeller
         $currency = static::canonizeCurrency($currency);
 
         $integer = floor($value);
-        $fractional = floor(($value * 100) % 100);
+        // $fractional = floor(($value * 100) % 100);
+        $fractional = fmod($value, $integer);
+        $fractional = round($fractional, 2, PHP_ROUND_HALF_UP);
+        $fractional = $fractional * 100;
 
         switch ($format) {
             case static::SHORT_FORMAT:
