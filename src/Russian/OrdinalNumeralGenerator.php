@@ -3,6 +3,7 @@ namespace morphos\Russian;
 
 use morphos\NumeralGenerator;
 use morphos\S;
+use RuntimeException;
 
 /**
  * Rules are from http://www.fio.ru/pravila/grammatika/sklonenie-imen-chislitelnykh/
@@ -12,6 +13,10 @@ class OrdinalNumeralGenerator extends NumeralGenerator implements Cases
 {
     use RussianLanguage, CasesHelper;
 
+    /**
+     * @var string[]
+     * @phpstan-var array<int, string>
+     */
     protected static $words = [
         1 => 'первый',
         2 => 'второй',
@@ -51,13 +56,21 @@ class OrdinalNumeralGenerator extends NumeralGenerator implements Cases
         900 => 'девятисотый',
     ];
 
+    /**
+     * @var string[]
+     * @phpstan-var array<int, string>
+     */
     protected static $exponents = [
-        '1000' => 'тысячный',
-        '1000000' => 'миллионный',
-        '1000000000' => 'миллиардный',
-        '1000000000000' => 'триллионный',
+        1000 => 'тысячный',
+        1000000 => 'миллионный',
+        1000000000 => 'миллиардный',
+        1000000000000 => 'триллионный',
     ];
 
+    /**
+     * @var string[]
+     * @phpstan-var array<int, string>
+     */
     protected static $multipliers = [
         2 => 'двух',
         3 => 'трех',
@@ -97,10 +110,11 @@ class OrdinalNumeralGenerator extends NumeralGenerator implements Cases
     ];
 
     /**
-     * @param        $number
+     * @param int $number
      * @param string $gender
      *
-     * @return array
+     * @return string[]
+     * @phpstan-return array<string, string>
      * @throws \Exception
      */
     public static function getCases($number, $gender = self::MALE)
@@ -119,118 +133,120 @@ class OrdinalNumeralGenerator extends NumeralGenerator implements Cases
                     static::TVORIT => $prefix.($gender == static::FEMALE ? 'ьей' : 'ьим'),
                     static::PREDLOJ => $prefix.($gender == static::FEMALE ? 'ьей' : 'ьем'),
                 ];
-            } else {
-                switch ($gender) {
-                    case static::MALE:
-                        $prefix = S::slice($word, 0, -2);
-                        return [
-                            static::IMENIT => $word,
-                            static::RODIT => $prefix.'ого',
-                            static::DAT => $prefix.'ому',
-                            static::VINIT => $word,
-                            static::TVORIT => $prefix.'ым',
-                            static::PREDLOJ => $prefix.'ом',
-                        ];
+            }
 
-                    case static::FEMALE:
-                        $prefix = S::slice($word, 0, -2);
-                        return [
-                            static::IMENIT => $prefix.'ая',
-                            static::RODIT => $prefix.'ой',
-                            static::DAT => $prefix.'ой',
-                            static::VINIT => $prefix.'ую',
-                            static::TVORIT => $prefix.'ой',
-                            static::PREDLOJ => $prefix.'ой',
-                        ];
+            switch ($gender) {
+                case static::MALE:
+                    $prefix = S::slice($word, 0, -2);
+                    return [
+                        static::IMENIT => $word,
+                        static::RODIT => $prefix.'ого',
+                        static::DAT => $prefix.'ому',
+                        static::VINIT => $word,
+                        static::TVORIT => $prefix.'ым',
+                        static::PREDLOJ => $prefix.'ом',
+                    ];
 
-                    case static::NEUTER:
-                        $prefix = S::slice($word, 0, -2);
-                        return [
-                            static::IMENIT => $prefix.'ое',
-                            static::RODIT => $prefix.'ого',
-                            static::DAT => $prefix.'ому',
-                            static::VINIT => $prefix.'ое',
-                            static::TVORIT => $prefix.'ым',
-                            static::PREDLOJ => $prefix.'ом',
-                        ];
-                }
+                case static::FEMALE:
+                    $prefix = S::slice($word, 0, -2);
+                    return [
+                        static::IMENIT => $prefix.'ая',
+                        static::RODIT => $prefix.'ой',
+                        static::DAT => $prefix.'ой',
+                        static::VINIT => $prefix.'ую',
+                        static::TVORIT => $prefix.'ой',
+                        static::PREDLOJ => $prefix.'ой',
+                    ];
+
+                case static::NEUTER:
+                    $prefix = S::slice($word, 0, -2);
+                    return [
+                        static::IMENIT => $prefix.'ое',
+                        static::RODIT => $prefix.'ого',
+                        static::DAT => $prefix.'ому',
+                        static::VINIT => $prefix.'ое',
+                        static::TVORIT => $prefix.'ым',
+                        static::PREDLOJ => $prefix.'ом',
+                    ];
+
+                default:
+                    throw new RuntimeException('Unreacheable');
             }
         }
-        // compound numeral
-        else {
-            $ordinal_part = null;
-            $ordinal_prefix = null;
-            $result = [];
 
-            // test for exponents. If smaller summand of number is an exponent, declinate it
-            foreach (array_reverse(static::$exponents, true) as $word_number => $word) {
-                if ($number >= $word_number && ($number % $word_number) == 0) {
-                    $count = floor($number / $word_number) % 1000;
-                    $number -= ($count * $word_number);
-                    foreach (array_reverse(static::$multipliers, true) as $multiplier => $multipliers_word) {
-                        if ($count >= $multiplier) {
-                            $ordinal_prefix .= $multipliers_word;
-                            $count -= $multiplier;
+        // compound numeral
+        $ordinal_part = null;
+        $ordinal_prefix = null;
+        $result = [];
+
+        // test for exponents. If smaller summand of number is an exponent, declinate it
+        foreach (array_reverse(static::$exponents, true) as $word_number => $word) {
+            if ($number >= $word_number && ($number % $word_number) == 0) {
+                $count = floor($number / $word_number) % 1000;
+                $number -= ($count * $word_number);
+                foreach (array_reverse(static::$multipliers, true) as $multiplier => $multipliers_word) {
+                    if ($count >= $multiplier) {
+                        $ordinal_prefix .= $multipliers_word;
+                        $count -= $multiplier;
+                    }
+                }
+                $ordinal_part = static::getCases($word_number, $gender);
+                foreach ($ordinal_part as $case => $ordinal_word) {
+                    $ordinal_part[$case] = $ordinal_prefix.$ordinal_part[$case];
+                }
+
+                break;
+            }
+        }
+
+        // otherwise, test if smaller summand is just a number with it's own name
+        if (empty($ordinal_part)) {
+            // get the smallest number with it's own name
+            foreach (static::$words as $word_number => $word) {
+                if ($number >= $word_number) {
+                    if ($word_number <= 9) {
+                        if ($number % 10 == 0) {
+                            continue;
+                        }
+                        // check for case when word_number smaller than should be used (e.g. 1,2,3 when it can be 4 (number: 344))
+                        if (($number % 10) > $word_number) {
+                            continue;
+                        }
+                        // check that there is no two-digits number with it's own name (e.g. 13 for 113)
+                        if (isset(static::$words[$number % 100]) && $number % 100 > $word_number) {
+                            continue;
+                        }
+                    } elseif ($word_number <= 90) {
+                        // check for case when word_number smaller than should be used (e.g. 10, 11, 12 when it can be 13)
+                        if (($number % 100) > $word_number) {
+                            continue;
                         }
                     }
                     $ordinal_part = static::getCases($word_number, $gender);
-                    foreach ($ordinal_part as $case => $ordinal_word) {
-                        $ordinal_part[$case] = $ordinal_prefix.$ordinal_part[$case];
-                    }
-
+                    $number -= $word_number;
                     break;
                 }
             }
-
-            // otherwise, test if smaller summand is just a number with it's own name
-            if (empty($ordinal_part)) {
-                // get the smallest number with it's own name
-                foreach (static::$words as $word_number => $word) {
-                    if ($number >= $word_number) {
-                        if ($word_number <= 9) {
-                            if ($number % 10 == 0) {
-                                continue;
-                            }
-                            // check for case when word_number smaller than should be used (e.g. 1,2,3 when it can be 4 (number: 344))
-                            if (($number % 10) > $word_number) {
-                                continue;
-                            }
-                            // check that there is no two-digits number with it's own name (e.g. 13 for 113)
-                            if (isset(static::$words[$number % 100]) && $number % 100 > $word_number) {
-                                continue;
-                            }
-                        } elseif ($word_number <= 90) {
-                            // check for case when word_number smaller than should be used (e.g. 10, 11, 12 when it can be 13)
-                            if (($number % 100) > $word_number) {
-                                continue;
-                            }
-                        }
-                        $ordinal_part = static::getCases($word_number, $gender);
-                        $number -= $word_number;
-                        break;
-                    }
-                }
-            }
-
-            // if number has second summand, get cardinal form of it
-            if ($number > 0) {
-                $cardinal_part = CardinalNumeralGenerator::getCase($number, static::IMENIT, $gender);
-
-                // make one array with cases and delete 'o/об' prepositional from all parts except the last one
-                foreach ([static::IMENIT, static::RODIT, static::DAT, static::VINIT, static::TVORIT, static::PREDLOJ] as $case) {
-                    $result[$case] = $cardinal_part.' '.$ordinal_part[$case];
-                }
-            } else {
-                $result = $ordinal_part;
-            }
-
-            return $result;
         }
+
+        // if number has second summand, get cardinal form of it
+        if ($number > 0) {
+            $cardinal_part = CardinalNumeralGenerator::getCase($number, static::IMENIT, $gender);
+
+            // make one array with cases and delete 'o/об' prepositional from all parts except the last one
+            foreach ([static::IMENIT, static::RODIT, static::DAT, static::VINIT, static::TVORIT, static::PREDLOJ] as $case) {
+                $result[$case] = $cardinal_part.' '.$ordinal_part[$case];
+            }
+        } else {
+            $result = $ordinal_part;
+        }
+
+        return $result;
     }
 
     /**
-     * @param $number
-     * @param $case
+     * @param int $number
+     * @param string $case
      * @param string $gender
      * @return mixed
      * @throws \Exception

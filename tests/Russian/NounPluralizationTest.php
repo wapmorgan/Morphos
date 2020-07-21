@@ -10,7 +10,7 @@ class NounPluralizationTest extends \PHPUnit_Framework_TestCase
     /**
      * @dataProvider pluralizationWordsProvider
      *
-     * @param $word
+     * @param string $word
      * @param $pluralized2
      * @param $pluralized5
      *
@@ -72,11 +72,11 @@ class NounPluralizationTest extends \PHPUnit_Framework_TestCase
     /**
      * @dataProvider pluralizationWordsWithCaseProvider
      *
-     * @param $word
+     * @param string $word
      * @param $pluralizedOne
      * @param $pluralizedMany
      *
-     * @param $case
+     * @param string $case
      *
      * @throws \Exception
      */

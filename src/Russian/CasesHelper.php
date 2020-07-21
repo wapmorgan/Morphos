@@ -8,7 +8,7 @@ trait CasesHelper
     use \morphos\CasesHelper;
 
     /**
-     * @param $case
+     * @param string $case
      * @return string
      * @throws \Exception
      */

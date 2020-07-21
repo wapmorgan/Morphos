@@ -4,6 +4,7 @@ namespace morphos\Russian;
 use morphos\BaseInflection;
 use morphos\Gender;
 use morphos\S;
+use RuntimeException;
 
 /**
  * Rules are from http://morpher.ru/Russian/Noun.aspx
@@ -16,6 +17,7 @@ class NounDeclension extends BaseInflection implements Cases, Gender
     const SECOND_DECLENSION = 2;
     const THIRD_DECLENSION = 3;
 
+    /** @var string[] */
     public static $immutableWords = [
         // валюты
         'евро', 'пенни', 'песо', 'сентаво',
@@ -38,6 +40,7 @@ class NounDeclension extends BaseInflection implements Cases, Gender
 
     /**
      * These words has 2 declension type.
+     * @var string[]|string[][]
      */
     protected static $abnormalExceptions = [
         'бремя',
@@ -55,6 +58,7 @@ class NounDeclension extends BaseInflection implements Cases, Gender
         'дитя' => ['дитя', 'дитяти', 'дитяти', 'дитя', 'дитятей', 'дитяти'],
     ];
 
+    /** @var string[]  */
     protected static $masculineWithSoft = [
         'автослесарь',
         'библиотекарь',
@@ -98,6 +102,7 @@ class NounDeclension extends BaseInflection implements Cases, Gender
         'ячмень',
     ];
 
+    /** @var string[]  */
     protected static $masculineWithSoftAndRunAwayVowels = [
         'день',
         'пень',
@@ -144,7 +149,7 @@ class NounDeclension extends BaseInflection implements Cases, Gender
 
     /**
      * Определение склонения (по школьной программе) существительного.
-     * @param $word
+     * @param string $word
      * @param bool $animateness
      * @return int
      */
@@ -171,7 +176,8 @@ class NounDeclension extends BaseInflection implements Cases, Gender
      * Получение слова во всех 6 падежах.
      * @param string $word
      * @param bool $animateness Признак одушевлённости
-     * @return array
+     * @return string[]
+     * @phpstan-return array<string, string>
      */
     public static function getCases($word, $animateness = false)
     {
@@ -192,9 +198,13 @@ class NounDeclension extends BaseInflection implements Cases, Gender
                 static::TVORIT => $word,
                 static::PREDLOJ => $word,
             ];
-        } elseif (isset(static::$abnormalExceptions[$word])) {
+        }
+
+        if (isset(static::$abnormalExceptions[$word])) {
             return array_combine([static::IMENIT, static::RODIT, static::DAT, static::VINIT, static::TVORIT, static::PREDLOJ], static::$abnormalExceptions[$word]);
-        } elseif (in_array($word, static::$abnormalExceptions, true)) {
+        }
+
+        if (in_array($word, static::$abnormalExceptions, true)) {
             $prefix = S::slice($word, 0, -1);
             return [
                 static::IMENIT => $word,
@@ -213,13 +223,16 @@ class NounDeclension extends BaseInflection implements Cases, Gender
                 return static::declinateSecondDeclension($word, $animateness);
             case static::THIRD_DECLENSION:
                 return static::declinateThirdDeclension($word);
+
+            default: throw new RuntimeException('Unreachable');
         }
     }
 
     /**
      * Получение всех форм слова первого склонения.
-     * @param $word
-     * @return array
+     * @param string $word
+     * @return string[]
+     * @phpstan-return array<string, string>
      */
     public static function declinateFirstDeclension($word)
     {
@@ -259,9 +272,10 @@ class NounDeclension extends BaseInflection implements Cases, Gender
 
     /**
      * Получение всех форм слова второго склонения.
-     * @param $word
+     * @param string $word
      * @param bool $animateness
-     * @return array
+     * @return string[]
+     * @phpstan-return array<string, string>
      */
     public static function declinateSecondDeclension($word, $animateness = false)
     {
@@ -320,8 +334,9 @@ class NounDeclension extends BaseInflection implements Cases, Gender
 
     /**
      * Получение всех форм слова третьего склонения.
-     * @param $word
-     * @return array
+     * @param string $word
+     * @return string[]
+     * @phpstan-return array<string, string>
      */
     public static function declinateThirdDeclension($word)
     {
@@ -340,9 +355,10 @@ class NounDeclension extends BaseInflection implements Cases, Gender
     /**
      * Склонение существительных, образованных от прилагательных и причастий.
      * Rules are from http://rusgram.narod.ru/1216-1231.html
-     * @param $word
-     * @param $animateness
-     * @return array
+     * @param string $word
+     * @param bool $animateness
+     * @return string[]
+     * @phpstan-return array<string, string>
      */
     public static function declinateAdjective($word, $animateness)
     {
@@ -395,13 +411,15 @@ class NounDeclension extends BaseInflection implements Cases, Gender
                     Cases::TVORIT => $prefix.$ending,
                     Cases::PREDLOJ => $prefix.$ending,
                 ];
+
+            default: throw new RuntimeException('Unreachable');
         }
     }
 
     /**
      * Получение одной формы слова (падежа).
      * @param string $word Слово
-     * @param integer $case Падеж
+     * @param string $case Падеж
      * @param bool $animateness Признак одушевленности
      * @return string
      * @throws \Exception
@@ -414,9 +432,9 @@ class NounDeclension extends BaseInflection implements Cases, Gender
     }
 
     /**
-     * @param $word
-     * @param $last
-     * @return bool
+     * @param string $word
+     * @param string $last
+     * @return string
      */
     public static function getPrefixOfSecondDeclension($word, $last)
     {
@@ -440,9 +458,9 @@ class NounDeclension extends BaseInflection implements Cases, Gender
     }
 
     /**
-     * @param $word
-     * @param $last
-     * @param $prefix
+     * @param string $word
+     * @param string $last
+     * @param string $prefix
      * @return string
      */
     public static function getPredCaseOf12Declensions($word, $last, $prefix)

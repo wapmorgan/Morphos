@@ -3,6 +3,7 @@ namespace morphos\Russian;
 
 use morphos\NumeralGenerator;
 use morphos\S;
+use RuntimeException;
 
 /**
  * Rules are from http://www.fio.ru/pravila/grammatika/sklonenie-imen-chislitelnykh/
@@ -11,6 +12,10 @@ class CardinalNumeralGenerator extends NumeralGenerator implements Cases
 {
     use RussianLanguage, CasesHelper;
 
+    /**
+     * @var string[]
+     * @phpstan-var array<int, string>
+     */
     protected static $words = [
         1 => 'один',
         2 => 'два',
@@ -50,14 +55,22 @@ class CardinalNumeralGenerator extends NumeralGenerator implements Cases
         900 => 'девятьсот',
     ];
 
+    /**
+     * @var string[]
+     * @phpstan-var array<int, string>
+     */
     protected static $exponents = [
-        '1000' => 'тысяча',
-        '1000000' => 'миллион',
-        '1000000000' => 'миллиард',
-        '1000000000000' => 'триллион',
-        '1000000000000000' => 'квадриллион',
+        1000 => 'тысяча',
+        1000000 => 'миллион',
+        1000000000 => 'миллиард',
+        1000000000000 => 'триллион',
+        1000000000000000 => 'квадриллион',
     ];
 
+    /**
+     * @var array
+     * @phpstan-var array<string, array<string, array<string, string>|string>>
+     */
     protected static $precalculated = [
         'один' => [
             self::MALE => [
@@ -154,9 +167,10 @@ class CardinalNumeralGenerator extends NumeralGenerator implements Cases
     ];
 
     /**
-     * @param $number
+     * @param int $number
      * @param string $gender
-     * @return array
+     * @return string[]
+     * @phpstan-return array<string, string>
      * @throws \Exception
      */
     public static function getCases($number, $gender = self::MALE)
@@ -223,7 +237,11 @@ class CardinalNumeralGenerator extends NumeralGenerator implements Cases
             } elseif (isset(static::$exponents[$number])) {
                 return NounDeclension::getCases($word, false);
             }
-        } elseif ($number == 0) {
+
+            throw new RuntimeException('Unreachable');
+        }
+
+        if ($number == 0) {
             return [
                 static::IMENIT => 'ноль',
                 static::RODIT => 'ноля',
@@ -232,67 +250,65 @@ class CardinalNumeralGenerator extends NumeralGenerator implements Cases
                 static::TVORIT => 'нолём',
                 static::PREDLOJ => 'ноле',
             ];
+        } // compound numeral
+
+        $parts = [];
+        $result = [];
+
+        foreach (array_reverse(static::$exponents, true) as $word_number => $word) {
+            if ($number >= $word_number) {
+                $count = (int)floor($number / $word_number);
+                $parts[] = static::getCases($count, ($word_number == 1000 ? static::FEMALE : static::MALE));
+
+                switch (NounPluralization::getNumeralForm($count)) {
+                    case NounPluralization::ONE:
+                        $parts[] = NounDeclension::getCases($word, false);
+                        break;
+
+                    case NounPluralization::TWO_FOUR:
+                        $part = NounPluralization::getCases($word);
+                        if ($word_number != 1000) { // get dative case of word for 1000000, 1000000000 and 1000000000000
+                            $part[Cases::IMENIT] = $part[Cases::VINIT] = NounDeclension::getCase($word, Cases::RODIT);
+                        }
+                        $parts[] = $part;
+                        break;
+
+                    case NounPluralization::FIVE_OTHER:
+                        $part = NounPluralization::getCases($word);
+                        $part[Cases::IMENIT] = $part[Cases::VINIT] = $part[Cases::RODIT];
+                        $parts[] = $part;
+                        break;
+                }
+
+                $number = $number % ($count * $word_number);
+            }
         }
-        // compound numeral
-        else {
-            $parts = [];
-            $result = [];
 
-            foreach (array_reverse(static::$exponents, true) as $word_number => $word) {
-                if ($number >= $word_number) {
-                    $count = floor($number / $word_number);
-                    $parts[] = static::getCases($count, ($word_number == 1000 ? static::FEMALE : static::MALE));
-
-                    switch (NounPluralization::getNumeralForm($count)) {
-                        case NounPluralization::ONE:
-                            $parts[] = NounDeclension::getCases($word, false);
-                            break;
-
-                        case NounPluralization::TWO_FOUR:
-                            $part = NounPluralization::getCases($word);
-                            if ($word_number != 1000) { // get dative case of word for 1000000, 1000000000 and 1000000000000
-                                $part[Cases::IMENIT] = $part[Cases::VINIT] = NounDeclension::getCase($word, Cases::RODIT);
-                            }
-                            $parts[] = $part;
-                            break;
-
-                        case NounPluralization::FIVE_OTHER:
-                            $part = NounPluralization::getCases($word);
-                            $part[Cases::IMENIT] = $part[Cases::VINIT] = $part[Cases::RODIT];
-                            $parts[] = $part;
-                            break;
-                    }
-
-                    $number = $number % ($count * $word_number);
-                }
+        foreach (array_reverse(static::$words, true) as $word_number => $word) {
+            if ($number >= $word_number) {
+                $parts[] = static::getCases($word_number, $gender);
+                $number %= $word_number;
             }
-
-            foreach (array_reverse(static::$words, true) as $word_number => $word) {
-                if ($number >= $word_number) {
-                    $parts[] = static::getCases($word_number, $gender);
-                    $number %= $word_number;
-                }
-            }
-
-            // make one array with cases and delete 'o/об' prepositional from all parts except the last one
-            foreach (array(static::IMENIT, static::RODIT, static::DAT, static::VINIT, static::TVORIT, static::PREDLOJ) as $case) {
-                $result[$case] = [];
-                foreach ($parts as $partN => $part) {
-                    $result[$case][] = $part[$case];
-                }
-                $result[$case] = implode(' ', $result[$case]);
-            }
-
-            return $result;
         }
+
+        // make one array with cases and delete 'o/об' prepositional from all parts except the last one
+        foreach (array(static::IMENIT, static::RODIT, static::DAT, static::VINIT, static::TVORIT, static::PREDLOJ) as $case) {
+            $result[$case] = [];
+            foreach ($parts as $partN => $part) {
+                $result[$case][] = $part[$case];
+            }
+            $result[$case] = implode(' ', $result[$case]);
+        }
+
+        return $result;
     }
 
     /**
-     * @param        $number
-     * @param        $case
+     * @param int $number
+     * @param string $case
      * @param string $gender
      *
-     * @return mixed|void
+     * @return string
      * @throws \Exception
      */
     public static function getCase($number, $case, $gender = self::MALE)

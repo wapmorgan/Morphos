@@ -5,6 +5,9 @@ use InvalidArgumentException;
 
 class TimeSpeller extends \morphos\TimeSpeller
 {
+    /**
+     * @var string[]
+     */
     protected static $units = [
         self::YEAR => 'год',
         self::MONTH => 'месяц',
@@ -22,8 +25,8 @@ class TimeSpeller extends \morphos\TimeSpeller
     const JUST_NOW = 'только что';
 
     /**
-     * @param $count
-     * @param $unit
+     * @param int $count
+     * @param string $unit
      *
      * @return string
      * @throws \Exception

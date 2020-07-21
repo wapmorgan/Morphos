@@ -8,6 +8,8 @@ env:
 matrix:
   fast_finish: true
   include:
+    - php: 7.4
+      env: RUN_PHPSTAN=1
     - php: 7.3
     - php: 7.2
     # run tests coverage on PHP 7.1
@@ -37,6 +39,11 @@ install:
 
 script:
 - vendor/bin/phpunit $PHPUNIT_FLAGS
+- |
+  if [ $RUN_PHPSTAN == 1 ]; then
+    composer require --dev phpstan/phpstan
+    vendor/bin/phpstan analyse
+  fi
 
 after_script:
   - |

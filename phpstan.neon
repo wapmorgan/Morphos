@@ -1,0 +1,24 @@
+parameters:
+    level: 6
+    reportUnmatchedIgnoredErrors: false
+    paths:
+        - src
+        - tests
+    ignoreErrors:
+        -
+            message: '#Method .* has no return typehint specified#'
+            path: tests/
+        -
+            message: '#Method .* has parameter .* with no typehint specified#'
+            path: tests/
+        -
+            message: '#Method .* has parameter .* with no value type specified in iterable type array#'
+            path: tests/
+        -
+            message: '#Method .* return type has no value type specified in iterable type array#'
+            path: tests/
+        -
+            message: '#PHPDoc tag @param has invalid value \(.*\): Unexpected token ".*", expected type at offset .*#'
+            path: tests/
+        - '#Call to static method .* on trait .*#'
+        - '#Access to static property .* on trait .*#'

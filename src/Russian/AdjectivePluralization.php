@@ -3,16 +3,17 @@ namespace morphos\Russian;
 
 use morphos\BasePluralization;
 use morphos\S;
+use RuntimeException;
 
 class AdjectivePluralization extends BasePluralization implements Cases
 {
     use RussianLanguage, CasesHelper;
 
     /**
-     * @param      $adjective
+     * @param string $adjective
      * @param int  $count
      * @param bool $animateness
-     * @param null $case
+     * @param string|null $case
      *
      * @return string|void
      * @throws \Exception
@@ -20,6 +21,7 @@ class AdjectivePluralization extends BasePluralization implements Cases
     public static function pluralize($adjective, $count = 2, $animateness = false, $case = null)
     {
         // меняем местами аргументы, если они переданы в старом формате
+        // @phpstan-ignore-next-line
         if (is_string($count) && is_numeric($adjective)) {
             list($count, $adjective) = [$adjective, $count];
         }
@@ -45,11 +47,11 @@ class AdjectivePluralization extends BasePluralization implements Cases
     }
 
     /**
-     * @param      $adjective
-     * @param      $case
+     * @param string $adjective
+     * @param string $case
      * @param bool $animateness
      *
-     * @return
+     * @return string
      * @throws \Exception
      */
     public static function getCase($adjective, $case, $animateness = false)
@@ -60,10 +62,11 @@ class AdjectivePluralization extends BasePluralization implements Cases
     }
 
     /**
-     * @param      $adjective
+     * @param string $adjective
      * @param bool $animateness
      *
-     * @return array|void
+     * @return string[]
+     * @phpstan-return array<string, string>
      */
     public static function getCases($adjective, $animateness = false)
     {
@@ -100,5 +103,7 @@ class AdjectivePluralization extends BasePluralization implements Cases
 
                 return $cases;
         }
+
+        throw new RuntimeException('Unreachable');
     }
 }

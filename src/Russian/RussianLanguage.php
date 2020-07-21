@@ -7,7 +7,7 @@ use morphos\S;
 trait RussianLanguage
 {
     /**
-     * @var array Все гласные
+     * @var string[] Все гласные
      */
     public static $vowels = [
         'а',
@@ -23,7 +23,7 @@ trait RussianLanguage
     ];
 
     /**
-     * @var array Все согласные
+     * @var string[] Все согласные
      */
     public static $consonants = [
         'б',
@@ -50,7 +50,8 @@ trait RussianLanguage
     ];
 
     /**
-     * @var array Пары согласных
+     * @var string[] Пары согласных
+     * @phpstan-var array<string, string>
      */
     public static $pairs = [
         'б' => 'п',
@@ -62,21 +63,21 @@ trait RussianLanguage
     ];
 
     /**
-     * @var array Звонкие согласные
+     * @var string[] Звонкие согласные
      */
     public static $sonorousConsonants = ['б', 'в', 'г', 'д', 'з', 'ж', 'л', 'м', 'н', 'р'];
     /**
-     * @var array Глухие согласные
+     * @var string[] Глухие согласные
      */
     public static $deafConsonants = ['п', 'ф', 'к', 'т', 'с', 'ш', 'х', 'ч', 'щ'];
 
     /**
-     * @var array Союзы
+     * @var string[] Союзы
      */
     public static $unions = ['и', 'или'];
 
     /**
-     * @return array
+     * @return string[]
      */
     public static function getVowels()
     {
@@ -85,7 +86,7 @@ trait RussianLanguage
 
     /**
      * Проверка гласной
-     * @param $char
+     * @param string $char
      * @return bool
      */
     public static function isVowel($char)
@@ -95,7 +96,7 @@ trait RussianLanguage
 
     /**
      * Проверка согласной
-     * @param $char
+     * @param string $char
      * @return bool
      */
     public static function isConsonant($char)
@@ -105,6 +106,8 @@ trait RussianLanguage
 
     /**
      * Проверка звонкости согласной
+     * @param string $char
+     * @return bool
      */
     public static function isSonorousConsonant($char)
     {
@@ -113,7 +116,7 @@ trait RussianLanguage
 
     /**
      * Проверка глухости согласной
-     * @param $char
+     * @param string $char
      * @return bool
      */
     public static function isDeafConsonant($char)
@@ -123,7 +126,7 @@ trait RussianLanguage
 
     /**
      * Щипящая ли согласная
-     * @param $consonant
+     * @param string $consonant
      * @return bool
      */
     public static function isHissingConsonant($consonant)
@@ -133,7 +136,7 @@ trait RussianLanguage
 
     /**
      * Проверка на велярность согласной
-     * @param string[1] $consonant
+     * @param string $consonant
      * @return bool
      */
     protected static function isVelarConsonant($consonant)
@@ -143,7 +146,7 @@ trait RussianLanguage
 
     /**
      * Подсчет слогов
-     * @param $string
+     * @param string $string
      * @return bool|int
      */
     public static function countSyllables($string)
@@ -154,7 +157,7 @@ trait RussianLanguage
     /**
      * Проверка парности согласной
      *
-     * @param $consonant
+     * @param string $consonant
      * @return bool
      */
     public static function isPairedConsonant($consonant)
@@ -165,7 +168,7 @@ trait RussianLanguage
 
     /**
      * Проверка мягкости последней согласной
-     * @param $word
+     * @param string $word
      * @return bool
      */
     public static function checkLastConsonantSoftness($word)
@@ -173,7 +176,9 @@ trait RussianLanguage
         if (($substring = S::findLastPositionForOneOfChars(S::lower($word), static::$consonants)) !== false) {
             if (in_array(S::slice($substring, 0, 1), ['й', 'ч', 'щ', 'ш'], true)) { // always soft consonants
                 return true;
-            } elseif (S::length($substring) > 1 && in_array(S::slice($substring, 1, 2), ['е', 'ё', 'и', 'ю', 'я', 'ь'], true)) { // consonants are soft if they are trailed with these vowels
+            }
+
+            if (S::length($substring) > 1 && in_array(S::slice($substring, 1, 2), ['е', 'ё', 'и', 'ю', 'я', 'ь'], true)) { // consonants are soft if they are trailed with these vowels
                 return true;
             }
         }
@@ -182,7 +187,7 @@ trait RussianLanguage
 
     /**
      * Проверка мягкости последней согласной, за исключением Н
-     * @param $word
+     * @param string $word
      * @return bool
      */
     public static function checkBaseLastConsonantSoftness($word)
@@ -194,7 +199,9 @@ trait RussianLanguage
         if (($substring = S::findLastPositionForOneOfChars(S::lower($word), $consonants)) !== false) {
             if (in_array(S::slice($substring, 0, 1), ['й', 'ч', 'щ', 'ш'], true)) { // always soft consonants
                 return true;
-            } elseif (S::length($substring) > 1 && in_array(S::slice($substring, 1, 2), ['е', 'ё', 'и', 'ю', 'я', 'ь'], true)) { // consonants are soft if they are trailed with these vowels
+            }
+
+            if (S::length($substring) > 1 && in_array(S::slice($substring, 1, 2), ['е', 'ё', 'и', 'ю', 'я', 'ь'], true)) { // consonants are soft if they are trailed with these vowels
                 return true;
             }
         }
@@ -203,7 +210,7 @@ trait RussianLanguage
 
     /**
      * Проверяет, что гласная образует два звука в словах
-     * @param $vowel
+     * @param string $vowel
      * @return bool
      */
     public static function isBinaryVowel($vowel)
@@ -224,28 +231,28 @@ trait RussianLanguage
     {
         if (in_array(S::lower(S::slice($word, 0, 1)), ['а', 'о', 'и', 'у', 'э'], true)) {
             return $prepositionWithVowel;
-        } else {
-            return $preposition;
         }
+
+        return $preposition;
     }
 
     /**
      * Выбор окончания в зависимости от мягкости
      *
-     * @param $last
-     * @param $softLast
-     * @param $afterSoft
-     * @param $afterHard
+     * @param string $last
+     * @param bool $softLast
+     * @param string $afterSoft
+     * @param string $afterHard
      *
-     * @return mixed
+     * @return string
      */
     public static function chooseVowelAfterConsonant($last, $softLast, $afterSoft, $afterHard)
     {
         if ($last !== 'щ' && /*static::isVelarConsonant($last) ||*/ $softLast) {
             return $afterSoft;
-        } else {
-            return $afterHard;
         }
+
+        return $afterHard;
     }
 
     /**
@@ -257,7 +264,7 @@ trait RussianLanguage
     {
         $verb = S::lower($verb);
         // возвратный глагол
-        if (S::slice($verb, -2) == 'ся') {
+        if (S::slice($verb, -2) === 'ся') {
 
             return ($gender == Gender::MALE
                 ? $verb
@@ -291,7 +298,7 @@ trait RussianLanguage
     public static function with($word)
     {
         $normalized = trim(S::lower($word));
-        if (in_array(S::slice($normalized, 0, 1), ['c', 'з', 'ш', 'ж'], true) && static::isConsonant(S::slice($normalized, 1, 2)) || S::slice($normalized, 0, 1) == 'щ')
+        if (in_array(S::slice($normalized, 0, 1), ['c', 'з', 'ш', 'ж'], true) && static::isConsonant(S::slice($normalized, 1, 2)) || S::slice($normalized, 0, 1) === 'щ')
             return 'со '.$word;
         return 'с '.$word;
     }
@@ -344,16 +351,17 @@ trait RussianLanguage
     }
 
     /**
-     * @param array $forms
-     * @param $animate
-     * @return mixed
+     * @param string[] $forms
+     * @phpstan-param array<string, string> $forms
+     * @param bool $animate
+     * @return string
      */
     public static function getVinitCaseByAnimateness(array $forms, $animate)
     {
         if ($animate) {
             return $forms[Cases::RODIT];
-        } else {
-            return $forms[Cases::IMENIT];
         }
+
+        return $forms[Cases::IMENIT];
     }
 }

@@ -118,6 +118,7 @@ class FunctionsTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('21 небольшая лампа', \morphos\Russian\pluralize(21, 'небольшая лампа'));
 
         // old-style call to pluralize()
+        // @phpstan-ignore-next-line
         $this->assertEquals('10 сообщений', \morphos\Russian\pluralize('сообщение', 10));
     }
 

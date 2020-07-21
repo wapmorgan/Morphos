@@ -2,9 +2,14 @@
 namespace morphos\English;
 
 use morphos\NumeralGenerator;
+use RuntimeException;
 
 class CardinalNumeralGenerator extends NumeralGenerator
 {
+    /**
+     * @var string[]
+     * @phpstan-var array<int, string>
+     */
     public static $words = [
         1 => 'one',
         2 => 'two',
@@ -35,24 +40,30 @@ class CardinalNumeralGenerator extends NumeralGenerator
         90 => 'ninety',
     ];
 
+    /**
+     * @var string[]
+     * @phpstan-var array<int, string>
+     */
     public static $exponents = [
-        '100' => 'hundred',
-        '1000' => 'thousand',
-        '1000000' => 'million',
-        '1000000000' => 'billion',
-        '1000000000000' => 'trillion',
+        100 => 'hundred',
+        1000 => 'thousand',
+        1000000 => 'million',
+        1000000000 => 'billion',
+        1000000000000 => 'trillion',
     ];
 
     public static function getCases($number)
     {
+        throw new RuntimeException('Not implemented');
     }
 
     public static function getCase($number, $case)
     {
+        throw new RuntimeException('Not implemented');
     }
 
     /**
-     * @param $number
+     * @param int $number
      * @return mixed|string
      */
     public static function generate($number)
@@ -68,7 +79,7 @@ class CardinalNumeralGenerator extends NumeralGenerator
 
             foreach (array_reverse(static::$exponents, true) as $word_number => $word) {
                 if ($number >= $word_number) {
-                    $count = floor($number / $word_number);
+                    $count = (int)floor($number / $word_number);
                     $number = $number % ($count * $word_number);
                     $parts[] = static::generate($count).' '.static::generate($word_number).($word_number != 100 && $number > 0 ? ',' : null);
                 }

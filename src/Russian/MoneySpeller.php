@@ -3,11 +3,16 @@ namespace morphos\Russian;
 
 use morphos\Gender;
 use morphos\CurrenciesHelper;
+use RuntimeException;
 
 class MoneySpeller extends \morphos\MoneySpeller
 {
     use CurrenciesHelper;
 
+    /**
+     * @var array[]
+     * @phpstan-var array<string, string[]>
+     */
     protected static $labels = [
         self::DOLLAR => ['доллар', Gender::MALE, 'цент', Gender::MALE],
         self::EURO => ['евро', Gender::NEUTER, 'цент', Gender::MALE],
@@ -30,7 +35,7 @@ class MoneySpeller extends \morphos\MoneySpeller
      * @param float|integer $value
      * @param string        $currency
      * @param string        $format
-     * @param null          $case
+     * @param string|null   $case
      *
      * @return string
      * @throws \Exception
@@ -44,10 +49,10 @@ class MoneySpeller extends \morphos\MoneySpeller
     {
         $currency = static::canonizeCurrency($currency);
 
-        $integer = floor($value);
+        $integer = (int)floor($value);
         $fractional = fmod($value, $integer);
         $fractional = round($fractional, 2);
-        $fractional *= 100;
+        $fractional = (int)($fractional * 100);
 
         switch ($format) {
             case static::SHORT_FORMAT:
@@ -82,5 +87,7 @@ class MoneySpeller extends \morphos\MoneySpeller
                         .NounPluralization::pluralize(static::$labels[$currency][2], $fractional, false, $case);
                 }
         }
+
+        throw new RuntimeException('Unreachable');
     }
 }

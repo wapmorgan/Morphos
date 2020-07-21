@@ -11,7 +11,7 @@ class MiddleNamesInflection extends \morphos\NamesInflection implements Cases
     use RussianLanguage, CasesHelper;
 
     /**
-     * @param $name
+     * @param string $name
      * @return null|string
      */
     public static function detectGender($name)
@@ -27,7 +27,7 @@ class MiddleNamesInflection extends \morphos\NamesInflection implements Cases
     }
 
     /**
-     * @param $name
+     * @param string $name
      * @param null $gender
      * @return bool
      */
@@ -43,10 +43,10 @@ class MiddleNamesInflection extends \morphos\NamesInflection implements Cases
     }
 
     /**
-     * @param $name
-     * @param $case
-     * @param null $gender
-     * @return mixed
+     * @param string $name
+     * @param string $case
+     * @param string|null $gender
+     * @return string
      * @throws \Exception
      */
     public static function getCase($name, $case, $gender = null)
@@ -57,9 +57,10 @@ class MiddleNamesInflection extends \morphos\NamesInflection implements Cases
     }
 
     /**
-     * @param $name
-     * @param null $gender
-     * @return array
+     * @param string $name
+     * @param string|null $gender
+     * @return string[]
+     * @phpstan-return array<string, string>
      */
     public static function getCases($name, $gender = null)
     {

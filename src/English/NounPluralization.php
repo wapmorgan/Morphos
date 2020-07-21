@@ -2,9 +2,14 @@
 namespace morphos\English;
 
 use morphos\S;
+use RuntimeException;
 
 class NounPluralization extends \morphos\BasePluralization
 {
+    /**
+     * @var string[]
+     * @phpstan-var array<string, string>
+     */
     private static $exceptions = [
         'chief' => 'chiefs',
         'basis' => 'bases',
@@ -22,6 +27,7 @@ class NounPluralization extends \morphos\BasePluralization
         'mouse' => 'mice'
     ];
 
+    /** @var string[]  */
     private static $without_paired_form = [
         'knowledge',
         'progress',
@@ -33,10 +39,11 @@ class NounPluralization extends \morphos\BasePluralization
         'trousers',
     ];
 
+    /** @var string[]  */
     public static $consonants = ['b', 'c', 'd', 'f', 'g', 'h', 'j', 'k', 'l', 'm', 'n', 'p', 'q', 'r', 's', 't', 'v', 'x', 'z', 'w'];
 
     /**
-     * @param $word
+     * @param string $word
      * @param int $count
      * @return string
      */
@@ -68,5 +75,15 @@ class NounPluralization extends \morphos\BasePluralization
         } else {
             return $word.'s';
         }
+    }
+
+    public static function getCase($word, $case, $animateness = false)
+    {
+        throw new RuntimeException('Not implemented');
+    }
+
+    public static function getCases($word, $animateness = false)
+    {
+        throw new RuntimeException('Not implemented');
     }
 }

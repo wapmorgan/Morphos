@@ -6,7 +6,7 @@ use InvalidArgumentException;
 trait CurrenciesHelper
 {
     /**
-     * @param $currency
+     * @param string $currency
      * @return string
      * @throws InvalidArgumentException
      */

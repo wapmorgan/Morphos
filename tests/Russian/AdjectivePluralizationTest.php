@@ -12,7 +12,7 @@ class AdjectivePluralizationTest extends \PHPUnit_Framework_TestCase
     /**
      * @dataProvider wordsProvider
      *
-     * @param $word
+     * @param string $word
      * @param $animateness
      * @param $inflected
      */
