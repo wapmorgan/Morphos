@@ -39,6 +39,7 @@ class GeographicalNamesInflection extends \morphos\BaseInflection implements Cas
         'гоа',
         'кемерово',
         'назарово',
+        'иваново',
 
         // части
         'санкт',
@@ -74,6 +75,7 @@ class GeographicalNamesInflection extends \morphos\BaseInflection implements Cas
         'городо*к',
         'новогрудо*к',
         'острове*ц',
+        'черепове*ц',
     ];
 
     protected static $misspellings = [
