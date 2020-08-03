@@ -48,6 +48,12 @@ class MoneySpellerTest extends \PHPUnit_Framework_TestCase
             [123, Currency::PESO, MoneySpeller::SHORT_FORMAT, '123 песо'],
             [123, Currency::FRANC, MoneySpeller::SHORT_FORMAT, '123 франка'],
             [123, Currency::LIRA, MoneySpeller::SHORT_FORMAT, '123 лиры'],
+            [256.4, Currency::RUBLE, MoneySpeller::SHORT_FORMAT, '256 рублей 40 копеек'],
+            [65536.4, Currency::RUBLE, MoneySpeller::SHORT_FORMAT, '65536 рублей 40 копеек'],
+            [16777216.4, Currency::RUBLE, MoneySpeller::SHORT_FORMAT, '16777216 рублей 40 копеек'],
+            [4294967296.4, Currency::RUBLE, MoneySpeller::SHORT_FORMAT, '4294967296 рублей 40 копеек'],
+            [4294967297.4, Currency::RUBLE, MoneySpeller::SHORT_FORMAT, '4294967297 рублей 40 копеек'],
+            [4294967296.4, Currency::RUBLE, MoneySpeller::DUPLICATION_FORMAT, 'четыре миллиарда двести девяносто четыре миллиона девятьсот шестьдесят семь тысяч двести девяносто шесть (4294967296) рублей сорок (40) копеек'],
         ];
     }
 
