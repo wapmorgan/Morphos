@@ -11,6 +11,10 @@ class FirstNamesInflection extends \morphos\NamesInflection implements Cases
 {
     use RussianLanguage, CasesHelper;
 
+    /**
+     * @var string[][]
+     * @phpstan-var array<string, array<string, string>>
+     */
     protected static $exceptions = [
         'лев' => [
             self::IMENIT => 'Лев',
@@ -30,6 +34,7 @@ class FirstNamesInflection extends \morphos\NamesInflection implements Cases
         ]
     ];
 
+    /** @var string[]  */
     protected static $menNames = [
         'абрам', 'аверьян', 'авраам', 'агафон', 'адам', 'азар', 'акакий', 'аким', 'аксён', 'александр', 'алексей',
         'альберт', 'анатолий', 'андрей', 'андрон', 'антип', 'антон', 'аполлон', 'аристарх', 'аркадий', 'арнольд',
@@ -48,6 +53,7 @@ class FirstNamesInflection extends \morphos\NamesInflection implements Cases
         'эммануил', 'эраст', 'юлиан', 'юлий', 'юрий', 'яков', 'ян', 'ярослав',
     ];
 
+    /** @var string[]  */
     protected static $womenNames = [
         'авдотья', 'аврора', 'агата', 'агния', 'агриппина', 'ада', 'аксинья', 'алевтина', 'александра', 'алёна',
         'алена', 'алина', 'алиса', 'алла', 'альбина', 'амалия', 'анастасия', 'ангелина', 'анжела', 'анжелика', 'анна',
@@ -67,6 +73,7 @@ class FirstNamesInflection extends \morphos\NamesInflection implements Cases
         'ярослава',
     ];
 
+    /** @var string[]  */
     protected static $immutableNames = [
         'николя',
     ];
@@ -119,7 +126,7 @@ class FirstNamesInflection extends \morphos\NamesInflection implements Cases
     }
 
     /**
-     * @param $name
+     * @param string $name
      * @return string
      */
     public static function detectGender($name)
@@ -179,7 +186,8 @@ class FirstNamesInflection extends \morphos\NamesInflection implements Cases
     /**
      * @param string $name
      * @param null|string $gender
-     * @return array
+     * @return string[]
+     * @phpstan-return array<string, string>
      */
     public static function getCases($name, $gender = null)
     {
@@ -231,7 +239,8 @@ class FirstNamesInflection extends \morphos\NamesInflection implements Cases
 
     /**
      * @param string $name
-     * @return array|null
+     * @return string[]|null
+     * @phpstan-return array<string, string>|null
      */
     protected static function getCasesMan($name)
     {
@@ -309,7 +318,8 @@ class FirstNamesInflection extends \morphos\NamesInflection implements Cases
 
     /**
      * @param string $name
-     * @return array|null
+     * @return string[]|null
+     * @phpstan-return array<string, string>|null
      */
     protected static function getCasesWoman($name)
     {

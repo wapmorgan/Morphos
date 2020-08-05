@@ -10,6 +10,7 @@ class GeographicalNamesInflection extends \morphos\BaseInflection implements Cas
 {
     use RussianLanguage, CasesHelper;
 
+    /** @var string[]  */
     protected static $abbreviations = [
         'сша',
         'оаэ',
@@ -17,6 +18,7 @@ class GeographicalNamesInflection extends \morphos\BaseInflection implements Cas
         'юар',
     ];
 
+    /** @var string[]  */
     protected static $delimiters = [
         ' ',
         '-на-',
@@ -28,11 +30,12 @@ class GeographicalNamesInflection extends \morphos\BaseInflection implements Cas
         '-',
     ];
 
+    /** @var string[]  */
     protected static $ovAbnormalExceptions = [
         'осташков',
     ];
 
-
+    /** @var string[]  */
     protected static $immutableNames = [
         'алматы',
         'сочи',
@@ -63,9 +66,9 @@ class GeographicalNamesInflection extends \morphos\BaseInflection implements Cas
         'эс',
         'сен',
         'ла',
-
     ];
 
+    /** @var string[]  */
     protected static $runawayVowelsExceptions = [
         'торжо*к',
         'волоче*к',
@@ -78,19 +81,23 @@ class GeographicalNamesInflection extends \morphos\BaseInflection implements Cas
         'черепове*ц',
     ];
 
+    /**
+     * @var string[]
+     * @phpstan-var array<string, string>
+     */
     protected static $misspellings = [
         'орел' => 'орёл',
         'рублево' => 'рублёво',
     ];
 
     /**
-     * @return array|bool
+     * @return int[]|false[]
      */
     protected static function getRunAwayVowelsList()
     {
         $runawayVowelsNormalized = [];
         foreach (static::$runawayVowelsExceptions as $word) {
-            $runawayVowelsNormalized[str_replace('*', null, $word)] = S::indexOf($word, '*') - 1;
+            $runawayVowelsNormalized[str_replace('*', '', $word)] = S::indexOf($word, '*') - 1;
         }
         return $runawayVowelsNormalized;
     }
@@ -141,7 +148,8 @@ class GeographicalNamesInflection extends \morphos\BaseInflection implements Cas
     /**
      * Получение всех форм названия
      * @param string $name
-     * @return array
+     * @return string[]
+     * @phpstan-return array<string, string>
      * @throws \Exception
      */
     public static function getCases($name)
@@ -492,6 +500,8 @@ class GeographicalNamesInflection extends \morphos\BaseInflection implements Cas
                 // ов, её, ...
                 elseif (in_array(S::slice($name, -2), $suffixes, true)) {
                     $prefix = S::name($name);
+                } else {
+                    $prefix = '';
                 }
 
                 return [
@@ -516,7 +526,7 @@ class GeographicalNamesInflection extends \morphos\BaseInflection implements Cas
     /**
      * Получение одной формы (падежа) названия.
      * @param string $name  Название
-     * @param integer $case Падеж. Одна из констант \morphos\Russian\Cases или \morphos\Cases.
+     * @param string $case Падеж. Одна из констант {@see \morphos\Russian\Cases} или {@see \morphos\Cases}.
      * @see \morphos\Russian\Cases
      * @return string
      * @throws \Exception

@@ -5,6 +5,10 @@ use InvalidArgumentException;
 
 class TimeSpeller extends \morphos\TimeSpeller
 {
+    /**
+     * @var string[]
+     * @phpstan-var array<string, string>
+     */
     protected static $units = [
         self::YEAR => 'year',
         self::MONTH => 'month',
@@ -15,8 +19,8 @@ class TimeSpeller extends \morphos\TimeSpeller
     ];
 
     /**
-     * @param $count
-     * @param $unit
+     * @param int $count
+     * @param string $unit
      * @return string
      */
     public static function spellUnit($count, $unit)

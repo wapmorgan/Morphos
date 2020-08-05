@@ -54,7 +54,7 @@ function inflectName($fullName, $case = null, $gender = null)
  * @param string      $fullName Name in "F", "L F" or "L M F" format, where L - last name, M - middle name, F - first name
  * @param null|string $gender   Gender of name owner. If null, auto detection will be used.
  *                              Should be one of [[morphos\Gender]] constants.
- * @return array|false          Returns an array with name inflected to all cases.
+ * @return string[]|false          Returns an array with name inflected to all cases.
  */
 function getNameCases($fullName, $gender = null)
 {
@@ -118,7 +118,7 @@ function detectGender($fullName)
  */
 function normalizeFullName($name)
 {
-    $name = preg_replace('~[ ]{2,}~', null, trim($name));
+    $name = preg_replace('~[ ]{2,}~', '', trim($name));
     return $name;
 }
 
@@ -139,6 +139,7 @@ function normalizeFullName($name)
 function pluralize($count, $word, $animateness = false, $case = null)
 {
     // меняем местами аргументы, если они переданы в старом формате
+    // @phpstan-ignore-next-line
     if (is_string($count) && is_numeric($word)) {
         list($count, $word) = [$word, $count];
     }

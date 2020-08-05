@@ -4,6 +4,7 @@ namespace morphos\Russian;
 use morphos\BaseInflection;
 use morphos\Gender;
 use morphos\S;
+use RuntimeException;
 
 /**
  * Class AdjectiveDeclension.
@@ -53,7 +54,7 @@ class AdjectiveDeclension extends BaseInflection implements Cases, Gender
     }
 
     /**
-     * @param      $adjective
+     * @param string $adjective
      *
      * @param bool $isEmphasized
      *
@@ -77,6 +78,8 @@ class AdjectiveDeclension extends BaseInflection implements Cases, Gender
             case 'ее':
                 return static::NEUTER;
         }
+
+        throw new RuntimeException('Unreachable');
     }
 
     /**
@@ -84,7 +87,8 @@ class AdjectiveDeclension extends BaseInflection implements Cases, Gender
      * @param bool $animateness
      * @param null|string $gender
      *
-     * @return array
+     * @return string[]
+     * @phpstan-return array<string, string>
      */
     public static function getCases($adjective, $animateness = false, $gender = null)
     {
@@ -109,10 +113,12 @@ class AdjectiveDeclension extends BaseInflection implements Cases, Gender
                 return static::declinateMixedAdjective($adjective, $animateness, $gender,
                     $last_consonant_vowel);
         }
+
+        throw new RuntimeException('Unreachable');
     }
 
     /**
-     * @param $adjective
+     * @param string $adjective
      *
      * @return int
      */
@@ -145,11 +151,10 @@ class AdjectiveDeclension extends BaseInflection implements Cases, Gender
      * @param string $adjective
      * @param bool   $animateness
      * @param string $gender
-     * @param bool   $isEmphasized
+     * @param string $afterConsonantVowel
      *
-     * @param        $afterConsonantVowel
-     *
-     * @return array
+     * @return string[]
+     * @phpstan-return array<string, string>
      */
     protected static function declinateHardAdjective($adjective, $animateness, $gender,
         $afterConsonantVowel)
@@ -167,6 +172,8 @@ class AdjectiveDeclension extends BaseInflection implements Cases, Gender
             case static::NEUTER:
                 $postfix = $afterConsonantVowel.'е';
                 break;
+
+            default: throw new RuntimeException('Unreachable');
         }
 
         $cases = [
@@ -190,11 +197,10 @@ class AdjectiveDeclension extends BaseInflection implements Cases, Gender
      * @param string $adjective
      * @param bool   $animateness
      * @param string $gender
-     * @param bool   $isEmphasized
+     * @param string $afterConsonantVowel
      *
-     * @param        $afterConsonantVowel
-     *
-     * @return array
+     * @return string[]
+     * @phpstan-return array<string, string>
      */
     protected static function declinateSoftAdjective($adjective, $animateness, $gender, $afterConsonantVowel)
     {
@@ -211,6 +217,8 @@ class AdjectiveDeclension extends BaseInflection implements Cases, Gender
             case static::NEUTER:
                 $postfix = $afterConsonantVowel.'е';
                 break;
+
+            default: throw new RuntimeException('Unreachable');
         }
 
         $cases = [
@@ -234,9 +242,10 @@ class AdjectiveDeclension extends BaseInflection implements Cases, Gender
      * @param string $adjective
      * @param bool   $animateness
      * @param string $gender
-     * @param bool   $isEmphasized
+     * @param string $afterConsonantVowel
      *
-     * @return array
+     * @return string[]
+     * @phpstan-return array<string, string>
      */
     protected static function declinateMixedAdjective($adjective, $animateness, $gender, $afterConsonantVowel)
     {
@@ -253,6 +262,8 @@ class AdjectiveDeclension extends BaseInflection implements Cases, Gender
             case static::NEUTER:
                 $postfix = $afterConsonantVowel.'е';
                 break;
+
+            default: throw new RuntimeException('Unreachable');
         }
 
         $cases = [

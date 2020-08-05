@@ -1,6 +1,8 @@
 <?php
 namespace morphos;
 
+use RuntimeException;
+
 /**
  * Multibyte string helper
  */
@@ -9,6 +11,7 @@ class S
     /** @var string Encoding used for string manipulations */
     static protected $encoding;
 
+    /** @var string[][] */
     static protected $cyrillicAlphabet = [
         ['Ё', 'Й', 'Ц', 'У', 'К', 'Е', 'Н', 'Г', 'Ш', 'Щ', 'З', 'Х', 'Ъ', 'Ф', 'Ы', 'В', 'А', 'П', 'Р', 'О', 'Л', 'Д', 'Ж', 'Э', 'Я', 'Ч', 'С', 'М', 'И', 'Т', 'Ь', 'Б', 'Ю'],
         ['ё', 'й', 'ц', 'у', 'к', 'е', 'н', 'г', 'ш', 'щ', 'з', 'х', 'ъ', 'ф', 'ы', 'в', 'а', 'п', 'р', 'о', 'л', 'д', 'ж', 'э', 'я', 'ч', 'с', 'м', 'и', 'т', 'ь', 'б', 'ю'],
@@ -17,7 +20,7 @@ class S
     /**
      * Sets encoding for all operations
      * @param string $encoding
-     * @return bool
+     * @return void
      */
     public static function setEncoding($encoding)
     {
@@ -35,8 +38,8 @@ class S
 
     /**
      * Calculates count of characters in string.
-     * @param $string
-     * @return bool|int
+     * @param string $string
+     * @return int|false
      */
     public static function length($string)
     {
@@ -56,7 +59,7 @@ class S
      * @param string $string
      * @param int $start
      * @param int|null $end
-     * @return bool|string
+     * @return string
      */
     public static function slice($string, $start, $end = null)
     {
@@ -72,13 +75,13 @@ class S
             return iconv_substr($string, $start, $end ?: iconv_strlen($string), static::getEncoding());
         }
 
-        return false;
+        throw new RuntimeException('Unreachable');
     }
 
     /**
      * Lower case.
-     * @param $string
-     * @return bool|string
+     * @param string $string
+     * @return string
      */
     public static function lower($string)
     {
@@ -91,7 +94,7 @@ class S
 
     /**
      * Upper case.
-     * @param $string
+     * @param string $string
      * @return bool|string
      */
     public static function upper($string)
@@ -105,7 +108,7 @@ class S
 
     /**
      * Name case. (ex: Thomas, Lewis). Works properly with separated by '-' words
-     * @param $string
+     * @param string $string
      * @return bool|string
      */
     public static function name($string)
@@ -119,9 +122,9 @@ class S
 
     /**
      * multiple substr_count().
-     * @param $string
-     * @param array $chars
-     * @return bool|int
+     * @param string $string
+     * @param string[] $chars
+     * @return int
      */
     public static function countChars($string, array $chars)
     {
@@ -139,7 +142,7 @@ class S
     /**
      * @param string $string
      * @param string $char
-     * @return bool|string
+     * @return int|false
      */
     public static function findFirstPosition($string, $char)
     {
@@ -153,7 +156,7 @@ class S
     /**
      * @param string $string
      * @param string $char
-     * @return bool|string
+     * @return int|false
      */
     public static function findLastPosition($string, $char)
     {
@@ -165,9 +168,9 @@ class S
     }
 
     /**
-     * @param $string
-     * @param array $chars
-     * @return bool|string
+     * @param string $string
+     * @param string[] $chars
+     * @return string|false
      */
     public static function findLastPositionForOneOfChars($string, array $chars)
     {
@@ -190,11 +193,11 @@ class S
     }
 
     /**
-     * @param $string
-     * @param $substring
+     * @param string $string
+     * @param string $substring
      * @param bool $caseSensetive
      * @param int $startOffset
-     * @return string|false
+     * @return int|false
      */
     public static function indexOf($string, $substring, $caseSensetive = false, $startOffset = 0)
     {
@@ -208,9 +211,9 @@ class S
     }
 
     /**
-     * @param $string
-     * @param $fromMap
-     * @param $toMap
+     * @param string $string
+     * @param string[] $fromMap
+     * @param string[] $toMap
      * @return string
      */
     private static function replaceByMap($string, $fromMap, $toMap)

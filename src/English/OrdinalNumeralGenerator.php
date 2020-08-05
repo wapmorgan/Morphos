@@ -2,9 +2,14 @@
 namespace morphos\English;
 
 use morphos\NumeralGenerator;
+use RuntimeException;
 
 class OrdinalNumeralGenerator extends NumeralGenerator
 {
+    /**
+     * @var string[]
+     * @phpstan-var array<int, string>
+     */
     protected static $words = [
         1 => 'first',
         2 => 'second',
@@ -17,13 +22,15 @@ class OrdinalNumeralGenerator extends NumeralGenerator
 
     public static function getCases($number)
     {
+        throw new RuntimeException('Not implemented');
     }
     public static function getCase($number, $case)
     {
+        throw new RuntimeException('Not implemented');
     }
 
     /**
-     * @param $number
+     * @param int $number
      * @param bool $short
      * @return string
      */
@@ -52,7 +59,7 @@ class OrdinalNumeralGenerator extends NumeralGenerator
 
             foreach (array_reverse(CardinalNumeralGenerator::$exponents, true) as $word_number => $word) {
                 if ($number >= $word_number) {
-                    $count = floor($number / $word_number);
+                    $count = (int)floor($number / $word_number);
                     $number = $number % ($count * $word_number);
                     $parts[] = CardinalNumeralGenerator::generate($count).' '.CardinalNumeralGenerator::generate($word_number).($word_number != 100 && $number > 0 ? ',' : null);
                 }

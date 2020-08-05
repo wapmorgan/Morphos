@@ -4,6 +4,7 @@ namespace morphos;
 use DateInterval;
 use DateTime;
 use InvalidArgumentException;
+use RuntimeException;
 
 abstract class TimeSpeller
 {
@@ -26,11 +27,13 @@ abstract class TimeSpeller
 
     /**
      * @abstract
-     * @param $count
-     * @param $unit
+     * @param int $count
+     * @param string $unit
      * @return string
      */
-    public static function spellUnit($count, $unit) {}
+    public static function spellUnit($count, $unit) {
+        throw new RuntimeException('Not implemented');
+    }
 
     /**
      * @param DateInterval $interval

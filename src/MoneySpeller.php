@@ -1,6 +1,8 @@
 <?php
 namespace morphos;
 
+use RuntimeException;
+
 abstract class MoneySpeller implements Currency
 {
     const SHORT_FORMAT = 'short';
@@ -11,15 +13,18 @@ abstract class MoneySpeller implements Currency
     /**
      * @abstract
      *
-     * @param float  $value
+     * @param float|int  $value
      * @param string $currency
      * @param string $format
-     * @param null   $case
+     * @param string|null   $case
+     * @return string
      */
     public static function spell(
         $value,
         $currency,
         $format = self::NORMAL_FORMAT,
         $case = null
-    ) {}
+    ) {
+        throw new RuntimeException('Not implemented');
+    }
 }

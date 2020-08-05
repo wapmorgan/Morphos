@@ -6,7 +6,7 @@ use InvalidArgumentException;
 trait CasesHelper
 {
     /**
-     * @param $case
+     * @param string $case
      * @return string
      * @throws InvalidArgumentException If passed case is invalid.
      */
@@ -49,7 +49,8 @@ trait CasesHelper
     }
 
     /**
-     * @return array
+     * @return string[]
+     * @phpstan-return array<\morphos\Cases::*>
      */
     public static function getAllCases()
     {
@@ -67,8 +68,10 @@ trait CasesHelper
     /**
      * Составляет один массив с падежами из нескольких массивов падежей разных слов
      * @param array $words Двумерный массив слов и их падежей
+     * @phpstan-param array<int, array<string, string>> $words
      * @param string $delimiter Разделитель между падежами слов
-     * @return array Одномерный массив падежей
+     * @return string[] Одномерный массив падежей
+     * @phpstan-return array<string, string>
      */
     public static function composeCasesFromWords(array $words, $delimiter = ' ') {
         $cases = [];

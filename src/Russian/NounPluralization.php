@@ -14,15 +14,24 @@ class NounPluralization extends \morphos\BasePluralization implements Cases
     const TWO_FOUR = 2;
     const FIVE_OTHER = 3;
 
+    /**
+     * @var string[][]
+     * @phpstan-var array<string, string[]>
+     */
     protected static $abnormalExceptions = [
         'человек' => ['люди', 'человек', 'людям', 'людей', 'людьми', 'людях'],
     ];
 
+    /** @var string[] */
     protected static $neuterExceptions = [
         'поле',
         'море',
     ];
 
+    /**
+     * @var string[]
+     * @phpstan-var array<string, string>
+     */
     protected static $genitiveExceptions = [
         'письмо' => 'писем',
         'пятно' => 'пятен',
@@ -35,6 +44,7 @@ class NounPluralization extends \morphos\BasePluralization implements Cases
         'год' => 'лет',
     ];
 
+    /** @var string[] */
     protected static $runawayVowelsExceptions = [
         'писе*ц',
         'песе*ц',
@@ -42,13 +52,13 @@ class NounPluralization extends \morphos\BasePluralization implements Cases
     ];
 
     /**
-     * @return array|bool
+     * @return int[]|false[]
      */
     protected static function getRunAwayVowelsList()
     {
         $runawayVowelsNormalized = [];
         foreach (static::$runawayVowelsExceptions as $word) {
-            $runawayVowelsNormalized[str_replace('*', null, $word)] = S::indexOf($word, '*') - 1;
+            $runawayVowelsNormalized[str_replace('*', '', $word)] = S::indexOf($word, '*') - 1;
         }
         return $runawayVowelsNormalized;
     }
@@ -57,7 +67,7 @@ class NounPluralization extends \morphos\BasePluralization implements Cases
      * Склонение существительного для сочетания с числом (кол-вом предметов).
      *
      * @param string|int $word        Название предмета
-     * @param int|string $count       Количество предметов
+     * @param int|float|string $count Количество предметов
      * @param bool       $animateness Признак одушевленности
      * @param string     $case        Род существительного
      *
@@ -104,7 +114,7 @@ class NounPluralization extends \morphos\BasePluralization implements Cases
     }
 
     /**
-     * @param $count
+     * @param int|float $count
      * @return int
      */
     public static function getNumeralForm($count)
@@ -124,8 +134,8 @@ class NounPluralization extends \morphos\BasePluralization implements Cases
     }
 
     /**
-     * @param $word
-     * @param $case
+     * @param string $word
+     * @param string $case
      * @param bool $animateness
      * @return string
      * @throws \Exception
@@ -138,9 +148,10 @@ class NounPluralization extends \morphos\BasePluralization implements Cases
     }
 
     /**
-     * @param $word
+     * @param string $word
      * @param bool $animateness
-     * @return array
+     * @return string[]
+     * @phpstan-return array<string, string>
      */
     public static function getCases($word, $animateness = false)
     {
@@ -175,9 +186,10 @@ class NounPluralization extends \morphos\BasePluralization implements Cases
 
     /**
      * Склонение обычных существительных.
-     * @param $word
-     * @param $animateness
-     * @return array
+     * @param string $word
+     * @param bool $animateness
+     * @return string[]
+     * @phpstan-return array<string, string>
      */
     protected static function declinateSubstative($word, $animateness)
     {
@@ -268,9 +280,10 @@ class NounPluralization extends \morphos\BasePluralization implements Cases
     /**
      * Склонение существительных, образованных от прилагательных и причастий.
      * Rules are from http://rusgram.narod.ru/1216-1231.html
-     * @param $word
-     * @param $animateness
-     * @return array
+     * @param string $word
+     * @param bool $animateness
+     * @return string[]
+     * @phpstan-return array<string, string>
      */
     protected static function declinateAdjective($word, $animateness)
     {
