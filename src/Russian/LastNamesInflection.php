@@ -171,15 +171,15 @@ class LastNamesInflection extends \morphos\NamesInflection implements Cases
                     ];
                 }
 
-                if (in_array(S::slice($name, -2), ['ая'], true)) {
+                if (in_array(S::slice($name, -2), ['яя'], true)) {
                     $prefix = S::name(S::slice($name, 0, -2));
                     return [
                         static::IMENIT => S::name($name),
-                        static::RODIT => $prefix.'ой',
-                        static::DAT => $prefix.'ой',
-                        static::VINIT => $prefix.'ую',
-                        static::TVORIT => $prefix.'ой',
-                        static::PREDLOJ => $prefix.'ой'
+                        static::RODIT => $prefix.'ей',
+                        static::DAT => $prefix.'ей',
+                        static::VINIT => $prefix.'юю',
+                        static::TVORIT => $prefix.'ей',
+                        static::PREDLOJ => $prefix.'ей'
                     ];
                 }
             }
