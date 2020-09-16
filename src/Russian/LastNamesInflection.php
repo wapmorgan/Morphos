@@ -182,6 +182,18 @@ class LastNamesInflection extends \morphos\NamesInflection implements Cases
                         static::PREDLOJ => $prefix.'ой'
                     ];
                 }
+
+                if (in_array(S::slice($name, -2), ['яя'], true)) {
+                    $prefix = S::name(S::slice($name, 0, -2));
+                    return [
+                        static::IMENIT => S::name($name),
+                        static::RODIT => $prefix.'ей',
+                        static::DAT => $prefix.'ей',
+                        static::VINIT => $prefix.'юю',
+                        static::TVORIT => $prefix.'ей',
+                        static::PREDLOJ => $prefix.'ей'
+                    ];
+                }
             }
 
             if (S::slice($name, -1) == 'я') {
