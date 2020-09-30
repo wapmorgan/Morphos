@@ -45,12 +45,13 @@ class GeographicalNamesInflection extends \morphos\BaseInflection implements Cas
         'иваново',
 
         // части
-        'санкт',
+        'алма',
+        'буда',
         'йошкар',
+        'рублёво',
+        'санкт',
         'улан',
         'ханты',
-        'буда',
-        'рублёво',
 
         'пунта',
         'куала',
@@ -467,7 +468,7 @@ class GeographicalNamesInflection extends \morphos\BaseInflection implements Cas
                     ];
             }
 
-            if (static::isConsonant(S::slice($name,  -1)) && !in_array($name, static::$ovAbnormalExceptions, true)) {
+            if (static::isConsonant($last_char = S::slice($name,  -1)) && !in_array($name, static::$ovAbnormalExceptions, true)) {
                 $runaway_vowels_list = static::getRunAwayVowelsList();
 
                 // if run-away vowel in name
@@ -484,7 +485,10 @@ class GeographicalNamesInflection extends \morphos\BaseInflection implements Cas
                     static::RODIT => $prefix . 'а',
                     static::DAT => $prefix . 'у',
                     static::VINIT => S::name($name),
-                    static::TVORIT => $prefix . (static::isVelarConsonant(S::slice($name, -2, -1)) ? 'ем' : 'ом'),
+                    static::TVORIT => $prefix . (
+                        static::isVelarConsonant(S::slice($name, -2, -1))
+                            || static::isHissingConsonant($last_char)
+                        ? 'ем' : 'ом'),
                     static::PREDLOJ => $prefix . 'е',
                     static::LOCATIVE => $prefix.($name === 'крым' ? 'у' : 'е'),
                 ];
