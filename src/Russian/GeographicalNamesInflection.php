@@ -319,6 +319,20 @@ class GeographicalNamesInflection extends \morphos\BaseInflection implements Cas
                         static::LOCATIVE => $prefix.'е',
                     ];
 
+                // Адыгея, Чечня
+                case 'ея':
+                case 'ня':
+                    $prefix = S::name(S::slice($name, 0, -1));
+                    return [
+                        static::IMENIT => S::name($name),
+                        static::RODIT => $prefix.'е',
+                        static::DAT => $prefix.'е',
+                        static::VINIT => $prefix.'я',
+                        static::TVORIT => $prefix.'ей',
+                        static::PREDLOJ => $prefix.'е',
+                        static::LOCATIVE => $prefix.'е',
+                    ];
+
                 // Тверь, Анадырь
                 case 'рь':
                     $prefix = S::name(S::slice($name, 0, -1));
