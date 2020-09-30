@@ -34,6 +34,7 @@ class TimeSpellerTest extends \PHPUnit_Framework_TestCase
             ['P1Y5M10D', TimeSpeller::SEPARATE, '1 год, 5 месяцев и 10 дней'],
             ['P10Y1MT5H', TimeSpeller::DIRECTION, '10 лет 1 месяц 5 часов назад'],
             ['P3DT1H2M', TimeSpeller::SEPARATE | TimeSpeller::DIRECTION, '3 дня, 1 час и 2 минуты назад'],
+            ['PT1M1S', TimeSpeller::SEPARATE | TimeSpeller::DIRECTION, '1 минуту и 1 секунду назад'],
             ['P10MT40M30S', TimeSpeller::SEPARATE, '10 месяцев, 40 минут и 30 секунд'],
         ];
     }
@@ -71,7 +72,7 @@ class TimeSpellerTest extends \PHPUnit_Framework_TestCase
      */
     public function testSpellDifference($dateTime, $limit)
     {
-        $diff = (new DateTime())->diff(new DateTime(is_numeric($dateTime) ? '@'.$dateTime : $dateTime));
+        $diff = (new DateTime('@'.time()))->diff(new DateTime(is_numeric($dateTime) ? '@'.$dateTime : $dateTime));
         $this->assertEquals(TimeSpeller::spellInterval($diff, 0, $limit),
             TimeSpeller::spellDifference($dateTime, 0, $limit));
     }
@@ -81,8 +82,8 @@ class TimeSpellerTest extends \PHPUnit_Framework_TestCase
         return
             [
                 ['+30 minutes 2 seconds', 1],
-                [time() + 3601, 1],
-                [time() + 86401, 1],
+                [time() + 3600, 1],
+                [time() + 86400, 1],
             ];
     }
 

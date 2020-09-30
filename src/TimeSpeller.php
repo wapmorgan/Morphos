@@ -97,15 +97,19 @@ abstract class TimeSpeller
      */
     public static function spellDifference($dateTime, $options = 0, $limit = 0)
     {
-        $now = new DateTime();
-        if (is_numeric($dateTime) || is_string($dateTime)) {
-            $dateTime = new DateTime(is_numeric($dateTime)
+        $now = new DateTime('@'.time());
+
+        if ($dateTime instanceof DateTime) {
+            $interval = $dateTime->diff($now);
+        } else if (is_numeric($dateTime) || is_string($dateTime)) {
+            $date_time = new DateTime(is_numeric($dateTime)
                 ? '@' . $dateTime
                 : $dateTime);
-        } else if(!($dateTime instanceof DateTime)) {
+            $interval = $date_time->diff($now);
+        } else {
             throw new InvalidArgumentException('dateTime argument should be unix timestamp (int) or date time (string) or DateTime instance');
         }
 
-        return static::spellInterval($dateTime->diff($now), $options, $limit);
+        return static::spellInterval($interval, $options, $limit);
     }
 }
