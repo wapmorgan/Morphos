@@ -43,11 +43,16 @@ class GeographicalNamesInflection extends \morphos\BaseInflection implements Cas
         'кемерово',
         'назарово',
         'иваново',
+        // фикс для Марий Эл
+        'марий',
+        'эл',
 
         // части
         'алма',
         'буда',
         'йошкар',
+        'кабардино',
+        'карачаево',
         'рублёво',
         'санкт',
         'улан',
