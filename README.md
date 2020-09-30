@@ -77,7 +77,7 @@ morphos\English\CardinalNumeralGenerator::generate(567) => 'five hundred sixty-s
 morphos\English\OrdinalNumeralGenerator::generate(961) => 'nine hundred sixty-first'
 
 // Generate english time difference
-morphos\English\TimeSpeller::spellDifference(time() + 3601, morphos\TimeSpeller::DIRECTION) => 'in 1 hour'
+morphos\English\TimeSpeller::spellDifference(time() + 3600, morphos\TimeSpeller::DIRECTION) => 'in 1 hour'
 ```
 
 # Documentation
