@@ -60,7 +60,7 @@ morphos\Russian\CardinalNumeralGenerator::getCase(567, 'именительный
 morphos\Russian\OrdinalNumeralGenerator::getCase(961, 'именительный') => 'девятьсот шестьдесят первый'
 
 // Generate russian time difference
-morphos\Russian\TimeSpeller::spellDifference(time() + 3601, morphos\TimeSpeller::DIRECTION) => 'через 1 час'
+morphos\Russian\TimeSpeller::spellDifference(time() + 3600, morphos\TimeSpeller::DIRECTION) => 'через 1 час'
 
 // other functions described in README-ru.md
 ```
