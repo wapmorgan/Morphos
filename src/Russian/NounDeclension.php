@@ -68,17 +68,22 @@ class NounDeclension extends BaseInflection implements Cases, Gender
         'выхухоль',
         'гвоздь',
         'делопроизводитель',
+        'день',
         'дождь',
         'заместитель',
         'зверь',
+        'камень',
         'конь',
         'конь',
+        'корень',
         'лось',
         'медведь',
         'модуль',
         'олень',
+        'парень',
         'пекарь',
         'пельмень',
+        'пень',
         'председатель',
         'представитель',
         'преподаватель',
@@ -93,6 +98,7 @@ class NounDeclension extends BaseInflection implements Cases, Gender
         'строитель',
         'табель',
         'токарь',
+        'трутень',
         'тюлень',
         'учитель',
         'циркуль',
@@ -104,12 +110,21 @@ class NounDeclension extends BaseInflection implements Cases, Gender
 
     /** @var string[]  */
     protected static $masculineWithSoftAndRunAwayVowels = [
-        'день',
-        'пень',
-        'парень',
-        'камень',
-        'корень',
-        'трутень',
+        'санузел',
+    ];
+
+    /** @var string[] */
+    public static $runawayVowelsExceptions = [
+        'глото*к',
+        'де*нь',
+        'каме*нь',
+        'коре*нь',
+        'паре*нь',
+        'пе*нь',
+        'песе*ц',
+        'писе*ц',
+        'санузе*л',
+        'труте*нь',
     ];
 
     /**
@@ -141,7 +156,7 @@ class NounDeclension extends BaseInflection implements Cases, Gender
 			return static::NEUTER;
 
 		if (in_array($last, ['а', 'я'], true) ||
-			($last == 'ь' && !in_array($word, static::$masculineWithSoft, true) && !in_array($word, static::$masculineWithSoftAndRunAwayVowels, true)))
+			($last == 'ь' && !in_array($word, static::$masculineWithSoft, true)))
 			return static::FEMALE;
 
 		return static::MALE;
@@ -165,7 +180,7 @@ class NounDeclension extends BaseInflection implements Cases, Gender
             return 1;
         } elseif (static::isConsonant($last) || in_array($last, ['о', 'е', 'ё'], true)
             || ($last == 'ь' && static::isConsonant(S::slice($word, -2, -1)) && !static::isHissingConsonant(S::slice($word, -2, -1))
-                && (in_array($word, static::$masculineWithSoft, true)) || in_array($word, static::$masculineWithSoftAndRunAwayVowels, true))) {
+                && (in_array($word, static::$masculineWithSoft, true)) /*|| in_array($word, static::$masculineWithSoftAndRunAwayVowels, true)*/)) {
             return 2;
         } else {
             return 3;
@@ -439,8 +454,10 @@ class NounDeclension extends BaseInflection implements Cases, Gender
     public static function getPrefixOfSecondDeclension($word, $last)
     {
         // слова с бегающей гласной в корне
-        if (in_array($word, static::$masculineWithSoftAndRunAwayVowels, true)) {
-            $prefix = S::slice($word, 0, -3).S::slice($word, -2, -1);
+        $runaway_vowels_list = static::getRunAwayVowelsList();
+        if (isset($runaway_vowels_list[$word])) {
+            $vowel_offset = $runaway_vowels_list[$word];
+            $prefix = S::slice($word, 0, $vowel_offset) . S::slice($word, $vowel_offset + 1);
         } elseif (in_array($last, ['о', 'е', 'ё', 'ь', 'й'], true)) {
             $prefix = S::slice($word, 0, -1);
         }
@@ -474,5 +491,17 @@ class NounDeclension extends BaseInflection implements Cases, Gender
         } else {
             return $prefix.'е';
         }
+    }
+
+    /**
+     * @return int[]|false[]
+     */
+    public static function getRunAwayVowelsList()
+    {
+        $runawayVowelsNormalized = [];
+        foreach (NounDeclension::$runawayVowelsExceptions as $word) {
+            $runawayVowelsNormalized[str_replace('*', '', $word)] = S::indexOf($word, '*') - 1;
+        }
+        return $runawayVowelsNormalized;
     }
 }

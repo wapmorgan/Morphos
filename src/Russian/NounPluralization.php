@@ -44,25 +44,6 @@ class NounPluralization extends \morphos\BasePluralization implements Cases
         'год' => 'лет',
     ];
 
-    /** @var string[] */
-    protected static $runawayVowelsExceptions = [
-        'писе*ц',
-        'песе*ц',
-        'глото*к',
-    ];
-
-    /**
-     * @return int[]|false[]
-     */
-    protected static function getRunAwayVowelsList()
-    {
-        $runawayVowelsNormalized = [];
-        foreach (static::$runawayVowelsExceptions as $word) {
-            $runawayVowelsNormalized[str_replace('*', '', $word)] = S::indexOf($word, '*') - 1;
-        }
-        return $runawayVowelsNormalized;
-    }
-
     /**
      * Склонение существительного для сочетания с числом (кол-вом предметов).
      *
@@ -196,7 +177,7 @@ class NounPluralization extends \morphos\BasePluralization implements Cases
         $prefix = S::slice($word, 0, -1);
         $last = S::slice($word, -1);
 
-        $runaway_vowels_list = static::getRunAwayVowelsList();
+        $runaway_vowels_list = NounDeclension::getRunAwayVowelsList();
         if (isset($runaway_vowels_list[$word])) {
             $vowel_offset = $runaway_vowels_list[$word];
             $word = S::slice($word, 0, $vowel_offset) . S::slice($word, $vowel_offset + 1);
