@@ -108,11 +108,6 @@ class NounDeclension extends BaseInflection implements Cases, Gender
         'ячмень',
     ];
 
-    /** @var string[]  */
-    protected static $masculineWithSoftAndRunAwayVowels = [
-        'санузел',
-    ];
-
     /** @var string[] */
     public static $runawayVowelsExceptions = [
         'глото*к',

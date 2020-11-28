@@ -186,13 +186,13 @@ class NounPluralization extends \morphos\BasePluralization implements Cases
         } elseif ($declension == NounDeclension::FIRST_DECLENSION) {
             $soft_last = static::checkLastConsonantSoftness($word);
         } else {
-            $soft_last = in_array(S::slice($word, -2), ['чь', 'сь', 'ть', 'нь'], true);
+            $soft_last = in_array(S::slice($word, -2), ['чь', 'сь', 'ть', 'нь', 'дь'], true);
         }
 
         $forms = [];
 
         if (in_array($last, ['ч', 'г'], true)
-            || in_array(S::slice($word, -2), ['чь', 'сь', 'ть', 'нь', 'рь'], true)
+            || in_array(S::slice($word, -2), ['чь', 'сь', 'ть', 'нь', 'рь', 'дь'], true)
             || (static::isVowel($last) && in_array(S::slice($word, -2, -1), ['ч', 'к'], true))) { // before ч, чь, сь, ч+vowel, к+vowel
             $forms[Cases::IMENIT] = $prefix.'и';
         } elseif (in_array($last, ['н', 'ц', 'р', 'т'], true)) {
@@ -225,7 +225,7 @@ class NounPluralization extends \morphos\BasePluralization implements Cases
             $forms[Cases::RODIT] = $prefix;
         } elseif (in_array($last, ['я'], true)) { // молния
             $forms[Cases::RODIT] = $prefix.'й';
-        } elseif (RussianLanguage::isHissingConsonant($last) || ($soft_last && $last != 'й') || in_array(S::slice($word, -2), ['чь', 'сь', 'ть', 'нь'], true)) {
+        } elseif (RussianLanguage::isHissingConsonant($last) || ($soft_last && $last != 'й') || in_array(S::slice($word, -2), ['чь', 'сь', 'ть', 'нь', 'дь'], true)) {
             $forms[Cases::RODIT] = $prefix.'ей';
         } elseif ($last == 'й' || S::slice($word, -2) == 'яц') { // месяц
             $forms[Cases::RODIT] = $prefix.'ев';
@@ -241,7 +241,7 @@ class NounPluralization extends \morphos\BasePluralization implements Cases
 
         // TVORIT
         // my personal rule
-        if ($last == 'ь' && $declension == NounDeclension::THIRD_DECLENSION && !in_array(S::slice($word, -2), ['чь', 'сь', 'ть', 'нь'], true)) {
+        if ($last == 'ь' && $declension == NounDeclension::THIRD_DECLENSION && !in_array(S::slice($word, -2), ['чь', 'сь', 'ть', 'нь', 'дь'], true)) {
             $forms[Cases::TVORIT] = $prefix.'ми';
         } else {
             $forms[Cases::TVORIT] = static::chooseVowelAfterConsonant($last, $soft_last && S::slice($word, -2, -1) != 'ч', $prefix.'ями', $prefix.'ами');
