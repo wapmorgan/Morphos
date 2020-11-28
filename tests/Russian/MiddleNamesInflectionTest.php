@@ -13,14 +13,14 @@ class MiddleNamesInflectionTest extends \PHPUnit_Framework_TestCase
     public function testGetCases($name, $gender, $name2, $name3, $name4, $name5, $name6)
     {
         $forms = MiddleNamesInflection::getCases($name, $gender);
-        $this->assertEquals(array(
+        $this->assertEquals([
             Cases::IMENIT => $name,
             Cases::RODIT => $name2,
             Cases::DAT => $name3,
             Cases::VINIT => $name4,
             Cases::TVORIT => $name5,
             Cases::PREDLOJ => $name6
-            ), $forms);
+        ], $forms);
     }
 
     /**
@@ -33,12 +33,12 @@ class MiddleNamesInflectionTest extends \PHPUnit_Framework_TestCase
 
     public function middleNamesProvider()
     {
-        return array(
-            array('Владимирович', NamesInflection::MALE, 'Владимировича', 'Владимировичу', 'Владимировича', 'Владимировичем', 'Владимировиче'),
-            array('Валерьянович', NamesInflection::MALE, 'Валерьяновича', 'Валерьяновичу', 'Валерьяновича', 'Валерьяновичем', 'Валерьяновиче'),
-            array('Богдановна', NamesInflection::FEMALE, 'Богдановны', 'Богдановне', 'Богдановну', 'Богдановной', 'Богдановне'),
-            array('Сергеевна', NamesInflection::FEMALE, 'Сергеевны', 'Сергеевне', 'Сергеевну', 'Сергеевной', 'Сергеевне'),
-        );
+        return [
+            ['Владимирович', NamesInflection::MALE, 'Владимировича', 'Владимировичу', 'Владимировича', 'Владимировичем', 'Владимировиче'],
+            ['Валерьянович', NamesInflection::MALE, 'Валерьяновича', 'Валерьяновичу', 'Валерьяновича', 'Валерьяновичем', 'Валерьяновиче'],
+            ['Богдановна', NamesInflection::FEMALE, 'Богдановны', 'Богдановне', 'Богдановну', 'Богдановной', 'Богдановне'],
+            ['Сергеевна', NamesInflection::FEMALE, 'Сергеевны', 'Сергеевне', 'Сергеевну', 'Сергеевной', 'Сергеевне'],
+        ];
     }
 
     /**
@@ -51,10 +51,10 @@ class MiddleNamesInflectionTest extends \PHPUnit_Framework_TestCase
 
     public function mutableNamesProvider()
     {
-        return array(
-            array('Иванович', NamesInflection::MALE),
-            array('Петровна', NamesInflection::FEMALE),
-        );
+        return [
+            ['Иванович', NamesInflection::MALE],
+            ['Петровна', NamesInflection::FEMALE],
+        ];
     }
 
     /**

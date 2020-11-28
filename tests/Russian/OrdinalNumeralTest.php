@@ -12,14 +12,14 @@ class OrdinalNumeralTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetCases($number, $gender, $case, $case2, $case3, $case4, $case5, $case6)
     {
-        $this->assertEquals(array(
+        $this->assertEquals([
             Cases::IMENIT => $case,
             Cases::RODIT => $case2,
             Cases::DAT => $case3,
             Cases::VINIT => $case4,
             Cases::TVORIT => $case5,
             Cases::PREDLOJ => $case6,
-        ), OrdinalNumeralGenerator::getCases($number, $gender));
+        ], OrdinalNumeralGenerator::getCases($number, $gender));
     }
 
     public function numbersProvider()

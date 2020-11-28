@@ -21,14 +21,14 @@ class LastNamesInflectionTest extends \PHPUnit_Framework_TestCase
     public function testGetCases($name, $gender, $name2, $name3, $name4, $name5, $name6)
     {
         $forms = LastNamesInflection::getCases($name, $gender);
-        $this->assertEquals(array(
+        $this->assertEquals([
             Cases::IMENIT => $name,
             Cases::RODIT => $name2,
             Cases::DAT => $name3,
             Cases::VINIT => $name4,
             Cases::TVORIT => $name5,
             Cases::PREDLOJ => $name6
-            ), $forms);
+        ], $forms);
     }
 
     /**
