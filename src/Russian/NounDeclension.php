@@ -457,8 +457,10 @@ class NounDeclension extends BaseInflection implements Cases, Gender
         $runaway_vowels_list = static::getRunAwayVowelsList();
         if (isset($runaway_vowels_list[$word])) {
             $vowel_offset = $runaway_vowels_list[$word];
-            $prefix = S::slice($word, 0, $vowel_offset) . S::slice($word, $vowel_offset + 1);
-        } elseif (in_array($last, ['о', 'е', 'ё', 'ь', 'й'], true)) {
+            $word = S::slice($word, 0, $vowel_offset) . S::slice($word, $vowel_offset + 1);
+        }
+
+        if (in_array($last, ['о', 'е', 'ё', 'ь', 'й'], true)) {
             $prefix = S::slice($word, 0, -1);
         }
         // уменьшительные формы слов (котенок) и слова с суффиксом ок

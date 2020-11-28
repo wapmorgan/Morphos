@@ -177,12 +177,6 @@ class NounPluralization extends \morphos\BasePluralization implements Cases
         $prefix = S::slice($word, 0, -1);
         $last = S::slice($word, -1);
 
-        $runaway_vowels_list = NounDeclension::getRunAwayVowelsList();
-        if (isset($runaway_vowels_list[$word])) {
-            $vowel_offset = $runaway_vowels_list[$word];
-            $word = S::slice($word, 0, $vowel_offset) . S::slice($word, $vowel_offset + 1);
-        }
-
         if (($declension = NounDeclension::getDeclension($word)) == NounDeclension::SECOND_DECLENSION) {
             $soft_last = $last == 'й' || (in_array($last, ['ь', 'е', 'ё', 'ю', 'я'], true)
                     && ((
