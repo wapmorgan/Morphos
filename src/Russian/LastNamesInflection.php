@@ -121,7 +121,7 @@ class LastNamesInflection extends \morphos\NamesInflection implements Cases
 
         if (static::isMutable($name, $gender)) {
             if ($gender == static::MALE) {
-                if (in_array(S::slice($name, -2), ['ов', 'ев', 'ин', 'ын'], true)) {
+                if (in_array(S::slice($name, -2), ['ов', 'ев', 'ин', 'ын', 'ёв'], true)) {
                     $prefix = S::name($name);
                     return [
                         static::IMENIT => $prefix,
@@ -159,7 +159,7 @@ class LastNamesInflection extends \morphos\NamesInflection implements Cases
                 }
 
             } else {
-                if (in_array(S::slice($name, -3), ['ова', 'ева', 'ина', 'ына'], true)) {
+                if (in_array(S::slice($name, -3), ['ова', 'ева', 'ина', 'ына', 'ёва'], true)) {
                     $prefix = S::name(S::slice($name, 0, -1));
                     return [
                         static::IMENIT => S::name($name),
