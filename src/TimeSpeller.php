@@ -101,13 +101,11 @@ abstract class TimeSpeller
 
         if ($dateTime instanceof DateTime) {
             $interval = $dateTime->diff($now);
-        } else if (is_numeric($dateTime) || is_string($dateTime)) {
+        } else {
             $date_time = new DateTime(is_numeric($dateTime)
                 ? '@' . $dateTime
                 : $dateTime);
             $interval = $date_time->diff($now);
-        } else {
-            throw new InvalidArgumentException('dateTime argument should be unix timestamp (int) or date time (string) or DateTime instance');
         }
 
         return static::spellInterval($interval, $options, $limit);
