@@ -459,7 +459,7 @@ class NounDeclension extends BaseInflection implements Cases, Gender
             $prefix = S::slice($word, 0, -1);
         }
         // уменьшительные формы слов (котенок) и слова с суффиксом ок
-        elseif (S::slice($word, -2) === 'ок' && S::length($word) > 3) {
+        elseif (in_array(S::slice($word, -3), ['чок', 'лок', 'нок']) && S::length($word) > 3) {
             $prefix = S::slice($word, 0, -2) . 'к';
         }
         // слова с суффиксом бец
