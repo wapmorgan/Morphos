@@ -72,6 +72,7 @@ class NounDeclension extends BaseInflection implements Cases, Gender
         'дождь',
         'заместитель',
         'зверь',
+        'любитель',
         'камень',
         'конь',
         'конь',
