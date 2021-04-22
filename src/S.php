@@ -195,14 +195,14 @@ class S
     /**
      * @param string $string
      * @param string $substring
-     * @param bool $caseSensetive
+     * @param bool $caseSensitive
      * @param int $startOffset
      * @return int|false
      */
-    public static function indexOf($string, $substring, $caseSensetive = false, $startOffset = 0)
+    public static function indexOf($string, $substring, $caseSensitive = false, $startOffset = 0)
     {
         if (function_exists('mb_stripos')) {
-            return $caseSensetive
+            return $caseSensitive
                 ? mb_strpos($string, $substring, $startOffset, static::getEncoding())
                 : mb_stripos($string, $substring, $startOffset, static::getEncoding());
         }
@@ -228,5 +228,14 @@ class S
             $string = iconv('utf-8', $encoding, $string);
 
         return $string;
+    }
+
+    public static function stringContains($string, array $variants)
+    {
+        foreach ($variants as $variant) {
+            if (static::findFirstPosition($string, $variant) !== false)
+                return true;
+        }
+        return false;
     }
 }
