@@ -210,14 +210,14 @@ class LastNamesInflection extends \morphos\NamesInflection implements Cases
                 $prefix = S::name(S::slice($name, 0, -1));
                 return [
                     static::IMENIT => S::name($name),
-                    static::RODIT => $prefix.(static::isDeafConsonant(S::slice($name, -2, -1)) || S::slice($name, -2)
-                        == 'га' ? 'и' : 'ы'),
+                    static::RODIT => $prefix.((static::isDeafConsonant(S::slice($name, -2, -1)) && S::slice($name, -2, -1) !== 'п')
+                        || S::slice($name, -2) === 'га' ? 'и' : 'ы'),
                     static::DAT => $prefix.'е',
                     static::VINIT => $prefix.'у',
                     static::TVORIT => $prefix.'ой',
                     static::PREDLOJ => $prefix.'е'
                 ];
-            } elseif (static::isConsonant(S::slice($name, -1)) && S::slice($name, -2) != 'ых') {
+            } elseif (static::isConsonant(S::slice($name, -1)) && S::slice($name, -2) !== 'ых') {
                 $prefix = S::name($name);
                 return [
                     static::IMENIT => S::name($name),
