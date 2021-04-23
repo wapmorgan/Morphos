@@ -8,6 +8,7 @@ env:
 matrix:
   fast_finish: true
   include:
+    - php: 8.0
     - php: 7.4
       env: RUN_PHPSTAN=1
     - php: 7.3
