@@ -230,11 +230,17 @@ class S
         return $string;
     }
 
+    /**
+     * @param string $string
+     * @param array $variants
+     * @return bool
+     */
     public static function stringContains($string, array $variants)
     {
         foreach ($variants as $variant) {
-            if (static::findFirstPosition($string, $variant) !== false)
+            if (static::findFirstPosition($string, $variant) !== false) {
                 return true;
+            }
         }
         return false;
     }
