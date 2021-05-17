@@ -231,8 +231,9 @@ class S
     }
 
     /**
+     * Check that string has one of passed substrings
      * @param string $string
-     * @param array $variants
+     * @param string[] $variants
      * @return bool
      */
     public static function stringContains($string, array $variants)
