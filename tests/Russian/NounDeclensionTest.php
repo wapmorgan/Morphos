@@ -1,4 +1,5 @@
 <?php
+
 namespace morphos\test\Russian;
 
 use morphos\Gender;
@@ -104,6 +105,9 @@ class NounDeclensionTest extends \PHPUnit_Framework_TestCase
             ['запятая', false, null, ['запятая', 'запятой', 'запятой', 'запятую', 'запятой', 'запятой']],
             ['горничная', true, null, ['горничная', 'горничной', 'горничной', 'горничную', 'горничной', 'горничной']],
             ['заведующая', true, null, ['заведующая', 'заведующей', 'заведующей', 'заведующую', 'заведующей', 'заведующей']],
+
+            // Отглагольные существительные среднего рода (варенье, печенье и т.д.)
+            ['варенье', true, null, ['варенье', 'варенья', 'варенью', 'варенье', 'вареньем', 'варенье']],
         ];
     }
 
@@ -164,25 +168,25 @@ class NounDeclensionTest extends \PHPUnit_Framework_TestCase
         ];
     }
 
-	/**
-	 * @dataProvider gendersProvider()
-	 */
+    /**
+     * @dataProvider gendersProvider()
+     */
     public function testGenderDetection($word, $gender)
-	{
-		$this->assertEquals($gender, NounDeclension::detectGender($word));
-	}
+    {
+        $this->assertEquals($gender, NounDeclension::detectGender($word));
+    }
 
-	public function gendersProvider()
-	{
-		return [
-			['вилка', Gender::FEMALE],
-			['копейка', Gender::FEMALE],
-			['кирпич', Gender::MALE],
-			['рубль', Gender::MALE],
-			['волчище', Gender::NEUTER],
-			['бремя', Gender::NEUTER],
-			['человек', Gender::MALE],
-			['новость', Gender::FEMALE],
-		];
-	}
+    public function gendersProvider()
+    {
+        return [
+            ['вилка', Gender::FEMALE],
+            ['копейка', Gender::FEMALE],
+            ['кирпич', Gender::MALE],
+            ['рубль', Gender::MALE],
+            ['волчище', Gender::NEUTER],
+            ['бремя', Gender::NEUTER],
+            ['человек', Gender::MALE],
+            ['новость', Gender::FEMALE],
+        ];
+    }
 }

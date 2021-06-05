@@ -292,26 +292,19 @@ class NounDeclension extends BaseInflection implements Cases, Gender
     {
         $word = S::lower($word);
         $last = S::slice($word, -1);
-        $soft_last = $last === 'й'
-            || (
-                in_array($last, ['ь', 'е', 'ё', 'ю', 'я'], true)
-                && (
-                        (
-                        static::isConsonant(S::slice($word, -2, -1))
-                        && !static::isHissingConsonant(S::slice($word, -2, -1))
-                        )
-                    || S::slice($word, -2, -1) === 'и')
-               );
+        $beforeLast = S::slice($word, -2, -1);
+        $isSoftEnding = in_array($last, ['ь', 'е', 'ё', 'ю', 'я', 'й'], true) 
+            && !static::isHissingConsonant($beforeLast);
         $prefix = static::getPrefixOfSecondDeclension($word, $last);
         $forms =  [
             Cases::IMENIT => $word,
         ];
 
         // RODIT
-        $forms[Cases::RODIT] = static::chooseVowelAfterConsonant($last, $soft_last, $prefix.'я', $prefix.'а');
+        $forms[Cases::RODIT] = static::chooseVowelAfterConsonant($last, $isSoftEnding, $prefix.'я', $prefix.'а');
 
         // DAT
-        $forms[Cases::DAT] = static::chooseVowelAfterConsonant($last, $soft_last, $prefix.'ю', $prefix.'у');
+        $forms[Cases::DAT] = static::chooseVowelAfterConsonant($last, $isSoftEnding, $prefix.'ю', $prefix.'у');
 
         // VINIT
         if (in_array($last, ['о', 'е', 'ё'], true)) {
@@ -328,10 +321,10 @@ class NounDeclension extends BaseInflection implements Cases, Gender
         // else
         // 	$forms[Cases::TVORIT] = $prefix.'ом'; # http://morpher.ru/Russian/Spelling.aspx#sibilant
         if ((static::isHissingConsonant($last) && $last !== 'ш')
-            || (in_array($last, ['ь', 'е', 'ё', 'ю', 'я'], true) && static::isHissingConsonant(S::slice($word, -2, -1)))
+            || (in_array($last, ['ь', 'е', 'ё', 'ю', 'я'], true) && static::isHissingConsonant($beforeLast))
             || ($last === 'ц' && S::slice($word, -2) !== 'ец')) {
             $forms[Cases::TVORIT] = $prefix.'ем';
-        } elseif (in_array($last, ['й'/*, 'ч', 'щ'*/], true) || $soft_last) {
+        } elseif (in_array($last, ['й'/*, 'ч', 'щ'*/], true) || $isSoftEnding) {
             $forms[Cases::TVORIT] = $prefix.'ем';
         } else {
             $forms[Cases::TVORIT] = $prefix.'ом';
