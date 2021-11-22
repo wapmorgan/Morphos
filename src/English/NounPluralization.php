@@ -31,7 +31,7 @@ class NounPluralization extends \morphos\BasePluralization
     private static $without_paired_form = [
         'knowledge',
         'progress',
-        'advise',
+        'advice',
         'ink',
         'money',
         'scissors',
