@@ -7,7 +7,7 @@ A morphological solution for Russian and English language written completely in 
 [![Daily Downloads](https://poser.pugx.org/wapmorgan/morphos/d/daily)](https://packagist.org/packages/wapmorgan/morphos)
 [![Latest Unstable Version](https://poser.pugx.org/wapmorgan/morphos/v/unstable)](https://packagist.org/packages/wapmorgan/morphos)
 
-Tests & Quality: [![Build Status](https://travis-ci.com/wapmorgan/Morphos.svg)](https://travis-ci.com/wapmorgan/Morphos)
+Tests & Quality: [![Build Status](https://app.travis-ci.com/wapmorgan/Morphos.svg?branch=master)](https://app.travis-ci.com/github/wapmorgan/Morphos)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/wapmorgan/Morphos/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/wapmorgan/Morphos/?branch=master)
 [![Code Coverage](https://scrutinizer-ci.com/g/wapmorgan/Morphos/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/wapmorgan/Morphos/?branch=master)
 
