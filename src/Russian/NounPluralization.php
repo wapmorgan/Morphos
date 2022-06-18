@@ -218,6 +218,8 @@ class NounPluralization extends \morphos\BasePluralization implements Cases
                 $forms[Cases::RODIT] = S::slice($word, 0, -2).'ок';
             } elseif (in_array(S::slice($word, -3, -2), ['й', 'е'], true)) {
                 $forms[Cases::RODIT] = S::slice($word, 0, -3).'ек';
+            } else if ($word === 'штука') {
+                $forms[Cases::RODIT] = S::slice($word, 0, -2).'к';
             } else {
                 $forms[Cases::RODIT] = S::slice($word, 0, -2).'ек';
             }
@@ -225,7 +227,7 @@ class NounPluralization extends \morphos\BasePluralization implements Cases
             $forms[Cases::RODIT] = $prefix;
         } elseif (in_array($last, ['я'], true)) { // молния
             $forms[Cases::RODIT] = $prefix.'й';
-        } elseif (RussianLanguage::isHissingConsonant($last) || ($soft_last && $last != 'й') || in_array(S::slice($word, -2), ['чь', 'сь', 'ть', 'нь', 'дь'], true)) {
+        } elseif (static::isHissingConsonant($last) || ($soft_last && $last != 'й') || in_array(S::slice($word, -2), ['чь', 'сь', 'ть', 'нь', 'дь'], true)) {
             $forms[Cases::RODIT] = $prefix.'ей';
         } elseif ($last == 'й' || S::slice($word, -2) == 'яц') { // месяц
             $forms[Cases::RODIT] = $prefix.'ев';

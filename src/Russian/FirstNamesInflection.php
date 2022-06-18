@@ -265,7 +265,7 @@ class FirstNamesInflection extends \morphos\NamesInflection implements Cases
                 static::RODIT => $prefix.'а',
                 static::DAT => $prefix.'у',
                 static::VINIT => $prefix.'а',
-                static::TVORIT => RussianLanguage::isHissingConsonant(S::slice($name, -1)) || S::slice($name, -1) == 'ц' ? $prefix.'ем' : $prefix.'ом',
+                static::TVORIT => static::isHissingConsonant(S::slice($name, -1)) || S::slice($name, -1) == 'ц' ? $prefix.'ем' : $prefix.'ом',
                 static::PREDLOJ => $prefix.'е',
             ];
         } elseif (S::slice($name, -1) == 'ь' && static::isConsonant(S::slice($name, -2, -1))) { // soft consonant
@@ -291,7 +291,7 @@ class FirstNamesInflection extends \morphos\NamesInflection implements Cases
             ];
         } elseif (S::slice($name, -1) == 'а' && static::isConsonant($before = S::slice($name, -2, -1)) && !in_array($before, [/*'г', 'к', 'х', */'ц'], true)) {
             $prefix = S::name(S::slice($name, 0, -1));
-            $postfix = (RussianLanguage::isHissingConsonant($before) || in_array($before, ['г', 'к', 'х'], true)) ? 'и' : 'ы';
+            $postfix = (static::isHissingConsonant($before) || in_array($before, ['г', 'к', 'х'], true)) ? 'и' : 'ы';
             return [
                 static::IMENIT => $prefix.'а',
                 static::RODIT => $prefix.$postfix,
@@ -326,7 +326,7 @@ class FirstNamesInflection extends \morphos\NamesInflection implements Cases
         if (S::slice($name, -1) == 'а' && !static::isVowel($before = (S::slice($name, -2, -1)))) {
             $prefix = S::name(S::slice($name, 0, -1));
             if ($before != 'ц') {
-                $postfix = (RussianLanguage::isHissingConsonant($before) || in_array($before, ['г', 'к', 'х'], true)) ? 'и' : 'ы';
+                $postfix = (static::isHissingConsonant($before) || in_array($before, ['г', 'к', 'х'], true)) ? 'и' : 'ы';
                 return [
                     static::IMENIT => $prefix.'а',
                     static::RODIT => $prefix.$postfix,
@@ -355,7 +355,7 @@ class FirstNamesInflection extends \morphos\NamesInflection implements Cases
                 static::TVORIT => $prefix.'ью',
                 static::PREDLOJ => $prefix.'и',
             ];
-        } elseif (RussianLanguage::isHissingConsonant(S::slice($name, -1))) {
+        } elseif (static::isHissingConsonant(S::slice($name, -1))) {
             $prefix = S::name($name);
             return [
                 static::IMENIT => $prefix,
