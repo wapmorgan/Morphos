@@ -44,7 +44,7 @@ class NounPluralizationTest extends TestCase
             ['schoolboy', 'schoolboys'],
             ['knowledge', 'knowledge'],
             ['progress', 'progress'],
-            ['advise', 'advise'],
+            ['advice', 'advice'],
             ['ink', 'ink'],
             ['money', 'money'],
             ['scissors', 'scissors'],

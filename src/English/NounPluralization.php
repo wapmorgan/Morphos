@@ -32,7 +32,6 @@ class NounPluralization extends \morphos\BasePluralization
         'knowledge',
         'progress',
         'advice',
-        'advise',
         'ink',
         'money',
         'scissors',
