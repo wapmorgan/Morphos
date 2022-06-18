@@ -4,8 +4,9 @@ namespace morphos\test\Russian;
 use morphos\NumeralGenerator;
 use morphos\Russian\Cases;
 use morphos\Russian\OrdinalNumeralGenerator;
+use PHPUnit\Framework\TestCase;
 
-class OrdinalNumeralTest extends \PHPUnit_Framework_TestCase
+class OrdinalNumeralTest extends TestCase
 {
     /**
      * @dataProvider numbersProvider

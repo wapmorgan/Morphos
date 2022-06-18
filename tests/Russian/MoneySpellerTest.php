@@ -4,8 +4,9 @@ namespace morphos\test\Russian;
 use morphos\Currency;
 use morphos\Russian\Cases;
 use morphos\Russian\MoneySpeller;
+use PHPUnit\Framework\TestCase;
 
-class MoneySpellerTest extends \PHPUnit_Framework_TestCase
+class MoneySpellerTest extends TestCase
 {
 
     /**
@@ -58,11 +59,12 @@ class MoneySpellerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException InvalidArgumentException
+     *
      * @throws \Exception
      */
     public function testSpellInvalid()
     {
+        $this->expectException(\InvalidArgumentException::class);
         MoneySpeller::spell(1, 'Invalid-Currency');
     }
 }

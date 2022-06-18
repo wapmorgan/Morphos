@@ -5,8 +5,9 @@ use DateInterval;
 use DateTime;
 use InvalidArgumentException;
 use morphos\Russian\TimeSpeller;
+use PHPUnit\Framework\TestCase;
 
-class TimeSpellerTest extends \PHPUnit_Framework_TestCase
+class TimeSpellerTest extends TestCase
 {
 
     /**
@@ -88,11 +89,11 @@ class TimeSpellerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException InvalidArgumentException
      * @throws \Exception
      */
     public function testSpellUnitInvalid()
     {
+        $this->expectException(InvalidArgumentException::class);
         TimeSpeller::spellUnit(1, 'Invalid-Unit');
     }
 }

@@ -3,8 +3,9 @@ namespace morphos\test\Russian;
 
 use morphos\Russian\Cases;
 use morphos\Russian\NounPluralization;
+use PHPUnit\Framework\TestCase;
 
-class NounPluralizationTest extends \PHPUnit_Framework_TestCase
+class NounPluralizationTest extends TestCase
 {
 
     /**

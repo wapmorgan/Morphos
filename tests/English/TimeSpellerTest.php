@@ -5,8 +5,9 @@ use DateInterval;
 use DateTime;
 use InvalidArgumentException;
 use morphos\English\TimeSpeller;
+use PHPUnit\Framework\TestCase;
 
-class TimeSpellerTest extends \PHPUnit_Framework_TestCase
+class TimeSpellerTest extends TestCase
 {
 
     /**
@@ -74,7 +75,7 @@ class TimeSpellerTest extends \PHPUnit_Framework_TestCase
     {
         $diff = (new DateTime())->diff(new DateTime(is_numeric($dateTime) ? '@'.$dateTime : $dateTime));
         $this->assertEquals(TimeSpeller::spellInterval($diff, 0, $limit),
-            TimeSpeller::spellDifference($dateTime, 0, $limit));
+            TimeSpeller::spellDifference($dateTime, 0, $limit), 'DateTime is ' . $dateTime . ' and limit is ' . $limit);
     }
 
     public function differencesProvides()
@@ -87,11 +88,9 @@ class TimeSpellerTest extends \PHPUnit_Framework_TestCase
         ];
     }
 
-    /**
-     * @expectedException InvalidArgumentException
-     */
     public function testSpellUnitInvalid()
     {
+        $this->expectException(InvalidArgumentException::class);
         TimeSpeller::spellUnit(1, 'Invalid-Unit');
     }
 }

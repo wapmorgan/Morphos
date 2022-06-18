@@ -2,8 +2,9 @@
 namespace morphos\test\English;
 
 use morphos\English\NounPluralization;
+use PHPUnit\Framework\TestCase;
 
-class NounPluralizationTest extends \PHPUnit_Framework_TestCase
+class NounPluralizationTest extends TestCase
 {
     /**
      * @dataProvider wordsProvider

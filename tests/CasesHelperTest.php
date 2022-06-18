@@ -3,8 +3,9 @@ namespace morphos\test;
 
 use morphos\CasesHelper;
 use morphos\Cases;
+use PHPUnit\Framework\TestCase;
 
-class CasesHelperTest extends \PHPUnit_Framework_TestCase
+class CasesHelperTest extends TestCase
 {
     /**
      * @dataProvider casesProvider
@@ -25,11 +26,9 @@ class CasesHelperTest extends \PHPUnit_Framework_TestCase
         ];
     }
 
-    /**
-     * @expectedException InvalidArgumentException
-     */
     public function testCanonizeCaseInvalid()
     {
+        $this->expectException(\InvalidArgumentException::class);
         CasesHelper::canonizeCase('Invalid-Case');
     }
 }

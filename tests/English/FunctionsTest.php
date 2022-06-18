@@ -3,8 +3,9 @@ namespace morphos\test\English;
 
 use morphos\Gender;
 use morphos\NumeralGenerator;
+use PHPUnit\Framework\TestCase;
 
-class FunctionsTest extends \PHPUnit_Framework_TestCase
+class FunctionsTest extends TestCase
 {
 	public function testPluralize()
     {

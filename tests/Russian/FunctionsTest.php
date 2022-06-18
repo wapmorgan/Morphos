@@ -5,8 +5,9 @@ use morphos\Gender;
 use morphos\NumeralGenerator;
 use morphos\Russian\Cases;
 use morphos\Russian\CardinalNumeralGenerator;
+use PHPUnit\Framework\TestCase;
 
-class FunctionsTest extends \PHPUnit_Framework_TestCase
+class FunctionsTest extends TestCase
 {
 	/**
 	 * @dataProvider fullNamesProvider()

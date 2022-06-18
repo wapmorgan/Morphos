@@ -3,8 +3,9 @@ namespace morphos\test;
 
 use morphos\CurrenciesHelper;
 use morphos\Currency;
+use PHPUnit\Framework\TestCase;
 
-class CurrenciesHelperTest extends \PHPUnit_Framework_TestCase
+class CurrenciesHelperTest extends TestCase
 {
     /**
      * @dataProvider currenciesProvider
@@ -38,11 +39,9 @@ class CurrenciesHelperTest extends \PHPUnit_Framework_TestCase
         ];
     }
 
-    /**
-     * @expectedException InvalidArgumentException
-     */
     public function testCanonizeCurrency()
     {
+        $this->expectException(\InvalidArgumentException::class);
         CurrenciesHelper::canonizeCurrency('Invalid-Case');
     }
 }

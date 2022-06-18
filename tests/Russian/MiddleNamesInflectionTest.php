@@ -4,8 +4,9 @@ namespace morphos\test\Russian;
 use morphos\Russian\Cases;
 use morphos\Russian\MiddleNamesInflection;
 use morphos\NamesInflection;
+use PHPUnit\Framework\TestCase;
 
-class MiddleNamesInflectionTest extends \PHPUnit_Framework_TestCase
+class MiddleNamesInflectionTest extends TestCase
 {
     /**
      * @dataProvider middleNamesProvider

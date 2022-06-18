@@ -4,8 +4,9 @@ namespace morphos\test\Russian;
 
 use morphos\Gender;
 use morphos\Russian\NounDeclension;
+use PHPUnit\Framework\TestCase;
 
-class NounDeclensionTest extends \PHPUnit_Framework_TestCase
+class NounDeclensionTest extends TestCase
 {
     /**
      * @dataProvider wordsProvider

@@ -13,7 +13,7 @@ class LastNamesInflection extends \morphos\NamesInflection implements Cases
     /** @var string[] */
     protected static $womenPostfixes = ['ва', 'на', 'ая', 'яя'];
     /** @var string[] */
-    protected static $menPostfixes = ['ов', 'ев' ,'ин' ,'ын', 'ой', 'ий'];
+    protected static $menPostfixes = ['ов', 'ев' ,'ин' ,'ын', 'ой', 'ий', 'ый', 'ич'];
 
     /**
      * @param string $name

@@ -1,12 +1,10 @@
 <?php
 namespace morphos\test\Russian;
 
-use morphos\Gender;
-use morphos\Russian\AdjectiveDeclension;
 use morphos\Russian\AdjectivePluralization;
-use morphos\Russian\NounDeclension;
+use PHPUnit\Framework\TestCase;
 
-class AdjectivePluralizationTest extends \PHPUnit_Framework_TestCase
+class AdjectivePluralizationTest extends TestCase
 {
 
     /**

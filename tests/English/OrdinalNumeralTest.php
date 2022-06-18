@@ -2,8 +2,9 @@
 namespace morphos\test\English;
 
 use morphos\English\OrdinalNumeralGenerator;
+use PHPUnit\Framework\TestCase;
 
-class OrdinalNumeralTest extends \PHPUnit_Framework_TestCase
+class OrdinalNumeralTest extends TestCase
 {
     /**
      * @dataProvider numbersProvider

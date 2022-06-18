@@ -6,8 +6,9 @@ use morphos\NumeralGenerator;
 use morphos\Russian\Cases;
 use morphos\Russian\CardinalNumeralGenerator;
 use morphos\Russian\RussianLanguage;
+use PHPUnit\Framework\TestCase;
 
-class RussianLanguageTest extends \PHPUnit_Framework_TestCase
+class RussianLanguageTest extends TestCase
 {
 	/**
      * @dataProvider verbsProvider()

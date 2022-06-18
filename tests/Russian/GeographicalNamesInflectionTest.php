@@ -3,8 +3,9 @@ namespace morphos\test\Russian;
 
 use morphos\Russian\Cases;
 use morphos\Russian\GeographicalNamesInflection;
+use PHPUnit\Framework\TestCase;
 
-class GeographicalNamesInflectionTest extends \PHPUnit_Framework_TestCase
+class GeographicalNamesInflectionTest extends TestCase
 {
     /**
      * @dataProvider wordsProvider

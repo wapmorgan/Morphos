@@ -2,8 +2,9 @@
 namespace morphos\test\English;
 
 use morphos\English\CardinalNumeralGenerator;
+use PHPUnit\Framework\TestCase;
 
-class CardinalNumeralTest extends \PHPUnit_Framework_TestCase
+class CardinalNumeralTest extends TestCase
 {
     /**
      * @dataProvider numbersProvider
