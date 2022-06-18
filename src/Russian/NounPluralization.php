@@ -195,7 +195,7 @@ class NounPluralization extends \morphos\BasePluralization implements Cases
             || in_array(S::slice($word, -2), ['чь', 'сь', 'ть', 'нь', 'рь', 'дь', 'ль'], true)
             || (static::isVowel($last) && in_array(S::slice($word, -2, -1), ['ч', 'к'], true))) { // before ч, чь, сь, ч+vowel, к+vowel
             $forms[Cases::IMENIT] = $prefix.'и';
-        } elseif (in_array($last, ['н', 'ц', 'р', 'т'], true)) {
+        } elseif (in_array($last, ['н', 'ц', 'р', 'т', 'с', 'ж'], true)) {
             $forms[Cases::IMENIT] = $prefix.'ы';
         } else {
             $forms[Cases::IMENIT] = static::chooseVowelAfterConsonant($last, $soft_last, $prefix.'я', $prefix.'а');
