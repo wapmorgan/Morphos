@@ -37,11 +37,11 @@ class TimeSpeller extends \morphos\TimeSpeller
             throw new InvalidArgumentException('Unknown time unit: '.$unit);
         }
 
-        if ($count === 1 && in_array($unit, [self::SECOND, self::MINUTE], true)) {
-            if ($unit === self::SECOND)
-                return '1 секунду';
-            return '1 минуту';
-        }
+//         if ($count === 1 && in_array($unit, [self::SECOND, self::MINUTE], true)) {
+//             if ($unit === self::SECOND)
+//                 return '1 секунду';
+//             return '1 минуту';
+//         }
 
         return pluralize($count, static::$units[$unit]);
     }
