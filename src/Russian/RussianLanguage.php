@@ -285,8 +285,10 @@ trait RussianLanguage
     public static function in($word)
     {
         $normalized = trim(S::lower($word));
-        if (in_array(S::slice($normalized, 0, 1), ['в', 'ф'], true))
+        if (in_array(S::slice($normalized, 0, 1), ['в', 'ф'], true)
+            && static::isConsonant(S::slice($normalized, 1, 2))) {
             return 'во '.$word;
+        }
         return 'в '.$word;
     }
 

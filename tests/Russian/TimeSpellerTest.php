@@ -35,7 +35,7 @@ class TimeSpellerTest extends TestCase
             ['P1Y5M10D', TimeSpeller::SEPARATE, '1 год, 5 месяцев и 10 дней'],
             ['P10Y1MT5H', TimeSpeller::DIRECTION, '10 лет 1 месяц 5 часов назад'],
             ['P3DT1H2M', TimeSpeller::SEPARATE | TimeSpeller::DIRECTION, '3 дня, 1 час и 2 минуты назад'],
-            ['PT1M1S', TimeSpeller::SEPARATE | TimeSpeller::DIRECTION, '1 минуту и 1 секунду назад'],
+            ['PT1M1S', TimeSpeller::SEPARATE | TimeSpeller::DIRECTION, '1 минута и 1 секунда назад'],
             ['P10MT40M30S', TimeSpeller::SEPARATE, '10 месяцев, 40 минут и 30 секунд'],
         ];
     }
