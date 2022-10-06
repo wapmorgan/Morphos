@@ -10,8 +10,6 @@ use RuntimeException;
  */
 class CardinalNumeralGenerator extends NumeralGenerator implements Cases
 {
-    use RussianLanguage, CasesHelper;
-
     /**
      * @var string[]
      * @phpstan-var array<int, string>
@@ -321,7 +319,7 @@ class CardinalNumeralGenerator extends NumeralGenerator implements Cases
      */
     public static function getCase($number, $case, $gender = self::MALE)
     {
-        $case = static::canonizeCase($case);
+        $case = RussianCasesHelper::canonizeCase($case);
         $forms = static::getCases($number, $gender);
         return $forms[$case];
     }

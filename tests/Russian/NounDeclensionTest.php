@@ -15,7 +15,7 @@ class NounDeclensionTest extends TestCase
     {
         // skip word if it does not have declension
         if ($declension === null) {
-            return true;
+            static::markTestSkipped('skip word if it does not have declension');
         }
         $this->assertEquals($declension, NounDeclension::getDeclension($word));
     }

@@ -2,3 +2,4 @@ vendor
 .idea
 nbproject
 composer.lock
+.phpunit.result.cache

@@ -7,8 +7,6 @@ use RuntimeException;
 
 class MoneySpeller extends \morphos\MoneySpeller
 {
-    use CurrenciesHelper;
-
     /**
      * @var array[]
      * @phpstan-var array<string, string[]>
@@ -47,7 +45,7 @@ class MoneySpeller extends \morphos\MoneySpeller
         $case = null
     )
     {
-        $currency = static::canonizeCurrency($currency);
+        $currency = CurrenciesHelper::canonizeCurrency($currency);
 
         $integer = (int)floor($value);
         $fractional = fmod($value, $integer);

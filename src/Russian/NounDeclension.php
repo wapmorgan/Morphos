@@ -11,8 +11,6 @@ use RuntimeException;
  */
 class NounDeclension extends BaseInflection implements Cases, Gender
 {
-    use RussianLanguage, CasesHelper;
-
     const FIRST_DECLENSION = 1;
     const SECOND_DECLENSION = 2;
     const THIRD_DECLENSION = 3;
@@ -174,8 +172,8 @@ class NounDeclension extends BaseInflection implements Cases, Gender
 
         if (in_array($last, ['а', 'я'], true) && S::slice($word, -2) != 'мя') {
             return 1;
-        } elseif (static::isConsonant($last) || in_array($last, ['о', 'е', 'ё'], true)
-            || ($last == 'ь' && static::isConsonant(S::slice($word, -2, -1)) && !static::isHissingConsonant(S::slice($word, -2, -1))
+        } elseif (RussianLanguage::isConsonant($last) || in_array($last, ['о', 'е', 'ё'], true)
+            || ($last == 'ь' && RussianLanguage::isConsonant(S::slice($word, -2, -1)) && !RussianLanguage::isHissingConsonant(S::slice($word, -2, -1))
                 && (in_array($word, static::$masculineWithSoft, true)) /*|| in_array($word, static::$masculineWithSoftAndRunAwayVowels, true)*/)) {
             return 2;
         } else {
@@ -195,7 +193,7 @@ class NounDeclension extends BaseInflection implements Cases, Gender
         $word = S::lower($word);
 
         // Адъективное склонение (Сущ, образованные от прилагательных и причастий) - прохожий, существительное
-        if (static::isAdjectiveNoun($word)) {
+        if (RussianLanguage::isAdjectiveNoun($word)) {
             return static::declinateAdjective($word, $animateness);
         }
 
@@ -250,25 +248,25 @@ class NounDeclension extends BaseInflection implements Cases, Gender
         $word = S::lower($word);
         $prefix = S::slice($word, 0, -1);
         $last = S::slice($word, -1);
-        $soft_last = static::checkLastConsonantSoftness($word);
+        $soft_last = RussianLanguage::checkLastConsonantSoftness($word);
         $forms =  [
             Cases::IMENIT => $word,
         ];
 
         // RODIT
-        $forms[Cases::RODIT] = static::chooseVowelAfterConsonant($last, $soft_last || (in_array(S::slice($word, -2, -1), ['г', 'к', 'х'], true)), $prefix.'и', $prefix.'ы');
+        $forms[Cases::RODIT] = RussianLanguage::chooseVowelAfterConsonant($last, $soft_last || (in_array(S::slice($word, -2, -1), ['г', 'к', 'х'], true)), $prefix.'и', $prefix.'ы');
 
         // DAT
         $forms[Cases::DAT] = static::getPredCaseOf12Declensions($word, $last, $prefix);
 
         // VINIT
-        $forms[Cases::VINIT] = static::chooseVowelAfterConsonant($last, $soft_last && S::slice($word, -2, -1) !== 'ч', $prefix.'ю', $prefix.'у');
+        $forms[Cases::VINIT] = RussianLanguage::chooseVowelAfterConsonant($last, $soft_last && S::slice($word, -2, -1) !== 'ч', $prefix.'ю', $prefix.'у');
 
         // TVORIT
         if ($last === 'ь') {
             $forms[Cases::TVORIT] = $prefix.'ой';
         } else {
-            $forms[Cases::TVORIT] = static::chooseVowelAfterConsonant($last, $soft_last, $prefix.'ей', $prefix.'ой');
+            $forms[Cases::TVORIT] = RussianLanguage::chooseVowelAfterConsonant($last, $soft_last, $prefix.'ей', $prefix.'ой');
         }
 
         // 	if ($last == 'й' || (static::isConsonant($last) && !static::isHissingConsonant($last)) || static::checkLastConsonantSoftness($word))
@@ -294,23 +292,23 @@ class NounDeclension extends BaseInflection implements Cases, Gender
         $last = S::slice($word, -1);
         $beforeLast = S::slice($word, -2, -1);
         $isSoftEnding = in_array($last, ['ь', 'е', 'ё', 'ю', 'я', 'й'], true) 
-            && !static::isHissingConsonant($beforeLast);
+            && !RussianLanguage::isHissingConsonant($beforeLast);
         $prefix = static::getPrefixOfSecondDeclension($word, $last);
         $forms =  [
             Cases::IMENIT => $word,
         ];
 
         // RODIT
-        $forms[Cases::RODIT] = static::chooseVowelAfterConsonant($last, $isSoftEnding, $prefix.'я', $prefix.'а');
+        $forms[Cases::RODIT] = RussianLanguage::chooseVowelAfterConsonant($last, $isSoftEnding, $prefix.'я', $prefix.'а');
 
         // DAT
-        $forms[Cases::DAT] = static::chooseVowelAfterConsonant($last, $isSoftEnding, $prefix.'ю', $prefix.'у');
+        $forms[Cases::DAT] = RussianLanguage::chooseVowelAfterConsonant($last, $isSoftEnding, $prefix.'ю', $prefix.'у');
 
         // VINIT
         if (in_array($last, ['о', 'е', 'ё'], true)) {
             $forms[Cases::VINIT] = $word;
         } else {
-            $forms[Cases::VINIT] = static::getVinitCaseByAnimateness($forms, $animateness);
+            $forms[Cases::VINIT] = RussianLanguage::getVinitCaseByAnimateness($forms, $animateness);
         }
 
         // TVORIT
@@ -320,8 +318,8 @@ class NounDeclension extends BaseInflection implements Cases, Gender
         // 	$forms[Cases::TVORIT] = $prefix.'ем';
         // else
         // 	$forms[Cases::TVORIT] = $prefix.'ом'; # http://morpher.ru/Russian/Spelling.aspx#sibilant
-        if ((static::isHissingConsonant($last) && $last !== 'ш')
-            || (in_array($last, ['ь', 'е', 'ё', 'ю', 'я'], true) && static::isHissingConsonant($beforeLast))
+        if ((RussianLanguage::isHissingConsonant($last) && $last !== 'ш')
+            || (in_array($last, ['ь', 'е', 'ё', 'ю', 'я'], true) && RussianLanguage::isHissingConsonant($beforeLast))
             || ($last === 'ц' && S::slice($word, -2) !== 'ец')) {
             $forms[Cases::TVORIT] = $prefix.'ем';
         } elseif (in_array($last, ['й'/*, 'ч', 'щ'*/], true) || $isSoftEnding) {
@@ -406,7 +404,7 @@ class NounDeclension extends BaseInflection implements Cases, Gender
 
             // Female adjectives
             case 'ая':
-                $ending = static::isHissingConsonant(S::slice($prefix, -1)) ? 'ей' : 'ой';
+                $ending = RussianLanguage::isHissingConsonant(S::slice($prefix, -1)) ? 'ей' : 'ой';
                 return [
                     Cases::IMENIT => $word,
                     Cases::RODIT => $prefix.$ending,
@@ -430,7 +428,7 @@ class NounDeclension extends BaseInflection implements Cases, Gender
      */
     public static function getCase($word, $case, $animateness = false)
     {
-        $case = static::canonizeCase($case);
+        $case = RussianCasesHelper::canonizeCase($case);
         $forms = static::getCases($word, $animateness);
         return $forms[$case];
     }

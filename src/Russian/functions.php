@@ -21,7 +21,7 @@ function inflectName($fullName, $case = null, $gender = null)
     }
 
     $fullName = normalizeFullName($fullName);
-    $case = CasesHelper::canonizeCase($case);
+    $case = RussianCasesHelper::canonizeCase($case);
     if ($gender === null) $gender = detectGender($fullName);
 
     $name = explode(' ', $fullName);
@@ -83,7 +83,7 @@ function getNameCases($fullName, $gender = null)
             return false;
     }
 
-    return CasesHelper::composeCasesFromWords($name);
+    return RussianCasesHelper::composeCasesFromWords($name);
 }
 
 /**

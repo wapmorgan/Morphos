@@ -7,8 +7,6 @@ use RuntimeException;
 
 class AdjectivePluralization extends BasePluralization implements Cases
 {
-    use RussianLanguage, CasesHelper;
-
     /**
      * @param string $adjective
      * @param int  $count
@@ -27,7 +25,7 @@ class AdjectivePluralization extends BasePluralization implements Cases
         }
 
         if ($case !== null)
-            $case = static::canonizeCase($case);
+            $case = RussianCasesHelper::canonizeCase($case);
 
         if ($case === null) {
             switch (NounPluralization::getNumeralForm($count)) {
@@ -56,7 +54,7 @@ class AdjectivePluralization extends BasePluralization implements Cases
      */
     public static function getCase($adjective, $case, $animateness = false)
     {
-        $case = static::canonizeCase($case);
+        $case = RussianCasesHelper::canonizeCase($case);
         $forms = static::getCases($adjective, $animateness);
         return $forms[$case];
     }
@@ -81,7 +79,7 @@ class AdjectivePluralization extends BasePluralization implements Cases
                     static::DAT => $adjective.'ым',
                 ];
 
-                $cases[static::VINIT] = static::getVinitCaseByAnimateness($cases, $animateness);
+                $cases[static::VINIT] = RussianLanguage::getVinitCaseByAnimateness($cases, $animateness);
 
                 $cases[static::TVORIT] = $adjective.'ыми';
                 $cases[static::PREDLOJ] = $adjective.'ых';
@@ -96,7 +94,7 @@ class AdjectivePluralization extends BasePluralization implements Cases
                     static::DAT => $adjective.'им',
                 ];
 
-                $cases[static::VINIT] = static::getVinitCaseByAnimateness($cases, $animateness);
+                $cases[static::VINIT] = RussianLanguage::getVinitCaseByAnimateness($cases, $animateness);
 
                 $cases[static::TVORIT] = $adjective.'ими';
                 $cases[static::PREDLOJ] = $adjective.'их';

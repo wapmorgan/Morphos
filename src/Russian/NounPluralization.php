@@ -8,8 +8,6 @@ use morphos\S;
  */
 class NounPluralization extends \morphos\BasePluralization implements Cases
 {
-    use RussianLanguage, CasesHelper;
-
     const ONE = 1;
     const TWO_FOUR = 2;
     const FIVE_OTHER = 3;
@@ -63,11 +61,11 @@ class NounPluralization extends \morphos\BasePluralization implements Cases
         }
 
         if ($case !== null)
-            $case = static::canonizeCase($case);
+            $case = RussianCasesHelper::canonizeCase($case);
 
         // для адъективных существительных правила склонения проще:
         // только две формы
-        if (static::isAdjectiveNoun($word)) {
+        if (RussianLanguage::isAdjectiveNoun($word)) {
             if (static::getNumeralForm($count) == static::ONE)
                 return $word;
             else
@@ -123,7 +121,7 @@ class NounPluralization extends \morphos\BasePluralization implements Cases
      */
     public static function getCase($word, $case, $animateness = false)
     {
-        $case = static::canonizeCase($case);
+        $case = RussianCasesHelper::canonizeCase($case);
         $forms = static::getCases($word, $animateness);
         return $forms[$case];
     }
@@ -157,7 +155,7 @@ class NounPluralization extends \morphos\BasePluralization implements Cases
 
         // Адъективное склонение (Сущ, образованные от прилагательных и причастий)
         // Пример: прохожий, существительное
-        if (static::isAdjectiveNoun($word)) {
+        if (RussianLanguage::isAdjectiveNoun($word)) {
             return static::declinateAdjective($word, $animateness);
         }
 
@@ -180,11 +178,11 @@ class NounPluralization extends \morphos\BasePluralization implements Cases
         if (($declension = NounDeclension::getDeclension($word)) == NounDeclension::SECOND_DECLENSION) {
             $soft_last = $last == 'й' || (in_array($last, ['ь', 'е', 'ё', 'ю', 'я'], true)
                     && ((
-                        static::isConsonant(S::slice($word, -2, -1)) && !static::isHissingConsonant(S::slice($word, -2, -1)))
+                        RussianLanguage::isConsonant(S::slice($word, -2, -1)) && !RussianLanguage::isHissingConsonant(S::slice($word, -2, -1)))
                         || S::slice($word, -2, -1) == 'и'));
             $prefix = NounDeclension::getPrefixOfSecondDeclension($word, $last);
         } elseif ($declension == NounDeclension::FIRST_DECLENSION) {
-            $soft_last = static::checkLastConsonantSoftness($word);
+            $soft_last = RussianLanguage::checkLastConsonantSoftness($word);
         } else {
             $soft_last = in_array(S::slice($word, -2), ['чь', 'сь', 'ть', 'нь', 'дь'], true);
         }
@@ -193,12 +191,12 @@ class NounPluralization extends \morphos\BasePluralization implements Cases
 
         if (in_array($last, ['ч', 'г'], true)
             || in_array(S::slice($word, -2), ['чь', 'сь', 'ть', 'нь', 'рь', 'дь', 'ль'], true)
-            || (static::isVowel($last) && in_array(S::slice($word, -2, -1), ['ч', 'к'], true))) { // before ч, чь, сь, ч+vowel, к+vowel
+            || (RussianLanguage::isVowel($last) && in_array(S::slice($word, -2, -1), ['ч', 'к'], true))) { // before ч, чь, сь, ч+vowel, к+vowel
             $forms[Cases::IMENIT] = $prefix.'и';
         } elseif (in_array($last, ['н', 'ц', 'р', 'т', 'с', 'ж'], true)) {
             $forms[Cases::IMENIT] = $prefix.'ы';
         } else {
-            $forms[Cases::IMENIT] = static::chooseVowelAfterConsonant($last, $soft_last, $prefix.'я', $prefix.'а');
+            $forms[Cases::IMENIT] = RussianLanguage::chooseVowelAfterConsonant($last, $soft_last, $prefix.'я', $prefix.'а');
         }
 
         // RODIT
@@ -227,7 +225,7 @@ class NounPluralization extends \morphos\BasePluralization implements Cases
             $forms[Cases::RODIT] = $prefix;
         } elseif (in_array($last, ['я'], true)) { // молния
             $forms[Cases::RODIT] = $prefix.'й';
-        } elseif (static::isHissingConsonant($last) || ($soft_last && $last != 'й') || in_array(S::slice($word, -2), ['чь', 'сь', 'ть', 'нь', 'дь'], true)) {
+        } elseif (RussianLanguage::isHissingConsonant($last) || ($soft_last && $last != 'й') || in_array(S::slice($word, -2), ['чь', 'сь', 'ть', 'нь', 'дь'], true)) {
             $forms[Cases::RODIT] = $prefix.'ей';
         } elseif ($last == 'й' || S::slice($word, -2) == 'яц') { // месяц
             $forms[Cases::RODIT] = $prefix.'ев';
@@ -236,21 +234,21 @@ class NounPluralization extends \morphos\BasePluralization implements Cases
         }
 
         // DAT
-        $forms[Cases::DAT] = static::chooseVowelAfterConsonant($last, $soft_last && S::slice($word, -2, -1) != 'ч', $prefix.'ям', $prefix.'ам');
+        $forms[Cases::DAT] = RussianLanguage::chooseVowelAfterConsonant($last, $soft_last && S::slice($word, -2, -1) != 'ч', $prefix.'ям', $prefix.'ам');
 
         // VINIT
-        $forms[Cases::VINIT] = NounDeclension::getVinitCaseByAnimateness($forms, $animateness);
+        $forms[Cases::VINIT] = RussianLanguage::getVinitCaseByAnimateness($forms, $animateness);
 
         // TVORIT
         // my personal rule
         if ($last == 'ь' && $declension == NounDeclension::THIRD_DECLENSION && !in_array(S::slice($word, -2), ['чь', 'сь', 'ть', 'нь', 'дь'], true)) {
             $forms[Cases::TVORIT] = $prefix.'ми';
         } else {
-            $forms[Cases::TVORIT] = static::chooseVowelAfterConsonant($last, $soft_last && S::slice($word, -2, -1) != 'ч', $prefix.'ями', $prefix.'ами');
+            $forms[Cases::TVORIT] = RussianLanguage::chooseVowelAfterConsonant($last, $soft_last && S::slice($word, -2, -1) != 'ч', $prefix.'ями', $prefix.'ами');
         }
 
         // PREDLOJ
-        $forms[Cases::PREDLOJ] = static::chooseVowelAfterConsonant($last, $soft_last && S::slice($word, -2, -1) != 'ч', $prefix.'ях', $prefix.'ах');
+        $forms[Cases::PREDLOJ] = RussianLanguage::chooseVowelAfterConsonant($last, $soft_last && S::slice($word, -2, -1) != 'ч', $prefix.'ях', $prefix.'ах');
         return $forms;
     }
 
@@ -265,7 +263,7 @@ class NounPluralization extends \morphos\BasePluralization implements Cases
     protected static function declinateAdjective($word, $animateness)
     {
         $prefix = S::slice($word, 0, -2);
-        $vowel = static::isHissingConsonant(S::slice($prefix, -1)) ? 'и' : 'ы';
+        $vowel = RussianLanguage::isHissingConsonant(S::slice($prefix, -1)) ? 'и' : 'ы';
         return [
             Cases::IMENIT => $prefix.$vowel.'е',
             Cases::RODIT => $prefix.$vowel.'х',

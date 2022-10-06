@@ -2,6 +2,7 @@
 namespace morphos\Russian;
 
 use morphos\BaseInflection;
+use morphos\CasesHelper;
 use morphos\Gender;
 use morphos\S;
 use RuntimeException;
@@ -18,8 +19,6 @@ use RuntimeException;
  */
 class AdjectiveDeclension extends BaseInflection implements Cases, Gender
 {
-    use RussianLanguage, CasesHelper;
-
     const HARD_BASE = 1;
     const SOFT_BASE = 2;
     const MIXED_BASE = 3;
@@ -44,7 +43,7 @@ class AdjectiveDeclension extends BaseInflection implements Cases, Gender
      */
     public static function getCase($adjective, $case, $animateness = false, $gender = null)
     {
-        $case = static::canonizeCase($case);
+        $case = CasesHelper::canonizeCase($case);
 
         if ($gender === null)
             $gender = static::detectGender($adjective);
@@ -66,6 +65,8 @@ class AdjectiveDeclension extends BaseInflection implements Cases, Gender
         {
             case 'ой':
                 $isEmphasized = true;
+                return static::MALE;
+
             case 'ый':
             case 'ий':
                 return static::MALE;
@@ -125,7 +126,7 @@ class AdjectiveDeclension extends BaseInflection implements Cases, Gender
     public static function getAdjectiveBaseType($adjective)
     {
         $adjective = S::lower($adjective);
-        $consonants = static::$consonants;
+        $consonants = RussianLanguage::$consonants;
 
         unset($consonants[array_search('н', $consonants)]);
         unset($consonants[array_search('й', $consonants)]);
@@ -141,7 +142,7 @@ class AdjectiveDeclension extends BaseInflection implements Cases, Gender
             return static::MIXED_BASE;
         }
 
-        return static::checkBaseLastConsonantSoftness($substring)
+        return RussianLanguage::checkBaseLastConsonantSoftness($substring)
             || (S::slice($substring, 0, 2) === 'шн')
             ? static::SOFT_BASE
             : static::HARD_BASE;
@@ -183,7 +184,7 @@ class AdjectiveDeclension extends BaseInflection implements Cases, Gender
         ];
 
         if ($gender !== static::FEMALE)
-            $cases[static::VINIT] = static::getVinitCaseByAnimateness($cases, $animateness);
+            $cases[static::VINIT] = RussianLanguage::getVinitCaseByAnimateness($cases, $animateness);
         else
             $cases[static::VINIT] = $adjective.'ую';
 
@@ -228,7 +229,7 @@ class AdjectiveDeclension extends BaseInflection implements Cases, Gender
         ];
 
         if ($gender !== static::FEMALE)
-            $cases[static::VINIT] = static::getVinitCaseByAnimateness($cases, $animateness);
+            $cases[static::VINIT] = RussianLanguage::getVinitCaseByAnimateness($cases, $animateness);
         else
             $cases[static::VINIT] = $adjective.'юю';
 
@@ -273,7 +274,7 @@ class AdjectiveDeclension extends BaseInflection implements Cases, Gender
         ];
 
         if ($gender === static::MALE)
-            $cases[static::VINIT] = static::getVinitCaseByAnimateness($cases, $animateness);
+            $cases[static::VINIT] = RussianLanguage::getVinitCaseByAnimateness($cases, $animateness);
         else if ($gender === static::NEUTER)
             $cases[static::VINIT] = $adjective.'ое';
         else
