@@ -456,7 +456,7 @@ class GeographicalNamesInflection extends \morphos\BaseInflection implements Cas
                         static::VINIT => $prefix.'р',
                         static::TVORIT => $prefix.'ром',
                         static::PREDLOJ => $prefix.'ре',
-                        static::LOCATIVE => $prefix.'ру',
+                        static::LOCATIVE => $prefix.($name === 'бор' ? 'ру' : 'ре'),
                     ];
 
                 case 'ы':
