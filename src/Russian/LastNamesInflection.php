@@ -8,8 +8,6 @@ use morphos\S;
  */
 class LastNamesInflection extends \morphos\NamesInflection implements Cases
 {
-    use RussianLanguage, CasesHelper;
-
     /** @var string[] */
     protected static $womenPostfixes = ['ва', 'на', 'ая', 'яя'];
     /** @var string[] */
@@ -59,7 +57,7 @@ class LastNamesInflection extends \morphos\NamesInflection implements Cases
             }
 
             // Согласная на конце
-            if (static::isConsonant(S::slice($name, -1))) {
+            if (RussianLanguage::isConsonant(S::slice($name, -1))) {
                 return true;
             }
 
@@ -116,7 +114,7 @@ class LastNamesInflection extends \morphos\NamesInflection implements Cases
                 $parts[$i] = static::getCases($part, $gender);
             }
 
-            return static::composeCasesFromWords($parts, '-');
+            return RussianCasesHelper::composeCasesFromWords($parts, '-');
         }
 
         if (static::isMutable($name, $gender)) {
@@ -228,7 +226,7 @@ class LastNamesInflection extends \morphos\NamesInflection implements Cases
                 $prefix = S::name(S::slice($name, 0, -1));
                 return [
                     static::IMENIT => S::name($name),
-                    static::RODIT => $prefix.((static::isDeafConsonant(S::slice($name, -2, -1)) && S::slice($name, -2, -1) !== 'п')
+                    static::RODIT => $prefix.((RussianLanguage::isDeafConsonant(S::slice($name, -2, -1)) && S::slice($name, -2, -1) !== 'п')
                         || S::slice($name, -2) === 'га' ? 'и' : 'ы'),
                     static::DAT => $prefix.'е',
                     static::VINIT => $prefix.'у',
@@ -237,7 +235,7 @@ class LastNamesInflection extends \morphos\NamesInflection implements Cases
                 ];
             }
 
-            if (static::isConsonant(S::slice($name, -1)) && S::slice($name, -2) !== 'ых') {
+            if (RussianLanguage::isConsonant(S::slice($name, -1)) && S::slice($name, -2) !== 'ых') {
                 $prefix = S::name($name);
                 return [
                     static::IMENIT => S::name($name),
@@ -278,7 +276,7 @@ class LastNamesInflection extends \morphos\NamesInflection implements Cases
         if (!static::isMutable($name, $gender)) {
             return $name;
         } else {
-            $case = static::canonizeCase($case);
+            $case = RussianCasesHelper::canonizeCase($case);
             $forms = static::getCases($name, $gender);
             return $forms[$case];
         }

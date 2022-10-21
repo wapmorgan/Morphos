@@ -8,8 +8,6 @@ use morphos\S;
  */
 class MiddleNamesInflection extends \morphos\NamesInflection implements Cases
 {
-    use RussianLanguage, CasesHelper;
-
     /**
      * @param string $name
      * @return null|string
@@ -51,7 +49,7 @@ class MiddleNamesInflection extends \morphos\NamesInflection implements Cases
      */
     public static function getCase($name, $case, $gender = null)
     {
-        $case = static::canonizeCase($case);
+        $case = RussianCasesHelper::canonizeCase($case);
         $forms = static::getCases($name, $gender);
         return $forms[$case];
     }

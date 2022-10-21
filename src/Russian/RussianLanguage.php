@@ -4,7 +4,7 @@ namespace morphos\Russian;
 use morphos\Gender;
 use morphos\S;
 
-trait RussianLanguage
+class RussianLanguage
 {
     /**
      * @var string[] Все гласные
@@ -139,7 +139,7 @@ trait RussianLanguage
      * @param string $consonant
      * @return bool
      */
-    protected static function isVelarConsonant($consonant)
+    public static function isVelarConsonant($consonant)
     {
         return in_array(S::lower($consonant), ['г', 'к', 'х'], true);
     }

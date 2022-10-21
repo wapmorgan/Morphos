@@ -8,8 +8,6 @@ use morphos\S;
  */
 class GeographicalNamesInflection extends \morphos\BaseInflection implements Cases
 {
-    use RussianLanguage, CasesHelper;
-
     /** @var bool Настройка склоняемости славянских топонимов на -ов(о), -ев(о), -ин(о), -ын(о) */
     public static $inflectSlavicNames = true;
 
@@ -211,9 +209,9 @@ class GeographicalNamesInflection extends \morphos\BaseInflection implements Cas
                 }
                 $prefix[Cases::LOCATIVE] = $prefix[Cases::PREDLOJ];
 
-                return static::composeCasesFromWords([$prefix,
+                return RussianCasesHelper::composeCasesFromWords([$prefix,
                     array_fill_keys(
-                        array_merge(static::getAllCases(), [\morphos\Russian\Cases::LOCATIVE]),
+                        array_merge(RussianCasesHelper::getAllCases(), [\morphos\Russian\Cases::LOCATIVE]),
                         S::name(S::slice($name, S::length($first_part) + 1)))
                 ]);
             }
@@ -224,7 +222,7 @@ class GeographicalNamesInflection extends \morphos\BaseInflection implements Cas
             if (in_array($last_part, ['край', 'область', 'район', 'волость'], true)) {
                 $last_part_cases = NounDeclension::getCases($last_part);
                 $last_part_cases[Cases::LOCATIVE] = $last_part_cases[Cases::PREDLOJ];
-                return static::composeCasesFromWords(
+                return RussianCasesHelper::composeCasesFromWords(
                     [
                         static::getCases(S::slice($name, 0, S::findLastPosition($name, ' '))),
                         $last_part_cases,
@@ -240,7 +238,7 @@ class GeographicalNamesInflection extends \morphos\BaseInflection implements Cas
                 foreach ($parts as $i => $part) {
                     $result[$i] = static::getCases($part);
                 }
-                return static::composeCasesFromWords($result, $delimiter);
+                return RussianCasesHelper::composeCasesFromWords($result, $delimiter);
             }
         }
 
@@ -257,12 +255,12 @@ class GeographicalNamesInflection extends \morphos\BaseInflection implements Cas
                     $prefix = S::name(S::slice($name, 0, -2));
                     return [
                         static::IMENIT => $prefix.'ий',
-                        static::RODIT => $prefix.(static::isVelarConsonant(S::slice($name, -3, -2)) ? 'ого' : 'его'),
-                        static::DAT => $prefix.(static::isVelarConsonant(S::slice($name, -3, -2)) ? 'ому' : 'ему'),
+                        static::RODIT => $prefix.(RussianLanguage::isVelarConsonant(S::slice($name, -3, -2)) ? 'ого' : 'его'),
+                        static::DAT => $prefix.(RussianLanguage::isVelarConsonant(S::slice($name, -3, -2)) ? 'ому' : 'ему'),
                         static::VINIT => $prefix.'ий',
                         static::TVORIT => $prefix.'им',
-                        static::PREDLOJ => $prefix.(static::chooseEndingBySonority($prefix, 'ем', 'ом')),
-                        static::LOCATIVE => $prefix.(static::chooseEndingBySonority($prefix, 'ем', 'ом')),
+                        static::PREDLOJ => $prefix.(RussianLanguage::chooseEndingBySonority($prefix, 'ем', 'ом')),
+                        static::LOCATIVE => $prefix.(RussianLanguage::chooseEndingBySonority($prefix, 'ем', 'ом')),
                     ];
 
                 // Ростовская
@@ -370,12 +368,12 @@ class GeographicalNamesInflection extends \morphos\BaseInflection implements Cas
                     $last_vowel = S::slice($prefix, -2, -1);
                     return [
                         static::IMENIT => $prefix . 'ь',
-                        static::RODIT => $prefix . (static::isBinaryVowel($last_vowel) ? 'и' : 'я'),
-                        static::DAT => $prefix . (static::isBinaryVowel($last_vowel) ? 'и' : 'ю'),
+                        static::RODIT => $prefix . (RussianLanguage::isBinaryVowel($last_vowel) ? 'и' : 'я'),
+                        static::DAT => $prefix . (RussianLanguage::isBinaryVowel($last_vowel) ? 'и' : 'ю'),
                         static::VINIT => $prefix . 'ь',
-                        static::TVORIT => $prefix . (static::isBinaryVowel($last_vowel) ? 'ью' : 'ем'),
-                        static::PREDLOJ => $prefix . (static::isBinaryVowel($last_vowel) ? 'и' : 'е'),
-                        static::LOCATIVE => $prefix . (static::isBinaryVowel($last_vowel) ? 'и' : 'е'),
+                        static::TVORIT => $prefix . (RussianLanguage::isBinaryVowel($last_vowel) ? 'ью' : 'ем'),
+                        static::PREDLOJ => $prefix . (RussianLanguage::isBinaryVowel($last_vowel) ? 'и' : 'е'),
+                        static::LOCATIVE => $prefix . (RussianLanguage::isBinaryVowel($last_vowel) ? 'и' : 'е'),
                     ];
 
                 // Березники, Ессентуки
@@ -490,7 +488,7 @@ class GeographicalNamesInflection extends \morphos\BaseInflection implements Cas
                     $prefix = S::name(S::slice($name, 0, -1));
                     return [
                         static::IMENIT => $prefix.'а',
-                        static::RODIT => $prefix.(static::isVelarConsonant(S::slice($name, -2, -1)) || static::isHissingConsonant(S::slice($name, -2, -1)) ? 'и' : 'ы'),
+                        static::RODIT => $prefix.(RussianLanguage::isVelarConsonant(S::slice($name, -2, -1)) || RussianLanguage::isHissingConsonant(S::slice($name, -2, -1)) ? 'и' : 'ы'),
                         static::DAT => $prefix.'е',
                         static::VINIT => $prefix.'у',
                         static::TVORIT => $prefix.'ой',
@@ -512,7 +510,7 @@ class GeographicalNamesInflection extends \morphos\BaseInflection implements Cas
                     ];
             }
 
-            if (static::isConsonant($last_char = S::slice($name,  -1)) && !in_array($name, static::$ovAbnormalExceptions, true)) {
+            if (RussianLanguage::isConsonant($last_char = S::slice($name,  -1)) && !in_array($name, static::$ovAbnormalExceptions, true)) {
                 $runaway_vowels_list = static::getRunAwayVowelsList();
 
                 // if run-away vowel in name
@@ -530,8 +528,8 @@ class GeographicalNamesInflection extends \morphos\BaseInflection implements Cas
                     static::DAT => $prefix . 'у',
                     static::VINIT => S::name($name),
                     static::TVORIT => $prefix . (
-                        static::isVelarConsonant(S::slice($name, -2, -1))
-                            || static::isHissingConsonant($last_char)
+                        RussianLanguage::isVelarConsonant(S::slice($name, -2, -1))
+                            || RussianLanguage::isHissingConsonant($last_char)
                         ? 'ем' : 'ом'),
                     static::PREDLOJ => $prefix . 'е',
                     static::LOCATIVE => $prefix.($name === 'крым' ? 'у' : 'е'),
@@ -584,7 +582,7 @@ class GeographicalNamesInflection extends \morphos\BaseInflection implements Cas
      */
     public static function getCase($name, $case)
     {
-        $case = static::canonizeCase($case);
+        $case = RussianCasesHelper::canonizeCase($case);
         $forms = static::getCases($name);
         return $forms[$case];
     }

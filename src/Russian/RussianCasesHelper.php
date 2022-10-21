@@ -1,12 +1,11 @@
 <?php
 namespace morphos\Russian;
 
+use morphos\CasesHelper;
 use morphos\S;
 
-trait CasesHelper
+class RussianCasesHelper extends CasesHelper
 {
-    use \morphos\CasesHelper;
-
     /**
      * @param string $case
      * @return string
@@ -56,7 +55,7 @@ trait CasesHelper
                 return Cases::LOCATIVE;
 
             default:
-                return \morphos\CasesHelper::canonizeCase($case);
+                return CasesHelper::canonizeCase($case);
         }
     }
 }

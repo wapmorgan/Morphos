@@ -3,7 +3,7 @@ namespace morphos;
 
 use InvalidArgumentException;
 
-trait CurrenciesHelper
+class CurrenciesHelper
 {
     /**
      * @param string $currency
