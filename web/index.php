@@ -23,7 +23,8 @@ foreach (['name', 'noun', 'geographical-name'] as $field) {
 $gender_labels = [Gender::MALE => 'мужской', Gender::FEMALE => 'женский', Gender::NEUTER => 'средний'];
 
 ?>
-<html>
+<!DOCTYPE html>
+<html lang="ru">
 <head>
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.indigo-pink.min.css">
@@ -88,7 +89,7 @@ $gender_labels = [Gender::MALE => 'мужской', Gender::FEMALE => 'женс�
                                     <td class="mdl-data-table__cell--non-numeric">
                                         <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
                                             <input name="noun"
-                                                   value="<?= isset($_POST['noun']) ? $_POST['noun'] : null ?>"
+                                                   value="<?= isset($_POST['noun']) ? htmlspecialchars($_POST['noun']) : null ?>"
                                                    class="mdl-textfield__input" id="noun-input">
                                             <label class="mdl-textfield__label" for="noun-input">Существительное</label>
                                     </td>
@@ -124,7 +125,7 @@ $gender_labels = [Gender::MALE => 'мужской', Gender::FEMALE => 'женс�
                                                 <tbody>
                                                 <tr>
                                                     <td class="mdl-data-table__cell--non-numeric" colspan="2"
-                                                        style="text-align: center;"><?= $noun ?>
+                                                        style="text-align: center;"><?= htmlspecialchars($noun) ?>
                                                         (<?= NounDeclension::getDeclension($noun) ?> склонение)
                                                     </td>
                                                 </tr>
@@ -137,8 +138,8 @@ $gender_labels = [Gender::MALE => 'мужской', Gender::FEMALE => 'женс�
                                                                    Cases::PREDLOJ => 'Предложный',
                                                                ] as $case => $name): ?>
                                                     <tr>
-                                                        <td class="mdl-data-table__cell--non-numeric"><?= $name ?></td>
-                                                        <td class="mdl-data-table__cell--non-numeric"><?= $cases[$case] ?></td>
+                                                        <td class="mdl-data-table__cell--non-numeric"><?= htmlspecialchars($name) ?></td>
+                                                        <td class="mdl-data-table__cell--non-numeric"><?= htmlspecialchars($cases[$case]) ?></td>
                                                     </tr>
                                                 <?php endforeach; ?>
                                                 </tbody>
@@ -152,8 +153,8 @@ $gender_labels = [Gender::MALE => 'мужской', Gender::FEMALE => 'женс�
                                                 <tbody>
                                                 <tr>
                                                     <td class="mdl-data-table__cell--non-numeric" colspan="2"
-                                                        style="text-align: center;"><?= $_POST['noun'] ?>
-                                                        (<?= NounDeclension::getDeclension($noun) ?> склонение) во
+                                                        style="text-align: center;"><?= htmlspecialchars($_POST['noun']) ?>
+                                                        (<?= htmlspecialchars(NounDeclension::getDeclension($noun)) ?> склонение) во
                                                         множественном числе
                                                     </td>
                                                 </tr>
@@ -166,8 +167,8 @@ $gender_labels = [Gender::MALE => 'мужской', Gender::FEMALE => 'женс�
                                                                    Cases::PREDLOJ => 'Предложный',
                                                                ] as $case => $name): ?>
                                                     <tr>
-                                                        <td class="mdl-data-table__cell--non-numeric"><?= $name ?></td>
-                                                        <td class="mdl-data-table__cell--non-numeric"><?= $cases[$case] ?></td>
+                                                        <td class="mdl-data-table__cell--non-numeric"><?= htmlspecialchars($name) ?></td>
+                                                        <td class="mdl-data-table__cell--non-numeric"><?= htmlspecialchars($cases[$case]) ?></td>
                                                     </tr>
                                                 <?php endforeach; ?>
                                                 </tbody>
@@ -180,22 +181,27 @@ $gender_labels = [Gender::MALE => 'мужской', Gender::FEMALE => 'женс�
                                     <tbody>
                                     <tr>
                                         <td class="mdl-data-table__cell--non-numeric" colspan="2"
-                                            style="text-align: center;"><?= $noun ?>
-                                            (<?= NounDeclension::getDeclension($noun) ?> склонение)
+                                            style="text-align: center;"><?= htmlspecialchars($noun) ?>
+                                            (<?= htmlspecialchars(NounDeclension::getDeclension($noun)) ?> склонение)
                                         </td>
                                     </tr>
                                     <?php for ($i = 1; $i <= 20; $i++): ?>
                                         <tr>
-                                            <td class="mdl-data-table__cell--non-numeric"><?= $i . ' ' . NounPluralization::pluralize($noun,
-                                                    $i, $animate) ?></td>
-                                            <td class="mdl-data-table__cell--non-numeric"><?= ($i + 20) . ' ' . NounPluralization::pluralize($noun,
-                                                    $i + 20, $animate) ?></td>
-                                            <td class="mdl-data-table__cell--non-numeric"><?= ($i + 40) . ' ' . NounPluralization::pluralize($noun,
-                                                    $i + 40, $animate) ?></td>
-                                            <td class="mdl-data-table__cell--non-numeric"><?= ($i + 60) . ' ' . NounPluralization::pluralize($noun,
-                                                    $i + 60, $animate) ?></td>
-                                            <td class="mdl-data-table__cell--non-numeric"><?= ($i + 80) . ' ' . NounPluralization::pluralize($noun,
-                                                    $i + 80, $animate) ?></td>
+                                            <td class="mdl-data-table__cell--non-numeric">
+                                                <?= $i . ' ' . htmlspecialchars(NounPluralization::pluralize($noun, $i, $animate)) ?>
+                                            </td>
+                                            <td class="mdl-data-table__cell--non-numeric">
+                                                <?= ($i + 20) . ' ' . htmlspecialchars(NounPluralization::pluralize($noun, $i + 20, $animate)) ?>
+                                            </td>
+                                            <td class="mdl-data-table__cell--non-numeric">
+                                                <?= ($i + 40) . ' ' . htmlspecialchars(NounPluralization::pluralize($noun, $i + 40, $animate)) ?>
+                                            </td>
+                                            <td class="mdl-data-table__cell--non-numeric">
+                                                <?= ($i + 60) . ' ' . htmlspecialchars(NounPluralization::pluralize($noun, $i + 60, $animate)) ?>
+                                            </td>
+                                            <td class="mdl-data-table__cell--non-numeric">
+                                                <?= ($i + 80) . ' ' . htmlspecialchars(NounPluralization::pluralize($noun, $i + 80, $animate)) ?>
+                                            </td>
                                         </tr>
                                     <?php endfor; ?>
                                     </tbody>
@@ -204,7 +210,6 @@ $gender_labels = [Gender::MALE => 'мужской', Gender::FEMALE => 'женс�
                         <?php endif; ?>
                     </div>
                 </div>
-                </form>
             </div>
 
             <div class="mdl-tabs__panel" id="geographical-names">
@@ -217,7 +222,7 @@ $gender_labels = [Gender::MALE => 'мужской', Gender::FEMALE => 'женс�
                                     <td class="mdl-data-table__cell--non-numeric">
                                         <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
                                             <input name="geographical-name"
-                                                   value="<?= isset($_POST['geographical-name']) ? $_POST['geographical-name'] : null ?>"
+                                                   value="<?= isset($_POST['geographical-name']) ? htmlspecialchars($_POST['geographical-name']) : null ?>"
                                                    class="mdl-textfield__input" id="geographical-name-input">
                                             <label class="mdl-textfield__label" for="geographical-name-input">Город,
                                                 страна</label>
@@ -243,7 +248,7 @@ $gender_labels = [Gender::MALE => 'мужской', Gender::FEMALE => 'женс�
                                 <tbody>
                                 <tr>
                                     <td class="mdl-data-table__cell--non-numeric" colspan="2"
-                                        style="text-align: center;"><?= $geographical_name ?></td>
+                                        style="text-align: center;"><?= htmlspecialchars($geographical_name) ?></td>
                                 </tr>
                                 <?php foreach ([
                                                    Cases::IMENIT  => 'Именительный',
@@ -254,8 +259,8 @@ $gender_labels = [Gender::MALE => 'мужской', Gender::FEMALE => 'женс�
                                                    Cases::PREDLOJ => 'Предложный',
                                                ] as $case => $name): ?>
                                     <tr>
-                                        <td class="mdl-data-table__cell--non-numeric"><?= $name ?></td>
-                                        <td class="mdl-data-table__cell--non-numeric"><?= $cases[$case] ?></td>
+                                        <td class="mdl-data-table__cell--non-numeric"><?= htmlspecialchars($name) ?></td>
+                                        <td class="mdl-data-table__cell--non-numeric"><?= htmlspecialchars($cases[$case]) ?></td>
                                     </tr>
                                 <?php endforeach; ?>
                                 </tbody>
@@ -275,9 +280,9 @@ $gender_labels = [Gender::MALE => 'мужской', Gender::FEMALE => 'женс�
                                     <td class="mdl-data-table__cell--non-numeric">
                                         <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
                                             <input name="name"
-                                                   value="<?= isset($_POST['name']) ? $_POST['name'] : null ?>"
+                                                   value="<?= isset($_POST['name']) ? htmlspecialchars($_POST['name']) : null ?>"
                                                    class="mdl-textfield__input" id="name-input">
-                                            <label class="mdl-textfield__label" for="name-inpuy">Фамилия Имя
+                                            <label class="mdl-textfield__label" for="name-input">Фамилия Имя
                                                 [Отчество]</label>
                                         </div>
                                     </td>
@@ -286,8 +291,7 @@ $gender_labels = [Gender::MALE => 'мужской', Gender::FEMALE => 'женс�
                                     <td class="mdl-data-table__cell--non-numeric">
                                         Выберите пол:
                                         <label><input type="radio" name="gender"
-                                                      value="" <?= !isset($_POST['gender']) || !in_array($_POST['gender'],
-                                                [Gender::MALE, Gender::FEMALE]) ? "checked='checked'" : null ?> />
+                                                      value="" <?= !isset($_POST['gender']) || !in_array($_POST['gender'], [Gender::MALE, Gender::FEMALE]) ? "checked='checked'" : null ?> />
                                             Автоматически </label>
                                         <label><input type="radio" name="gender"
                                                       value="<?= morphos\Gender::MALE ?>" <?= isset($_POST['gender']) && $_POST['gender'] == morphos\Gender::MALE ? "checked='checked'" : null ?> />
@@ -318,8 +322,8 @@ $gender_labels = [Gender::MALE => 'мужской', Gender::FEMALE => 'женс�
                                     <tbody>
                                     <tr>
                                         <td class="mdl-data-table__cell--non-numeric" colspan="2"
-                                            style="text-align: center;"><?= $name ?>
-                                            (<?= isset($gender_labels[$gender]) ? $gender_labels[$gender] : 'неопределенный' ?>
+                                            style="text-align: center;"><?= htmlspecialchars($name) ?>
+                                            (<?= isset($gender_labels[$gender]) ? htmlspecialchars($gender_labels[$gender]) : 'неопределенный' ?>
                                             пол)
                                         </td>
                                     </tr>
@@ -332,8 +336,8 @@ $gender_labels = [Gender::MALE => 'мужской', Gender::FEMALE => 'женс�
                                                        Cases::PREDLOJ => 'Предложный',
                                                    ] as $case => $name): ?>
                                         <tr>
-                                            <td class="mdl-data-table__cell--non-numeric"><?= $name ?></td>
-                                            <td class="mdl-data-table__cell--non-numeric"><?= $cases[$case] ?></td>
+                                            <td class="mdl-data-table__cell--non-numeric"><?= htmlspecialchars($name) ?></td>
+                                            <td class="mdl-data-table__cell--non-numeric"><?= htmlspecialchars($cases[$case]) ?></td>
                                         </tr>
                                     <?php endforeach; ?>
                                     </tbody>
@@ -393,14 +397,16 @@ $gender_labels = [Gender::MALE => 'мужской', Gender::FEMALE => 'женс�
                             ?>
                             <table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
                                 <thead>
+                                <tr>
                                 <th class="mdl-data-table__cell--non-numeric" style="text-align: center;"><?= $number ?>
-                                    (<?= $gender_labels[$gender] ?> род)
+                                    (<?= htmlspecialchars($gender_labels[$gender]) ?> род)
                                 </th>
                                 <th class="mdl-data-table__cell--non-numeric" style="text-align: center;">
                                     Количественное
                                 </th>
                                 <th class="mdl-data-table__cell--non-numeric" style="text-align: center;">Порядковое
                                 </th>
+                                </tr>
                                 </thead>
                                 <tbody>
                                 <?php foreach ([
@@ -412,9 +418,9 @@ $gender_labels = [Gender::MALE => 'мужской', Gender::FEMALE => 'женс�
                                                    Cases::PREDLOJ => 'Предложный',
                                                ] as $case => $name): ?>
                                     <tr>
-                                        <td class="mdl-data-table__cell--non-numeric"><?= $name ?></td>
-                                        <td class="mdl-data-table__cell--non-numeric"><?= $cardinal[$case] ?></td>
-                                        <td class="mdl-data-table__cell--non-numeric"><?= $ordinal[$case] ?></td>
+                                        <td class="mdl-data-table__cell--non-numeric"><?= htmlspecialchars($name) ?></td>
+                                        <td class="mdl-data-table__cell--non-numeric"><?= htmlspecialchars($cardinal[$case]) ?></td>
+                                        <td class="mdl-data-table__cell--non-numeric"><?= htmlspecialchars($ordinal[$case]) ?></td>
                                     </tr>
                                 <?php endforeach; ?>
                                 </tbody>
@@ -422,9 +428,7 @@ $gender_labels = [Gender::MALE => 'мужской', Gender::FEMALE => 'женс�
                         <?php endif; ?>
                     </div>
                 </div>
-                </form>
             </div>
-
     </main>
 </div>
 </body>
