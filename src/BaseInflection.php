@@ -1,4 +1,5 @@
 <?php
+
 namespace morphos;
 
 use RuntimeException;
@@ -10,7 +11,8 @@ abstract class BaseInflection implements Cases
      * @param string $name
      * @return bool
      */
-    public static function isMutable($name) {
+    public static function isMutable($name)
+    {
         throw new RuntimeException('Not implemented');
     }
 
@@ -20,7 +22,8 @@ abstract class BaseInflection implements Cases
      * @return string[]
      * @phpstan-return array<string, string>
      */
-    public static function getCases($name) {
+    public static function getCases($name)
+    {
         throw new RuntimeException('Not implemented');
     }
 
@@ -30,7 +33,8 @@ abstract class BaseInflection implements Cases
      * @param string $case
      * @return string
      */
-    public static function getCase($name, $case) {
+    public static function getCase($name, $case)
+    {
         throw new RuntimeException('Not implemented');
     }
 }

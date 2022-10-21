@@ -1,4 +1,5 @@
 <?php
+
 namespace morphos;
 
 use InvalidArgumentException;
@@ -44,8 +45,33 @@ class CasesHelper
                 return Cases::PREPOSITIONAL;
 
             default:
-                throw new InvalidArgumentException('Invalid case: '.$case);
+                throw new InvalidArgumentException('Invalid case: ' . $case);
         }
+    }
+
+    /**
+     * Составляет один массив с падежами из нескольких массивов падежей разных слов
+     * @param array $words      Двумерный массив слов и их падежей
+     * @phpstan-param array<int, array<string, string>> $words
+     * @param string $delimiter Разделитель между падежами слов
+     * @return string[] Одномерный массив падежей
+     * @phpstan-return array<string, string>
+     */
+    public static function composeCasesFromWords(array $words, $delimiter = ' ')
+    {
+        $cases     = [];
+        $all_cases = static::getAllCases();
+        if (count($words[0]) === 7) {
+            $all_cases[] = \morphos\Russian\Cases::LOCATIVE;
+        }
+        foreach ($all_cases as $case) {
+            $composed_case = [];
+            foreach ($words as $wordCases) {
+                $composed_case[] = $wordCases[$case];
+            }
+            $cases[$case] = implode($delimiter, $composed_case);
+        }
+        return $cases;
     }
 
     /**
@@ -63,27 +89,5 @@ class CasesHelper
             Cases::ABLATIVE,
             Cases::PREPOSITIONAL,
         ];
-    }
-
-    /**
-     * Составляет один массив с падежами из нескольких массивов падежей разных слов
-     * @param array $words Двумерный массив слов и их падежей
-     * @phpstan-param array<int, array<string, string>> $words
-     * @param string $delimiter Разделитель между падежами слов
-     * @return string[] Одномерный массив падежей
-     * @phpstan-return array<string, string>
-     */
-    public static function composeCasesFromWords(array $words, $delimiter = ' ') {
-        $cases = [];
-        $all_cases = static::getAllCases();
-        if (count($words[0]) === 7) $all_cases[] = \morphos\Russian\Cases::LOCATIVE;
-        foreach ($all_cases as $case) {
-            $composed_case = [];
-            foreach ($words as $wordCases) {
-                $composed_case[] = $wordCases[$case];
-            }
-            $cases[$case] = implode($delimiter, $composed_case);
-        }
-        return $cases;
     }
 }

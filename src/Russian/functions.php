@@ -1,4 +1,5 @@
 <?php
+
 namespace morphos\Russian;
 
 use morphos\Gender;
@@ -21,8 +22,10 @@ function inflectName($fullName, $case = null, $gender = null)
     }
 
     $fullName = normalizeFullName($fullName);
-    $case = RussianCasesHelper::canonizeCase($case);
-    if ($gender === null) $gender = detectGender($fullName);
+    $case     = RussianCasesHelper::canonizeCase($case);
+    if ($gender === null) {
+        $gender = detectGender($fullName);
+    }
 
     $name = explode(' ', $fullName);
 
@@ -51,7 +54,7 @@ function inflectName($fullName, $case = null, $gender = null)
 
 /**
  * Inflects the name to all cases.
- * @param string      $fullName Name in "F", "L F" or "L M F" format, where L - last name, M - middle name, F - first name
+ * @param string $fullName      Name in "F", "L F" or "L M F" format, where L - last name, M - middle name, F - first name
  * @param null|string $gender   Gender of name owner. If null, auto detection will be used.
  *                              Should be one of [[morphos\Gender]] constants.
  * @return string[]|false          Returns an array with name inflected to all cases.
@@ -59,7 +62,9 @@ function inflectName($fullName, $case = null, $gender = null)
 function getNameCases($fullName, $gender = null)
 {
     $fullName = normalizeFullName($fullName);
-    if ($gender === null) $gender = detectGender($fullName);
+    if ($gender === null) {
+        $gender = detectGender($fullName);
+    }
 
     $name = explode(' ', $fullName);
 
@@ -93,22 +98,25 @@ function getNameCases($fullName, $gender = null)
  */
 function detectGender($fullName)
 {
-    $gender = null;
-    $name = explode(' ', S::lower($fullName));
+    $gender    = null;
+    $name      = explode(' ', S::lower($fullName));
     $nameCount = count($name);
     if ($nameCount > 3) {
         return null;
     }
 
-    if ($nameCount === 1)
+    if ($nameCount === 1) {
         return FirstNamesInflection::detectGender($name[0]);
-    else if ($nameCount === 2)
-        return LastNamesInflection::detectGender($name[0])
-            ?: FirstNamesInflection::detectGender($name[1]);
-    else
-        return MiddleNamesInflection::detectGender($name[2])
-            ?: (LastNamesInflection::detectGender($name[0])
-                ?: FirstNamesInflection::detectGender($name[1]));
+    } else {
+        if ($nameCount === 2) {
+            return LastNamesInflection::detectGender($name[0])
+                ?: FirstNamesInflection::detectGender($name[1]);
+        } else {
+            return MiddleNamesInflection::detectGender($name[2])
+                ?: (LastNamesInflection::detectGender($name[0])
+                    ?: FirstNamesInflection::detectGender($name[1]));
+        }
+    }
 }
 
 /**
@@ -125,11 +133,11 @@ function normalizeFullName($name)
 /**
  * Генерация строки с числом и существительным, в правильной форме для сочетания с числом (кол-вом предметов).
  *
- * @param int    $count       Количество предметов
+ * @param int $count          Количество предметов
  * @param string $word        Название предмета ИЛИ "прилагатально предмет". Может включать в себя несколько
  *                            прилагательных перед существительным.
  *                            Например: "сообщение", "новое сообщение", "небольшая лампа".
- * @param bool   $animateness Признак одушевленности
+ * @param bool $animateness   Признак одушевленности
  * @param string $case        Род существительного (по умолчанию именительный для 1 предмета и родительный для
  *                            нескольких)
  *
@@ -146,17 +154,19 @@ function pluralize($count, $word, $animateness = false, $case = null)
 
     if (strpos($word, ' ') !== false) {
         $words = explode(' ', $word);
-        $noun = array_pop($words);
+        $noun  = array_pop($words);
 
         foreach ($words as $i => $word) {
-            if (in_array($word, RussianLanguage::$unions, true))
+            if (in_array($word, RussianLanguage::$unions, true)) {
                 $words[$i] = $word;
-            else
+            } else {
                 $words[$i] = AdjectivePluralization::pluralize($word, $count, $animateness, $case);
+            }
         }
 
-        return $count.' '.implode(' ', $words).' '.NounPluralization::pluralize($count, $noun, $animateness, $case);
+        return $count . ' ' . implode(' ', $words) . ' ' . NounPluralization::pluralize($count, $noun, $animateness,
+                $case);
     }
 
-    return $count.' '.NounPluralization::pluralize($word, $count, $animateness, $case);
+    return $count . ' ' . NounPluralization::pluralize($word, $count, $animateness, $case);
 }

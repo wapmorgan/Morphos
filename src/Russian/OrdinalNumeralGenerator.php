@@ -1,4 +1,5 @@
 <?php
+
 namespace morphos\Russian;
 
 use morphos\NumeralGenerator;
@@ -16,33 +17,33 @@ class OrdinalNumeralGenerator extends NumeralGenerator implements Cases
      * @phpstan-var array<int, string>
      */
     protected static $words = [
-        1 => 'первый',
-        2 => 'второй',
-        3 => 'третий',
-        4 => 'четвертый',
-        5 => 'пятый',
-        6 => 'шестой',
-        7 => 'седьмой',
-        8 => 'восьмой',
-        9 => 'девятый',
-        10 => 'десятый',
-        11 => 'одиннадцатый',
-        12 => 'двенадцатый',
-        13 => 'тринадцатый',
-        14 => 'четырнадцатый',
-        15 => 'пятнадцатый',
-        16 => 'шестнадцатый',
-        17 => 'семнадцатый',
-        18 => 'восемнадцатый',
-        19 => 'девятнадцатый',
-        20 => 'двадцатый',
-        30 => 'тридцатый',
-        40 => 'сороковой',
-        50 => 'пятьдесятый',
-        60 => 'шестьдесятый',
-        70 => 'семьдесятый',
-        80 => 'восемьдесятый',
-        90 => 'девяностый',
+        1   => 'первый',
+        2   => 'второй',
+        3   => 'третий',
+        4   => 'четвертый',
+        5   => 'пятый',
+        6   => 'шестой',
+        7   => 'седьмой',
+        8   => 'восьмой',
+        9   => 'девятый',
+        10  => 'десятый',
+        11  => 'одиннадцатый',
+        12  => 'двенадцатый',
+        13  => 'тринадцатый',
+        14  => 'четырнадцатый',
+        15  => 'пятнадцатый',
+        16  => 'шестнадцатый',
+        17  => 'семнадцатый',
+        18  => 'восемнадцатый',
+        19  => 'девятнадцатый',
+        20  => 'двадцатый',
+        30  => 'тридцатый',
+        40  => 'сороковой',
+        50  => 'пятьдесятый',
+        60  => 'шестьдесятый',
+        70  => 'семьдесятый',
+        80  => 'восемьдесятый',
+        90  => 'девяностый',
         100 => 'сотый',
         200 => 'двухсотый',
         300 => 'трехсотый',
@@ -59,9 +60,9 @@ class OrdinalNumeralGenerator extends NumeralGenerator implements Cases
      * @phpstan-var array<int, string>
      */
     protected static $exponents = [
-        1000 => 'тысячный',
-        1000000 => 'миллионный',
-        1000000000 => 'миллиардный',
+        1000          => 'тысячный',
+        1000000       => 'миллионный',
+        1000000000    => 'миллиардный',
         1000000000000 => 'триллионный',
     ];
 
@@ -70,32 +71,32 @@ class OrdinalNumeralGenerator extends NumeralGenerator implements Cases
      * @phpstan-var array<int, string>
      */
     protected static $multipliers = [
-        2 => 'двух',
-        3 => 'трех',
-        4 => 'четырех',
-        5 => 'пяти',
-        6 => 'шести',
-        7 => 'седьми',
-        8 => 'восьми',
-        9 => 'девяти',
-        10 => 'десяти',
-        11 => 'одиннадцати',
-        12 => 'двенадцати',
-        13 => 'тринадцати',
-        14 => 'четырнадцати',
-        15 => 'пятнадцати',
-        16 => 'шестнадцати',
-        17 => 'семнадцати',
-        18 => 'восемнадцати',
-        19 => 'девятнадцати',
-        20 => 'двадцати',
-        30 => 'тридцати',
-        40 => 'сорока',
-        50 => 'пятьдесяти',
-        60 => 'шестьдесяти',
-        70 => 'семьдесяти',
-        80 => 'восемьдесяти',
-        90 => 'девяности',
+        2   => 'двух',
+        3   => 'трех',
+        4   => 'четырех',
+        5   => 'пяти',
+        6   => 'шести',
+        7   => 'седьми',
+        8   => 'восьми',
+        9   => 'девяти',
+        10  => 'десяти',
+        11  => 'одиннадцати',
+        12  => 'двенадцати',
+        13  => 'тринадцати',
+        14  => 'четырнадцати',
+        15  => 'пятнадцати',
+        16  => 'шестнадцати',
+        17  => 'семнадцати',
+        18  => 'восемнадцати',
+        19  => 'девятнадцати',
+        20  => 'двадцати',
+        30  => 'тридцати',
+        40  => 'сорока',
+        50  => 'пятьдесяти',
+        60  => 'шестьдесяти',
+        70  => 'семьдесяти',
+        80  => 'восемьдесяти',
+        90  => 'девяности',
         100 => 'сто',
         200 => 'двухста',
         300 => 'трехста',
@@ -124,12 +125,12 @@ class OrdinalNumeralGenerator extends NumeralGenerator implements Cases
             if ($number == 3) {
                 $prefix = S::slice($word, 0, -2);
                 return [
-                    static::IMENIT => $prefix.($gender == static::MALE ? 'ий' : ($gender == static::FEMALE ? 'ья' : 'ье')),
-                    static::RODIT => $prefix.($gender == static::FEMALE ? 'ьей' : 'ьего'),
-                    static::DAT => $prefix.($gender == static::FEMALE ? 'ьей' : 'ьему'),
-                    static::VINIT => $prefix.($gender == static::FEMALE ? 'ью' : 'ьего'),
-                    static::TVORIT => $prefix.($gender == static::FEMALE ? 'ьей' : 'ьим'),
-                    static::PREDLOJ => $prefix.($gender == static::FEMALE ? 'ьей' : 'ьем'),
+                    static::IMENIT  => $prefix . ($gender == static::MALE ? 'ий' : ($gender == static::FEMALE ? 'ья' : 'ье')),
+                    static::RODIT   => $prefix . ($gender == static::FEMALE ? 'ьей' : 'ьего'),
+                    static::DAT     => $prefix . ($gender == static::FEMALE ? 'ьей' : 'ьему'),
+                    static::VINIT   => $prefix . ($gender == static::FEMALE ? 'ью' : 'ьего'),
+                    static::TVORIT  => $prefix . ($gender == static::FEMALE ? 'ьей' : 'ьим'),
+                    static::PREDLOJ => $prefix . ($gender == static::FEMALE ? 'ьей' : 'ьем'),
                 ];
             }
 
@@ -137,34 +138,34 @@ class OrdinalNumeralGenerator extends NumeralGenerator implements Cases
                 case static::MALE:
                     $prefix = S::slice($word, 0, -2);
                     return [
-                        static::IMENIT => $word,
-                        static::RODIT => $prefix.'ого',
-                        static::DAT => $prefix.'ому',
-                        static::VINIT => $word,
-                        static::TVORIT => $prefix.'ым',
-                        static::PREDLOJ => $prefix.'ом',
+                        static::IMENIT  => $word,
+                        static::RODIT   => $prefix . 'ого',
+                        static::DAT     => $prefix . 'ому',
+                        static::VINIT   => $word,
+                        static::TVORIT  => $prefix . 'ым',
+                        static::PREDLOJ => $prefix . 'ом',
                     ];
 
                 case static::FEMALE:
                     $prefix = S::slice($word, 0, -2);
                     return [
-                        static::IMENIT => $prefix.'ая',
-                        static::RODIT => $prefix.'ой',
-                        static::DAT => $prefix.'ой',
-                        static::VINIT => $prefix.'ую',
-                        static::TVORIT => $prefix.'ой',
-                        static::PREDLOJ => $prefix.'ой',
+                        static::IMENIT  => $prefix . 'ая',
+                        static::RODIT   => $prefix . 'ой',
+                        static::DAT     => $prefix . 'ой',
+                        static::VINIT   => $prefix . 'ую',
+                        static::TVORIT  => $prefix . 'ой',
+                        static::PREDLOJ => $prefix . 'ой',
                     ];
 
                 case static::NEUTER:
                     $prefix = S::slice($word, 0, -2);
                     return [
-                        static::IMENIT => $prefix.'ое',
-                        static::RODIT => $prefix.'ого',
-                        static::DAT => $prefix.'ому',
-                        static::VINIT => $prefix.'ое',
-                        static::TVORIT => $prefix.'ым',
-                        static::PREDLOJ => $prefix.'ом',
+                        static::IMENIT  => $prefix . 'ое',
+                        static::RODIT   => $prefix . 'ого',
+                        static::DAT     => $prefix . 'ому',
+                        static::VINIT   => $prefix . 'ое',
+                        static::TVORIT  => $prefix . 'ым',
+                        static::PREDLOJ => $prefix . 'ом',
                     ];
 
                 default:
@@ -173,24 +174,24 @@ class OrdinalNumeralGenerator extends NumeralGenerator implements Cases
         }
 
         // compound numeral
-        $ordinal_part = null;
+        $ordinal_part   = null;
         $ordinal_prefix = null;
-        $result = [];
+        $result         = [];
 
         // test for exponents. If smaller summand of number is an exponent, declinate it
         foreach (array_reverse(static::$exponents, true) as $word_number => $word) {
             if ($number >= $word_number && ($number % $word_number) == 0) {
-                $count = floor($number / $word_number) % 1000;
+                $count  = floor($number / $word_number) % 1000;
                 $number -= ($count * $word_number);
                 foreach (array_reverse(static::$multipliers, true) as $multiplier => $multipliers_word) {
                     if ($count >= $multiplier) {
                         $ordinal_prefix .= $multipliers_word;
-                        $count -= $multiplier;
+                        $count          -= $multiplier;
                     }
                 }
                 $ordinal_part = static::getCases($word_number, $gender);
                 foreach ($ordinal_part as $case => $ordinal_word) {
-                    $ordinal_part[$case] = $ordinal_prefix.$ordinal_part[$case];
+                    $ordinal_part[$case] = $ordinal_prefix . $ordinal_part[$case];
                 }
 
                 break;
@@ -221,7 +222,7 @@ class OrdinalNumeralGenerator extends NumeralGenerator implements Cases
                         }
                     }
                     $ordinal_part = static::getCases($word_number, $gender);
-                    $number -= $word_number;
+                    $number       -= $word_number;
                     break;
                 }
             }
@@ -232,8 +233,15 @@ class OrdinalNumeralGenerator extends NumeralGenerator implements Cases
             $cardinal_part = CardinalNumeralGenerator::getCase($number, static::IMENIT, $gender);
 
             // make one array with cases and delete 'o/об' prepositional from all parts except the last one
-            foreach ([static::IMENIT, static::RODIT, static::DAT, static::VINIT, static::TVORIT, static::PREDLOJ] as $case) {
-                $result[$case] = $cardinal_part.' '.$ordinal_part[$case];
+            foreach ([
+                         static::IMENIT,
+                         static::RODIT,
+                         static::DAT,
+                         static::VINIT,
+                         static::TVORIT,
+                         static::PREDLOJ,
+                     ] as $case) {
+                $result[$case] = $cardinal_part . ' ' . $ordinal_part[$case];
             }
         } else {
             $result = $ordinal_part;
@@ -251,7 +259,7 @@ class OrdinalNumeralGenerator extends NumeralGenerator implements Cases
      */
     public static function getCase($number, $case, $gender = self::MALE)
     {
-        $case = RussianCasesHelper::canonizeCase($case);
+        $case  = RussianCasesHelper::canonizeCase($case);
         $forms = static::getCases($number, $gender);
         return $forms[$case];
     }

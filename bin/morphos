@@ -1,19 +1,21 @@
 #!/usr/bin/env php
 <?php
-use morphos\Russian\NounDeclension;
+
 use morphos\Russian\GeographicalNamesInflection;
+use morphos\Russian\NounDeclension;
 use morphos\Russian\NounPluralization;
 use morphos\S;
 
 $paths = [
     // as a root package or phar
-    __DIR__.'/../vendor/autoload.php',
+    __DIR__ . '/../vendor/autoload.php',
     // as a dependency from bin
-    __DIR__.'/../autoload.php',
+    __DIR__ . '/../autoload.php',
     // as a dependency from package folder
-    __DIR__.'/../../../autoload.php',
-    ];
-function init_composer(array $paths) {
+    __DIR__ . '/../../../autoload.php',
+];
+function init_composer(array $paths)
+{
     foreach ($paths as $path) {
         if (file_exists($path)) {
             require_once $path;
@@ -22,20 +24,30 @@ function init_composer(array $paths) {
     }
     return false;
 }
-if (!init_composer($paths)) die('Run `composer install` firstly.'.PHP_EOL);
 
-function dump() {
+if (!init_composer($paths)) {
+    die('Run `composer install` firstly.' . PHP_EOL);
+}
+
+function dump()
+{
     $dumper = function ($value, $level = 0, $verbose = true) use (&$dumper) {
         $output = null;
         if (is_array($value)) {
-            $output .= str_repeat('  ', $level).' array('.count($value).'):'.PHP_EOL;
-            $i = 0;
+            $output .= str_repeat('  ', $level) . ' array(' . count($value) . '):' . PHP_EOL;
+            $i      = 0;
             foreach ($value as $key => $element) {
-                if ($key === $i++) $output .= str_repeat('  ', $level + 1) . $dumper($element, $level, false).PHP_EOL;
-                else $output .= str_repeat('  ', $level + 1).'['.$dumper($key, $level, false).'] => '.$dumper($element, $level, false).PHP_EOL;
+                if ($key === $i++) {
+                    $output .= str_repeat('  ', $level + 1) . $dumper($element, $level, false) . PHP_EOL;
+                } else {
+                    $output .= str_repeat('  ', $level + 1) . '[' . $dumper($key, $level,
+                            false) . '] => ' . $dumper($element, $level, false) . PHP_EOL;
+                }
             }
-        } else if (is_string($value)) {
-            $output .= $verbose ? 'string('.strlen($value).'): "'.$value.'"'.PHP_EOL: '\''.$value.'\'';
+        } else {
+            if (is_string($value)) {
+                $output .= $verbose ? 'string(' . strlen($value) . '): "' . $value . '"' . PHP_EOL : '\'' . $value . '\'';
+            }
         }
         return $output;
     };
@@ -47,29 +59,37 @@ function dump() {
     return $output;
 }
 
-class ConsoleLine {
+class ConsoleLine
+{
     protected $readlineSupport;
 
-    public function __construct() {
-        $this->readlineSupport = /*strncasecmp(PHP_OS, 'win', 3) !== 0 && */extension_loaded('readline');
+    public function __construct()
+    {
+        $this->readlineSupport = /*strncasecmp(PHP_OS, 'win', 3) !== 0 && */
+            extension_loaded('readline');
     }
 
-    public function addLineForEmulation($line) {
+    public function addLineForEmulation($line)
+    {
         $this->emulation[] = $line;
     }
 
-    public function addToHistory($command) {
-        if ($this->readlineSupport)
+    public function addToHistory($command)
+    {
+        if ($this->readlineSupport) {
             readline_add_history($command);
+        }
     }
 
-    public function readLine($prompt) {
-        if (!empty($this->emulation))
+    public function readLine($prompt)
+    {
+        if (!empty($this->emulation)) {
             return array_shift($this->emulation);
+        }
 
-        if ($this->readlineSupport)
+        if ($this->readlineSupport) {
             return trim(readline($prompt));
-        else {
+        } else {
             fwrite(STDOUT, $prompt);
             return fgets(STDIN);
         }
@@ -87,7 +107,8 @@ for ($i = 1; $i < $argc; $i++) {
     $line->addLineForEmulation(trim($argv[$i]));
 }
 
-fwrite(STDOUT, 'Напишите слово / комбинацию Фамилия Имя [Отчество] для проверки склонения или ? для полной справки'.PHP_EOL);
+fwrite(STDOUT,
+    'Напишите слово / комбинацию Фамилия Имя [Отчество] для проверки склонения или ? для полной справки' . PHP_EOL);
 
 while (true) {
     $word = $line->readLine('> ');
@@ -118,37 +139,42 @@ while (true) {
 
         if ($language == 'ru') {
             $cardinal_numerals = morphos\Russian\CardinalNumeralGenerator::getCases($word);
-            $ordinal_numerals = morphos\Russian\OrdinalNumeralGenerator::getCases($word);
-        } else if ($language == 'en') {
-            $cardinal_numerals = morphos\English\CardinalNumeralGenerator::generate($word);
-            $ordinal_numerals = morphos\English\OrdinalNumeralGenerator::generate($word).' ('.morphos\English\OrdinalNumeralGenerator::generate($word, true).')';
+            $ordinal_numerals  = morphos\Russian\OrdinalNumeralGenerator::getCases($word);
+        } else {
+            if ($language == 'en') {
+                $cardinal_numerals = morphos\English\CardinalNumeralGenerator::generate($word);
+                $ordinal_numerals  = morphos\English\OrdinalNumeralGenerator::generate($word) . ' (' . morphos\English\OrdinalNumeralGenerator::generate($word,
+                        true) . ')';
+            }
         }
 
-        fwrite(STDOUT, 'Числительное количественное: '.dump($cardinal_numerals));
-        fwrite(STDOUT, 'Числительное порядковое: '.dump($ordinal_numerals));
-    } else if (substr_count($word, ' ') === 1 && (list($number, $noun) = explode(' ', $word)) && is_numeric($number)) {
-        fwrite(STDOUT, 'Число с существительным: '.dump(morphos\Russian\pluralize($number, $noun)));
-    } else if (strpos($word, ' ') === false) {
-        // только одно слово
-        $first_char = S::slice($word, 0, 1);
-        // географическое название
-        if ($first_char == S::upper($first_char)) {
-            $names = GeographicalNamesInflection::getCases($word);
-            fwrite(STDOUT, 'Географическое название: '.dump($names));
+        fwrite(STDOUT, 'Числительное количественное: ' . dump($cardinal_numerals));
+        fwrite(STDOUT, 'Числительное порядковое: ' . dump($ordinal_numerals));
+    } else {
+        if (substr_count($word, ' ') === 1 && (list($number, $noun) = explode(' ', $word)) && is_numeric($number)) {
+            fwrite(STDOUT, 'Число с существительным: ' . dump(morphos\Russian\pluralize($number, $noun)));
+        } else {
+            if (strpos($word, ' ') === false) {
+                // только одно слово
+                $first_char = S::slice($word, 0, 1);
+                // географическое название
+                if ($first_char == S::upper($first_char)) {
+                    $names = GeographicalNamesInflection::getCases($word);
+                    fwrite(STDOUT, 'Географическое название: ' . dump($names));
+                } // существительное
+                else {
+                    $cases        = NounDeclension::getCases($word);
+                    $plural_cases = NounPluralization::getCases($word);
+                    fwrite(STDOUT, 'Существительное в единственном числе: ' . dump($cases));
+                    fwrite(STDOUT, 'Существительное во множественном числе: ' . dump($plural_cases));
+                }
+            } // Фамилия Имя
+            else {
+                $gender = morphos\Russian\detectGender($word);
+                $cases  = morphos\Russian\inflectName($word);
+                fwrite(STDOUT, 'Предполагаемый пол: ' . $gender . PHP_EOL);
+                fwrite(STDOUT, 'Склонение: ' . dump($cases));
+            }
         }
-        // существительное
-        else {
-            $cases = NounDeclension::getCases($word);
-            $plural_cases = NounPluralization::getCases($word);
-            fwrite(STDOUT, 'Существительное в единственном числе: '.dump($cases));
-            fwrite(STDOUT, 'Существительное во множественном числе: '.dump($plural_cases));
-        }
-    }
-    // Фамилия Имя
-    else {
-        $gender = morphos\Russian\detectGender($word);
-        $cases = morphos\Russian\inflectName($word);
-        fwrite(STDOUT, 'Предполагаемый пол: '.$gender.PHP_EOL);
-        fwrite(STDOUT, 'Склонение: '.dump($cases));
     }
 }

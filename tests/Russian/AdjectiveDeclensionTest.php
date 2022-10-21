@@ -1,9 +1,9 @@
 <?php
+
 namespace morphos\test\Russian;
 
 use morphos\Gender;
 use morphos\Russian\AdjectiveDeclension;
-use morphos\Russian\NounDeclension;
 use PHPUnit\Framework\TestCase;
 
 class AdjectiveDeclensionTest extends TestCase
@@ -49,23 +49,23 @@ class AdjectiveDeclensionTest extends TestCase
         ];
     }
 
-	/**
-	 * @dataProvider gendersProvider()
-	 */
+    /**
+     * @dataProvider gendersProvider()
+     */
     public function testGenderDetection($word, $gender)
-	{
-		$this->assertEquals($gender, AdjectiveDeclension::detectGender($word));
-	}
+    {
+        $this->assertEquals($gender, AdjectiveDeclension::detectGender($word));
+    }
 
-	public function gendersProvider()
-	{
-		return [
-			['синяя', Gender::FEMALE],
-			['весёлая', Gender::FEMALE],
-			['дилерский', Gender::MALE],
-			['большой', Gender::MALE],
-			['хмурое', Gender::NEUTER],
-			['весеннее', Gender::NEUTER],
-		];
-	}
+    public function gendersProvider()
+    {
+        return [
+            ['синяя', Gender::FEMALE],
+            ['весёлая', Gender::FEMALE],
+            ['дилерский', Gender::MALE],
+            ['большой', Gender::MALE],
+            ['хмурое', Gender::NEUTER],
+            ['весеннее', Gender::NEUTER],
+        ];
+    }
 }

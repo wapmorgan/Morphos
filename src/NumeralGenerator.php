@@ -1,4 +1,5 @@
 <?php
+
 namespace morphos;
 
 use RuntimeException;
@@ -12,7 +13,8 @@ abstract class NumeralGenerator implements Cases, Gender
      * @return string[]
      * @phpstan-return array<string, string>
      */
-    public static function getCases($number) {
+    public static function getCases($number)
+    {
         throw new RuntimeException('Not implemented');
     }
 
@@ -23,7 +25,8 @@ abstract class NumeralGenerator implements Cases, Gender
      *
      * @return string
      */
-    public static function getCase($number, $case) {
+    public static function getCase($number, $case)
+    {
         throw new RuntimeException('Not implemented');
     }
 }

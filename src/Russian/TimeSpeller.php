@@ -1,28 +1,26 @@
 <?php
+
 namespace morphos\Russian;
 
 use InvalidArgumentException;
 
 class TimeSpeller extends \morphos\TimeSpeller
 {
+    const AGO = 'назад';
+    const IN  = 'через';
+    const AND_WORD = 'и';
+    const JUST_NOW = 'только что';
     /**
      * @var string[]
      */
     protected static $units = [
-        self::YEAR => 'год',
-        self::MONTH => 'месяц',
-        self::DAY => 'день',
-        self::HOUR => 'час',
+        self::YEAR   => 'год',
+        self::MONTH  => 'месяц',
+        self::DAY    => 'день',
+        self::HOUR   => 'час',
         self::MINUTE => 'минута',
         self::SECOND => 'секунда',
     ];
-
-    const AGO = 'назад';
-    const IN = 'через';
-
-    const AND_WORD = 'и';
-
-    const JUST_NOW = 'только что';
 
     /**
      * @param int $count
@@ -34,7 +32,7 @@ class TimeSpeller extends \morphos\TimeSpeller
     public static function spellUnit($count, $unit)
     {
         if (!isset(static::$units[$unit])) {
-            throw new InvalidArgumentException('Unknown time unit: '.$unit);
+            throw new InvalidArgumentException('Unknown time unit: ' . $unit);
         }
 
 //         if ($count === 1 && in_array($unit, [self::SECOND, self::MINUTE], true)) {

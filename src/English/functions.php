@@ -1,4 +1,5 @@
 <?php
+
 namespace morphos\English;
 
 /**
@@ -8,5 +9,5 @@ namespace morphos\English;
  */
 function pluralize($count, $word)
 {
-    return $count.' '.NounPluralization::pluralize($word, $count);
+    return $count . ' ' . NounPluralization::pluralize($word, $count);
 }

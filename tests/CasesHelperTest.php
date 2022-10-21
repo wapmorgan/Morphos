@@ -1,8 +1,9 @@
 <?php
+
 namespace morphos\test;
 
-use morphos\CasesHelper;
 use morphos\Cases;
+use morphos\CasesHelper;
 use PHPUnit\Framework\TestCase;
 
 class CasesHelperTest extends TestCase

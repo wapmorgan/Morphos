@@ -1,4 +1,5 @@
 <?php
+
 namespace morphos;
 
 use InvalidArgumentException;
@@ -77,7 +78,7 @@ class CurrenciesHelper
                 return Currency::HRYVNIA;
 
             default:
-                throw new InvalidArgumentException('Invalid currency: '.$currency);
+                throw new InvalidArgumentException('Invalid currency: ' . $currency);
         }
     }
 }

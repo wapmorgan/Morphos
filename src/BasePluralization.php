@@ -1,4 +1,5 @@
 <?php
+
 namespace morphos;
 
 use RuntimeException;
@@ -12,7 +13,8 @@ abstract class BasePluralization
      *
      * @return string
      */
-    public static function pluralize($word, $count = 2) {
+    public static function pluralize($word, $count = 2)
+    {
         throw new RuntimeException('Not implemented');
     }
 
@@ -24,7 +26,8 @@ abstract class BasePluralization
      *
      * @return string
      */
-    public static function getCase($word, $case, $animateness = false) {
+    public static function getCase($word, $case, $animateness = false)
+    {
         throw new RuntimeException('Not implemented');
     }
 
@@ -36,7 +39,8 @@ abstract class BasePluralization
      * @return string[]
      * @phpstan-return array<string, string>
      */
-    public static function getCases($word, $animateness = false) {
+    public static function getCases($word, $animateness = false)
+    {
         throw new RuntimeException('Not implemented');
     }
 }
