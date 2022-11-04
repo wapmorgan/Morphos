@@ -1,9 +1,10 @@
 <?php
+
 namespace morphos\test\Russian;
 
+use morphos\NamesInflection;
 use morphos\Russian\Cases;
 use morphos\Russian\LastNamesInflection;
-use morphos\NamesInflection;
 use PHPUnit\Framework\TestCase;
 
 class LastNamesInflectionTest extends TestCase
@@ -28,7 +29,7 @@ class LastNamesInflectionTest extends TestCase
             Cases::DAT => $name3,
             Cases::VINIT => $name4,
             Cases::TVORIT => $name5,
-            Cases::PREDLOJ => $name6
+            Cases::PREDLOJ => $name6,
         ], $forms);
     }
 
@@ -70,16 +71,32 @@ class LastNamesInflectionTest extends TestCase
             ['Смирнова', NamesInflection::FEMALE, 'Смирновой', 'Смирновой', 'Смирнову', 'Смирновой', 'Смирновой'],
             ['Кромская', NamesInflection::FEMALE, 'Кромской', 'Кромской', 'Кромскую', 'Кромской', 'Кромской'],
             ['Закипная', NamesInflection::FEMALE, 'Закипной', 'Закипной', 'Закипную', 'Закипной', 'Закипной'],
-//            ['Зима', NamesInflection::FEMALE, 'Зимы', 'Зиме', 'Зиму', 'Зимой', 'Зиме'],
-//            ['Зоя', NamesInflection::FEMALE, 'Зои', 'Зое', 'Зою', 'Зоей', 'Зое'],
-//            ['Молодыха', NamesInflection::FEMALE, 'Молодыхи', 'Молодыхе', 'Молодыху', 'Молодыхой', 'Молодыхе'],
+            //            ['Зима', NamesInflection::FEMALE, 'Зимы', 'Зиме', 'Зиму', 'Зимой', 'Зиме'],
+            //            ['Зоя', NamesInflection::FEMALE, 'Зои', 'Зое', 'Зою', 'Зоей', 'Зое'],
+            //            ['Молодыха', NamesInflection::FEMALE, 'Молодыхи', 'Молодыхе', 'Молодыху', 'Молодыхой', 'Молодыхе'],
             ['Стальная', NamesInflection::FEMALE, 'Стальной', 'Стальной', 'Стальную', 'Стальной', 'Стальной'],
-            ['Завгородняя', NamesInflection::FEMALE, 'Завгородней', 'Завгородней', 'Завгороднюю', 'Завгородней', 'Завгородней'],
+            [
+                'Завгородняя',
+                NamesInflection::FEMALE,
+                'Завгородней',
+                'Завгородней',
+                'Завгороднюю',
+                'Завгородней',
+                'Завгородней',
+            ],
 
             // foreign names
-//            ['Мартен-Люган', NamesInflection::MALE, 'Мартена-Люгана', 'Мартену-Люгану', 'Мартена-Люгана', 'Мартеном-Люганом', 'Мартене-Люгане'],
-            ['Копусов-Долинин', NamesInflection::MALE, 'Копусова-Долинина', 'Копусову-Долинину', 'Копусова-Долинина', 'Копусовым-Долининым', 'Копусове-Долинине'],
-//            ['Кучера-Бози', NamesInflection::MALE, 'Кучеры-Бози', 'Кучере-Бози', 'Кучеру-Бози', 'Кучерой-Бози', 'Кучере-Бози'],
+            //            ['Мартен-Люган', NamesInflection::MALE, 'Мартена-Люгана', 'Мартену-Люгану', 'Мартена-Люгана', 'Мартеном-Люганом', 'Мартене-Люгане'],
+            [
+                'Копусов-Долинин',
+                NamesInflection::MALE,
+                'Копусова-Долинина',
+                'Копусову-Долинину',
+                'Копусова-Долинина',
+                'Копусовым-Долининым',
+                'Копусове-Долинине',
+            ],
+            //            ['Кучера-Бози', NamesInflection::MALE, 'Кучеры-Бози', 'Кучере-Бози', 'Кучеру-Бози', 'Кучерой-Бози', 'Кучере-Бози'],
         ];
     }
 

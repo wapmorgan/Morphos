@@ -1,4 +1,5 @@
 <?php
+
 namespace morphos\test;
 
 use morphos\CurrenciesHelper;

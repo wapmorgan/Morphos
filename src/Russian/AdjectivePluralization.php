@@ -1,4 +1,5 @@
 <?php
+
 namespace morphos\Russian;
 
 use morphos\BasePluralization;
@@ -9,7 +10,7 @@ class AdjectivePluralization extends BasePluralization implements Cases
 {
     /**
      * @param string $adjective
-     * @param int  $count
+     * @param int $count
      * @param bool $animateness
      * @param string|null $case
      *
@@ -24,8 +25,9 @@ class AdjectivePluralization extends BasePluralization implements Cases
             list($count, $adjective) = [$adjective, $count];
         }
 
-        if ($case !== null)
+        if ($case !== null) {
             $case = RussianCasesHelper::canonizeCase($case);
+        }
 
         if ($case === null) {
             switch (NounPluralization::getNumeralForm($count)) {
@@ -38,10 +40,11 @@ class AdjectivePluralization extends BasePluralization implements Cases
             }
         }
 
-        if (NounPluralization::getNumeralForm($count) == NounPluralization::ONE)
+        if (NounPluralization::getNumeralForm($count) == NounPluralization::ONE) {
             return AdjectiveDeclension::getCase($adjective, $case, $animateness);
-        else
+        } else {
             return AdjectivePluralization::getCase($adjective, $case, $animateness);
+        }
     }
 
     /**
@@ -54,7 +57,7 @@ class AdjectivePluralization extends BasePluralization implements Cases
      */
     public static function getCase($adjective, $case, $animateness = false)
     {
-        $case = RussianCasesHelper::canonizeCase($case);
+        $case  = RussianCasesHelper::canonizeCase($case);
         $forms = static::getCases($adjective, $animateness);
         return $forms[$case];
     }
@@ -68,36 +71,35 @@ class AdjectivePluralization extends BasePluralization implements Cases
      */
     public static function getCases($adjective, $animateness = false)
     {
-        $type = AdjectiveDeclension::getAdjectiveBaseType($adjective);
+        $type      = AdjectiveDeclension::getAdjectiveBaseType($adjective);
         $adjective = S::slice($adjective, 0, -2);
-        switch ($type)
-        {
+        switch ($type) {
             case AdjectiveDeclension::HARD_BASE:
                 $cases = [
-                    static::IMENIT => $adjective.'ые',
-                    static::RODIT => $adjective.'ых',
-                    static::DAT => $adjective.'ым',
+                    static::IMENIT => $adjective . 'ые',
+                    static::RODIT  => $adjective . 'ых',
+                    static::DAT    => $adjective . 'ым',
                 ];
 
                 $cases[static::VINIT] = RussianLanguage::getVinitCaseByAnimateness($cases, $animateness);
 
-                $cases[static::TVORIT] = $adjective.'ыми';
-                $cases[static::PREDLOJ] = $adjective.'ых';
+                $cases[static::TVORIT]  = $adjective . 'ыми';
+                $cases[static::PREDLOJ] = $adjective . 'ых';
 
                 return $cases;
 
             case AdjectiveDeclension::SOFT_BASE:
             case AdjectiveDeclension::MIXED_BASE:
                 $cases = [
-                    static::IMENIT => $adjective.'ие',
-                    static::RODIT => $adjective.'их',
-                    static::DAT => $adjective.'им',
+                    static::IMENIT => $adjective . 'ие',
+                    static::RODIT  => $adjective . 'их',
+                    static::DAT    => $adjective . 'им',
                 ];
 
                 $cases[static::VINIT] = RussianLanguage::getVinitCaseByAnimateness($cases, $animateness);
 
-                $cases[static::TVORIT] = $adjective.'ими';
-                $cases[static::PREDLOJ] = $adjective.'их';
+                $cases[static::TVORIT]  = $adjective . 'ими';
+                $cases[static::PREDLOJ] = $adjective . 'их';
 
                 return $cases;
         }

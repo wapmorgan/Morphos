@@ -1,4 +1,5 @@
 <?php
+
 namespace morphos\English;
 
 use morphos\S;
@@ -6,28 +7,50 @@ use RuntimeException;
 
 class NounPluralization extends \morphos\BasePluralization
 {
+    /** @var string[] */
+    public static $consonants = [
+        'b',
+        'c',
+        'd',
+        'f',
+        'g',
+        'h',
+        'j',
+        'k',
+        'l',
+        'm',
+        'n',
+        'p',
+        'q',
+        'r',
+        's',
+        't',
+        'v',
+        'x',
+        'z',
+        'w',
+    ];
     /**
      * @var string[]
      * @phpstan-var array<string, string>
      */
     private static $exceptions = [
-        'chief' => 'chiefs',
-        'basis' => 'bases',
-        'crisis' => 'crises',
-        'radius' => 'radii',
-        'nucleus' => 'nuclei',
+        'chief'      => 'chiefs',
+        'basis'      => 'bases',
+        'crisis'     => 'crises',
+        'radius'     => 'radii',
+        'nucleus'    => 'nuclei',
         'curriculum' => 'curricula',
-        'man' => 'men',
-        'woman' => 'women',
-        'child' => 'children',
-        'foot' => 'feet',
-        'tooth' => 'teeth',
-        'ox' => 'oxen',
-        'goose' => 'geese',
-        'mouse' => 'mice'
+        'man'        => 'men',
+        'woman'      => 'women',
+        'child'      => 'children',
+        'foot'       => 'feet',
+        'tooth'      => 'teeth',
+        'ox'         => 'oxen',
+        'goose'      => 'geese',
+        'mouse'      => 'mice',
     ];
-
-    /** @var string[]  */
+    /** @var string[] */
     private static $without_paired_form = [
         'knowledge',
         'progress',
@@ -38,9 +61,6 @@ class NounPluralization extends \morphos\BasePluralization
         'spectacles',
         'trousers',
     ];
-
-    /** @var string[]  */
-    public static $consonants = ['b', 'c', 'd', 'f', 'g', 'h', 'j', 'k', 'l', 'm', 'n', 'p', 'q', 'r', 's', 't', 'v', 'x', 'z', 'w'];
 
     /**
      * @param string $word
@@ -60,20 +80,20 @@ class NounPluralization extends \morphos\BasePluralization
             return static::$exceptions[$word];
         }
 
-        if (in_array(S::slice($word, -1), ['s', 'x']) || in_array(S::slice($word, -2), array('sh', 'ch'))) {
-            return $word.'es';
+        if (in_array(S::slice($word, -1), ['s', 'x']) || in_array(S::slice($word, -2), ['sh', 'ch'])) {
+            return $word . 'es';
         } elseif (S::slice($word, -1) == 'o') {
-            return $word.'es';
+            return $word . 'es';
         } elseif (S::slice($word, -1) == 'y' && in_array(S::slice($word, -2, -1), static::$consonants)) {
-            return S::slice($word, 0, -1).'ies';
+            return S::slice($word, 0, -1) . 'ies';
         } elseif (S::slice($word, -2) == 'fe' || S::slice($word, -1) == 'f') {
             if (S::slice($word, -1) == 'f') {
-                return S::slice($word, 0, -1).'ves';
+                return S::slice($word, 0, -1) . 'ves';
             } else {
-                return S::slice($word, 0, -2).'ves';
+                return S::slice($word, 0, -2) . 'ves';
             }
         } else {
-            return $word.'s';
+            return $word . 's';
         }
     }
 

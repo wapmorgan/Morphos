@@ -1,4 +1,5 @@
 <?php
+
 namespace morphos\Russian;
 
 use morphos\Gender;
@@ -85,46 +86,6 @@ class RussianLanguage
     }
 
     /**
-     * Проверка гласной
-     * @param string $char
-     * @return bool
-     */
-    public static function isVowel($char)
-    {
-        return in_array($char, static::$vowels, true);
-    }
-
-    /**
-     * Проверка согласной
-     * @param string $char
-     * @return bool
-     */
-    public static function isConsonant($char)
-    {
-        return in_array($char, static::$consonants, true);
-    }
-
-    /**
-     * Проверка звонкости согласной
-     * @param string $char
-     * @return bool
-     */
-    public static function isSonorousConsonant($char)
-    {
-        return in_array($char, static::$sonorousConsonants, true);
-    }
-
-    /**
-     * Проверка глухости согласной
-     * @param string $char
-     * @return bool
-     */
-    public static function isDeafConsonant($char)
-    {
-        return in_array($char, static::$deafConsonants, true);
-    }
-
-    /**
      * Щипящая ли согласная
      * @param string $consonant
      * @return bool
@@ -178,7 +139,8 @@ class RussianLanguage
                 return true;
             }
 
-            if (S::length($substring) > 1 && in_array(S::slice($substring, 1, 2), ['е', 'ё', 'и', 'ю', 'я', 'ь'], true)) { // consonants are soft if they are trailed with these vowels
+            if (S::length($substring) > 1 && in_array(S::slice($substring, 1, 2), ['е', 'ё', 'и', 'ю', 'я', 'ь'],
+                    true)) { // consonants are soft if they are trailed with these vowels
                 return true;
             }
         }
@@ -201,7 +163,8 @@ class RussianLanguage
                 return true;
             }
 
-            if (S::length($substring) > 1 && in_array(S::slice($substring, 1, 2), ['е', 'ё', 'и', 'ю', 'я', 'ь'], true)) { // consonants are soft if they are trailed with these vowels
+            if (S::length($substring) > 1 && in_array(S::slice($substring, 1, 2), ['е', 'ё', 'и', 'ю', 'я', 'ь'],
+                    true)) { // consonants are soft if they are trailed with these vowels
                 return true;
             }
         }
@@ -221,9 +184,9 @@ class RussianLanguage
     /**
      * Выбор предлога по первой букве
      *
-     * @param string $word Слово
+     * @param string $word                 Слово
      * @param string $prepositionWithVowel Предлог, если слово начинается с гласной
-     * @param string $preposition Предлог, если слово не начинается с гласной
+     * @param string $preposition          Предлог, если слово не начинается с гласной
      *
      * @return string
      */
@@ -256,7 +219,7 @@ class RussianLanguage
     }
 
     /**
-     * @param string $verb Verb to modify if gender is female
+     * @param string $verb   Verb to modify if gender is female
      * @param string $gender If not `m`, verb will be modified
      * @return string Correct verb
      */
@@ -268,13 +231,13 @@ class RussianLanguage
 
             return ($gender == Gender::MALE
                 ? $verb
-                : S::slice($verb, 0, -2).(S::slice($verb, -3, -2) === 'л' ? null : 'л').'ась');
+                : S::slice($verb, 0, -2) . (S::slice($verb, -3, -2) === 'л' ? null : 'л') . 'ась');
         }
 
         // обычный глагол
         return ($gender == Gender::MALE
             ? $verb
-            : $verb.(S::slice($verb, -1) === 'л' ? null : 'л').'а');
+            : $verb . (S::slice($verb, -1) === 'л' ? null : 'л') . 'а');
     }
 
     /**
@@ -287,9 +250,19 @@ class RussianLanguage
         $normalized = trim(S::lower($word));
         if (in_array(S::slice($normalized, 0, 1), ['в', 'ф'], true)
             && static::isConsonant(S::slice($normalized, 1, 2))) {
-            return 'во '.$word;
+            return 'во ' . $word;
         }
-        return 'в '.$word;
+        return 'в ' . $word;
+    }
+
+    /**
+     * Проверка согласной
+     * @param string $char
+     * @return bool
+     */
+    public static function isConsonant($char)
+    {
+        return in_array($char, static::$consonants, true);
     }
 
     /**
@@ -300,9 +273,11 @@ class RussianLanguage
     public static function with($word)
     {
         $normalized = trim(S::lower($word));
-        if (in_array(S::slice($normalized, 0, 1), ['c', 'з', 'ш', 'ж'], true) && static::isConsonant(S::slice($normalized, 1, 2)) || S::slice($normalized, 0, 1) === 'щ')
-            return 'со '.$word;
-        return 'с '.$word;
+        if (in_array(S::slice($normalized, 0, 1), ['c', 'з', 'ш', 'ж'],
+                true) && static::isConsonant(S::slice($normalized, 1, 2)) || S::slice($normalized, 0, 1) === 'щ') {
+            return 'со ' . $word;
+        }
+        return 'с ' . $word;
     }
 
     /**
@@ -313,32 +288,67 @@ class RussianLanguage
     public static function about($word)
     {
         $normalized = trim(S::lower($word));
-        if (static::isVowel(S::slice($normalized, 0, 1)) && !in_array(S::slice($normalized, 0, 1), ['е', 'ё', 'ю', 'я'], true))
-            return 'об '.$word;
+        if (static::isVowel(S::slice($normalized, 0, 1)) && !in_array(S::slice($normalized, 0, 1), ['е', 'ё', 'ю', 'я'],
+                true)) {
+            return 'об ' . $word;
+        }
 
-        if (in_array(S::slice($normalized, 0, 3), ['все', 'всё', 'всю', 'что', 'мне'], true))
-            return 'обо '.$word;
+        if (in_array(S::slice($normalized, 0, 3), ['все', 'всё', 'всю', 'что', 'мне'], true)) {
+            return 'обо ' . $word;
+        }
 
-        return 'о '.$word;
+        return 'о ' . $word;
+    }
+
+    /**
+     * Проверка гласной
+     * @param string $char
+     * @return bool
+     */
+    public static function isVowel($char)
+    {
+        return in_array($char, static::$vowels, true);
     }
 
     /**
      * Выбирает первое или второе окончание в зависимости от звонкости/глухости в конце слова.
-     * @param string $word Слово (или префикс), на основе звонкости которого нужно выбрать окончание
+     * @param string $word       Слово (или префикс), на основе звонкости которого нужно выбрать окончание
      * @param string $ifSonorous Окончание, если слово оканчивается на звонкую согласную
-     * @param string $ifDeaf Окончание, если слово оканчивается на глухую согласную
+     * @param string $ifDeaf     Окончание, если слово оканчивается на глухую согласную
      * @return string Первое или второе окончание
      * @throws \Exception
      */
     public static function chooseEndingBySonority($word, $ifSonorous, $ifDeaf)
     {
         $last = S::slice($word, -1);
-        if (static::isSonorousConsonant($last))
+        if (static::isSonorousConsonant($last)) {
             return $ifSonorous;
-        if (static::isDeafConsonant($last))
+        }
+        if (static::isDeafConsonant($last)) {
             return $ifDeaf;
+        }
 
         throw new \Exception('Not implemented');
+    }
+
+    /**
+     * Проверка звонкости согласной
+     * @param string $char
+     * @return bool
+     */
+    public static function isSonorousConsonant($char)
+    {
+        return in_array($char, static::$sonorousConsonants, true);
+    }
+
+    /**
+     * Проверка глухости согласной
+     * @param string $char
+     * @return bool
+     */
+    public static function isDeafConsonant($char)
+    {
+        return in_array($char, static::$deafConsonants, true);
     }
 
     /**

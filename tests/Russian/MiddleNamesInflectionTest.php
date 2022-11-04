@@ -1,9 +1,10 @@
 <?php
+
 namespace morphos\test\Russian;
 
+use morphos\NamesInflection;
 use morphos\Russian\Cases;
 use morphos\Russian\MiddleNamesInflection;
-use morphos\NamesInflection;
 use PHPUnit\Framework\TestCase;
 
 class MiddleNamesInflectionTest extends TestCase
@@ -20,7 +21,7 @@ class MiddleNamesInflectionTest extends TestCase
             Cases::DAT => $name3,
             Cases::VINIT => $name4,
             Cases::TVORIT => $name5,
-            Cases::PREDLOJ => $name6
+            Cases::PREDLOJ => $name6,
         ], $forms);
     }
 
@@ -35,9 +36,33 @@ class MiddleNamesInflectionTest extends TestCase
     public function middleNamesProvider()
     {
         return [
-            ['Владимирович', NamesInflection::MALE, 'Владимировича', 'Владимировичу', 'Владимировича', 'Владимировичем', 'Владимировиче'],
-            ['Валерьянович', NamesInflection::MALE, 'Валерьяновича', 'Валерьяновичу', 'Валерьяновича', 'Валерьяновичем', 'Валерьяновиче'],
-            ['Богдановна', NamesInflection::FEMALE, 'Богдановны', 'Богдановне', 'Богдановну', 'Богдановной', 'Богдановне'],
+            [
+                'Владимирович',
+                NamesInflection::MALE,
+                'Владимировича',
+                'Владимировичу',
+                'Владимировича',
+                'Владимировичем',
+                'Владимировиче',
+            ],
+            [
+                'Валерьянович',
+                NamesInflection::MALE,
+                'Валерьяновича',
+                'Валерьяновичу',
+                'Валерьяновича',
+                'Валерьяновичем',
+                'Валерьяновиче',
+            ],
+            [
+                'Богдановна',
+                NamesInflection::FEMALE,
+                'Богдановны',
+                'Богдановне',
+                'Богдановну',
+                'Богдановной',
+                'Богдановне',
+            ],
             ['Сергеевна', NamesInflection::FEMALE, 'Сергеевны', 'Сергеевне', 'Сергеевну', 'Сергеевной', 'Сергеевне'],
         ];
     }

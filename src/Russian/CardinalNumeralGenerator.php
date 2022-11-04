@@ -1,4 +1,5 @@
 <?php
+
 namespace morphos\Russian;
 
 use morphos\NumeralGenerator;
@@ -15,33 +16,33 @@ class CardinalNumeralGenerator extends NumeralGenerator implements Cases
      * @phpstan-var array<int, string>
      */
     protected static $words = [
-        1 => 'один',
-        2 => 'два',
-        3 => 'три',
-        4 => 'четыре',
-        5 => 'пять',
-        6 => 'шесть',
-        7 => 'семь',
-        8 => 'восемь',
-        9 => 'девять',
-        10 => 'десять',
-        11 => 'одиннадцать',
-        12 => 'двенадцать',
-        13 => 'тринадцать',
-        14 => 'четырнадцать',
-        15 => 'пятнадцать',
-        16 => 'шестнадцать',
-        17 => 'семнадцать',
-        18 => 'восемнадцать',
-        19 => 'девятнадцать',
-        20 => 'двадцать',
-        30 => 'тридцать',
-        40 => 'сорок',
-        50 => 'пятьдесят',
-        60 => 'шестьдесят',
-        70 => 'семьдесят',
-        80 => 'восемьдесят',
-        90 => 'девяносто',
+        1   => 'один',
+        2   => 'два',
+        3   => 'три',
+        4   => 'четыре',
+        5   => 'пять',
+        6   => 'шесть',
+        7   => 'семь',
+        8   => 'восемь',
+        9   => 'девять',
+        10  => 'десять',
+        11  => 'одиннадцать',
+        12  => 'двенадцать',
+        13  => 'тринадцать',
+        14  => 'четырнадцать',
+        15  => 'пятнадцать',
+        16  => 'шестнадцать',
+        17  => 'семнадцать',
+        18  => 'восемнадцать',
+        19  => 'девятнадцать',
+        20  => 'двадцать',
+        30  => 'тридцать',
+        40  => 'сорок',
+        50  => 'пятьдесят',
+        60  => 'шестьдесят',
+        70  => 'семьдесят',
+        80  => 'восемьдесят',
+        90  => 'девяносто',
         100 => 'сто',
         200 => 'двести',
         300 => 'триста',
@@ -58,10 +59,10 @@ class CardinalNumeralGenerator extends NumeralGenerator implements Cases
      * @phpstan-var array<int, string>
      */
     protected static $exponents = [
-        1000 => 'тысяча',
-        1000000 => 'миллион',
-        1000000000 => 'миллиард',
-        1000000000000 => 'триллион',
+        1000             => 'тысяча',
+        1000000          => 'миллион',
+        1000000000       => 'миллиард',
+        1000000000000    => 'триллион',
         1000000000000000 => 'квадриллион',
     ];
 
@@ -70,104 +71,104 @@ class CardinalNumeralGenerator extends NumeralGenerator implements Cases
      * @phpstan-var array<string, array<string, array<string, string>|string>>
      */
     protected static $precalculated = [
-        'один' => [
-            self::MALE => [
-                self::IMENIT => 'один',
-                self::RODIT => 'одного',
-                self::DAT => 'одному',
-                self::VINIT => 'один',
-                self::TVORIT => 'одним',
+        'один'        => [
+            self::MALE   => [
+                self::IMENIT  => 'один',
+                self::RODIT   => 'одного',
+                self::DAT     => 'одному',
+                self::VINIT   => 'один',
+                self::TVORIT  => 'одним',
                 self::PREDLOJ => 'одном',
             ],
             self::FEMALE => [
-                self::IMENIT => 'одна',
-                self::RODIT => 'одной',
-                self::DAT => 'одной',
-                self::VINIT => 'одну',
-                self::TVORIT => 'одной',
+                self::IMENIT  => 'одна',
+                self::RODIT   => 'одной',
+                self::DAT     => 'одной',
+                self::VINIT   => 'одну',
+                self::TVORIT  => 'одной',
                 self::PREDLOJ => 'одной',
             ],
             self::NEUTER => [
-                self::IMENIT => 'одно',
-                self::RODIT => 'одного',
-                self::DAT => 'одному',
-                self::VINIT => 'одно',
-                self::TVORIT => 'одним',
+                self::IMENIT  => 'одно',
+                self::RODIT   => 'одного',
+                self::DAT     => 'одному',
+                self::VINIT   => 'одно',
+                self::TVORIT  => 'одним',
                 self::PREDLOJ => 'одном',
             ],
         ],
-        'два' => [
-            self::MALE => [
-                self::IMENIT => 'два',
-                self::RODIT => 'двух',
-                self::DAT => 'двум',
-                self::VINIT => 'два',
-                self::TVORIT => 'двумя',
+        'два'         => [
+            self::MALE   => [
+                self::IMENIT  => 'два',
+                self::RODIT   => 'двух',
+                self::DAT     => 'двум',
+                self::VINIT   => 'два',
+                self::TVORIT  => 'двумя',
                 self::PREDLOJ => 'двух',
             ],
             self::FEMALE => [
-                self::IMENIT => 'две',
-                self::RODIT => 'двух',
-                self::DAT => 'двум',
-                self::VINIT => 'две',
-                self::TVORIT => 'двумя',
+                self::IMENIT  => 'две',
+                self::RODIT   => 'двух',
+                self::DAT     => 'двум',
+                self::VINIT   => 'две',
+                self::TVORIT  => 'двумя',
                 self::PREDLOJ => 'двух',
             ],
             self::NEUTER => [
-                self::IMENIT => 'два',
-                self::RODIT => 'двух',
-                self::DAT => 'двум',
-                self::VINIT => 'два',
-                self::TVORIT => 'двумя',
+                self::IMENIT  => 'два',
+                self::RODIT   => 'двух',
+                self::DAT     => 'двум',
+                self::VINIT   => 'два',
+                self::TVORIT  => 'двумя',
                 self::PREDLOJ => 'двух',
             ],
         ],
-        'три' => [
-            self::IMENIT => 'три',
-            self::RODIT => 'трех',
-            self::DAT => 'трем',
-            self::VINIT => 'три',
-            self::TVORIT => 'тремя',
+        'три'         => [
+            self::IMENIT  => 'три',
+            self::RODIT   => 'трех',
+            self::DAT     => 'трем',
+            self::VINIT   => 'три',
+            self::TVORIT  => 'тремя',
             self::PREDLOJ => 'трех',
         ],
-        'четыре' => [
-            self::IMENIT => 'четыре',
-            self::RODIT => 'четырех',
-            self::DAT => 'четырем',
-            self::VINIT => 'четыре',
-            self::TVORIT => 'четырьмя',
+        'четыре'      => [
+            self::IMENIT  => 'четыре',
+            self::RODIT   => 'четырех',
+            self::DAT     => 'четырем',
+            self::VINIT   => 'четыре',
+            self::TVORIT  => 'четырьмя',
             self::PREDLOJ => 'четырех',
         ],
         'восемьдесят' => [
-            self::IMENIT => 'восемьдесят',
-            self::RODIT => 'восьмидесяти',
-            self::DAT => 'восьмидесяти',
-            self::VINIT => 'восемьдесят',
-            self::TVORIT => 'восемьюдесятью',
+            self::IMENIT  => 'восемьдесят',
+            self::RODIT   => 'восьмидесяти',
+            self::DAT     => 'восьмидесяти',
+            self::VINIT   => 'восемьдесят',
+            self::TVORIT  => 'восемьюдесятью',
             self::PREDLOJ => 'восьмидесяти',
         ],
-        'двести' => [
-            self::IMENIT => 'двести',
-            self::RODIT => 'двухсот',
-            self::DAT => 'двумстам',
-            self::VINIT => 'двести',
-            self::TVORIT => 'двумястами',
+        'двести'      => [
+            self::IMENIT  => 'двести',
+            self::RODIT   => 'двухсот',
+            self::DAT     => 'двумстам',
+            self::VINIT   => 'двести',
+            self::TVORIT  => 'двумястами',
             self::PREDLOJ => 'двухстах',
         ],
-        'восемьсот' => [
-            self::IMENIT => 'восемьсот',
-            self::RODIT => 'восьмисот',
-            self::DAT => 'восьмистам',
-            self::VINIT => 'восемьсот',
-            self::TVORIT => 'восьмистами',
+        'восемьсот'   => [
+            self::IMENIT  => 'восемьсот',
+            self::RODIT   => 'восьмисот',
+            self::DAT     => 'восьмистам',
+            self::VINIT   => 'восемьсот',
+            self::TVORIT  => 'восьмистами',
             self::PREDLOJ => 'восьмистах',
         ],
-        'тысяча' => [
-            self::IMENIT => 'тысяча',
-            self::RODIT => 'тысяч',
-            self::DAT => 'тысячам',
-            self::VINIT => 'тысяч',
-            self::TVORIT => 'тысячей',
+        'тысяча'      => [
+            self::IMENIT  => 'тысяча',
+            self::RODIT   => 'тысяч',
+            self::DAT     => 'тысячам',
+            self::VINIT   => 'тысяч',
+            self::TVORIT  => 'тысячей',
             self::PREDLOJ => 'тысячах',
         ],
     ];
@@ -193,52 +194,52 @@ class CardinalNumeralGenerator extends NumeralGenerator implements Cases
             } elseif (($number >= 5 && $number <= 20) || $number == 30) {
                 $prefix = S::slice($word, 0, -1);
                 return [
-                    static::IMENIT => $word,
-                    static::RODIT => $prefix.'и',
-                    static::DAT => $prefix.'и',
-                    static::VINIT => $word,
-                    static::TVORIT => $prefix.'ью',
-                    static::PREDLOJ => $prefix.'и',
+                    static::IMENIT  => $word,
+                    static::RODIT   => $prefix . 'и',
+                    static::DAT     => $prefix . 'и',
+                    static::VINIT   => $word,
+                    static::TVORIT  => $prefix . 'ью',
+                    static::PREDLOJ => $prefix . 'и',
                 ];
             } elseif (in_array($number, [40, 90, 100])) {
                 $prefix = $number == 40 ? $word : S::slice($word, 0, -1);
                 return [
-                    static::IMENIT => $word,
-                    static::RODIT => $prefix.'а',
-                    static::DAT => $prefix.'а',
-                    static::VINIT => $word,
-                    static::TVORIT => $prefix.'а',
-                    static::PREDLOJ => $prefix.'а',
+                    static::IMENIT  => $word,
+                    static::RODIT   => $prefix . 'а',
+                    static::DAT     => $prefix . 'а',
+                    static::VINIT   => $word,
+                    static::TVORIT  => $prefix . 'а',
+                    static::PREDLOJ => $prefix . 'а',
                 ];
             } elseif (($number >= 50 && $number <= 80)) {
                 $prefix = S::slice($word, 0, -6);
                 return [
-                    static::IMENIT => $prefix.'ьдесят',
-                    static::RODIT => $prefix.'идесяти',
-                    static::DAT => $prefix.'идесяти',
-                    static::VINIT => $prefix.'ьдесят',
-                    static::TVORIT => $prefix.'ьюдесятью',
-                    static::PREDLOJ => $prefix.'идесяти',
+                    static::IMENIT  => $prefix . 'ьдесят',
+                    static::RODIT   => $prefix . 'идесяти',
+                    static::DAT     => $prefix . 'идесяти',
+                    static::VINIT   => $prefix . 'ьдесят',
+                    static::TVORIT  => $prefix . 'ьюдесятью',
+                    static::PREDLOJ => $prefix . 'идесяти',
                 ];
             } elseif (in_array($number, [300, 400])) {
                 $prefix = S::slice($word, 0, -4);
                 return [
-                    static::IMENIT => $word,
-                    static::RODIT => $prefix.'ехсот',
-                    static::DAT => $prefix.'емстам',
-                    static::VINIT => $word,
-                    static::TVORIT => $prefix.($number == 300 ? 'е' : 'ь').'мястами',
-                    static::PREDLOJ => $prefix.'ехстах',
+                    static::IMENIT  => $word,
+                    static::RODIT   => $prefix . 'ехсот',
+                    static::DAT     => $prefix . 'емстам',
+                    static::VINIT   => $word,
+                    static::TVORIT  => $prefix . ($number == 300 ? 'е' : 'ь') . 'мястами',
+                    static::PREDLOJ => $prefix . 'ехстах',
                 ];
             } elseif ($number >= 500 && $number <= 900) {
                 $prefix = S::slice($word, 0, -4);
                 return [
-                    static::IMENIT => $word,
-                    static::RODIT => $prefix.'исот',
-                    static::DAT => $prefix.'истам',
-                    static::VINIT => $word,
-                    static::TVORIT => $prefix.'ьюстами',
-                    static::PREDLOJ => $prefix.'истах',
+                    static::IMENIT  => $word,
+                    static::RODIT   => $prefix . 'исот',
+                    static::DAT     => $prefix . 'истам',
+                    static::VINIT   => $word,
+                    static::TVORIT  => $prefix . 'ьюстами',
+                    static::PREDLOJ => $prefix . 'истах',
                 ];
             } elseif (isset(static::$exponents[$number])) {
                 return NounDeclension::getCases($word, false);
@@ -249,21 +250,21 @@ class CardinalNumeralGenerator extends NumeralGenerator implements Cases
 
         if ($number == 0) {
             return [
-                static::IMENIT => 'ноль',
-                static::RODIT => 'ноля',
-                static::DAT => 'нолю',
-                static::VINIT => 'ноль',
-                static::TVORIT => 'нолём',
+                static::IMENIT  => 'ноль',
+                static::RODIT   => 'ноля',
+                static::DAT     => 'нолю',
+                static::VINIT   => 'ноль',
+                static::TVORIT  => 'нолём',
                 static::PREDLOJ => 'ноле',
             ];
         } // compound numeral
 
-        $parts = [];
+        $parts  = [];
         $result = [];
 
         foreach (array_reverse(static::$exponents, true) as $word_number => $word) {
             if ($number >= $word_number) {
-                $count = (int)floor($number / $word_number);
+                $count   = (int)floor($number / $word_number);
                 $parts[] = static::getCases($count, ($word_number == 1000 ? static::FEMALE : static::MALE));
 
                 switch (NounPluralization::getNumeralForm($count)) {
@@ -280,9 +281,9 @@ class CardinalNumeralGenerator extends NumeralGenerator implements Cases
                         break;
 
                     case NounPluralization::FIVE_OTHER:
-                        $part = NounPluralization::getCases($word);
+                        $part                = NounPluralization::getCases($word);
                         $part[Cases::IMENIT] = $part[Cases::VINIT] = $part[Cases::RODIT];
-                        $parts[] = $part;
+                        $parts[]             = $part;
                         break;
                 }
 
@@ -293,12 +294,19 @@ class CardinalNumeralGenerator extends NumeralGenerator implements Cases
         foreach (array_reverse(static::$words, true) as $word_number => $word) {
             if ($number >= $word_number) {
                 $parts[] = static::getCases($word_number, $gender);
-                $number %= $word_number;
+                $number  %= $word_number;
             }
         }
 
         // make one array with cases and delete 'o/об' prepositional from all parts except the last one
-        foreach (array(static::IMENIT, static::RODIT, static::DAT, static::VINIT, static::TVORIT, static::PREDLOJ) as $case) {
+        foreach ([
+                     static::IMENIT,
+                     static::RODIT,
+                     static::DAT,
+                     static::VINIT,
+                     static::TVORIT,
+                     static::PREDLOJ,
+                 ] as $case) {
             $result[$case] = [];
             foreach ($parts as $partN => $part) {
                 $result[$case][] = $part[$case];
@@ -319,7 +327,7 @@ class CardinalNumeralGenerator extends NumeralGenerator implements Cases
      */
     public static function getCase($number, $case, $gender = self::MALE)
     {
-        $case = RussianCasesHelper::canonizeCase($case);
+        $case  = RussianCasesHelper::canonizeCase($case);
         $forms = static::getCases($number, $gender);
         return $forms[$case];
     }

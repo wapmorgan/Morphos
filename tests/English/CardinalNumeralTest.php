@@ -1,4 +1,5 @@
 <?php
+
 namespace morphos\test\English;
 
 use morphos\English\CardinalNumeralGenerator;
@@ -16,10 +17,10 @@ class CardinalNumeralTest extends TestCase
 
     public function numbersProvider()
     {
-        return array(
-            array(132, 'one hundred thirty-two'),
-            array(2595410, 'two million, five hundred ninety-five thousand, four hundred ten'),
-            array(2021123132, 'two billion, twenty-one million, one hundred twenty-three thousand, one hundred thirty-two'),
-        );
+        return [
+            [132, 'one hundred thirty-two'],
+            [2595410, 'two million, five hundred ninety-five thousand, four hundred ten'],
+            [2021123132, 'two billion, twenty-one million, one hundred twenty-three thousand, one hundred thirty-two'],
+        ];
     }
 }

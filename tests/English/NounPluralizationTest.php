@@ -1,4 +1,5 @@
 <?php
+
 namespace morphos\test\English;
 
 use morphos\English\NounPluralization;

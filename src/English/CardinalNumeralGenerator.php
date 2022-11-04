@@ -1,4 +1,5 @@
 <?php
+
 namespace morphos\English;
 
 use morphos\NumeralGenerator;
@@ -11,15 +12,15 @@ class CardinalNumeralGenerator extends NumeralGenerator
      * @phpstan-var array<int, string>
      */
     public static $words = [
-        1 => 'one',
-        2 => 'two',
-        3 => 'three',
-        4 => 'four',
-        5 => 'five',
-        6 => 'six',
-        7 => 'seven',
-        8 => 'eight',
-        9 => 'nine',
+        1  => 'one',
+        2  => 'two',
+        3  => 'three',
+        4  => 'four',
+        5  => 'five',
+        6  => 'six',
+        7  => 'seven',
+        8  => 'eight',
+        9  => 'nine',
         10 => 'ten',
         11 => 'eleven',
         12 => 'twelve',
@@ -45,10 +46,10 @@ class CardinalNumeralGenerator extends NumeralGenerator
      * @phpstan-var array<int, string>
      */
     public static $exponents = [
-        100 => 'hundred',
-        1000 => 'thousand',
-        1000000 => 'million',
-        1000000000 => 'billion',
+        100           => 'hundred',
+        1000          => 'thousand',
+        1000000       => 'million',
+        1000000000    => 'billion',
         1000000000000 => 'trillion',
     ];
 
@@ -71,24 +72,23 @@ class CardinalNumeralGenerator extends NumeralGenerator
         // simple numeral
         if (isset(static::$words[$number]) || isset(static::$exponents[$number])) {
             return isset(static::$words[$number]) ? static::$words[$number] : static::$exponents[$number];
-        }
-        // compound numeral
+        } // compound numeral
         else {
             $parts = [];
             $words = [];
 
             foreach (array_reverse(static::$exponents, true) as $word_number => $word) {
                 if ($number >= $word_number) {
-                    $count = (int)floor($number / $word_number);
-                    $number = $number % ($count * $word_number);
-                    $parts[] = static::generate($count).' '.static::generate($word_number).($word_number != 100 && $number > 0 ? ',' : null);
+                    $count   = (int)floor($number / $word_number);
+                    $number  = $number % ($count * $word_number);
+                    $parts[] = static::generate($count) . ' ' . static::generate($word_number) . ($word_number != 100 && $number > 0 ? ',' : null);
                 }
             }
 
             foreach (array_reverse(static::$words, true) as $word_number => $word) {
                 if ($number >= $word_number) {
                     $words[] = static::generate($word_number);
-                    $number %= $word_number;
+                    $number  %= $word_number;
                 }
             }
             $parts[] = implode('-', $words);

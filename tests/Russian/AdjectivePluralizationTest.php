@@ -1,4 +1,5 @@
 <?php
+
 namespace morphos\test\Russian;
 
 use morphos\Russian\AdjectivePluralization;

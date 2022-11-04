@@ -1,4 +1,5 @@
 <?php
+
 namespace morphos\Russian;
 
 use morphos\S;
@@ -49,7 +50,7 @@ class MiddleNamesInflection extends \morphos\NamesInflection implements Cases
      */
     public static function getCase($name, $case, $gender = null)
     {
-        $case = RussianCasesHelper::canonizeCase($case);
+        $case  = RussianCasesHelper::canonizeCase($case);
         $forms = static::getCases($name, $gender);
         return $forms[$case];
     }
@@ -66,24 +67,24 @@ class MiddleNamesInflection extends \morphos\NamesInflection implements Cases
         if (S::slice($name, -2) == 'ич') {
             // man rules
             $name = S::name($name);
-            return array(
-                Cases::IMENIT => $name,
-                Cases::RODIT => $name.'а',
-                Cases::DAT => $name.'у',
-                Cases::VINIT => $name.'а',
-                Cases::TVORIT => $name.'ем',
-                Cases::PREDLOJ => $name.'е',
-            );
+            return [
+                Cases::IMENIT  => $name,
+                Cases::RODIT   => $name . 'а',
+                Cases::DAT     => $name . 'у',
+                Cases::VINIT   => $name . 'а',
+                Cases::TVORIT  => $name . 'ем',
+                Cases::PREDLOJ => $name . 'е',
+            ];
         } elseif (S::slice($name, -2) == 'на') {
             $prefix = S::name(S::slice($name, 0, -1));
-            return array(
-                Cases::IMENIT => $prefix.'а',
-                Cases::RODIT => $prefix.'ы',
-                Cases::DAT => $prefix.'е',
-                Cases::VINIT => $prefix.'у',
-                Cases::TVORIT => $prefix.'ой',
-                Cases::PREDLOJ => $prefix.'е',
-            );
+            return [
+                Cases::IMENIT  => $prefix . 'а',
+                Cases::RODIT   => $prefix . 'ы',
+                Cases::DAT     => $prefix . 'е',
+                Cases::VINIT   => $prefix . 'у',
+                Cases::TVORIT  => $prefix . 'ой',
+                Cases::PREDLOJ => $prefix . 'е',
+            ];
         }
 
         // inflect other middle names (foreign) as first names
