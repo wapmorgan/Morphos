@@ -21,7 +21,7 @@
 	"require": {
 		"php": ">=5.4.0",
 		"ext-mbstring": "*",
-		"ctu4/morphos": "dev-bugfix"
+		"ctu4/morphos": "dev-bugfix as 9.5.20"
 	},
 	"suggest": {
 		"ext-readline": "For using interactive version of script"
