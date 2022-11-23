@@ -8,20 +8,13 @@
 	"repositories": [
 		{
 			"type": "vcs",
-			"url": "git@github.com:ctu4/morphos.git"
-		}
-	],
-	"authors": [
-		{
-			"name": "Sergey Vanyushin",
-			"email": "wapmorgan@gmail.com",
-			"role": "developer"
+			"url": "https://github.com/ctu4/morphos"
 		}
 	],
 	"require": {
 		"php": ">=5.4.0",
 		"ext-mbstring": "*",
-		"ctu4/morphos": "dev-bugfix as 9.5.20"
+		"ctu4/morphos": "dev-bugfix"
 	},
 	"suggest": {
 		"ext-readline": "For using interactive version of script"
@@ -36,6 +29,7 @@
 		}
 	},
 	"require-dev": {
+		"php": ">=7.3",
 		"phpunit/phpunit": "~9.5.20"
 	}
 }
