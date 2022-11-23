@@ -240,7 +240,7 @@ class NounPluralization extends \morphos\BasePluralization implements Cases
             } else {
                 $forms[Cases::RODIT] = $prefix;
             }
-        } elseif (S::slice($word, -2) == 'ка' && S::slice($word, -3,
+        } elseif ((S::slice($word, -2) == 'ка' || S::slice($word, -2) == 'ки') && S::slice($word, -3,
                 -2) !== 'и') { // words ending with -ка: чашка, вилка, ложка, тарелка, копейка, батарейка, аптека
             if (S::slice($word, -3, -2) == 'л') {
                 $forms[Cases::RODIT] = S::slice($word, 0, -2) . 'ок';
