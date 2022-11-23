@@ -19,7 +19,6 @@
 	"suggest": {
 		"ext-readline": "For using interactive version of script"
 	},
-	"minimum-stability": "dev",
 	"autoload": {
 		"files": [
 			"src/English/functions.php",
@@ -30,12 +29,13 @@
 		}
 	},
 	"require-dev": {
-		"php": ">=7.3"
+		"php": ">=7.3",
+		"phpunit/phpunit": "~9.5.20"
 	},
 	"repositories": [
 		{
 			"type": "vcs",
-			"url": "https://github.com/ctu4/morphos.git"
+			"url": "git@github.com:ctu4/morphos.git"
 		}
 	]
 }
