@@ -36,7 +36,7 @@
 	"repositories": [
 		{
 			"type": "vcs",
-			"url": "https://github.com/cTu4/morphos"
+			"url": "https://github.com/ctu4/morphos"
 		}
 	]
 }
