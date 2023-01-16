@@ -19,6 +19,7 @@ class NounPluralization extends \morphos\BasePluralization implements Cases
      */
     protected static $abnormalExceptions = [
         'человек' => ['люди', 'человек', 'людям', 'людей', 'людьми', 'людях'],
+        'дерево' => ['деревья', 'деревьев', 'деревьям', 'деревья', 'деревьями', 'деревьях'],
     ];
 
     /** @var string[] */
