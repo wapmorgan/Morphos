@@ -152,6 +152,7 @@ class NounDeclension extends BaseInflection implements Cases, Gender
         'пекарь',
         'пельмень',
         'пень',
+        'покупатель',
         'председатель',
         'представитель',
         'преподаватель',
