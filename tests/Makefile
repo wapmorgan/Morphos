@@ -6,3 +6,6 @@ test:
 
 run:
 	docker run --rm --interactive --tty --volume $(PWD):/app -w /app --add-host=host.docker.internal:host-gateway php:morphos bash
+
+php:
+	docker run --rm --interactive --tty --volume $(PWD):/app -w /app --add-host=host.docker.internal:host-gateway php:morphos php -a
