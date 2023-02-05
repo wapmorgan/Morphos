@@ -66,7 +66,8 @@ class LastNamesInflectionTest extends TestCase
             ['Грицай', NamesInflection::MALE, 'Грицая', 'Грицаю', 'Грицая', 'Грицаем', 'Грицае'],
             ['Прожога', NamesInflection::MALE, 'Прожоги', 'Прожоге', 'Прожогу', 'Прожогой', 'Прожоге'],
             ['Мазепа', NamesInflection::MALE, 'Мазепы', 'Мазепе', 'Мазепу', 'Мазепой', 'Мазепе'],
-
+            ['Цой', NamesInflection::MALE, 'Цоя', 'Цою', 'Цоя', 'Цоем', 'Цое'],
+            ['Лукелий', NamesInflection::MALE, 'Лукелия', 'Лукелию', 'Ликелия', 'Лукелием', 'Ликелии'],
 
             ['Смирнова', NamesInflection::FEMALE, 'Смирновой', 'Смирновой', 'Смирнову', 'Смирновой', 'Смирновой'],
             ['Кромская', NamesInflection::FEMALE, 'Кромской', 'Кромской', 'Кромскую', 'Кромской', 'Кромской'],
@@ -114,6 +115,7 @@ class LastNamesInflectionTest extends TestCase
             ['Фоминых', NamesInflection::MALE],
             ['Хитрово', NamesInflection::MALE],
             ['Бози', NamesInflection::MALE],
+            ['Цой', NamesInflection::FEMALE],
         ];
     }
 }

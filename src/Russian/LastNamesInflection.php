@@ -121,6 +121,7 @@ class LastNamesInflection extends \morphos\NamesInflection implements Cases
      * @param null|string $gender
      * @return string[]
      * @phpstan-return array<string, string>
+     * @throws \Exception
      */
     public static function getCases($name, $gender = null)
     {
@@ -164,18 +165,19 @@ class LastNamesInflection extends \morphos\NamesInflection implements Cases
                         static::TVORIT  => $prefix . 'им',
                         static::PREDLOJ => $prefix . 'ом',
                     ];
-                    // Верхний / Убогий / Толстой
-                    // Верхнего / Убогого / Толстого
-                    // Верхнему / Убогому / Толстому
-                    // Верхним / Убогим / Толстым
-                    // О Верхнем / Об Убогом / О Толстом
                 }
 
+                // Верхний / Убогий / Толстой / Цой
+                // Верхнего / Убогого / Толстого / Цоя
+                // Верхнему / Убогому / Толстому / Цою
+                // Верхним / Убогим / Толстым / Цоя
+                // о Верхнем / об Убогом / о Толстом / Цоем
+                // Верхнем / Убогом / о Толстом / Цое
                 if (in_array(S::slice($name, -2), ['ой', 'ый', 'ий'], true)) {
                     $prefix = S::name(S::slice($name, 0, -2));
                     return [
                         static::IMENIT  => S::name($name),
-                        static::RODIT   => $prefix . 'ого',
+                        static::RODIT   => $prefix .  RussianLanguage::chooseEndingBySonority($prefix, 'оя', 'ого'),
                         static::DAT     => $prefix . 'ому',
                         static::VINIT   => $prefix . 'ого',
                         static::TVORIT  => $prefix . 'ым',

@@ -70,7 +70,7 @@ class RussianLanguage
     /**
      * @var string[] Глухие согласные
      */
-    public static $deafConsonants = ['п', 'ф', 'к', 'т', 'с', 'ш', 'х', 'ч', 'щ'];
+    public static $deafConsonants = ['п', 'ф', 'к', 'т', 'с', 'ш', 'х', 'ч', 'ц', 'щ'];
 
     /**
      * @var string[] Союзы
@@ -320,7 +320,7 @@ class RussianLanguage
      */
     public static function chooseEndingBySonority($word, $ifSonorous, $ifDeaf)
     {
-        $last = S::slice($word, -1);
+        $last = S::slice(S::lower($word), -1);
         if (static::isSonorousConsonant($last)) {
             return $ifSonorous;
         }
