@@ -167,22 +167,37 @@ class LastNamesInflection extends \morphos\NamesInflection implements Cases
                     ];
                 }
 
-                // Верхний / Убогий / Толстой / Цой
-                // Верхнего / Убогого / Толстого / Цоя
-                // Верхнему / Убогому / Толстому / Цою
-                // Верхним / Убогим / Толстым / Цоя
-                // о Верхнем / об Убогом / о Толстом / Цоем
-                // Верхнем / Убогом / о Толстом / Цое
+                // Толстой / Цой / Лукелий
+                // Толстого / Цоя / Лукелия
+                // Толстому / Цою / Лукелию
+                // Толстым / Цоя / Лукелия
+                // о Толстом / Цоем / Лукелием
+                // о Толстом / о Цое / о Лукелие
+                // similar to next if
                 if (in_array(S::slice($name, -2), ['ой', 'ый', 'ий'], true)) {
-                    $prefix = S::name(S::slice($name, 0, -2));
-                    return [
-                        static::IMENIT  => S::name($name),
-                        static::RODIT   => $prefix .  RussianLanguage::chooseEndingBySonority($prefix, 'оя', 'ого'),
-                        static::DAT     => $prefix . 'ому',
-                        static::VINIT   => $prefix . 'ого',
-                        static::TVORIT  => $prefix . 'ым',
-                        static::PREDLOJ => $prefix . 'ом',
-                    ];
+                    $last_consonant = S::slice($name, -3, -2);
+                    $last_sonority = (RussianLanguage::isSonorousConsonant($last_consonant) && $last_consonant !== 'н') || $last_consonant === 'ц';
+                    if ($last_sonority) {
+                        $prefix = S::name(S::slice($name, 0, -1));
+                        return [
+                            static::IMENIT  => S::name($name),
+                            static::RODIT   => $prefix . 'я',
+                            static::DAT     => $prefix . 'ю',
+                            static::VINIT   => $prefix . 'я',
+                            static::TVORIT  => $prefix . 'ем',
+                            static::PREDLOJ => $prefix . (in_array(S::slice($name, -2), ['ой', 'ей']) ? 'е' : 'и'),
+                        ];
+                    } else {
+                        $prefix = S::name(S::slice($name, 0, -2));
+                        return [
+                            static::IMENIT  => S::name($name),
+                            static::RODIT   => $prefix .  'ого',
+                            static::DAT     => $prefix . 'ому',
+                            static::VINIT   => $prefix . 'ого',
+                            static::TVORIT  => $prefix . 'ым',
+                            static::PREDLOJ => $prefix . 'ом',
+                        ];
+                    }
                 }
 
                 if (in_array(S::slice($name, -2), ['ей', 'ай'], true)) {
