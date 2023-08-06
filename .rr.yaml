@@ -1,0 +1,11 @@
+version: '3'
+server:
+  command: "php web/api.php"
+
+http:
+  address: 0.0.0.0:8080
+  pool:
+    num_workers: ${NUM_WORKERS}
+
+rpc:
+  listen: tcp://127.0.0.1:6001
