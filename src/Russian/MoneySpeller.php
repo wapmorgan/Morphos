@@ -35,7 +35,9 @@ class MoneySpeller extends \morphos\MoneySpeller
      * @param string $currency
      * @param string $format
      * @param string|null $case
-     *
+     * @param boolean|null $skipFractionalPartIfZero If null, default behaviour: short can skip fractional part if zero, others always have.
+     * If true, fractional will be skipped if zero.
+     * If false, fractional will be kept anyway.
      * @return string
      * @throws \Exception
      */
@@ -43,7 +45,8 @@ class MoneySpeller extends \morphos\MoneySpeller
         $value,
         $currency,
         $format = self::NORMAL_FORMAT,
-        $case = null
+        $case = null,
+        $skipFractionalPartIfZero = null
     ) {
         $currency = CurrenciesHelper::canonizeCurrency($currency);
 
@@ -56,7 +59,7 @@ class MoneySpeller extends \morphos\MoneySpeller
             case static::SHORT_FORMAT:
                 return $integer . ' ' . NounPluralization::pluralize(static::$labels[$currency][0], $integer, false,
                         $case)
-                    . ($fractional > 0
+                    . ($fractional > 0 || $skipFractionalPartIfZero === false
                         ? ' ' . $fractional . ' ' . NounPluralization::pluralize(static::$labels[$currency][2],
                             $fractional, false, $case)
                         : null);
@@ -69,23 +72,34 @@ class MoneySpeller extends \morphos\MoneySpeller
                     $integer,
                     $case !== null ? $case : Cases::IMENIT,
                     static::$labels[$currency][1]);
-                $fractional_spelled = CardinalNumeralGenerator::getCase(
-                    $fractional,
-                    $case !== null ? $case : Cases::IMENIT,
-                    static::$labels[$currency][3]);
+
+                if ($fractional > 0 || (in_array($skipFractionalPartIfZero, [false, null], true))) {
+                    $fractional_spelled = CardinalNumeralGenerator::getCase(
+                        $fractional,
+                        $case !== null ? $case : Cases::IMENIT,
+                        static::$labels[$currency][3]
+                    );
+                }
 
                 if ($format == static::CLARIFICATION_FORMAT) {
                     return $integer . ' (' . $integer_spelled . ') '
-                        . NounPluralization::pluralize(static::$labels[$currency][0], $integer, false, $case) . ' '
-                        . $fractional . ' (' . $fractional_spelled . ') '
-                        . NounPluralization::pluralize(static::$labels[$currency][2], $fractional, false, $case);
-                } else {
-                    return $integer_spelled . ($format == static::DUPLICATION_FORMAT ? ' (' . $integer . ')' : null)
-                        . ' ' . NounPluralization::pluralize(static::$labels[$currency][0], $integer, false,
-                            $case) . ' '
-                        . $fractional_spelled . ($format == static::DUPLICATION_FORMAT ? ' (' . $fractional . ')' : null) . ' '
-                        . NounPluralization::pluralize(static::$labels[$currency][2], $fractional, false, $case);
+                        . NounPluralization::pluralize(static::$labels[$currency][0], $integer, false, $case)
+                        . (isset($fractional_spelled)
+                            ? ' ' . $fractional . ' (' . $fractional_spelled . ') '
+                                . NounPluralization::pluralize(static::$labels[$currency][2], $fractional, false, $case)
+                            : null)
+                        ;
                 }
+
+                return $integer_spelled . ($format == static::DUPLICATION_FORMAT ? ' (' . $integer . ')' : null)
+                    . ' ' . NounPluralization::pluralize(static::$labels[$currency][0], $integer, false,
+                        $case)
+                    . (isset($fractional_spelled)
+                        ? ' '
+                            . $fractional_spelled . ($format == static::DUPLICATION_FORMAT ? ' (' . $fractional . ')' : null) . ' '
+                            . NounPluralization::pluralize(static::$labels[$currency][2], $fractional, false, $case)
+                        : null)
+                    ;
         }
 
         throw new RuntimeException('Unreachable');

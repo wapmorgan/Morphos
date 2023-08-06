@@ -24,7 +24,8 @@ abstract class MoneySpeller implements Currency
         $value,
         $currency,
         $format = self::NORMAL_FORMAT,
-        $case = null
+        $case = null,
+        $skipFractionalPartIfZero = null
     ) {
         throw new RuntimeException('Not implemented');
     }
