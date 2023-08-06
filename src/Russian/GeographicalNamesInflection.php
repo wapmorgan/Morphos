@@ -403,12 +403,14 @@ class GeographicalNamesInflection extends \morphos\BaseInflection implements Cas
                         static::LOCATIVE => $prefix . (RussianLanguage::isBinaryVowel($last_vowel) ? 'и' : 'е'),
                     ];
 
-                // Березники, Ессентуки
+                    // Березники, Ессентуки, Химки
                 case 'ки':
-                    // Старые Дороги
+                        // Старые Дороги
                 case 'ги':
                     // Ушачи, Ивацевичи
                 case 'чи':
+                    // Мытищи
+                case 'щи':
                     $prefix = S::name(S::slice($name, 0, -1));
                     return [
                         static::IMENIT   => $prefix . 'и',
