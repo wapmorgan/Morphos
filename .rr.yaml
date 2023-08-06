@@ -5,6 +5,7 @@ server:
 http:
   address: 0.0.0.0:8080
   pool:
+    debug: ${DEBUG}
     num_workers: ${NUM_WORKERS}
 
 rpc:
