@@ -1,4 +1,4 @@
-FROM ghcr.io/roadrunner-server/roadrunner:2023.1.0 AS roadrunner
+FROM ghcr.io/roadrunner-server/roadrunner:2023.2.1 AS roadrunner
 FROM composer:2.4.4 AS composer
 FROM php:8.1-cli
 COPY --from=composer /usr/bin/composer /usr/bin/composer
