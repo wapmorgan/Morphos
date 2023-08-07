@@ -7,6 +7,7 @@ http:
   pool:
     debug: ${DEBUG}
     num_workers: ${NUM_WORKERS}
+    max_jobs: ${NUM_REQUESTS_BEFORE_RESET}
 
 rpc:
   listen: tcp://127.0.0.1:6001
