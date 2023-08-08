@@ -45,7 +45,7 @@ or install via adapter:
 
 ### As a separate service
 
-A server started in container and listens 8080 port for GET-requests.
+The server starts in a container and listens 8080 port for GET-requests.
 
 Integrate service into your stack (for example, docker compose)
 ```yaml
@@ -62,7 +62,7 @@ docker run --env NUM_WORKERS=4 --rm --publish 8093:8080 -v wapmorgan/morphos:3.2
 
 _Tip_: adjust `NUM_WORKERS` env variable if you will send a lot of load to service. By default, it's 4.
 
-There are a **API:** marks in documentation for functions, that exposed as service endpoints. Just pass them the same 
+There are **API:** marks in documentation for functions, that exposed as service endpoints. Just pass them the same 
 arguments as to PHP-functions/methods.
 
 ## Quick Start
