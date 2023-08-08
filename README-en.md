@@ -37,13 +37,17 @@ echo '10 '.NounPluralization::pluralize('foot') => '10 feet'
 // or you can use shortcut
 $n = 1;
 echo pluralize($n, 'foot') => '1 foot'
+// or API: GET /en/pluralize?count=...&word=...
 ```
 
 ## Numerals
 
 All number creation classes are similar and have one common methods:
 
-- `string generate($number)` - Generates a cardinal numeral for a number.
+- `OrdinalNumeralGenerator::generate($number, bool $short= false)` - Generates an ordinal numeral for a number.
+  - API: `GET /en/ordinal?number=...`
+- `CardinalNumeralGenerator::generate($number)` - Generates a cardinal numeral for a number.
+  - API: `GET /en/cardinal?number=...`
 
 ### Cardinal
 
@@ -87,4 +91,7 @@ $interval = new DateInterval('P5Y2M');
 
 TimeSpeller::spellInterval($interval) => '5 years 2 months'
 TimeSpeller::spellInterval($interval, TimeSpeller::SEPARATE) => '5 years and 2 months'
+
+// or with API: GET /en/time/spellDifference?dateTime=...&options=...&limit=...
+// or with API: GET /en/time/spellInterval?interval=...&options=...&limit=...
 ```

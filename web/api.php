@@ -13,49 +13,51 @@ $factory = new Psr17Factory();
 $psr7 = new PSR7Worker($worker, $factory, $factory, $factory);
 
 $dispatcher = FastRoute\simpleDispatcher(function(FastRoute\RouteCollector $r) {
+    $r->addGroup('/en', function (\FastRoute\RouteCollector $r) {
+        $r->addRoute('GET', '/pluralize', [\morphos\Service\English::class, 'pluralize']);
+        $r->addRoute('GET', '/cardinal', [\morphos\Service\English::class, 'cardinal']);
+        $r->addRoute('GET', '/ordinal', [\morphos\Service\English::class, 'ordinal']);
+        $r->addRoute('GET', '/time/spellDifference', [\morphos\Service\English::class, 'spellTimeDifference']);
+        $r->addRoute('GET', '/time/spellInterval', [\morphos\Service\English::class, 'spellTimeInterval']);
+    });
     $r->addGroup('/ru', function (\FastRoute\RouteCollector $r) {
-        $r->addRoute('GET', '/cases', ['Russian', 'cases']);
-        $r->addRoute('GET', '/name', ['Russian', 'name']);
-        $r->addRoute('GET', '/detectGender', ['Russian', 'detectGender']);
-        $r->addRoute('GET', '/pluralize', ['Russian', 'pluralize']);
+        $r->addRoute('GET', '/cases', [\morphos\Service\Russian::class, 'cases']);
+        $r->addRoute('GET', '/name', [\morphos\Service\Russian::class, 'name']);
+        $r->addRoute('GET', '/detectGender', [\morphos\Service\Russian::class, 'detectGender']);
+        $r->addRoute('GET', '/pluralize', [\morphos\Service\Russian::class, 'pluralize']);
         $r->addGroup('/noun', function (\FastRoute\RouteCollector $r) {
-            $r->addRoute('GET', '/cases', ['Russian', 'nounCases']);
-            $r->addRoute('GET', '/pluralize', ['Russian', 'nounPluralize']);
+            $r->addGroup('/declension', function (\FastRoute\RouteCollector $r) {
+                $r->addRoute('GET', '/cases', [\morphos\Service\Russian::class, 'nounDeclensionCases']);
+                $r->addRoute('GET', '/detectGender', [\morphos\Service\Russian::class, 'nounDeclensionDetectGender']);
+                $r->addRoute('GET', '/detect', [\morphos\Service\Russian::class, 'nounDeclensionDetect']);
+                $r->addRoute('GET', '/isMutable', [\morphos\Service\Russian::class, 'nounDeclensionIsMutable']);
+            });
+            $r->addGroup('/pluralization', function (\FastRoute\RouteCollector $r) {
+                $r->addRoute('GET', '/cases', [\morphos\Service\Russian::class, 'nounPluralizationCases']);
+                $r->addRoute('GET', '/numeralForm', [\morphos\Service\Russian::class, 'nounPluralizationNumeralForm']);
+            });
         });
+        $r->addGroup('/cardinal', function (\FastRoute\RouteCollector $r) {
+            $r->addRoute('GET', '/cases', [\morphos\Service\Russian::class, 'cardinalCases']);
+        });
+        $r->addGroup('/ordinal', function (\FastRoute\RouteCollector $r) {
+            $r->addRoute('GET', '/cases', [\morphos\Service\Russian::class, 'ordinalCases']);
+        });
+        $r->addGroup('/geo', function (\FastRoute\RouteCollector $r) {
+            $r->addRoute('GET', '/cases', [\morphos\Service\Russian::class, 'geoCases']);
+            $r->addRoute('GET', '/isMutable', [\morphos\Service\Russian::class, 'geoIsMutable']);
+        });
+        $r->addRoute('GET', '/money/spell', [\morphos\Service\Russian::class, 'spellMoney']);
+        $r->addRoute('GET', '/time/spellDifference', [\morphos\Service\Russian::class, 'spellTimeDifference']);
+        $r->addRoute('GET', '/time/spellInterval', [\morphos\Service\Russian::class, 'spellTimeInterval']);
+        $r->addGroup('/prep', function (\FastRoute\RouteCollector $r) {
+            $r->addRoute('GET', '/in', [\morphos\Service\Russian::class, 'prepIn']);
+            $r->addRoute('GET', '/with', [\morphos\Service\Russian::class, 'prepWith']);
+            $r->addRoute('GET', '/about', [\morphos\Service\Russian::class, 'prepAbout']);
+        });
+        $r->addRoute('GET', '/verb/ending', [\morphos\Service\Russian::class, 'verbEnding']);
     });
 });
-
-class Russian {
-    public function cases()
-    {
-        return \morphos\CasesHelper::getAllCases();
-    }
-
-    public function name(array $args)
-    {
-        return \morphos\Russian\inflectName($args['name'], $args['case'] ?? null, $args['gender'] ?? null);
-    }
-
-    public function detectGender(array $args)
-    {
-        return \morphos\Russian\detectGender($args['name']);
-    }
-
-    public function pluralize(array $args)
-    {
-        return \morphos\Russian\pluralize($args['count'], $args['word'], $args['animateness'] ?? false, $args['case'] ?? null);
-    }
-
-    public function nounCases(array $args)
-    {
-        return \morphos\Russian\NounDeclension::getCases($args['word'], $args['animateness'] ?? false);
-    }
-
-    public function nounPluralize(array $args)
-    {
-        return \morphos\Russian\NounPluralization::getCases($args['word'], $args['animateness'] ?? false);
-    }
-}
 
 $handlers = [];
 
@@ -89,8 +91,13 @@ do {
                 $psr7->respond(new Response(405));
                 break;
             case FastRoute\Dispatcher::FOUND:
-                if (!isset($handlers[$routeInfo[1][0]])) {
-                    $handlers[$routeInfo[1][0]] = new $routeInfo[1][0];
+                if (is_string($routeInfo[1])) {
+                    $handlers = $routeInfo[1];
+                } else if (is_array($routeInfo[1])) {
+                    if (!isset($handlers[$routeInfo[1][0]])) {
+                        $handlers[$routeInfo[1][0]] = new $routeInfo[1][0];
+                    }
+                    $handler = [$handlers[$routeInfo[1][0]], $routeInfo[1][1]];
                 }
                 parse_str($request->getUri()->getQuery(), $args);
                 // Reply by the 200 OK response
@@ -99,10 +106,7 @@ do {
                         'Content-Type' => 'application/json',
                     ], json_encode(
                         [
-                            'result' => call_user_func([
-                                           $handlers[$routeInfo[1][0]],
-                                           $routeInfo[1][1]
-                                       ], $args)
+                            'result' => call_user_func($handler, $args, $dispatcher)
                         ]
                     ))
                 );

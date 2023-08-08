@@ -1,5 +1,6 @@
 # Morphos
-A morphological solution for Russian and English language written completely in PHP.
+A morphological solution for Russian and English language written completely in PHP and delivered as a PHP library or
+docker image to integrate in non-PHP stack.
 
 [![Latest Stable Version](https://poser.pugx.org/wapmorgan/morphos/v/stable)](https://packagist.org/packages/wapmorgan/morphos)
 [![License](https://poser.pugx.org/wapmorgan/morphos/license)](https://packagist.org/packages/wapmorgan/morphos)
@@ -29,16 +30,40 @@ Tests & Quality: [![Build Status](https://app.travis-ci.com/wapmorgan/Morphos.sv
 
 ## Installation
 
+### As PHP library
+
 * Download library through composer:
 ```
 composer require wapmorgan/morphos
 ```
 
-### Adapters
+or install via adapter:
 
 - Adapter for Blade: [wapmorgan/morphos-blade](https://github.com/wapmorgan/Morphos-Blade)
 - Adapter for Twig: [wapmorgan/morphos-twig](https://github.com/wapmorgan/Morphos-Twig)
 - Adapter for Yii2: [wapmorgan/yii2-inflection](https://github.com/wapmorgan/yii2-inflection)
+
+### As a separate service
+
+A server started in container and listens 8080 port for GET-requests.
+
+Integrate service into your stack (for example, docker compose)
+```yaml
+services:
+  morphos:
+    image: wapmorgan/morphos:3.2.28
+    ports:
+      - 8093:8080
+```
+or standalone container:
+```bash
+docker run --env NUM_WORKERS=4 --rm --publish 8093:8080 -v wapmorgan/morphos:3.2.28
+```
+
+_Tip_: adjust `NUM_WORKERS` env variable if you will send a lot of load to service. By default, it's 4.
+
+There are a **API:** marks in documentation for functions, that exposed as service endpoints. Just pass them the same 
+arguments as to PHP-functions/methods.
 
 ## Quick Start
 
