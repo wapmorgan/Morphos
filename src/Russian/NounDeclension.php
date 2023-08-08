@@ -139,6 +139,7 @@ class NounDeclension extends BaseInflection implements Cases, Gender
         'дождь',
         'заместитель',
         'зверь',
+        'издатель',
         'любитель',
         'камень',
         'конь',
@@ -153,6 +154,7 @@ class NounDeclension extends BaseInflection implements Cases, Gender
         'пельмень',
         'пень',
         'покупатель',
+        'пользователь',
         'председатель',
         'представитель',
         'преподаватель',
@@ -370,19 +372,19 @@ class NounDeclension extends BaseInflection implements Cases, Gender
         $word = S::lower($word);
         $last = S::slice($word, -1);
         if (isset(static::$abnormalExceptions[$word]) || in_array($word, static::$abnormalExceptions, true)) {
-            return 2;
+            return self::SECOND_DECLENSION;
         }
 
         if (in_array($last, ['а', 'я'], true) && S::slice($word, -2) != 'мя') {
-            return 1;
+            return self::FIRST_DECLENSION;
         } elseif (RussianLanguage::isConsonant($last) || in_array($last, ['о', 'е', 'ё'], true)
             || ($last == 'ь' && RussianLanguage::isConsonant(S::slice($word, -2,
                     -1)) && !RussianLanguage::isHissingConsonant(S::slice($word, -2, -1))
                 && (in_array($word, static::$masculineWithSoft,
                     true)) /*|| in_array($word, static::$masculineWithSoftAndRunAwayVowels, true)*/)) {
-            return 2;
+            return self::SECOND_DECLENSION;
         } else {
-            return 3;
+            return self::THIRD_DECLENSION;
         }
     }
 

@@ -18,6 +18,10 @@ $dispatcher = FastRoute\simpleDispatcher(function(FastRoute\RouteCollector $r) {
         $r->addRoute('GET', '/name', ['Russian', 'name']);
         $r->addRoute('GET', '/detectGender', ['Russian', 'detectGender']);
         $r->addRoute('GET', '/pluralize', ['Russian', 'pluralize']);
+        $r->addGroup('/noun', function (\FastRoute\RouteCollector $r) {
+            $r->addRoute('GET', '/cases', ['Russian', 'nounCases']);
+            $r->addRoute('GET', '/pluralize', ['Russian', 'nounPluralize']);
+        });
     });
 });
 
@@ -40,6 +44,16 @@ class Russian {
     public function pluralize(array $args)
     {
         return \morphos\Russian\pluralize($args['count'], $args['word'], $args['animateness'] ?? false, $args['case'] ?? null);
+    }
+
+    public function nounCases(array $args)
+    {
+        return \morphos\Russian\NounDeclension::getCases($args['word'], $args['animateness'] ?? false);
+    }
+
+    public function nounPluralize(array $args)
+    {
+        return \morphos\Russian\NounPluralization::getCases($args['word'], $args['animateness'] ?? false);
     }
 }
 
