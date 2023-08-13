@@ -45,7 +45,7 @@ or install via adapter:
 
 ### As a separate service
 
-The server starts in a container and listens 8080 port for GET-requests.
+The server starts in a container from [docker image](https://hub.docker.com/r/wapmorgan/morphos) and listens 8080 port for GET-requests.
 
 Integrate service into your stack (for example, docker compose)
 ```yaml
