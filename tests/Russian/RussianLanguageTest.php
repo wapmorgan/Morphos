@@ -42,6 +42,8 @@ class RussianLanguageTest extends TestCase
         $this->assertEquals('с пола', RussianLanguage::with('пола'));
         $this->assertEquals('со шкафа', RussianLanguage::with('шкафа'));
         $this->assertEquals('со щами', RussianLanguage::with('щами'));
+        $this->assertEquals('со снегом', RussianLanguage::with('снегом'));
+        $this->assertEquals('с сестрой', RussianLanguage::with('сестрой'));
     }
 
     public function testAbout()

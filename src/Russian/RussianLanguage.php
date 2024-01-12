@@ -273,7 +273,7 @@ class RussianLanguage
     public static function with($word)
     {
         $normalized = trim(S::lower($word));
-        if (in_array(S::slice($normalized, 0, 1), ['c', 'з', 'ш', 'ж'],
+        if (in_array(S::slice($normalized, 0, 1), ['с', 'з', 'ш', 'ж'],
                 true) && static::isConsonant(S::slice($normalized, 1, 2)) || S::slice($normalized, 0, 1) === 'щ') {
             return 'со ' . $word;
         }
