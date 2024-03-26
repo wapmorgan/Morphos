@@ -51,13 +51,13 @@ Integrate service into your stack (for example, docker compose)
 ```yaml
 services:
   morphos:
-    image: wapmorgan/morphos:3.2.28
+    image: wapmorgan/morphos:3.2.29
     ports:
       - 8093:8080
 ```
 or standalone container:
 ```bash
-docker run --env NUM_WORKERS=4 --rm --publish 8093:8080 -v wapmorgan/morphos:3.2.28
+docker run --env NUM_WORKERS=4 --rm --publish 8093:8080 -v wapmorgan/morphos:3.2.29
 ```
 
 _Tip_: adjust `NUM_WORKERS` env variable if you will send a lot of load to service. By default, it's 4.
