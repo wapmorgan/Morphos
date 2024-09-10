@@ -29,6 +29,7 @@ class CardinalNumeralTest extends TestCase
         return [
             [1, NumeralGenerator::MALE, 'один', 'одного', 'одному', 'один', 'одним', 'одном'],
             [1, NumeralGenerator::FEMALE, 'одна', 'одной', 'одной', 'одну', 'одной', 'одной'],
+            [8, NumeralGenerator::MALE, 'восемь', 'восьми', 'восьми', 'восемь', 'восемью', 'восьми'],
             [
                 85,
                 NumeralGenerator::MALE,

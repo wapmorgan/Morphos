@@ -139,6 +139,14 @@ class CardinalNumeralGenerator extends NumeralGenerator implements Cases
             self::TVORIT  => 'четырьмя',
             self::PREDLOJ => 'четырех',
         ],
+        'восемь'      => [
+            self::IMENIT  => 'восемь',
+            self::RODIT   => 'восьми',
+            self::DAT     => 'восьми',
+            self::VINIT   => 'восемь',
+            self::TVORIT  => 'восемью',
+            self::PREDLOJ => 'восьми',
+        ],
         'восемьдесят' => [
             self::IMENIT  => 'восемьдесят',
             self::RODIT   => 'восьмидесяти',
