@@ -60,6 +60,16 @@ class CardinalNumeralTest extends TestCase
                 'трехстах сорока четырех',
             ],
             [
+                1000,
+                NumeralGenerator::FEMALE,
+                'тысяча',
+                'тысячи',
+                'тысяче',
+                'тысячу',
+                'тысячей',
+                'тысяче',
+            ],
+            [
                 1007,
                 NumeralGenerator::MALE,
                 'одна тысяча семь',

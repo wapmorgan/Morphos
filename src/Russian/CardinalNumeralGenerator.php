@@ -163,14 +163,6 @@ class CardinalNumeralGenerator extends NumeralGenerator implements Cases
             self::TVORIT  => 'восьмистами',
             self::PREDLOJ => 'восьмистах',
         ],
-        'тысяча'      => [
-            self::IMENIT  => 'тысяча',
-            self::RODIT   => 'тысяч',
-            self::DAT     => 'тысячам',
-            self::VINIT   => 'тысяч',
-            self::TVORIT  => 'тысячей',
-            self::PREDLOJ => 'тысячах',
-        ],
     ];
 
     /**
