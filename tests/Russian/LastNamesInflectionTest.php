@@ -117,6 +117,7 @@ class LastNamesInflectionTest extends TestCase
             ['Хитрово', NamesInflection::MALE],
             ['Бози', NamesInflection::MALE],
             ['Цой', NamesInflection::FEMALE],
+            ['А', NamesInflection::FEMALE],
         ];
     }
 }
