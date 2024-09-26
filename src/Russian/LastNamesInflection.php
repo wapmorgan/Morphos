@@ -219,6 +219,19 @@ class LastNamesInflection extends \morphos\NamesInflection implements Cases
                     ];
                 }
 
+                if (S::length($name) > 3 && in_array(S::slice($name, -2), ['ок'], true)) {
+                    $prefix = S::name(S::slice($name, 0, -2)) . S::slice($name, -1);
+
+                    return [
+                        static::IMENIT => S::name($name),
+                        static::RODIT => $prefix . 'а',
+                        static::DAT => $prefix . 'у',
+                        static::VINIT => $prefix . 'а',
+                        static::TVORIT => $prefix . 'ом',
+                        static::PREDLOJ => $prefix . 'е',
+                    ];
+                }
+
             } else {
                 if (in_array(S::slice($name, -3), ['ова', 'ева', 'ина', 'ына', 'ёва'], true)) {
                     $prefix = S::name(S::slice($name, 0, -1));

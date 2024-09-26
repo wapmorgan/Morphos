@@ -78,6 +78,9 @@ class LastNamesInflectionTest extends TestCase
             //            ['Зоя', NamesInflection::FEMALE, 'Зои', 'Зое', 'Зою', 'Зоей', 'Зое'],
             //            ['Молодыха', NamesInflection::FEMALE, 'Молодыхи', 'Молодыхе', 'Молодыху', 'Молодыхой', 'Молодыхе'],
             ['Стальная', NamesInflection::FEMALE, 'Стальной', 'Стальной', 'Стальную', 'Стальной', 'Стальной'],
+            ['Янушонок', NamesInflection::MALE, 'Янушонка', 'Янушонку', 'Янушонка', 'Янушонком', 'Янушонке'],
+            ['Оборок', NamesInflection::MALE, 'Оборка', 'Оборку', 'Оборка', 'Оборком', 'Оборке'],
+            ['Бок', NamesInflection::MALE, 'Бока', 'Боку', 'Бока', 'Боком', 'Боке'],
             [
                 'Завгородняя',
                 NamesInflection::FEMALE,
