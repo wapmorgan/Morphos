@@ -4,6 +4,7 @@ namespace morphos\test\Russian;
 
 use morphos\NamesInflection;
 use morphos\Russian\Cases;
+use morphos\Russian\LastNamesInflection;
 use morphos\Russian\MiddleNamesInflection;
 use PHPUnit\Framework\TestCase;
 
@@ -89,5 +90,20 @@ class MiddleNamesInflectionTest extends TestCase
     public function testGetCase($name, $gender, $case2)
     {
         $this->assertEquals($case2, MiddleNamesInflection::getCase($name, Cases::RODIT, $gender));
+    }
+
+    /**
+     * @dataProvider immutableNamesProvider()
+     */
+    public function testImmutable($name, $gender)
+    {
+        $this->assertFalse(MiddleNamesInflection::isMutable($name, $gender));
+    }
+
+    public function immutableNamesProvider()
+    {
+        return [
+            ['А', NamesInflection::FEMALE],
+        ];
     }
 }

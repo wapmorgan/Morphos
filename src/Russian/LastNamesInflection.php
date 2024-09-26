@@ -39,7 +39,12 @@ class LastNamesInflection extends \morphos\NamesInflection implements Cases
      */
     public static function isMutable($name, $gender = null)
     {
+        if (S::length($name) === 1) {
+            return false;
+        }
+
         $name = S::lower($name);
+
         if ($gender === null) {
             $gender = static::detectGender($name);
         }
@@ -176,7 +181,9 @@ class LastNamesInflection extends \morphos\NamesInflection implements Cases
                 // similar to next if
                 if (in_array(S::slice($name, -2), ['ой', 'ый', 'ий'], true)) {
                     $last_consonant = S::slice($name, -3, -2);
-                    $last_sonority = (RussianLanguage::isSonorousConsonant($last_consonant) && $last_consonant !== 'н') || $last_consonant === 'ц';
+                    $last_sonority = (RussianLanguage::isSonorousConsonant($last_consonant) &&
+                            in_array($last_consonant, ['н', 'в'], true) === false) || $last_consonant === 'ц';
+
                     if ($last_sonority) {
                         $prefix = S::name(S::slice($name, 0, -1));
                         return [
@@ -208,6 +215,19 @@ class LastNamesInflection extends \morphos\NamesInflection implements Cases
                         static::DAT     => $prefix . 'ю',
                         static::VINIT   => $prefix . 'я',
                         static::TVORIT  => $prefix . 'ем',
+                        static::PREDLOJ => $prefix . 'е',
+                    ];
+                }
+
+                if (S::length($name) > 3 && in_array(S::slice($name, -2), ['ок'], true)) {
+                    $prefix = S::name(S::slice($name, 0, -2)) . S::slice($name, -1);
+
+                    return [
+                        static::IMENIT => S::name($name),
+                        static::RODIT => $prefix . 'а',
+                        static::DAT => $prefix . 'у',
+                        static::VINIT => $prefix . 'а',
+                        static::TVORIT => $prefix . 'ом',
                         static::PREDLOJ => $prefix . 'е',
                     ];
                 }

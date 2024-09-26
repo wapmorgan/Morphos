@@ -52,6 +52,7 @@ class LastNamesInflectionTest extends TestCase
         return [
             ['Смирнов', NamesInflection::MALE, 'Смирнова', 'Смирнову', 'Смирнова', 'Смирновым', 'Смирнове'],
             ['Кромской', NamesInflection::MALE, 'Кромского', 'Кромскому', 'Кромского', 'Кромским', 'Кромском'],
+            ['Ольховой', NamesInflection::MALE, 'Ольхового', 'Ольховому', 'Ольхового', 'Ольховым', 'Ольховом'],
             ['Ус', NamesInflection::MALE, 'Уса', 'Усу', 'Уса', 'Усом', 'Усе'],
             ['Кузьмич', NamesInflection::MALE, 'Кузьмича', 'Кузьмичу', 'Кузьмича', 'Кузьмичом', 'Кузьмиче'],
             ['Берг', NamesInflection::MALE, 'Берга', 'Бергу', 'Берга', 'Бергом', 'Берге'],
@@ -77,6 +78,9 @@ class LastNamesInflectionTest extends TestCase
             //            ['Зоя', NamesInflection::FEMALE, 'Зои', 'Зое', 'Зою', 'Зоей', 'Зое'],
             //            ['Молодыха', NamesInflection::FEMALE, 'Молодыхи', 'Молодыхе', 'Молодыху', 'Молодыхой', 'Молодыхе'],
             ['Стальная', NamesInflection::FEMALE, 'Стальной', 'Стальной', 'Стальную', 'Стальной', 'Стальной'],
+            ['Янушонок', NamesInflection::MALE, 'Янушонка', 'Янушонку', 'Янушонка', 'Янушонком', 'Янушонке'],
+            ['Оборок', NamesInflection::MALE, 'Оборка', 'Оборку', 'Оборка', 'Оборком', 'Оборке'],
+            ['Бок', NamesInflection::MALE, 'Бока', 'Боку', 'Бока', 'Боком', 'Боке'],
             ['Неборачек', NamesInflection::MALE, 'Неборачка', 'Неборачку', 'Неборачка', 'Неборачком', 'Неборачке'],
             ['Городец', NamesInflection::MALE, 'Городца', 'Городцу', 'Городца', 'Городцом', 'Городце'],
             ['Малец', NamesInflection::MALE, 'Мальца', 'Мальцу', 'Мальца', 'Мальцом', 'Мальце'],
@@ -121,6 +125,7 @@ class LastNamesInflectionTest extends TestCase
             ['Хитрово', NamesInflection::MALE],
             ['Бози', NamesInflection::MALE],
             ['Цой', NamesInflection::FEMALE],
+            ['А', NamesInflection::FEMALE],
         ];
     }
 }
