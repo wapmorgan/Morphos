@@ -181,7 +181,9 @@ class LastNamesInflection extends \morphos\NamesInflection implements Cases
                 // similar to next if
                 if (in_array(S::slice($name, -2), ['ой', 'ый', 'ий'], true)) {
                     $last_consonant = S::slice($name, -3, -2);
-                    $last_sonority = (RussianLanguage::isSonorousConsonant($last_consonant) && $last_consonant !== 'н') || $last_consonant === 'ц';
+                    $last_sonority = (RussianLanguage::isSonorousConsonant($last_consonant) &&
+                            in_array($last_consonant, ['н', 'в'], true) === false) || $last_consonant === 'ц';
+
                     if ($last_sonority) {
                         $prefix = S::name(S::slice($name, 0, -1));
                         return [
