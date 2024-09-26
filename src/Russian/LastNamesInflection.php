@@ -39,7 +39,12 @@ class LastNamesInflection extends \morphos\NamesInflection implements Cases
      */
     public static function isMutable($name, $gender = null)
     {
+        if (S::length($name) === 1) {
+            return false;
+        }
+
         $name = S::lower($name);
+
         if ($gender === null) {
             $gender = static::detectGender($name);
         }

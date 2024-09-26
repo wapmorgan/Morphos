@@ -730,6 +730,7 @@ class FirstNamesInflecionTest extends TestCase
             ['Грегори', FirstNamesInflection::MALE],
             ['Гиви', FirstNamesInflection::MALE],
             ['Франсуа', FirstNamesInflection::MALE],
+            ['А', NamesInflection::FEMALE],
         ];
     }
 

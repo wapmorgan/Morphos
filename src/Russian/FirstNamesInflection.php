@@ -446,6 +446,10 @@ class FirstNamesInflection extends \morphos\NamesInflection implements Cases
      */
     public static function isMutable($name, $gender = null)
     {
+        if (S::length($name) === 1) {
+            return false;
+        }
+
         $name = S::lower($name);
 
         if (in_array($name, static::$immutableNames, true)) {
