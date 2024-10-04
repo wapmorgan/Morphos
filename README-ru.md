@@ -276,6 +276,7 @@ MoneySpeller::spell(123.45, MoneySpeller::RUBLE, MoneySpeller::NORMAL_FORMAT, '�
 | R$   | `\morphos\Currency::REAL`    | реал   |
 | R    | `\morphos\Currency::RAND`    | рэнд   |
 | ₴    | `\morphos\Currency::HRYVNIA` | гривна |
+| ₸    | `\morphos\Currency::TENGE`   | тенге |
 
 ## Временные интервалы
 

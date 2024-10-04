@@ -37,6 +37,7 @@ class CurrenciesHelperTest extends TestCase
             [Currency::REAL, ['R$']],
             [Currency::RAND, ['R']],
             [Currency::HRYVNIA, ['₴']],
+            [Currency::TENGE, ['₸']],
         ];
     }
 
