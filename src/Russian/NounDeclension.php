@@ -20,6 +20,7 @@ class NounDeclension extends BaseInflection implements Cases, Gender
     public static $immutableWords = [
         // валюты
         'евро',
+        'тенге',
         'пенни',
         'песо',
         'сентаво',

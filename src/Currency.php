@@ -19,4 +19,5 @@ interface Currency
     const REAL    = 'BRL';
     const RAND    = 'ZAR';
     const HRYVNIA = 'UAH';
+    const TENGE   = 'KZT';
 }

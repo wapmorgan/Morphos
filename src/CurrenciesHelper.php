@@ -77,6 +77,10 @@ class CurrenciesHelper
             case '₴':
                 return Currency::HRYVNIA;
 
+            case Currency::TENGE:
+            case '₸':
+                return Currency::TENGE;
+
             default:
                 throw new InvalidArgumentException('Invalid currency: ' . $currency);
         }
