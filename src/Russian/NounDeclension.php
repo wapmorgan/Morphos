@@ -377,11 +377,17 @@ class NounDeclension extends BaseInflection implements Cases, Gender
 
         if (in_array($last, ['а', 'я'], true) && S::slice($word, -2) != 'мя') {
             return self::FIRST_DECLENSION;
-        } elseif (RussianLanguage::isConsonant($last) || in_array($last, ['о', 'е', 'ё'], true)
-            || ($last == 'ь' && RussianLanguage::isConsonant(S::slice($word, -2,
-                    -1)) && !RussianLanguage::isHissingConsonant(S::slice($word, -2, -1))
-                && (in_array($word, static::$masculineWithSoft,
-                    true)) /*|| in_array($word, static::$masculineWithSoftAndRunAwayVowels, true)*/)) {
+        } elseif (
+            RussianLanguage::isConsonant($last)
+            || in_array($last, ['о', 'е', 'ё'], true)
+            || (
+                $last == 'ь'
+                && RussianLanguage::isConsonant(S::slice($word, -2, -1))
+                && !RussianLanguage::isHissingConsonant(S::slice($word, -2, -1))
+                && (in_array($word, static::$masculineWithSoft, true))
+                /*|| in_array($word, static::$masculineWithSoftAndRunAwayVowels, true)*/
+            )
+        ) {
             return self::SECOND_DECLENSION;
         } else {
             return self::THIRD_DECLENSION;

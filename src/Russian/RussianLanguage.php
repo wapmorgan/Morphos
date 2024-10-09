@@ -139,8 +139,10 @@ class RussianLanguage
                 return true;
             }
 
-            if (S::length($substring) > 1 && in_array(S::slice($substring, 1, 2), ['е', 'ё', 'и', 'ю', 'я', 'ь'],
-                    true)) { // consonants are soft if they are trailed with these vowels
+            if (
+                S::length($substring) > 1
+                && in_array(S::slice($substring, 1, 2), ['е', 'ё', 'и', 'ю', 'я', 'ь'], true) // consonants are soft if they are trailed with these vowels
+            ) {
                 return true;
             }
         }

@@ -204,12 +204,17 @@ class NounPluralization extends \morphos\BasePluralization implements Cases
         $last   = S::slice($word, -1);
 
         if (($declension = NounDeclension::getDeclension($word)) == NounDeclension::SECOND_DECLENSION) {
-            $soft_last = $last == 'й' || (in_array($last, ['ь', 'е', 'ё', 'ю', 'я'], true)
-                    && ((
-                            RussianLanguage::isConsonant(S::slice($word, -2,
-                                -1)) && !RussianLanguage::isHissingConsonant(S::slice($word, -2, -1)))
-                        || S::slice($word, -2, -1) == 'и'));
-            $prefix    = NounDeclension::getPrefixOfSecondDeclension($word, $last);
+            $soft_last = $last === 'й' || (
+                in_array($last, ['ь', 'е', 'ё', 'ю', 'я'], true)
+                && (
+                    (
+                        RussianLanguage::isConsonant(S::slice($word, -2, -1))
+                        && !RussianLanguage::isHissingConsonant(S::slice($word, -2, -1))
+                    )
+                    || S::slice($word, -2, -1) == 'и'
+                )
+            );
+            $prefix = NounDeclension::getPrefixOfSecondDeclension($word, $last);
         } elseif ($declension == NounDeclension::FIRST_DECLENSION) {
             $soft_last = RussianLanguage::checkLastConsonantSoftness($word);
         } else {
@@ -218,16 +223,17 @@ class NounPluralization extends \morphos\BasePluralization implements Cases
 
         $forms = [];
 
-        if (in_array($last, ['ч', 'г'], true)
+        if (
+            in_array($last, ['ч', 'г', 'ж', 'ш'], true)
             || in_array(S::slice($word, -2), ['чь', 'сь', 'ть', 'нь', 'рь', 'дь', 'ль'], true)
-            || (RussianLanguage::isVowel($last) && in_array(S::slice($word, -2, -1), ['ч', 'к'],
-                    true))) { // before ч, чь, сь, ч+vowel, к+vowel
+            || (RussianLanguage::isVowel($last) && in_array(S::slice($word, -2, -1), ['ч', 'к'], true))
+        ) { // before ч, чь, сь, ч+vowel, к+vowel
             $forms[Cases::IMENIT] = $prefix . 'и';
-        } elseif (in_array($last, ['н', 'ц', 'р', 'т', 'с', 'ж'], true)) {
+        } elseif (in_array($last, ['н', 'ц', 'р', 'т', 'с'], true)) {
             $forms[Cases::IMENIT] = $prefix . 'ы';
         } else {
-            $forms[Cases::IMENIT] = RussianLanguage::chooseVowelAfterConsonant($last, $soft_last, $prefix . 'я',
-                $prefix . 'а');
+            // TODO: fix first declension (depends on animateness and gender, see test cases)
+            $forms[Cases::IMENIT] = RussianLanguage::chooseVowelAfterConsonant($last, $soft_last, $prefix . 'я', $prefix . 'а');
         }
 
         // RODIT
@@ -242,25 +248,27 @@ class NounPluralization extends \morphos\BasePluralization implements Cases
             } else {
                 $forms[Cases::RODIT] = $prefix;
             }
-        } elseif (S::slice($word, -2) == 'ка' && S::slice($word, -3,
-                -2) !== 'и') { // words ending with -ка: чашка, вилка, ложка, тарелка, копейка, батарейка, аптека
-            if (S::slice($word, -3, -2) == 'л') {
+        } elseif (S::slice($word, -2) == 'ка') { // words ending with -ка: чашка, вилка, ложка, тарелка, копейка, батарейка, аптека
+            if (in_array(S::slice($word, -3, -2), ['б', 'в', 'д', 'з', 'л', 'м', 'н', 'п', 'р', 'с', 'т', 'ф'], true)) {
                 $forms[Cases::RODIT] = S::slice($word, 0, -2) . 'ок';
-            } elseif (in_array(S::slice($word, -3, -2), ['й', 'е'], true)) {
+            } elseif (in_array(S::slice($word, -3, -2), ['ц', 'ч', 'ш', 'щ', 'ж'], true)) {
+                $forms[Cases::RODIT] = S::slice($word, 0, -2) . 'ек';
+            } elseif (S::slice($word, -3, -2) === 'й') {
                 $forms[Cases::RODIT] = S::slice($word, 0, -3) . 'ек';
+            } elseif (in_array(S::slice($word, -3, -2), array_merge(['е', 'к'], RussianLanguage::$vowels), true)) {
+                $forms[Cases::RODIT] = $prefix;
             } else {
-                if ($word === 'штука') {
-                    $forms[Cases::RODIT] = S::slice($word, 0, -2) . 'к';
-                } else {
-                    $forms[Cases::RODIT] = S::slice($word, 0, -2) . 'ек';
-                }
+                $forms[Cases::RODIT] = S::slice($word, 0, -2) . 'ек';
             }
-        } elseif (in_array($last, ['а'], true)) { // обида, ябеда
+        } elseif ($last === 'а') { // обида, ябеда
             $forms[Cases::RODIT] = $prefix;
-        } elseif (in_array($last, ['я'], true)) { // молния
+        } elseif ($last === 'я') { // молния
             $forms[Cases::RODIT] = $prefix . 'й';
-        } elseif (RussianLanguage::isHissingConsonant($last) || ($soft_last && $last != 'й') || in_array(S::slice($word,
-                -2), ['чь', 'сь', 'ть', 'нь', 'дь'], true)) {
+        } elseif (
+            RussianLanguage::isHissingConsonant($last)
+            || ($soft_last && $last != 'й')
+            || in_array(S::slice($word, -2), ['чь', 'сь', 'ть', 'нь', 'дь'], true)
+        ) {
             $forms[Cases::RODIT] = $prefix . 'ей';
         } elseif ($last == 'й' || S::slice($word, -2) == 'яц') { // месяц
             $forms[Cases::RODIT] = $prefix . 'ев';
