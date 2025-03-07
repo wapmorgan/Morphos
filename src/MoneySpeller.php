@@ -10,6 +10,7 @@ abstract class MoneySpeller implements Currency
     const NORMAL_FORMAT        = 'normal';
     const CLARIFICATION_FORMAT = 'clarification';
     const DUPLICATION_FORMAT   = 'duplication';
+    const ACCOUNTING_FORMAT    = 'accounting';
 
     /**
      * @abstract
