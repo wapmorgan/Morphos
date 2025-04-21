@@ -100,6 +100,19 @@ class MoneySpeller extends \morphos\MoneySpeller
                             . NounPluralization::pluralize(static::$labels[$currency][2], $fractional, false, $case)
                         : null)
                     ;
+
+            case static::ACCOUNTING_FORMAT:
+                $integer_spelled = CardinalNumeralGenerator::getCase(
+                    $integer,
+                    $case !== null ? $case : Cases::IMENIT,
+                    static::$labels[$currency][1]);
+
+                return $integer_spelled . ' ' .
+                    NounPluralization::pluralize(static::$labels[$currency][0], $integer, false, $case) .
+                    ($fractional > 0 || $skipFractionalPartIfZero === false
+                        ? ' ' . $fractional . ' ' .
+                        NounPluralization::pluralize(static::$labels[$currency][2], $fractional, false, $case)
+                        : null);
         }
 
         throw new RuntimeException('Unreachable');

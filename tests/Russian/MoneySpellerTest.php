@@ -81,6 +81,57 @@ class MoneySpellerTest extends TestCase
                     MoneySpeller::DUPLICATION_FORMAT,
                     'четыре миллиарда двести девяносто четыре миллиона девятьсот шестьдесят семь тысяч двести девяносто шесть (4294967296) рублей сорок (40) копеек',
                 ],
+                // Тесты для ACCOUNTING_FORMAT
+                [
+                    10000.25,
+                    Currency::RUBLE,
+                    MoneySpeller::ACCOUNTING_FORMAT,
+                    'десять тысяч рублей 25 копеек',
+                ],
+                [
+                    100.50,
+                    Currency::DOLLAR,
+                    MoneySpeller::ACCOUNTING_FORMAT,
+                    'сто долларов 50 центов',
+                ],
+                [
+                    200.30,
+                    Currency::EURO,
+                    MoneySpeller::ACCOUNTING_FORMAT,
+                    'двести евро 30 центов',
+                ],
+                [
+                    500,
+                    Currency::RUBLE,
+                    MoneySpeller::ACCOUNTING_FORMAT,
+                    'пятьсот рублей',
+                ],
+                [
+                    200.30,
+                    Currency::RUBLE,
+                    MoneySpeller::ACCOUNTING_FORMAT,
+                    'двухсот рублей 30 копеек',
+                    Cases::RODIT
+                ],
+                [
+                    300.45,
+                    Currency::RUBLE,
+                    MoneySpeller::ACCOUNTING_FORMAT,
+                    'тремстам рублям 45 копейкам',
+                    Cases::DAT
+                ],
+                [
+                    1000000.99,
+                    Currency::RUBLE,
+                    MoneySpeller::ACCOUNTING_FORMAT,
+                    'один миллион рублей 99 копеек',
+                ],
+                [
+                    500.50,
+                    Currency::HRYVNIA,
+                    MoneySpeller::ACCOUNTING_FORMAT,
+                    'пятьсот гривен 50 копеек',
+                ],
             ];
     }
 
