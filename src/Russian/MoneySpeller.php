@@ -51,7 +51,7 @@ class MoneySpeller extends \morphos\MoneySpeller
         $currency = CurrenciesHelper::canonizeCurrency($currency);
 
         $integer    = (int)floor($value);
-        $fractional = fmod($value, $integer);
+        $fractional = fmod($value, $integer ?: 1);
         $fractional = round($fractional, 2);
         $fractional = (int)round($fractional * 100);
 
