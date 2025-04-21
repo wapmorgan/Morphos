@@ -28,6 +28,7 @@ class MoneySpeller extends \morphos\MoneySpeller
         self::REAL    => ['реал', Gender::MALE, 'сентаво', Gender::NEUTER],
         self::RAND    => ['рэнд', Gender::MALE, 'цент', Gender::MALE],
         self::HRYVNIA => ['гривна', Gender::FEMALE, 'копейка', Gender::FEMALE],
+        self::TENGE   => ['тенге', Gender::NEUTER, 'тиын', Gender::MALE],
     ];
 
     /**
