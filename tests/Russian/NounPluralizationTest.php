@@ -24,18 +24,21 @@ class NounPluralizationTest extends TestCase
         $this->assertEquals($word, NounPluralization::pluralize($word, 101));
         $this->assertEquals($word, NounPluralization::pluralize($word, 201));
         $this->assertEquals($word, NounPluralization::pluralize($word, 1501));
+        $this->assertEquals($word, NounPluralization::pluralize($word, 1.0));
 
         // Two-Four
         $this->assertEquals($pluralized2, NounPluralization::pluralize($word, 2));
         $this->assertEquals($pluralized2, NounPluralization::pluralize($word, 23));
         $this->assertEquals($pluralized2, NounPluralization::pluralize($word, 104));
         $this->assertEquals($pluralized2, NounPluralization::pluralize($word, 1503));
+        $this->assertEquals($pluralized2, NounPluralization::pluralize($word, 123.123));
 
         // Five
         $this->assertEquals($pluralized5, NounPluralization::pluralize($word, 5));
         $this->assertEquals($pluralized5, NounPluralization::pluralize($word, 211));
         $this->assertEquals($pluralized5, NounPluralization::pluralize($word, 520));
         $this->assertEquals($pluralized5, NounPluralization::pluralize($word, 1513));
+        $this->assertEquals($pluralized5, NounPluralization::pluralize($word, 10.5));
     }
 
     public function pluralizationWordsProvider()

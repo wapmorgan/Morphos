@@ -105,9 +105,9 @@ class NounPluralization extends \morphos\BasePluralization implements Cases
     public static function getNumeralForm($count)
     {
         if ($count > 100) {
-            $count %= 100;
+            $count = (int) $count % 100;
         }
-        $ending = $count % 10;
+        $ending = (int) $count % 10;
 
         if (($count > 20 && $ending == 1) || $count == 1) {
             return static::ONE;
