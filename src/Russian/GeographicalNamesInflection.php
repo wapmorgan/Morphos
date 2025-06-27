@@ -325,6 +325,8 @@ class GeographicalNamesInflection extends \morphos\BaseInflection implements Cas
                 case 'ть':
                     // Керчь
                 case 'чь':
+                    // Беларусь
+                case 'сь':
                     $prefix = S::name(S::slice($name, 0, -1));
                     return [
                         static::IMENIT   => $prefix . 'ь',
