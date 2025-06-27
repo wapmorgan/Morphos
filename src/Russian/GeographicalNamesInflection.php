@@ -137,9 +137,9 @@ class GeographicalNamesInflection extends \morphos\BaseInflection implements Cas
             $last_part  = S::slice($name,
                 S::findLastPosition($name, ' ') + 1);
 
-            // город N, село N, хутор N, район N, поселок N, округ N, республика N
+            // город N, село N, хутор N, район N, поселок N, округ N, республика N, деревня N
             // N область, N край, N район, N волость
-            if (in_array($first_part, ['город', 'село', 'хутор', 'район', 'поселок', 'округ', 'республика'], true)
+            if (in_array($first_part, ['город', 'село', 'хутор', 'район', 'поселок', 'округ', 'республика', 'деревня'], true)
                 || in_array($last_part, ['край', 'область', 'район', 'волость'], true)) {
                 return true;
             }
@@ -209,7 +209,8 @@ class GeographicalNamesInflection extends \morphos\BaseInflection implements Cas
         if (strpos($name, ' ') !== false) {
             $first_part = S::slice($name, 0, S::findFirstPosition($name, ' '));
             // город N, село N, хутор N, пгт N
-            if (in_array($first_part, ['город', 'село', 'хутор', 'пгт', 'район', 'поселок', 'округ', 'республика'],
+            // @todo вынести список префиксов, чтобы переиспользовать
+            if (in_array($first_part, ['город', 'село', 'хутор', 'пгт', 'район', 'поселок', 'округ', 'республика', 'деревня'],
                 true)) {
                 if ($first_part === 'пгт') {
                     return array_fill_keys(
