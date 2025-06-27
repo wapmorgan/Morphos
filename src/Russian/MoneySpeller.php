@@ -106,7 +106,9 @@ class MoneySpeller extends \morphos\MoneySpeller
                 $integer_spelled = CardinalNumeralGenerator::getCase(
                     $integer,
                     $case !== null ? $case : Cases::IMENIT,
-                    static::$labels[$currency][1]);
+                    static::$labels[$currency][1],
+                    true
+                );
 
                 return $integer_spelled . ' ' .
                     NounPluralization::pluralize(static::$labels[$currency][0], $integer, false, $case) .

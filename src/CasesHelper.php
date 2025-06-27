@@ -82,7 +82,7 @@ class CasesHelper
     {
         return [
             Cases::NOMINATIVE,
-            Cases::GENITIVE,
+//            Cases::GENITIVE,
             Cases::GENETIVE,
             Cases::DATIVE,
             Cases::ACCUSATIVE,

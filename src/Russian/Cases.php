@@ -17,5 +17,7 @@ interface Cases extends \morphos\Cases
     const VINIT    = self::ACCUSATIVE;
     const TVORIT   = self::ABLATIVE;
     const PREDLOJ  = self::PREPOSITIONAL;
+
+    // падеж "места", в школьной программе не изучается
     const LOCATIVE = 'locative';
 }
