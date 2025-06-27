@@ -75,8 +75,11 @@ class TimeSpellerTest extends TestCase
     public function testSpellDifference($dateTime, $limit)
     {
         $diff = (new DateTime())->diff(new DateTime(is_numeric($dateTime) ? '@' . $dateTime : $dateTime));
-        $this->assertEquals(TimeSpeller::spellInterval($diff, 0, $limit),
-            TimeSpeller::spellDifference($dateTime, 0, $limit), 'DateTime is ' . $dateTime . ' and limit is ' . $limit);
+        $this->assertEquals(
+            TimeSpeller::spellInterval($diff, 0, $limit),
+            TimeSpeller::spellDifference($dateTime, 0, $limit),
+            'DateTime is ' . $dateTime . ' and limit is ' . $limit
+        );
     }
 
     public function differencesProvides()
@@ -84,8 +87,8 @@ class TimeSpellerTest extends TestCase
         return
             [
                 ['+30 minutes 2 seconds', 1],
-                [time() + 3601, 1],
-                [time() + 86401, 1],
+                [time() + 3602, 1],
+                [time() + 86402, 1],
             ];
     }
 
