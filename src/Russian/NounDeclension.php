@@ -448,7 +448,7 @@ class NounDeclension extends BaseInflection implements Cases, Gender
      */
     public static function getPredCaseOf12Declensions($word, $last, $prefix)
     {
-        if (in_array(S::slice($word, -2), ['ий', 'ие'], true)) {
+        if (in_array(S::slice($word, -2), ['ий', 'ие', 'ия'], true)) {
             if ($last == 'ё') {
                 return $prefix . 'е';
             } else {
