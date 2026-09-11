@@ -34,7 +34,7 @@ class AdjectivePluralization extends BasePluralization implements Cases
                 case NounPluralization::ONE:
                     return $adjective;
                 case NounPluralization::TWO_FOUR:
-//                    return AdjectiveDeclension::getCase($adjective, static::RODIT, $animateness);
+                    return AdjectiveDeclension::getCase($adjective, static::RODIT, $animateness);
                 case NounPluralization::FIVE_OTHER:
                     return AdjectivePluralization::getCase($adjective, static::RODIT, $animateness);
             }
