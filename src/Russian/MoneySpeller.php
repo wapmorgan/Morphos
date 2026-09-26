@@ -55,6 +55,10 @@ class MoneySpeller extends \morphos\MoneySpeller
         $fractional = fmod($value, $integer ?: 1);
         $fractional = round($fractional, 2);
         $fractional = (int)round($fractional * 100);
+        if ($fractional === 100) {
+            $integer++;
+            $fractional = 0;
+        }
 
         switch ($format) {
             case static::SHORT_FORMAT:
