@@ -142,6 +142,12 @@ class MoneySpellerTest extends TestCase
                     MoneySpeller::ACCOUNTING_FORMAT,
                     'пятьсот гривен 50 копеек',
                 ],
+                [
+                    10.996,
+                    Currency::RUBLE,
+                    MoneySpeller::SHORT_FORMAT,
+                    '11 рублей',
+                ],
             ];
     }
 
