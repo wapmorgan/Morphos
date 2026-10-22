@@ -1,6 +1,6 @@
 FROM ghcr.io/roadrunner-server/roadrunner:2023.2.1 AS roadrunner
 FROM composer:2.4.4 AS composer
-FROM php:8.2.8-cli-alpine
+FROM php:8.2.35-cli-alpine
 COPY --from=composer /usr/bin/composer /usr/bin/composer
 COPY --from=roadrunner /usr/bin/rr /usr/local/bin/rr
 RUN apk add --no-cache linux-headers unzip && docker-php-ext-install -j$(nproc) sockets
